@@ -14,7 +14,7 @@ public class User {
 	private String qq;
 	private String wechat;
 	
-	private String role; //admin or user(it means common user)
+	private String role;
 	
 	public int getId() {
 		return id;
