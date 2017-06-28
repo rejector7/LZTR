@@ -1,6 +1,11 @@
-package model;
+package action;
 
-public class User {
+import java.util.List;
+
+import model.User;
+import service.UserService;
+
+public class UserActions extends BaseAction{
 	private int id;
 	private String username;
 	private String password;
@@ -16,24 +21,7 @@ public class User {
 	
 	private String role; //admin or user(it means common user)
 	
-	
-	
-	public User(int id, String username, String password, int age, String sex, String email, String country,
-			String city, String mobile, String qq, String wechat, String role) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.age = age;
-		this.sex = sex;
-		this.email = email;
-		this.country = country;
-		this.city = city;
-		this.mobile = mobile;
-		this.qq = qq;
-		this.wechat = wechat;
-		this.role = role;
-	}
+	private UserService userService;
 
 	public int getId() {
 		return id;
@@ -42,7 +30,7 @@ public class User {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public String getUsername() {
 		return username;
 	}
@@ -50,21 +38,21 @@ public class User {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
+
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password){
-		this.password=password;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-	
-	public int getAge(){
-		return this.age;
+
+	public int getAge() {
+		return age;
 	}
-	
-	public void setAge(int age){
-		this.age=age;
+
+	public void setAge(int age) {
+		this.age = age;
 	}
 
 	public String getSex() {
@@ -130,6 +118,44 @@ public class User {
 	public void setRole(String role) {
 		this.role = role;
 	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
 	
+	public String add() throws Exception {
+		User user = new User(id, username, password, age, sex, email, country,
+				city, mobile, qq, wechat, role);
+		userService.addUser(user);
+		return "addUser";
+	}
 	
+	public String update() throws Exception {
+		User user = userService.getUserById(id);
+		user.setCity(city);
+		user.setAge(age);
+		user.setCountry(country);
+		user.setEmail(email);
+		user.setMobile(mobile);
+		user.setPassword(password);
+		user.setQq(qq);
+		user.setRole(role);
+		user.setSex(sex);
+		user.setUsername(username);
+		user.setWechat(wechat);
+		userService.updateUser(user);
+		return "updateUser";
+	}
+	
+	public String delete() throws Exception {
+		User user = userService.getUserById(id);
+		userService.deleteUser(user);
+		return "deleteUser";
+	}
+	
+	public String all() throws Exception {
+		List<User> users = userService.getAllUsers();
+		request().setAttribute("users", users);
+		return "allUser";
+	}
 }
