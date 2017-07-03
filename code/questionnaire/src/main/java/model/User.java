@@ -16,6 +16,25 @@ public class User {
 	
 	private String role; //admin or user(it means common user)
 	
+	public User(){
+		
+	}
+	
+	public User(String username, String password, int age, String sex, String email, String country,
+			String city, String mobile, String qq, String wechat, String role) {
+		this.username = username;
+		this.password = password;
+		this.age = age;
+		this.sex = sex;
+		this.email = email;
+		this.country = country;
+		this.city = city;
+		this.mobile = mobile;
+		this.qq = qq;
+		this.wechat = wechat;
+		this.role = role;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -114,5 +133,3 @@ public class User {
 	
 	
 }
-
-
