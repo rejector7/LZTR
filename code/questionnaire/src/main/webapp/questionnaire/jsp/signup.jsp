@@ -104,6 +104,10 @@
 			                        	<label class="sr-only" for="form-wechat">WeChat</label>
 			                        	<input type="text" name="wechat" placeholder="WeChat..." class="form-wechat form-control" id="form-wechat">
 			                        </div>
+			                        			                        			                        <div class="form-group">
+			                        	<label class="sr-only" for="form-job">Job</label>
+			                        	<input type="text" name="job" placeholder="Job..." class="form-job form-control" id="form-job">
+			                        </div>
 			                        
 			                        <button type="button" id="register" class="btn btn-success">Sign up!</button>
 			                    </form>

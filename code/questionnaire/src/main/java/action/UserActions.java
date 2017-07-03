@@ -22,7 +22,7 @@ public class UserActions extends BaseAction{
 	private String mobile;
 	private String qq;
 	private String wechat;
-	
+	private String job;
 	private String role; //admin or user(it means common user)
 	
 	private UserService userService;
@@ -134,7 +134,7 @@ public class UserActions extends BaseAction{
 		}
 		if(role==null) role = "user";
 		User user = new User(username, password, age, sex, email, country,
-				city, mobile, qq, wechat, role);
+				city, mobile, qq, wechat, role, job);
 		userService.addUser(user);
 		response().getWriter().print("success");
 		return null;
@@ -153,6 +153,7 @@ public class UserActions extends BaseAction{
 		user.setSex(sex);
 		user.setUsername(username);
 		user.setWechat(wechat);
+		user.setJob(job);
 		userService.updateUser(user);
 		return "updateUser";
 	}
@@ -167,5 +168,13 @@ public class UserActions extends BaseAction{
 		List<User> users = userService.getAllUsers();
 		request().setAttribute("users", users);
 		return "allUser";
+	}
+
+	public String getJob() {
+		return job;
+	}
+
+	public void setJob(String job) {
+		this.job = job;
 	}
 }
