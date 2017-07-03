@@ -223,12 +223,7 @@
 			<version>${xwork.core.version}</version>
 		</dependency>
 		
-		<dependency>
-       <groupId>org.apache.struts</groupId>
-       <artifactId>struts2-json-plugin</artifactId>
-       <version>${struts.core.version}</version>
-   		</dependency>
-   		
+
    		<!-- MongoDB -->
    		<dependency>  
             <groupId>org.springframework.data</groupId>  

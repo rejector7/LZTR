@@ -16,12 +16,12 @@ public class User {
 	
 	private String role; //admin or user(it means common user)
 	
+	public User(){
+		
+	}
 	
-	
-	public User(int id, String username, String password, int age, String sex, String email, String country,
+	public User(String username, String password, int age, String sex, String email, String country,
 			String city, String mobile, String qq, String wechat, String role) {
-		super();
-		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.age = age;

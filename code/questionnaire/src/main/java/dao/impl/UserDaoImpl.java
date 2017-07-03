@@ -61,10 +61,14 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
 	 */
 	@Override
 	public List<User> getUserByUsername(String name){
+		System.out.println("here in dao");
 		@SuppressWarnings("unchecked")
+		
 		List<User> users = (List<User>) getHibernateTemplate()
 				.find("from User as u where u.username=?",name);
+		System.out.println("usersize");
 		if(users.size() == 0)return null;
+		System.out.println("succeed here in dao");
 		return users;
 	}
 }

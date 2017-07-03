@@ -8,14 +8,15 @@
 	<constant name="struts.devMode" value="true" />
 	<package name="process" extends="struts-default">
 	<!-- User -->
-		<action name="*User" class="action.UserActions" method="{1}">
-			<result name="allUser"></result>
-			<result name="addUser"></result>
-			<result name="updateUser"></result>
-			<result name="deleteUser"></result>
-		</action> 
+	<action name="*User" class="action.UserActions" method="{1}">
+	</action>
+
+
+		
+		
 		<action name="*">
 			<result>/{1}.jsp</result>
 		</action>
+		
 	</package>
 </struts>

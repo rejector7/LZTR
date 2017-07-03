@@ -63,6 +63,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public List<User> getUserByName(String name){
+		System.out.println("check service");
 		return userDao.getUserByUsername(name);
 	}
 }
