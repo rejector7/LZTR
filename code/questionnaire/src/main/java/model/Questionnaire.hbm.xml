@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="model.Questionnaire" table="questionnaire">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="assigned" />
+		</id>
+		<property name="userid" type="int">
+			<column name="userid" />
+		</property>
+		<property name="title" type="java.lang.String">
+			<column name="title" />
+		</property>
+		<property name="status" type="java.lang.String">
+			<column name="status" />
+		</property>
+		<property name="isPublic" type="int">
+			<column name="isPublic" />
+		</property>
+		<property name="releaseTime" type="java.sql.Date">
+			<column name="releaseTime" />
+		</property>
+		<property name="endTime" type="java.sql.Date">
+			<column name="endTime" />
+		</property>
+		
+	</class>
+</hibernate-mapping>
