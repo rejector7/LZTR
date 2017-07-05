@@ -19,17 +19,21 @@
   <body value="0">
 
     <div class="container">
-		<button class="btn btn-default addSingle"  type="button" style="floating:right">
-				<i class="fa fa-plus  fa-2x">&nbsp&nbspadd&nbsp&nbsp</i>
+		<button class="btn btn-default addBlank" type="button" style="floating:right">
+				<i class="fa fa-plus  fa-2x">Blank-filling Question</i>
 		</button>
-		<button class="btn btn-default submit"  type="button" style="floating:right">
+		<button class="btn btn-default addSingle"  type="button" style="floating:right">
+				<i class="fa fa-plus  fa-2x">Single Option Question</i>
+		</button>
+		<button class="btn btn-default submit" type="button" style="floating:right">
 				<i class="fa fa-check fa-2x">confirm</i>
 		</button>
     </div> <!-- /container -->
     
+    	<script src="questionnaire/js/jquery-1.11.1.min.js"></script>
     <script src="questionnaire/js/bootstrap.min.js"></script>
-	<script src="questionnaire/js/jquery-1.11.1.min.js"></script>
 	<script src="questionnaire/js/releaseQ.js"></script>
+	</script>
 
   </body>
 </html>
