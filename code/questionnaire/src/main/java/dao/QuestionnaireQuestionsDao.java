@@ -9,12 +9,29 @@ import model.QuestionnaireQuestions;
 
 public interface QuestionnaireQuestionsDao {
 
+	/**
+	 * Add a questionnaire's content
+	 * @param ques
+	 */
 	void addQuestionnaire(QuestionnaireQuestions ques);
 
+	/**
+	 * Delete a questionnaire's content
+	 * @param ques
+	 */
 	void deleteQuestionnaire(QuestionnaireQuestions ques);
 
+	/**
+	 * Update a questionnaire's content
+	 * @param ques
+	 */
 	void updateQuestionnaire(QuestionnaireQuestions ques);
 
+	/**
+	 * Get a questionnaire's content
+	 * @param Id
+	 * @return
+	 */
 	QuestionnaireQuestions getQuestionnaireById(String Id);
 
 }

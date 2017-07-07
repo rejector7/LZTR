@@ -85,6 +85,11 @@ public class QuestionnaireActions extends BaseAction{
 		this.quesService = quesService;
 	}
 	
+	/**
+	 * Parse the questions with the string type into a list of questions
+	 * @param questions
+	 * @return
+	 */
 	private List<Question> parseQuestionList(String questions){
 		JSONArray quesjsonlist = new JSONArray(questions);
 		List<Question> queslist = new ArrayList<Question>();
@@ -118,6 +123,10 @@ public class QuestionnaireActions extends BaseAction{
 		return queslist;
 	}
 	
+	/**
+	 * Use appService to add a questionnaire,including its basic information and content
+	 * @return
+	 */
 	public String addQuestionnaire(){
 		if(status==null) status = "unp";
 		Questionnaire ques = new Questionnaire(userid,title,status,isPublic,releaseTime,endTime);
@@ -127,6 +136,10 @@ public class QuestionnaireActions extends BaseAction{
 		return null;
 	}
 	
+	/**
+	 * Use appService to update a questionnaire,including its basic information and content
+	 * @return
+	 */
 	public String updateQuestionnaire(){
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		ques.setEndTime(endTime);
@@ -142,6 +155,10 @@ public class QuestionnaireActions extends BaseAction{
 		return null;
 	}
 	
+	/**
+	 * Use appService to delete a questionnaire,including its basic information and content
+	 * @return
+	 */
 	public String deleteQuestionnaire(){
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
@@ -149,6 +166,10 @@ public class QuestionnaireActions extends BaseAction{
 		return null;
 	}
 	
+	/**
+	 * Use appService to get a questionnaire,including its basic information and content
+	 * @return
+	 */
 	public String getQuestionnaireById(){
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
@@ -157,6 +178,10 @@ public class QuestionnaireActions extends BaseAction{
 		return null;
 	}
 	
+	/**
+	 * Use appService to get basic information of all questionnaires
+	 * @return
+	 */
 	public String getAllQuestionnaire(){
 		List<Questionnaire> questionnaires = quesService.getAllQuestionnaires();
 		request().setAttribute("Questionnaires", questionnaires);

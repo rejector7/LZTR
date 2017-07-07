@@ -1,5 +1,10 @@
 package model;
-
+/**
+ * Model of question, including the id of the question in a questionnaire, the stem of the question,
+ * question type and a flag to show if the question is required to be answered to.
+ * @author LZTR
+ *
+ */
 public class Question {
 	private int id;		//The id of the question in a questionnaire
 	private String stem; //The content of the question

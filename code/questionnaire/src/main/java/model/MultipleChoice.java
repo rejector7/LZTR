@@ -4,7 +4,12 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Model of multiple choice, inherited from question, also including options for choice 
+ * and the range of valid number of options which can be chosen.
+ * @author LZTR
+ *
+ */
 public class MultipleChoice extends Question{
 	private List<String> options=new ArrayList<String>();//Options
 	private int minOpt;//Min of the number of options

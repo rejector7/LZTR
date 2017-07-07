@@ -5,7 +5,12 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+/**
+ * Model of a questionnaire's content, including all questions in it and its introduction,
+ * can be identified by its questionnaireid.
+ * @author LZTR
+ *
+ */
 @Document(collection="QuestionnaireQuestions")
 public class QuestionnaireQuestions {
 	private String id;

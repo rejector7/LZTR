@@ -1,5 +1,10 @@
 package model;
 
+/**
+ * Model of user information blanks, inherited from question.
+ * @author LZTR
+ *
+ */
 public class UserInfoBlank extends Question{
 
 	public UserInfoBlank() {

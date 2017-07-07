@@ -1,5 +1,10 @@
 package model;
 
+/**
+ * Model of subjective question,inherited from question.
+ * @author LZTR
+ *
+ */
 public class SubjectiveQuestion extends Question{
 
 	public SubjectiveQuestion() {
