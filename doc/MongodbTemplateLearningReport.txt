@@ -1,0 +1,45 @@
+注：1或有遗漏，自行debug
+    2建议在tzy的mongodb学习报告后看
+1. applicationContext.xml
+   <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate"> 
+		<constructor-arg ref="mongoDbFactory" /> 
+ 		<constructor-arg ref="mongoConverter" /> 
+ 	</bean>
+  dao,service的注入类似，勿忘
+ 
+2.数据库准备
+ 记得打开服务器
+ 记得填写的db名称要与实际使用的相同（mkdir创建）
+ 默认的collection名字与输入的参数相同。例如，如下代码使用的collection为userMongoInfo
+ 
+3.数据库相关操作
+重点是insert，find，remove
+样例如下：
+
+public class UserMongoInfoDaoImpl implements UserMongoInfoDao {
+	private MongoTemplate mongoTemplate;
+	
+	public void setMongoTemplate(MongoTemplate mongoTemplate) {
+		this.mongoTemplate = mongoTemplate;
+	}
+  
+	public void update( String username, String sex,int phone, String country, String city, String email, int age, String job){
+		UserMongoInfo userMongoInfo = new UserMongoInfo(username, sex, phone, country, city, email, age, job);
+		mongoTemplate.insert(userMongoInfo);
+	}
+	
+	public List<UserMongoInfo> getAllUserMongoInfos(){
+		List<UserMongoInfo> users = mongoTemplate.find(new Query(), UserMongoInfo.class);
+		return users;
+	}
+	
+	public UserMongoInfo getUserMongoInfoByName(String username){
+		return  (mongoTemplate.find(new Query(Criteria.where("username").is(username)), UserMongoInfo.class)).get(0);
+	}
+	
+	public void updateUserMongoInfo(UserMongoInfo userMongoInfo){
+		mongoTemplate.remove(new Query(Criteria.where("username").is(userMongoInfo.getUsername())), UserMongoInfo.class);
+		mongoTemplate.insert(userMongoInfo);
+		return;
+	}
+}
