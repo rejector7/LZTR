@@ -5,17 +5,17 @@ public class Question {
 	private String stem; //The content of the question
 	private String type; 
 	//Type of question,including multiple choice,user information blanks,subjective question
-	private boolean isMust;//Judges if the problem must be solved
+	private boolean required;//Judges if the problem must be solved
 
 	public Question(){
 		
 	}
-	public Question(int id, String stem, String type, boolean isMust) {
+	public Question(int id, String stem, String type, boolean required) {
 		super();
 		this.id = id;
 		this.stem = stem;
 		this.type = type;
-		this.isMust = isMust;
+		this.required = required;
 	}
 	
 	public int getId() {
@@ -37,10 +37,10 @@ public class Question {
 		this.type = type;
 	}
 	
-	public boolean isMust() {
-		return isMust;
+	public boolean getRequired() {
+		return required;
 	}
-	public void setMust(boolean isMust) {
-		this.isMust = isMust;
+	public void setRequired(boolean required) {
+		this.required = required;
 	}
 }
