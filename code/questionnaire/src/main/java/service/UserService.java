@@ -2,6 +2,7 @@ package service;
 
 import java.util.List;
 
+
 import dao.UserDao;
 import model.User;
 
@@ -20,5 +21,7 @@ public interface UserService {
 	List<User> getAllUsers();
 
 	List<User> getUserByName(String name);
+	
+	List<User> findUsers(String condi);
 
 }
