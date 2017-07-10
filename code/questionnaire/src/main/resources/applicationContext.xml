@@ -36,23 +36,21 @@
             <null />
         </constructor-arg>
     </bean>
-    <bean id="mappingMongoConverter"
+    <bean id="mongoConverter"
         class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
         <constructor-arg name="mappingContext" ref="mappingContext" />
         <property name="typeMapper" ref="defaultMongoTypeMapper" />
     </bean>
-	
-	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">    
-       <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />    
-       <constructor-arg name="mongoConverter" ref="mappingMongoConverter" />
-    </bean>
-
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate"> 
+		<constructor-arg ref="mongoDbFactory" /> 
+ 		<constructor-arg ref="mongoConverter" /> 
+ 	</bean>
 	<!-- Bean -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close" p:driverClass="com.mysql.jdbc.Driver"
 		p:jdbcUrl="jdbc:mysql://localhost:3306/questionnaire" p:user="root"
-		p:password="327453nmg" p:maxPoolSize="40" p:minPoolSize="1"
+		p:password="123456" p:maxPoolSize="40" p:minPoolSize="1"
 		p:initialPoolSize="1" p:maxIdleTime="20" />
 
 
@@ -84,7 +82,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="questionsDao" class="dao.impl.QuestionnaireQuestionsDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="mongoTemplate" ref="mongoTemplate" />
 	</bean>
 
 	<bean id="quesService" class="service.impl.QuestionnaireServiceImpl">
@@ -120,15 +118,13 @@
 			<ref bean="sessionFactory"></ref>
 		</property>
 	</bean>
+
 	
 		
 	<bean id="loginService" class="service.impl.LoginServiceImpl">
 		<property name="loginDao" ref="loginDao"></property>
 	</bean>
 	
-	<!-- Action -->
-	<bean id="loginAction" class="action.LoginAction" scope="prototype">
-		<property name="loginService" ref="loginService"></property>
-	</bean>
+
 
 </beans>

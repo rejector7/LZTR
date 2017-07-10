@@ -2,18 +2,17 @@ package action;
 
 import service.QuestionnaireService;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
-import model.MultipleChoice;
-import model.Question;
+
 import model.Questionnaire;
 import model.QuestionnaireQuestions;
-import model.SubjectiveQuestion;
-import model.UserInfoBlank;
+
 
 public class QuestionnaireActions extends BaseAction{
 	private QuestionnaireService quesService;
@@ -24,9 +23,14 @@ public class QuestionnaireActions extends BaseAction{
 	private int isPublic;    	/* 1(default) or 0 */
 	private Date releaseTime;
 	private Date endTime;
-	private String questions;
-	private String introduction;
+	private String content;
 	
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
 	public int getId() {
 		return id;
 	}
@@ -69,18 +73,6 @@ public class QuestionnaireActions extends BaseAction{
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-	public String getQuestions() {
-		return questions;
-	}
-	public void setQuestions(String questions) {
-		this.questions = questions;
-	}
-	public String getIntroduction() {
-		return introduction;
-	}
-	public void setIntroduction(String introduction) {
-		this.introduction = introduction;
-	}
 	public void setQuesService(QuestionnaireService quesService) {
 		this.quesService = quesService;
 	}
@@ -90,48 +82,17 @@ public class QuestionnaireActions extends BaseAction{
 	 * @param questions
 	 * @return
 	 */
-	private List<Question> parseQuestionList(String questions){
-		JSONArray quesjsonlist = new JSONArray(questions);
-		List<Question> queslist = new ArrayList<Question>();
-		for(int i=0;i<quesjsonlist.length();i++){
-			JSONObject quesjson = quesjsonlist.getJSONObject(i);
-			int quesid = quesjson.getInt("id");
-			String questype = quesjson.getString("type");
-			String quesstem = quesjson.getString("stem");
-			Boolean quesisMust = quesjson.getBoolean("isMust");
-			if(questype.equals("Single")){
-				List<String> options = (List)quesjson.getJSONArray("options").toList();
-				MultipleChoice multi = new MultipleChoice(quesid,quesstem,questype,quesisMust,options,1,1);
-				queslist.add(multi);
-			}
-			else if(questype.equals("Multiple")){
-				List<String> options = (List)quesjson.getJSONArray("options").toList();
-				int minopt=quesjson.getInt("minopt");
-				int maxopt=quesjson.getInt("mmaxopt");
-				MultipleChoice multi = new MultipleChoice(quesid,quesstem,questype,quesisMust,options,minopt,maxopt);
-				queslist.add(multi);
-			}
-			else if(questype.equals("Subjective")){
-				SubjectiveQuestion subjective = new SubjectiveQuestion(quesid,quesstem,quesisMust);
-				queslist.add(subjective);
-			}
-			else if(questype.equals("UserInfo")){
-				UserInfoBlank userinfo = new UserInfoBlank(quesid,quesstem,quesisMust);
-				queslist.add(userinfo);
-			}
-		}
-		return queslist;
-	}
 	
 	/**
 	 * Use appService to add a questionnaire,including its basic information and content
 	 * @return
+	 * @throws IOException 
 	 */
-	public String addQuestionnaire(){
+	public String addQuestionnaire() throws IOException{
 		if(status==null) status = "unp";
 		Questionnaire ques = new Questionnaire(userid,title,status,isPublic,releaseTime,endTime);
-		List<Question> queslist = parseQuestionList(questions);
-		QuestionnaireQuestions quescontent = new QuestionnaireQuestions(id,queslist,introduction);
+		QuestionnaireQuestions quescontent = new QuestionnaireQuestions(content);
+		System.out.println(content);
 		quesService.addQuestionnaire(quescontent, ques);
 		return null;
 	}
@@ -147,10 +108,8 @@ public class QuestionnaireActions extends BaseAction{
 		ques.setReleaseTime(releaseTime);
 		ques.setStatus(status);
 		ques.setTitle(title);
-		List<Question> queslist = parseQuestionList(questions);
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
-		quescontent.setIntroduction(introduction);
-		quescontent.setQuestions(queslist);
+		quescontent.setContent(content);
 		quesService.updateQuestionnaire(quescontent, ques);
 		return null;
 	}
@@ -169,13 +128,14 @@ public class QuestionnaireActions extends BaseAction{
 	/**
 	 * Use appService to get a questionnaire,including its basic information and content
 	 * @return
+	 * @throws IOException 
 	 */
-	public String getQuestionnaireById(){
+	public String getQuestionnaireById() throws IOException{
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
 		request().setAttribute("quesinfo", ques);
-		request().setAttribute("quescontent", quescontent);
-		return null;
+		request().setAttribute("quescontent", quescontent.getContent());
+		return "getbyid";
 	}
 	
 	/**
@@ -185,7 +145,7 @@ public class QuestionnaireActions extends BaseAction{
 	public String getAllQuestionnaire(){
 		List<Questionnaire> questionnaires = quesService.getAllQuestionnaires();
 		request().setAttribute("Questionnaires", questionnaires);
-		return null;
+		return "getall";
 	}
 	
 }

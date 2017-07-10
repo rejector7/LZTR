@@ -15,16 +15,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class QuestionnaireQuestions {
 	private String id;
 	private int quesid;
-	private List<Question> questions=new ArrayList<Question>();
-	private String introduction;
+	private String content;
 	
 	public QuestionnaireQuestions() {
+		super();
 	}
-	public QuestionnaireQuestions(int quesid, List<Question> questions,String introduction) {
+	public QuestionnaireQuestions(String content) {
+		super();
+		this.content = content;
+	}
+	public QuestionnaireQuestions(int quesid, String content) {
 		super();
 		this.quesid = quesid;
-		this.questions = questions;
-		this.introduction = introduction;
+		this.content = content;
 	}
 	public String getId() {
 		return id;
@@ -38,18 +41,11 @@ public class QuestionnaireQuestions {
 	public void setQuesid(int quesid) {
 		this.quesid = quesid;
 	}
-	public List<Question> getQuestions() {
-		return questions;
+	public String getContent() {
+		return content;
 	}
-	public void setQuestions(List<Question> questions) {
-		this.questions = questions;
+	public void setContent(String content) {
+		this.content = content;
 	}
-	public String getIntroduction() {
-		return introduction;
-	}
-	public void setIntroduction(String introduction) {
-		this.introduction = introduction;
-	}
-	
 	
 }

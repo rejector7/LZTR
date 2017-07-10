@@ -26,9 +26,9 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 	 */
 	@Override
 	public void addQuestionnaire(QuestionnaireQuestions questions,Questionnaire ques){
+		int id = quesDao.addQuestionnaire(ques);
+		questions.setQuesid(id);
 		questionnairequestionsDao.addQuestionnaire(questions);
-		quesDao.addQuestionnaire(ques);
-		
 	}
 	
 
@@ -56,9 +56,8 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 	 * @see service.impl.QuestionnaireService#getQuestionnaireQuestionsById(int)
 	 */
 	@Override
-	public QuestionnaireQuestions getQuestionnaireQuestionsById(int id){
-		Integer qid=(Integer)id;		
-		return questionnairequestionsDao.getQuestionnaireById(qid.toString());
+	public QuestionnaireQuestions getQuestionnaireQuestionsById(int id){		
+		return questionnairequestionsDao.getQuestionnaireById(id);
 	}
 	
 	/* (non-Javadoc)

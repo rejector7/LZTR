@@ -32,6 +32,6 @@ public interface QuestionnaireQuestionsDao {
 	 * @param Id
 	 * @return
 	 */
-	QuestionnaireQuestions getQuestionnaireById(String Id);
+	QuestionnaireQuestions getQuestionnaireById(int id);
 
 }
