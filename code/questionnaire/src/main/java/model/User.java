@@ -13,7 +13,7 @@ public class User {
 	private String mobile;
 	private String qq;
 	private String wechat;
-	
+	private String job;
 	private String role; //admin or user(it means common user)
 	
 	public User(){
@@ -21,7 +21,7 @@ public class User {
 	}
 	
 	public User(String username, String password, int age, String sex, String email, String country,
-			String city, String mobile, String qq, String wechat, String role) {
+			String city, String mobile, String qq, String wechat, String role, String job) {
 		this.username = username;
 		this.password = password;
 		this.age = age;
@@ -33,6 +33,7 @@ public class User {
 		this.qq = qq;
 		this.wechat = wechat;
 		this.role = role;
+		this.job = job;
 	}
 
 	public int getId() {
@@ -129,6 +130,14 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public String getJob() {
+		return job;
+	}
+
+	public void setJob(String job) {
+		this.job = job;
 	}
 	
 	

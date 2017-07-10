@@ -35,6 +35,7 @@ $(function(){
 		var wechat = $("input[name='wechat']").val();
 		var sex = $("#form-sex").val();
 		var age = $("input[name='age']").val();
+		var job = $("input[name='job']").val();
 		if(!$("#registerform").validate({
 			messages:{
 				username:{
@@ -74,7 +75,8 @@ $(function(){
 				country:country,
 				city:city,
 				age:age,
-				sex:sex
+				sex:sex,
+				job:job
 			},
 			success : function(data) {
 				if(data=="itdepends"){
