@@ -1,34 +1,65 @@
-$(function() {
-	
-	
+var DELETE_NUM_QUESTION = 0;
+
+$(function() {	
 	$(".submit").click(function(e) {
-		var body = document.body;
-		var value = body.getAttribute("value");
-		for(var i = 0; i < value; i++){
+		var form = document.getElementById("form");
+		if(form == null){
+			alert("no question");
+			return;
+		}
+		var childs = form.childNodes;  
+		if(childs.length == 0){
+			alert("no question");
+			return;
+		}
+		var result = [];
+		
+		for(var k = 0 ; k < childs.length ; k++ ){
+			result[k] = {};
+			result[k]['id'] = k;
+			var i = childs[k].getAttribute("id").split("div")[0];
+			//result += "{id :" + i;
 			//get the question stem
 			//alert($("input[name=" + i + "]").val());
 			var stem = $("input[name=" + i + "]").val();
 			if(stem ==""){alert("the stem of question " + i + " is empty");return;}
+			result[k]['stem'] = stem;
 			//get the required
 			var required = document.getElementById(i + "required");
-			//if(required.checked){alert("checked");}
+			if(required.checked){
+				result[k]['required'] = true;
+			}
+			else result[k]['required'] = false;
 			//get the question type
 			var type = (document.getElementById(i + "div")).getAttribute("value");
 			switch(type){
 			case '0':
 				//alert("blank");
+				result[k]['type'] = 'Subjective';
 				break;
 			case '1':
+				result[k]['type'] = 'Single';
 				//alert("single");
 				//get all the options
-				var num = (document.getElementById(i + "container")).getAttribute("value");
-				for(var j = 0; j < num; j++){
+				var option_form = document.getElementById(i + "container");
+				var options = option_form.childNodes;
+				if(options.length == 1){
+					alert("question " + (i-DELETE_NUM_QUESTION) + " no option");
+					return;
+				}
+				result[k]['options'] = [];
+				for(var m = 1; m < options.length; m++){
 					//alert($("input[name='" + i + "_" + j + "option']").val())
-					var option = $("input[name='" + i + "_" + j + "option']").val();
+					var name = options[m].getAttribute("id").split("div")[0];
+					var option = $("input[name=" + name + "]").val();
 					if(option == "") {alert("the content of question "+ i + " option "  + j + " is empty");return;}
+					result[k]['options'][m-1] = {};
+					result[k]['options'][m-1]['id'] = m;
+					result[k]['options'][m-1]['option'] = option;
 				}
 				break;
 			case '2':
+				result[k]['type'] = 'Multiple';
 				//get the number of options
 				var num = (document.getElementById(i + "container")).getAttribute("value");
 				if(num == 0 ){alert("question " + i + " must have at least 1 option");return;}
@@ -38,18 +69,25 @@ $(function() {
 				if(min > max) {alert("min must smaller than max");return;}
 				if(min < 0) {alert("min must bigger than 0");return;}
 				if(max > num) {alert("max must bigger than the number of options");return;}
+				result[k]['min'] = min;
+				result[k]['max'] = max;
  				//alert(min);alert(max);
 				//alert("multiple");
  				//get all the options
-				for(var j = 0; j < num; j++){
-					var option = $("input[name='" + i + "_" + j + "option']").val();
+				result[k]['options'] = [];
+				for(var m = 1; m < options.length; m++){
+					//alert($("input[name='" + i + "_" + j + "option']").val())
+					var name = options[m].getAttribute("id").split("div")[0];
+					var option = $("input[name=" + name + "]").val();
 					if(option == "") {alert("the content of question "+ i + " option "  + j + " is empty");return;}
-					//alert($("input[name='" + i + "_" + j + "option']").val());
+					result[k]['options'][m-1] = {};
+					result[k]['options'][m-1]['id'] = m;
+					result[k]['options'][m-1]['option'] = option;
 				}
 				break;
 			}
 		}
-		alert("submit successfully");
+		alert(JSON.stringify(result));
 		/*for(var i = 0; i < form.length/2; i++){
 			alert($("input[name=" + i + "]").val());
 			var required = document.getElementById(i + "required");
@@ -78,14 +116,39 @@ $(function() {
 		div.setAttribute("value", "0");
 		form.appendChild(div);
 		
-		//create label
+		//create stem label
+		var div7 = document.createElement("div");
+		div7.className = "row";
+		div.appendChild(div7);
+		
+		var div5 = document.createElement("div");
+		div5.className = "col-lg-10";
+		div7.appendChild(div5);
+		
 		var label = document.createElement("label");
-		div.appendChild(label);
+		div5.appendChild(label);
 		
 		var font = document.createElement("font");
 		font.size = 5;
-		font.innerText = value + " input your blank-filling question";
+		font.id = value + "divfont";
+		font.innerText = value-DELETE_NUM_QUESTION;
 		label.appendChild(font);
+		
+		//create button to delete an question
+		var div6 = document.createElement("div");
+		div6.className = "col-lg-2";
+		div7.appendChild(div6);
+		
+		var button = document.createElement("button");
+		button.className = "btn btn-default";
+		button.type = "button";
+		button.style="floating:left";
+		button.onclick = function(){deleteQuestion(value)};
+		div6.appendChild(button);
+		
+		var i = document.createElement("i");
+		i.className = "fa fa-times";
+		button.appendChild(i);
 		
 		//create div for input and required
 		var div2 = document.createElement("div");
@@ -138,8 +201,8 @@ $(function() {
 		form.appendChild(div);
 		$("#"+value+"div").html("" +
 				"<div class='form-group container'><div class='row'>" +
-				"<div class='col-lg-11'><label><font size='5'>" + value +" input your single option question</font></label></div>" +
-				"<div class='col-lg-1'><div id='" + value + "button'></div></div></div>" +
+				"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label></div>" +
+				"<div class='col-lg-2' id='" + value + "button'></div></div>" +
 				"<div class='row container'>" +
 				"<div class='col-lg-11'>" +
 				"<input class='form-control' name=" + value +"></div>" +
@@ -163,7 +226,18 @@ $(function() {
 		
 		var i = document.createElement("i");
 		i.className = "fa fa-plus";
-		i.innerText = "A New Option";
+		button.appendChild(i);
+		
+		//create button to delete an question
+		var button = document.createElement("button");
+		button.className = "btn btn-default";
+		button.type = "button";
+		button.style="floating:left";
+		button.onclick = function(){deleteQuestion(value)};
+		document.getElementById(value + "button").appendChild(button);
+		
+		var i = document.createElement("i");
+		i.className = "fa fa-times";
 		button.appendChild(i);
 		
 		body.setAttribute("value", value * 1 + 1);
@@ -188,12 +262,12 @@ $(function() {
 		form.appendChild(div);
 		$("#"+value+"div").html("" +
 				"<div class='container'><div class='row'>" +
-				"<div class='col-lg-5'><label><font size='5'>" + value +" input your multiple option question</font></label></div>" +
+				"<div class='col-lg-4'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label></div>" +
 				"<div class='col-lg-1'><label><font size='5'>max</font></label></div>" +
 				"<div class='col-lg-2'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
 				"<div class='col-lg-1'><label><font size='5'>min</font></label></div>" +
 				"<div class='col-lg-2'><input class='form-control' type='number' step='1' name='" + value +"min'></div>" +
-				"<div class='col-lg-1'><div id='" + value + "button'></div></div></div>" +
+				"<div class='col-lg-2'><div id='" + value + "button'></div></div></div>" +
 				"<div class='row container'>" +
 				"<div class='col-lg-11'>" +
 				"<input class='form-control' name=" + value + "></div>" +
@@ -216,9 +290,20 @@ $(function() {
 		
 		var i = document.createElement("i");
 		i.className = "fa fa-plus";
-		i.innerText = "A New Option";
 		button.appendChild(i);
 		body.setAttribute("value", value * 1 + 1);
+		
+		//create button to delete an question
+		var button = document.createElement("button");
+		button.className = "btn btn-default";
+		button.type = "button";
+		button.style="floating:left";
+		button.onclick = function(){deleteQuestion(value)};
+		document.getElementById(value + "button").appendChild(button);
+		
+		var i = document.createElement("i");
+		i.className = "fa fa-times";
+		button.appendChild(i);
 	});
 	
 });
@@ -231,10 +316,43 @@ function addOption(value){
 	div.appendChild(newdiv);
 	$("#" + value + "_" + num + "optiondiv").html("" +
 			"<div class='container'>" +
-			"<div class='col-lg-1'><label><font size='3'>" + num + "</font></label></div>"+
-			"<div class='row container col-lg-9'>" +
+			"<div class='row container col-lg-10'>" +
 			"<input class='form-control' name='" + value +"_" + num + "option'>" +
-			"<\label></div></div></div>");
+			"</div>" +
+			"<div class='col-lg-2'><div id='" + value +"_" + num +"button'></div></div></div>" +
+			"");
 	div.setAttribute("value",  num * 1 + 1);
+	
+	//create button to delete an question
+	var button = document.createElement("button");
+	button.className = "btn btn-default";
+	button.type = "button";
+	button.style="floating:left";
+	button.onclick = function(){deleteOption(value, num)};
+	document.getElementById(value +"_" + num +"button").appendChild(button);
+	
+	var i = document.createElement("i");
+	i.className = "fa fa-times";
+	button.appendChild(i);
 }
 
+function deleteQuestion(value){
+	var victim = document.getElementById(value +"div");
+	var next = victim.nextSibling;
+	while(next !=null){
+		var id = next.getAttribute("id");
+		var font  = document.getElementById(id +"font");
+		font.innerText = font.innerText * 1 - 1;
+		next = next.nextSibling;
+	}
+	var form = document.getElementById("form");
+	form.removeChild(victim);
+	DELETE_NUM_QUESTION += 1;
+}
+
+
+function deleteOption(value, num){
+	var container = document.getElementById(value +"container");
+	var victim = document.getElementById(value +"_" + num+"optiondiv");
+	container.removeChild(victim);
+}
