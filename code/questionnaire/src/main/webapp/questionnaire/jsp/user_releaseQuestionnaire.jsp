@@ -49,6 +49,11 @@
     	<script src="questionnaire/js/jquery-1.11.1.min.js"></script>
     <script src="questionnaire/js/bootstrap.min.js"></script>
 	<script src="questionnaire/js/releaseQ.js"></script>
+	<script>
+	if(<%=request.getAttribute("content")%>!=null){
+	modify(eval('(' +<%=request.getAttribute("content")%> +')'));
+	}
+	</script>
 
   </body>
 </html>
