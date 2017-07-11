@@ -27,7 +27,12 @@
 		<action name="signupPro" class="action.UserActions" method="add">
 			<result>/questionnaire/jsp/signup.jsp</result>
 		</action>
-		
+		<action name="addQuestionnaire" class="action.QuestionnaireActions" method="addQuestionnaire">
+		</action>
+		<action name="getQuestionnaireById" class="action.QuestionnaireActions" method="getQuestionnaireById">
+		</action>
+		<action name="deleteQuestionnaire" class="action.QuestionnaireActions" method="deleteQuestionnaire">
+		</action>
 		<action name="*">
 			<result>/{1}.jsp</result>
 		</action>
