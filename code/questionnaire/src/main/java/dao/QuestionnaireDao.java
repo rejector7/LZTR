@@ -7,6 +7,7 @@ import model.Questionnaire;
 public interface QuestionnaireDao {
 
 
+
 	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#addQuestionnaire(model.Questionnaire)
 	 */
@@ -35,6 +36,7 @@ public interface QuestionnaireDao {
 	List<Questionnaire> getQuestionnairesByUserid(int userid);
 
 	List<Questionnaire> findQuestionnaires(String condi);
+
 
 
 }

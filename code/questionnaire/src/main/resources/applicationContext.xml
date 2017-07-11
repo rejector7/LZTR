@@ -101,8 +101,6 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-
-
 	<!-- HibernateTransactionManager -->
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager"

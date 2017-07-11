@@ -3,7 +3,6 @@ package service.impl;
 import java.util.List;
 
 import dao.QuestionnaireDao;
-
 import dao.QuestionnaireQuestionsDao;
 import model.Questionnaire;
 import model.QuestionnaireQuestions;
@@ -62,21 +61,17 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 	}
 	
 	/* (non-Javadoc)
-
 	 * @see service.impl.QuestionnaireService#getQuestionnaireById(int)
 	 */
 	@Override
 	public Questionnaire getQuestionnaireById(int id) {
-
 		return quesDao.getQuestionnaireById(id);
 	}
-	
 
 	/* (non-Javadoc)
 	 * @see service.impl.QuestionnaireService#getAllQuestionnaires()
 	 */
 	@Override
-
 	public List<Questionnaire> getAllQuestionnaires(){
 		return quesDao.getAllQuestionnaires();
 	}
@@ -92,6 +87,5 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 	@Override
 	public List<Questionnaire> findQuestionnaires(String condi){
 		return quesDao.findQuestionnaires(condi);
-
 	}
 }

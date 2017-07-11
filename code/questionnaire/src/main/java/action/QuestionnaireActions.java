@@ -1,6 +1,5 @@
 package action;
 
-
 import service.QuestionnaireService;
 
 import java.io.IOException;
@@ -113,6 +112,7 @@ public class QuestionnaireActions extends BaseAction{
 	 */
 	public String update(){
 
+
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		ques.setEndTime(endTime);
 		ques.setIsPublic(isPublic);
@@ -161,4 +161,5 @@ public class QuestionnaireActions extends BaseAction{
 	}
 	
 }
+
 
