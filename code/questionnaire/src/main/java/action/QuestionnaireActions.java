@@ -18,6 +18,7 @@ public class QuestionnaireActions extends BaseAction{
 	private QuestionnaireService quesService;
 	private int id;
 	private int userid;
+	private String title;
 	private String status; 		/* unp(default), pub, end, or ban */
 	private int isPublic;    	/* 1(default) or 0 */
 	private Date releaseTime;
@@ -47,6 +48,12 @@ public class QuestionnaireActions extends BaseAction{
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public int getIsPublic() {
 		return isPublic;
@@ -91,7 +98,7 @@ public class QuestionnaireActions extends BaseAction{
 		}
 		if(status==null) status = "unp";
 		int userid = ((User)request().getSession().getAttribute("user")).getId();
-		Questionnaire ques = new Questionnaire(userid,status,isPublic,releaseTime,endTime);
+		Questionnaire ques = new Questionnaire(userid,status,title,isPublic,releaseTime,endTime);
 		QuestionnaireQuestions quescontent = new QuestionnaireQuestions(content);
 		System.out.println(content);
 		quesService.addQuestionnaire(quescontent, ques);
@@ -110,6 +117,7 @@ public class QuestionnaireActions extends BaseAction{
 		ques.setIsPublic(isPublic);
 		ques.setReleaseTime(releaseTime);
 		ques.setStatus(status);
+		ques.setTitle(title);
 
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
 		quescontent.setContent(content);
