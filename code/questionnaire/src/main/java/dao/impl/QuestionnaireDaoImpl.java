@@ -7,15 +7,19 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import dao.QuestionnaireDao;
 import model.Questionnaire;
 
+
 public class QuestionnaireDaoImpl extends HibernateDaoSupport implements QuestionnaireDao{
+
 
 	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#addQuestionnaire(model.Questionnaire)
 	 */
 	@Override
 	public Integer addQuestionnaire(Questionnaire ques) {
+
 		
 		return (Integer)getHibernateTemplate().save(ques);
+
 	}
 
 	/* (non-Javadoc)
@@ -45,12 +49,14 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 		Questionnaire ques = quess.size() > 0 ? quess.get(0) : null;
 		return ques;
 	}
+
 	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#getAllQuestionnaires()
 	 */
 	@Override
 	public List<Questionnaire> getAllQuestionnaires() {
 		@SuppressWarnings("unchecked")
+
 		List<Questionnaire> quess = (List<Questionnaire>) getHibernateTemplate()
 				.find("from Questionnaire");
 		return quess;
@@ -63,15 +69,20 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 				.find("from Questionnaire as q where q.userid=?", userid);
 		return quess;
 	}
+
 	
 	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#findQuestionnaires(String condi)
 	 */
+
 	@Override
+
 	public List<Questionnaire> findQuestionnaires(String condi){
 		@SuppressWarnings("unchecked")
 		List<Questionnaire> quess  = (List<Questionnaire>) getHibernateTemplate()
 				.find("from Questionnaire as q where q.title LIKE ?",'%'+condi+'%');
 		return quess;
 	}
+
 }
+

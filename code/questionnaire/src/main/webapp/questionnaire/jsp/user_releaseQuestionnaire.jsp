@@ -28,8 +28,21 @@
 		<button class="btn btn-default addMultiple"  type="button" style="floating:right">
 				<i class="fa fa-plus  fa-2x">Multiple Option Question</i>
 		</button>
+		
+		<div class="row">
+			 <label ><font size="5">Title</font></label>
+			 <input type="text" name="title"  class="form-control">
+		</div>
+		<div class="row">
+			 <label  ><font size="5">Introduction</font></label>
+			 <input type="text" name="introduction"  class="form-control">
+		</div>
+		
 		<button class="btn btn-default submit" type="button" style="floating:right">
 				<i class="fa fa-check fa-2x">confirm</i>
+		</button>
+		<button class="btn btn-default modify" type="button" style="floating:right">
+				<i class="fa fa-check fa-2x">modify</i>
 		</button>
     </div> <!-- /container -->
     
