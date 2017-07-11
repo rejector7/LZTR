@@ -99,15 +99,25 @@ $(function() {
 				break;
 			}
 		}
-		alert(JSON.stringify(result));
-		
-		
-		document.body.setAttribute("result", JSON.stringify(result));
-		/*for(var i = 0; i < form.length/2; i++){
-			alert($("input[name=" + i + "]").val());
-			var required = document.getElementById(i + "required");
-			if(required.checked){alert("checked");}
-		}*/
+		jQuery.ajax({
+			url : '',
+			processData : true,
+			dataType : "json",
+			data : {
+				id : result,
+			},
+			success : function(data) {
+				console.log(id);
+				bootbox.alert({
+					message : 'success',
+				    callback : function() {
+						location.reload();
+					}
+				});
+				
+			}
+			
+		});
 	});
 	
 	$(".addBlank").click(function(e){addBlank()});
@@ -116,9 +126,7 @@ $(function() {
 	
 	$(".addMultiple").click(function(e) {addMultiple()});
 	
-	$(".modify").click(function(e){
-		document.body.setAttribute("result", '{"title":"pqweokfoewrig","introduction":"rtrtbrtr","questions":[{"id":0,"stem":"gtutr","required":true,"type":"Subjective"},{"id":1,"stem":"dwedw","required":true,"type":"Single","options":[{"id":1,"option":"zqdcwee"},{"id":2,"option":"frrtgr"}]},{"id":2,"stem":"kmoveifv","required":false,"type":"Multiple","min":"1","max":"3","options":[{"id":1,"option":"zqdcwee"},{"id":2,"option":"frrtgr"}]}]}');
-		var result = eval('(' +document.body.getAttribute('result') +')');
+	$(".modify").click(function(result){
 		$("input[name='title']").val(result['title']);
 		$("input[name='introduction']").val(result['introduction']);
 		//alert(result[0]['stem']);
