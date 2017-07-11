@@ -15,5 +15,5 @@
 hs_err_pid*
 test file
 
-# ignore setting
-.setting/
+# ignore project
+.project
