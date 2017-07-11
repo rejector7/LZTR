@@ -138,6 +138,7 @@ public class QuestionnaireActions extends BaseAction{
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
 		JSONObject questot = new JSONObject(quescontent.getContent());
 		questot.put("id", ques.getId());
+		response().getWriter().print(questot.toString());
 		return null;
 	}
 	
