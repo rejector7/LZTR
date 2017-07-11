@@ -2,9 +2,11 @@ package dao.impl;
 
 import java.util.List;
 
+
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import dao.UserDao;
+import model.Questionnaire;
 import model.User;
 
 public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
@@ -66,6 +68,16 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
 		List<User> users = (List<User>) getHibernateTemplate()
 				.find("from User as u where u.username=?",name);
 		if(users.size() == 0)return null;
+		return users;
+	}
+	/* (non-Javadoc)
+	 * @see dao.impl.UserDao#findUsers(java.lang.String)
+	 */
+	@Override
+	public List<User> findUsers(String condi){
+		@SuppressWarnings("unchecked")
+		List<User> users  = (List<User>) getHibernateTemplate()
+				.find("from User as u where u.username LIKE ?",'%'+condi+'%');
 		return users;
 	}
 }

@@ -24,27 +24,33 @@
     	http://www.springframework.org/schema/context
     	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-	<!--<mongo:mongo host="127.0.0.1" port="27017" />
 
-	<mongo:db-factory dbname="bookstore" mongo-ref="mongo" />
-
-	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
-	</bean>
-
-	<mongo:mapping-converter base-package="model.BookMongo*" />
-
-	<mongo:repositories base-package="dao.impl" />
-
-	<context:annotation-config /> -->
-	
-
-
+	<mongo:mongo host="localhost" port="27017"/>
+	<mongo:db-factory id="mongoDbFactory" dbname="questionnaire" mongo-ref="mongo" />
+ <bean id="mappingContext"
+        class="org.springframework.data.mongodb.core.mapping.MongoMappingContext" />
+    <!-- 去除集合里的_class属性 -->
+    <bean id="defaultMongoTypeMapper"
+        class="org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper">
+        <constructor-arg name="typeKey">
+            <null />
+        </constructor-arg>
+    </bean>
+    <bean id="mongoConverter"
+        class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+        <constructor-arg name="mappingContext" ref="mappingContext" />
+        <property name="typeMapper" ref="defaultMongoTypeMapper" />
+    </bean>
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate"> 
+		<constructor-arg ref="mongoDbFactory" /> 
+ 		<constructor-arg ref="mongoConverter" /> 
+ 	</bean>
 	<!-- Bean -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close" p:driverClass="com.mysql.jdbc.Driver"
 		p:jdbcUrl="jdbc:mysql://localhost:3306/questionnaire" p:user="root"
-		p:password="327453nmg" p:maxPoolSize="40" p:minPoolSize="1"
+		p:password="123456" p:maxPoolSize="40" p:minPoolSize="1"
 		p:initialPoolSize="1" p:maxIdleTime="20" />
 
 
@@ -54,6 +60,7 @@
 		<property name="mappingResources">
 			<list>
 				<value>model/User.hbm.xml</value>
+				<value>model/Questionnaire.hbm.xml</value>
 			</list>
 		</property>
 		<!-- Hibernate SessionFactory -->
@@ -71,12 +78,27 @@
 	<bean id="userDao" class="dao.impl.UserDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="quesDao" class="dao.impl.QuestionnaireDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="questionsDao" class="dao.impl.QuestionnaireQuestionsDaoImpl">
+		<property name="mongoTemplate" ref="mongoTemplate" />
+	</bean>
 
-	
+	<bean id="quesService" class="service.impl.QuestionnaireServiceImpl">
+		<!-- DAO -->
+		<property name="quesDao" ref="quesDao"></property>
+		<property name="questionnairequestionsDao" ref="questionsDao"></property>
+	</bean>
 	<!-- Service -->
 	<bean id="userService" class="service.impl.UserServiceImpl">
 		<!-- DAO -->
 		<property name="userDao" ref="userDao"></property>
+	</bean>
+	
+	<!-- DAO Bean -->
+	<bean id="questionnaireDao" class="dao.impl.QuestionnaireDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
 	<!-- HibernateTransactionManager -->
@@ -101,15 +123,13 @@
 			<ref bean="sessionFactory"></ref>
 		</property>
 	</bean>
+
 	
 		
 	<bean id="loginService" class="service.impl.LoginServiceImpl">
 		<property name="loginDao" ref="loginDao"></property>
 	</bean>
 	
-	<!-- Action -->
-	<bean id="loginAction" class="action.LoginAction" scope="prototype">
-		<property name="loginService" ref="loginService"></property>
-	</bean>
+
 
 </beans>

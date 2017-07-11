@@ -2,6 +2,7 @@ package service.impl;
 
 import java.util.List;
 
+
 import dao.UserDao;
 import model.User;
 import service.UserService;
@@ -64,5 +65,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> getUserByName(String name){
 		return userDao.getUserByUsername(name);
+	}
+	/* (non-Javadoc)
+	 * @see service.impl.QuestionnaireService#findQuestionnaires(Sting condi)
+	 */
+	@Override
+	public List<User> findUsers(String condi){
+		return userDao.findUsers(condi);
 	}
 }
