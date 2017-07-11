@@ -51,8 +51,8 @@
     <script src="questionnaire/js/bootstrap.min.js"></script>
 	<script src="questionnaire/js/releaseQ.js"></script>
 	<script>
-	<%if(request.getAttribute("quescontent")!=null){%>
-	modify(<%=request.getAttribute("quescontent") %>,<%=((Questionnaire)request.getAttribute("quesinfo")).getId() %>);
+	<%if(request.getAttribute("quesinfo")!=null){%>
+	update(<%=((Questionnaire)request.getAttribute("quesinfo")).getId() %>);
 	<%}%>
 	</script>
 
