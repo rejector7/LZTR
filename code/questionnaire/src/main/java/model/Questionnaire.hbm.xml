@@ -11,9 +11,6 @@
 		<property name="userid" type="int">
 			<column name="userid" />
 		</property>
-		<property name="title" type="java.lang.String">
-			<column name="title" />
-		</property>
 		<property name="status" type="java.lang.String">
 			<column name="status" />
 		</property>

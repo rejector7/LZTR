@@ -5,7 +5,6 @@ import java.sql.Date;
 public class Questionnaire{
 	private int id;
 	private int userid;
-	private String title;
 	private String status; 		/* unp(default), pub, end, or ban */
 	private int isPublic;    	/* 1(default) or 0 */
 	private Date releaseTime;
@@ -15,9 +14,8 @@ public class Questionnaire{
 		
 	}
 	
-	public Questionnaire(int userid, String title, String status, int isPublic, Date releaseTime, Date endTime){
+	public Questionnaire(int userid, String status, int isPublic, Date releaseTime, Date endTime){
 		this.userid = userid;
-		this.title = title;
 		this.status = status;
 		this.isPublic = isPublic;
 		this.releaseTime = releaseTime;
@@ -37,14 +35,7 @@ public class Questionnaire{
 	public void setUserid(int userid){
 		this.userid = userid;
 	}
-	
-	public String getTitle(){
-		return title;
-	}
-	public void setTitle(String title){
-		this.title = title;
-	}
-	
+
 	public String getStatus(){
 		return status;
 	}
