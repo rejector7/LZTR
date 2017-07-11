@@ -1,6 +1,5 @@
 package action;
 
-
 import service.QuestionnaireService;
 
 import java.io.IOException;
@@ -10,7 +9,7 @@ import java.util.List;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
-
+import model.User;
 import model.Questionnaire;
 import model.QuestionnaireQuestions;
 
@@ -89,8 +88,17 @@ public class QuestionnaireActions extends BaseAction{
 	 * @return
 	 * @throws IOException 
 	 */
-	public String addQuestionnaire() throws IOException{
+	public String add() throws IOException{
+		if(id!=0){
+			Questionnaire ques = quesService.getQuestionnaireById(id);
+			ques.setTitle(title);
+			QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
+			quescontent.setContent(content);
+			quesService.updateQuestionnaire(quescontent, ques);
+			return null;
+		}
 		if(status==null) status = "unp";
+		int userid = ((User)request().getSession().getAttribute("user")).getId();
 		Questionnaire ques = new Questionnaire(userid,title,status,isPublic,releaseTime,endTime);
 		QuestionnaireQuestions quescontent = new QuestionnaireQuestions(content);
 		System.out.println(content);
@@ -102,7 +110,8 @@ public class QuestionnaireActions extends BaseAction{
 	 * Use appService to update a questionnaire,including its basic information and content
 	 * @return
 	 */
-	public String updateQuestionnaire(){
+	public String update(){
+
 
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		ques.setEndTime(endTime);
@@ -121,7 +130,7 @@ public class QuestionnaireActions extends BaseAction{
 	 * Use appService to delete a questionnaire,including its basic information and content
 	 * @return
 	 */
-	public String deleteQuestionnaire(){
+	public String delete(){
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
 		quesService.deleteQuestionnaire(quescontent, ques);
@@ -133,7 +142,7 @@ public class QuestionnaireActions extends BaseAction{
 	 * @return
 	 * @throws IOException 
 	 */
-	public String getQuestionnaireById() throws IOException{
+	public String get() throws IOException{
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
 		request().setAttribute("quesinfo", ques);
@@ -145,11 +154,12 @@ public class QuestionnaireActions extends BaseAction{
 	 * Use appService to get basic information of all questionnaires
 	 * @return
 	 */
-	public String getAllQuestionnaire(){
+	public String getAll(){
 		List<Questionnaire> questionnaires = quesService.getAllQuestionnaires();
 		request().setAttribute("Questionnaires", questionnaires);
 		return "getall";
 	}
 	
 }
+
 

@@ -1,4 +1,5 @@
 var DELETE_NUM_QUESTION = 0;
+var QUES_ID = 0;
 
 $(function() {	
 	$(".submit").click(function(e) {
@@ -99,15 +100,27 @@ $(function() {
 				break;
 			}
 		}
-		alert(JSON.stringify(result));
-		
-		
-		document.body.setAttribute("result", JSON.stringify(result));
-		/*for(var i = 0; i < form.length/2; i++){
-			alert($("input[name=" + i + "]").val());
-			var required = document.getElementById(i + "required");
-			if(required.checked){alert("checked");}
-		}*/
+		jQuery.ajax({
+			url : 'addQuestionnaire',
+			processData : true,
+			dataType : "json",
+			data : {
+				title:title,
+				id:QUES_ID,
+				content : JSON.stringify(result)
+			},
+			success : function(data) {
+				console.log(id);
+				bootbox.alert({
+					message : 'success',
+				    callback : function() {
+						location.reload();
+					}
+				});
+				
+			}
+			
+		});
 	});
 	
 	$(".addBlank").click(function(e){addBlank()});
@@ -116,50 +129,6 @@ $(function() {
 	
 	$(".addMultiple").click(function(e) {addMultiple()});
 	
-	$(".modify").click(function(e){
-		document.body.setAttribute("result", '{"title":"pqweokfoewrig","introduction":"rtrtbrtr","questions":[{"id":0,"stem":"gtutr","required":true,"type":"Subjective"},{"id":1,"stem":"dwedw","required":true,"type":"Single","options":[{"id":1,"option":"zqdcwee"},{"id":2,"option":"frrtgr"}]},{"id":2,"stem":"kmoveifv","required":false,"type":"Multiple","min":"1","max":"3","options":[{"id":1,"option":"zqdcwee"},{"id":2,"option":"frrtgr"}]}]}');
-		var result = eval('(' +document.body.getAttribute('result') +')');
-		$("input[name='title']").val(result['title']);
-		$("input[name='introduction']").val(result['introduction']);
-		//alert(result[0]['stem']);
-		for(var i = 0; i < result['questions'].length; i++){
-			var type = result['questions'][i]['type'];
-			if(type=="Subjective"){
-				addBlank();
-				$("input[name="+i+"]").val(result['questions'][i]['stem']);
-				if(result['questions'][i]['required']==true){
-					var required = document.getElementById(i+"required");
-					required.checked=true;
-				}
-			}
-			else if(type=="Single"){
-				addSingle();
-				$("input[name="+i+"]").val(result['questions'][i]['stem']);
-				if(result['questions'][i]['required']==true){
-					var required = document.getElementById(i+"required");
-					required.checked=true;
-				}
-				for(var j = 0; j < result['questions'][i]['options'].length; j++){
-					addOption(i);
-					$("input[name="+i+"_"+j+"option]").val(result['questions'][i]['options'][j]['option']);
-				}
-			}
-			else if(type=="Multiple"){
-				addMultiple();
-				$("input[name="+i+"]").val(result['questions'][i]['stem']);
-				if(result['questions'][i]['required']==true){
-					var required = document.getElementById(i+"required");
-					required.checked=true;
-				}
-				$("input[name="+i+"min]").val(result['questions'][i]['min']);
-				$("input[name="+i+"max]").val(result['questions'][i]['max']);
-				for(var j = 0; j < result['questions'][i]['options'].length; j++){
-					addOption(i);
-					$("input[name="+i+"_"+j+"option]").val(result['questions'][i]['options'][j]['option']);
-				}
-			}
-		}
-	});
 	
 });
 
@@ -420,4 +389,48 @@ function addMultiple() {
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	button.appendChild(i);
+};
+
+function modify(result, id){
+	QUES_ID = id;
+	$("input[name='title']").val(result['title']);
+	$("input[name='introduction']").val(result['introduction']);
+	//alert(result[0]['stem']);
+	for(var i = 0; i < result['questions'].length; i++){
+		var type = result['questions'][i]['type'];
+		if(type=="Subjective"){
+			addBlank();
+			$("input[name="+i+"]").val(result['questions'][i]['stem']);
+			if(result['questions'][i]['required']==true){
+				var required = document.getElementById(i+"required");
+				required.checked=true;
+			}
+		}
+		else if(type=="Single"){
+			addSingle();
+			$("input[name="+i+"]").val(result['questions'][i]['stem']);
+			if(result['questions'][i]['required']==true){
+				var required = document.getElementById(i+"required");
+				required.checked=true;
+			}
+			for(var j = 0; j < result['questions'][i]['options'].length; j++){
+				addOption(i);
+				$("input[name="+i+"_"+j+"option]").val(result['questions'][i]['options'][j]['option']);
+			}
+		}
+		else if(type=="Multiple"){
+			addMultiple();
+			$("input[name="+i+"]").val(result['questions'][i]['stem']);
+			if(result['questions'][i]['required']==true){
+				var required = document.getElementById(i+"required");
+				required.checked=true;
+			}
+			$("input[name="+i+"min]").val(result['questions'][i]['min']);
+			$("input[name="+i+"max]").val(result['questions'][i]['max']);
+			for(var j = 0; j < result['questions'][i]['options'].length; j++){
+				addOption(i);
+				$("input[name="+i+"_"+j+"option]").val(result['questions'][i]['options'][j]['option']);
+			}
+		}
+	}
 };

@@ -11,15 +11,13 @@ import model.Questionnaire;
 public class QuestionnaireDaoImpl extends HibernateDaoSupport implements QuestionnaireDao{
 
 
+
 	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#addQuestionnaire(model.Questionnaire)
 	 */
 	@Override
 	public Integer addQuestionnaire(Questionnaire ques) {
-
-		
 		return (Integer)getHibernateTemplate().save(ques);
-
 	}
 
 	/* (non-Javadoc)
@@ -56,7 +54,6 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 	@Override
 	public List<Questionnaire> getAllQuestionnaires() {
 		@SuppressWarnings("unchecked")
-
 		List<Questionnaire> quess = (List<Questionnaire>) getHibernateTemplate()
 				.find("from Questionnaire");
 		return quess;
@@ -74,7 +71,6 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#findQuestionnaires(String condi)
 	 */
-
 	@Override
 
 	public List<Questionnaire> findQuestionnaires(String condi){
@@ -85,4 +81,3 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 	}
 
 }
-

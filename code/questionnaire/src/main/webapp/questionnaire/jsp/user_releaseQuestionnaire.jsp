@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+<%@ page import="model.Questionnaire"%>
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
@@ -49,6 +50,11 @@
     	<script src="questionnaire/js/jquery-1.11.1.min.js"></script>
     <script src="questionnaire/js/bootstrap.min.js"></script>
 	<script src="questionnaire/js/releaseQ.js"></script>
+	<script>
+	<%if(request.getAttribute("quescontent")!=null){%>
+	modify(<%=request.getAttribute("quescontent") %>,<%=((Questionnaire)request.getAttribute("quesinfo")).getId() %>);
+	<%}%>
+	</script>
 
   </body>
 </html>
