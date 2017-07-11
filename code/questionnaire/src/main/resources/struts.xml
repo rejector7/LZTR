@@ -28,7 +28,6 @@
 			<result>/questionnaire/jsp/signup.jsp</result>
 		</action>
 		<action name="*Questionnaire" class="action.QuestionnaireActions" method="{1}">
-		<result name="getbyid">/questionnaire/jsp/user_releaseQuestionnaire.jsp</result>
 		</action>
 		<action name="*">
 			<result>/{1}.jsp</result>
