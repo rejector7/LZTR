@@ -1,3 +1,5 @@
 /build/
 /target/
 /.setting/
+/.DS_store
+/.project
