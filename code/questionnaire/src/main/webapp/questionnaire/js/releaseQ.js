@@ -18,7 +18,7 @@ $(function() {
 		var title = $("input[name='title']").val();
 		if(title==null) alert("Title can not be empty");
 		var intro = $("input[name='introduction']").val();
-		result['title'] = title;
+		//result['title'] = title;
 		result['introduction'] = intro;
 		result['questions'] = [];
 		for(var k = 0 ; k < childs.length ; k++ ){
@@ -392,7 +392,6 @@ function addMultiple() {
 };
 
 function modify(result, id){
-	QUES_ID = id;
 	$("input[name='title']").val(result['title']);
 	$("input[name='introduction']").val(result['introduction']);
 	//alert(result[0]['stem']);
@@ -434,3 +433,19 @@ function modify(result, id){
 		}
 	}
 };
+
+
+function update(quesid){
+	QUES_ID = quesid;
+	jQuery.ajax({
+		url : 'getQuestionnaire',  //get content
+		processData : true,
+		dataType : "json",
+		data : {
+			quesid : QUES_ID
+		},
+		success : function(data) { //把title，id都放在里面
+			modify(data);
+		}
+	});
+}
