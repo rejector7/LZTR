@@ -10,9 +10,12 @@
 	<!-- User -->
 		<action name="*User" class="action.UserActions" method="{1}">
 		</action> 
+		
+		<action name="*Questionnaire" class="action.QuestionnaireActions" method="{1}">
+		</action>
 
 		<action name="loginPage">
-			<result>/questionnaire/jsp/login.jsp</result>
+			<result>/questionnaire/jsp/user_releaseQuestionnaire.jsp</result>
 		</action>
 		<action name="signupPage">
 			<result>/questionnaire/jsp/signup.jsp</result>

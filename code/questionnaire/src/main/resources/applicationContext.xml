@@ -78,6 +78,18 @@
 		<!-- DAO -->
 		<property name="userDao" ref="userDao"></property>
 	</bean>
+	
+	<!-- DAO Bean -->
+	<bean id="questionnaireDao" class="dao.impl.QuestionnaireDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	
+	<!-- Service -->
+	<bean id="questionnnaireService" class="service.impl.questionnaireServiceImpl">
+		<!-- DAO -->
+		<property name="questionnaireDao" ref="questionnaireDao"></property>
+	</bean>
 
 	<!-- HibernateTransactionManager -->
 	<bean id="transactionManager"
