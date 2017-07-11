@@ -27,16 +27,12 @@ public class LoginAction extends BaseAction{
 		this.password = password;
 	}
 	public String login(){
-		System.out.println(username);
-		System.out.println(password);
 		User user = loginService.login(username,  password);
 		if(user != null) {
 			session().setAttribute("user", user);
-			System.out.println(username);
 			return SUCCESS;
 		}
 		else{
-			System.out.println("wwrong");
 			request().setAttribute("flag", "0");
 			return INPUT;
 		}
