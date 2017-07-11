@@ -15,13 +15,13 @@ public class Questionnaire{
 		
 	}
 	
-	public Questionnaire(int userid, String title, String status, int isPublic, Date releaseTime, Date endTime){
+	public Questionnaire(int userid, String status, String title, int isPublic, Date releaseTime, Date endTime){
 		this.userid = userid;
-		this.title = title;
 		this.status = status;
 		this.isPublic = isPublic;
 		this.releaseTime = releaseTime;
 		this.endTime = endTime;
+		this.title = title;
 	}
 	
 	public int getId(){
@@ -37,11 +37,12 @@ public class Questionnaire{
 	public void setUserid(int userid){
 		this.userid = userid;
 	}
-	
-	public String getTitle(){
+
+	public String getTitle() {
 		return title;
 	}
-	public void setTitle(String title){
+
+	public void setTitle(String title) {
 		this.title = title;
 	}
 	

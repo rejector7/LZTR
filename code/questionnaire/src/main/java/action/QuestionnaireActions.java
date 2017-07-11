@@ -43,17 +43,17 @@ public class QuestionnaireActions extends BaseAction{
 	public void setUserid(int userid) {
 		this.userid = userid;
 	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
 	public String getStatus() {
 		return status;
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public int getIsPublic() {
 		return isPublic;
@@ -91,7 +91,6 @@ public class QuestionnaireActions extends BaseAction{
 	public String add() throws IOException{
 		if(id!=0){
 			Questionnaire ques = quesService.getQuestionnaireById(id);
-			ques.setTitle(title);
 			QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
 			quescontent.setContent(content);
 			quesService.updateQuestionnaire(quescontent, ques);
@@ -99,7 +98,7 @@ public class QuestionnaireActions extends BaseAction{
 		}
 		if(status==null) status = "unp";
 		int userid = ((User)request().getSession().getAttribute("user")).getId();
-		Questionnaire ques = new Questionnaire(userid,title,status,isPublic,releaseTime,endTime);
+		Questionnaire ques = new Questionnaire(userid,status,title,isPublic,releaseTime,endTime);
 		QuestionnaireQuestions quescontent = new QuestionnaireQuestions(content);
 		System.out.println(content);
 		quesService.addQuestionnaire(quescontent, ques);
@@ -145,9 +144,10 @@ public class QuestionnaireActions extends BaseAction{
 	public String get() throws IOException{
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
-		request().setAttribute("quesinfo", ques);
-		request().setAttribute("quescontent", quescontent.getContent());
-		return "getbyid";
+		JSONObject questot = new JSONObject(quescontent.getContent());
+		questot.put("id", ques.getId());
+		response().getWriter().print(questot.toString());
+		return null;
 	}
 	
 	/**
