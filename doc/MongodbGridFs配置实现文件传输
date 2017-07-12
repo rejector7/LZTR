@@ -1,0 +1,102 @@
+​1.dependencies:
+<dependency>
+ <groupId>org.springframework.data</groupId>  
+ <artifactId>spring-data-mongodb</artifactId>  
+ <version>1.8.2.RELEASE</version>
+</dependency>  
+<dependency>  
+ <groupId>org.springframework.data</groupId>  
+ <artifactId>spring-data-commons</artifactId> 
+ <version>1.10.0.RELEASE</version>  
+</dependency>  
+
+2.spring注入:
+beans中增加
+xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+xsi:schemaLocation中增加
+ http://www.springframework.org/schema/data/mongo 
+ http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+添加bean:
+<mongo:mongo host="localhost" port="27017"/> (链接mongodb）
+（对mongo更详细配置可通过如下配置：
+<mongo:options 
+connections-per-host="8" 
+threads-allowed-to-block-for-connection-multiplier="4" 
+connect-timeout="1000" max-wait-time="1500}" 
+auto-connect-retry="true" 
+socket-keep-alive="true" 
+socket-timeout="1500" 
+slave-ok="true" 
+write-number="1" 
+write-timeout="0" 
+write-fsync="true"/> 
+</mongo:mongo>)
+<mongo:db-factory id="mongoDbFactory" dbname="YourOwnDatabaseName" mongo-ref="mongo" /> （gridfstemplate所需的参数，连接所选数据库）
+<mongo:mapping-converter id="mongoConverter" base-package="org.baeldung.converter"> 
+ <mongo:custom-converters base-package="org.baeldung.converter"/> 
+</mongo:mapping-converter> （gridfstemplate所需的参数）
+<bean id="gridFsTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate"> （实现对gridFsTemplate的构造注入）
+ <constructor-arg ref="mongoDbFactory" /> 
+ <constructor-arg ref="mongoConverter" /> 
+</bean>
+添加Dao bean：
+<bean id="YourOwnDao" class="YourOwnPackage.YourOwnDaoImpl"> 
+ <property name="gridFsTemplate（根据Dao中的成员变量自行修改本处）" ref="gridFsTemplate"/> 
+</bean>
+在Service中增加Property：<property name="YourOwnDao（根据Service中的成员变量自行修改本处）" ref="YourOwnDao"></property>
+
+3.Dao类实现()：
+public class YourownDaoImpl implements YourownDao{
+
+	private GridFsTemplate gridFsTemplate（变量名可自行定义，与注入时统一）;(org.springframework.data.mongodb.gridfs.GridFsTemplate)
+	
+	public void save(Model model（用于存放需要的变量）) throws FileNotFoundException{
+		DBObject metaData = new BasicDBObject();
+		InputStream inputStream = new FileInputStream(url（文件路径）); 
+		metaData.put("key"(key具体内容为你自己定义的键),value);
+		gridFsTemplate.store(inputStream, filename（文件名）, filetype（文件类型）, metaData);
+	}
+
+	public GridFSDBFile getFileByID(Value value){
+		List<GridFSDBFile> gridFsdbFiles = 
+				gridFsTemplate.find(new Query(Criteria.where("metadata.key").is(value)));
+		GridFSDBFile gridFsdbFile=gridFsdbFiles.size() > 0 ? gridFsdbFiles.get(0) : null;
+		return gridFsdbFile;
+	}
+	
+	public void delete(Model model){
+		List<GridFSDBFile> gridFsdbFiles = 
+				gridFsTemplate.find(new Query(Criteria.where("metadata.key").is(model.value)));
+		if(gridFsdbFiles.size() > 0){
+			gridFsTemplate.delete(new Query(Criteria.where("metadata.key").is(model.value)));
+		}	
+	}
+
+	public void setGridFsTemplate(GridFsTemplate gridFsTemplate) {
+		this.gridFsTemplate = gridFsTemplate;
+	}
+}
+
+4.Service实现：
+ 直接用方法调用Dao中方法即可
+ 
+5.Action实现：
+  使用html中的form标签直接提交文件：
+  form需设置method="post"enctype="multipart/form-data"
+  form中<input type="file" name="file（自定义即可）">
+    在action中可使用
+  private File file;
+	private String fileFileName;
+	private String fileContentType;
+  （前缀的file与input中的name统一）直接获取文件、文件名称、文件类型
+  通过file.getPath()可获取文件路径（我获取的是在tomcat服务器中的临时文件路径）
+  
+  对数据库中文件的获取：使用outputstream：
+  action中部分代码：
+        response().setContentType("filetype");   
+        OutputStream ros = response().getOutputStream();
+        gridFSDBFile.writeTo(ros);  
+        ros.flush();  
+        ros.close();
+  在页面的加载后直接运行的js中增加$("#imageid").html("<img src='YourActionUrl?YourParameters'>")
+  注：由于response的outputStream与jsp中使用的getWriter同时使用会冲突，故目前的解决方案是在js中进行加载，若以后有其他方案会进行更新

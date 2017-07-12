@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Struts2 DTD -->
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+	"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	<constant name="struts.i18n.encoding" value="utf-8" />
+	<constant name="struts.devMode" value="true" />
+	<package name="process" extends="struts-default">
+	<!-- User -->
+		<action name="*User" class="action.UserActions" method="{1}">
+		</action> 
+		
+		<action name="*Questionnaire" class="action.QuestionnaireActions" method="{1}">
+		</action>
+
+		<action name="loginPage">
+			<result>/questionnaire/jsp/user_releaseQuestionnaire.jsp</result>
+		</action>
+		<action name="signupPage">
+			<result>/questionnaire/jsp/signup.jsp</result>
+		</action>
+		<action name="loginPro" class="action.LoginAction" method="login">
+			<result name="success">/questionnaire/jsp/user_frontPage.jsp</result>
+			<result name="input">/questionnaire/jsp/login.jsp</result>
+		</action>
+		<action name="signupPro" class="action.UserActions" method="add">
+			<result>/questionnaire/jsp/signup.jsp</result>
+		</action>
+		<action name="*Questionnaire" class="action.QuestionnaireActions" method="{1}">
+		</action>
+		<action name="*">
+			<result>/{1}.jsp</result>
+		</action>
+		
+	</package>
+</struts>
