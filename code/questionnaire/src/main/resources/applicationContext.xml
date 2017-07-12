@@ -24,10 +24,10 @@
     	http://www.springframework.org/schema/context
     	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-
+	<!-- Mongo bean -->
 	<mongo:mongo host="localhost" port="27017"/>
 	<mongo:db-factory id="mongoDbFactory" dbname="questionnaire" mongo-ref="mongo" />
- <bean id="mappingContext"
+ 	<bean id="mappingContext"
         class="org.springframework.data.mongodb.core.mapping.MongoMappingContext" />
     <!-- 去除集合里的_class属性 -->
     <bean id="defaultMongoTypeMapper"
@@ -46,11 +46,11 @@
 		<constructor-arg ref="mongoDbFactory" /> 
  		<constructor-arg ref="mongoConverter" /> 
  	</bean>
-	<!-- Bean -->
+	<!-- Hibernate Bean -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close" p:driverClass="com.mysql.jdbc.Driver"
-		p:jdbcUrl="jdbc:mysql://localhost:3306/lztr" p:user="root"
-		p:password="qaz,./123456789" p:maxPoolSize="40" p:minPoolSize="1"
+		p:jdbcUrl="jdbc:mysql://localhost:3306/questionnaire" p:user="root"
+		p:password="123456" p:maxPoolSize="40" p:minPoolSize="1"
 		p:initialPoolSize="1" p:maxIdleTime="20" />
 
 
@@ -75,31 +75,50 @@
 	</bean>
 
 	<!-- DAO Bean -->
+	<!-- User -->
 	<bean id="userDao" class="dao.impl.UserDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<!-- Questionnaire -->
 	<bean id="quesDao" class="dao.impl.QuestionnaireDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="questionsDao" class="dao.impl.QuestionnaireQuestionsDaoImpl">
 		<property name="mongoTemplate" ref="mongoTemplate" />
 	</bean>
-
+	<!-- Login -->
+	<bean id="loginDao" class="dao.impl.LoginDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<!-- Answer -->
+	<bean id="ansDao" class="dao.impl.AnswerDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="anssheetDao" class="dao.impl.AnswerSheetDaoImpl">
+		<property name="mongoTemplate" ref="mongoTemplate" />
+	</bean>
+	<!-- End of Dao -->
+	
+	
+	<!-- Service -->
 	<bean id="quesService" class="service.impl.QuestionnaireServiceImpl">
 		<!-- DAO -->
 		<property name="quesDao" ref="quesDao"></property>
 		<property name="questionnairequestionsDao" ref="questionsDao"></property>
 	</bean>
-	<!-- Service -->
 	<bean id="userService" class="service.impl.UserServiceImpl">
 		<!-- DAO -->
 		<property name="userDao" ref="userDao"></property>
 	</bean>
-	
-	<!-- DAO Bean -->
-	<bean id="questionnaireDao" class="dao.impl.QuestionnaireDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
+	<bean id="loginService" class="service.impl.LoginServiceImpl">
+		<property name="loginDao" ref="loginDao"></property>
 	</bean>
+	<bean id="ansService" class="service.impl.AnswerSheetServiceImpl">
+		<property name="ansDao" ref="ansDao"></property>
+		<property name="anssheetDao" ref="anssheetDao"></property>
+	</bean>
+	<!-- End of Service -->
+	
 
 	<!-- HibernateTransactionManager -->
 	<bean id="transactionManager"
@@ -117,19 +136,4 @@
 		<aop:pointcut id="beanPointcut" expression="bean(appService)" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="beanPointcut" />
 	</aop:config>
-	
-		<bean id="loginDao" class="dao.impl.LoginDaoImpl">
-		<property name="sessionFactory">
-			<ref bean="sessionFactory"></ref>
-		</property>
-	</bean>
-
-	
-		
-	<bean id="loginService" class="service.impl.LoginServiceImpl">
-		<property name="loginDao" ref="loginDao"></property>
-	</bean>
-	
-
-
 </beans>
