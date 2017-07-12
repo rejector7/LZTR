@@ -49,8 +49,8 @@
 	<!-- Bean -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close" p:driverClass="com.mysql.jdbc.Driver"
-		p:jdbcUrl="jdbc:mysql://localhost:3306/questionnaire" p:user="root"
-		p:password="123456" p:maxPoolSize="40" p:minPoolSize="1"
+		p:jdbcUrl="jdbc:mysql://localhost:3306/lztr" p:user="root"
+		p:password="qaz,./123456789" p:maxPoolSize="40" p:minPoolSize="1"
 		p:initialPoolSize="1" p:maxIdleTime="20" />
 
 

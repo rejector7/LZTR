@@ -17,4 +17,8 @@ test file
 
 # ignore project
 .project
+<<<<<<< HEAD
 /.DS_Store
+=======
+*.DS_Store
+>>>>>>> branch 'TZY' of https://github.com/tangzhongyue/LZTR.git
