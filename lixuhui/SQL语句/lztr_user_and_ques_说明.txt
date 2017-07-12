@@ -1,0 +1,3 @@
+stauts varchar 有4种，unp(默认), pub, end, ban 
+
+public int 有2种，private(0)，public(1,默认值)

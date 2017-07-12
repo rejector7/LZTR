@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <%@ page import="model.Questionnaire"%>
+<%
+	String path=request.getContextPath();
+%>
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
@@ -13,8 +16,14 @@
     <title>Create your new Questionnaire!</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="questionnaire/css/bootstrap3.3.7.min.css" rel="stylesheet">
-    <link href="questionnaire/css/font-awesome.min.css" rel="stylesheet">
+    <link href="<%=path %>/questionnaire/css/bootstrap3.3.7.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="<%=path %>/questionnaire/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="<%=path %>/questionnaire/css/justified-nav.css" rel="stylesheet">
+
   </head>
 
   <body value="0">
@@ -42,13 +51,14 @@
 		<button class="btn btn-default submit" type="button" style="floating:right">
 				<i class="fa fa-check fa-2x">confirm</i>
 		</button>
-		<button class="btn btn-default modify" type="button" style="floating:right">
-				<i class="fa fa-check fa-2x">modify</i>
+		<button class="btn btn-default cancel" type="button" style="floating:right">
+				<i class="fa fa-check fa-2x">cancel</i>
 		</button>
     </div> <!-- /container -->
     
     	<script src="questionnaire/js/jquery-1.11.1.min.js"></script>
     <script src="questionnaire/js/bootstrap.min.js"></script>
+    <script src="questionnaire/js/bootbox.min.js"></script>
 	<script src="questionnaire/js/releaseQ.js"></script>
 	<script>
 	<%if(request.getAttribute("quesinfo")!=null){%>
