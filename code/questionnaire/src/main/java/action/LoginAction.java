@@ -30,6 +30,7 @@ public class LoginAction extends BaseAction{
 		User user = loginService.login(username,  password);
 		if(user != null) {
 			session().setAttribute("user", user);
+			session().setAttribute("role",user.getRole());
 			return SUCCESS;
 		}
 		else{
@@ -40,6 +41,7 @@ public class LoginAction extends BaseAction{
 	
 	public String logout(){
 		session().removeAttribute("user");
+		session().removeAttribute("role");
 		return SUCCESS;
 	}
 	

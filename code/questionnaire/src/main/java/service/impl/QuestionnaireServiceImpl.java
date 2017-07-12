@@ -80,12 +80,17 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 	 * @see service.impl.QuestionnaireService#getQuestionnairesByUserid(int)
 	 */
 	@Override
-	public List<Questionnaire> getQuestionnairesByUserid(int userid){
+	public List<Questionnaire> getQuestionnaireByUserId(int userid){
 		return quesDao.getQuestionnairesByUserid(userid);
 	}
 	
 	@Override
 	public List<Questionnaire> findQuestionnaires(String condi){
 		return quesDao.findQuestionnaires(condi);
+	}
+	
+	@Override
+	public void updateQuestionnaire(Questionnaire ques) {
+		quesDao.updateQuestionnaire(ques);
 	}
 }

@@ -38,11 +38,13 @@
 			<div class="sidebar-nav navbar-collapse">
 				<ul class="nav" id="side-menu">
 				<!-- href ??? -->
-					<li><a href="admin_user.jsp"><i class="fa fa-user fa-fw"></i>
+					<li><a href="allUser"><i class="fa fa-user fa-fw"></i>
 							用户管理</a></li>
 					<li><a href="#" class="active"><i
 							class="fa fa-book fa-fw"></i> 问卷管理</a></li>
-					<li><a href="login.jsp"><i 
+					<li><a href="FrontPage"><i 
+							class="fa fa-university fa-fw"></i> 首页</a></li>
+					<li><a href="logoutPro"><i 
 							class="fa fa-power-off fa-fw"></i> 登出</a></li>
 				</ul>
 			</div>
