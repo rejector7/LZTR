@@ -268,8 +268,8 @@
 					<path>/${project.artifactId}</path>
 					<uriEncoding>${project.build.sourceEncoding}</uriEncoding>
 					<server>tomcat7</server>
-					<username>tomcat</username>
-					<password>password</password>
+					<username>admin</username>
+					<password>tomcat</password>
 				</configuration>
 			</plugin>
 
