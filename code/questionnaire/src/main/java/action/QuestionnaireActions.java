@@ -23,6 +23,7 @@ public class QuestionnaireActions extends BaseAction{
 	private int isPublic;    	/* 1(default) or 0 */
 	private Date releaseTime;
 	private Date endTime;
+	private String condi;
 	private String content;
 	
 	public String getContent() {
@@ -30,6 +31,12 @@ public class QuestionnaireActions extends BaseAction{
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	public String getCondi() {
+		return condi;
+	}
+	public void setCondi(String condi) {
+		this.condi = condi;
 	}
 	public int getId() {
 		return id;
@@ -92,8 +99,10 @@ public class QuestionnaireActions extends BaseAction{
 		if(id!=0){
 			Questionnaire ques = quesService.getQuestionnaireById(id);
 			QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
+			ques.setTitle(title);
 			quescontent.setContent(content);
 			quesService.updateQuestionnaire(quescontent, ques);
+			response().getWriter().write("success");
 			return null;
 		}
 		if(status==null) status = "unp";
@@ -102,38 +111,49 @@ public class QuestionnaireActions extends BaseAction{
 		QuestionnaireQuestions quescontent = new QuestionnaireQuestions(content);
 		System.out.println(content);
 		quesService.addQuestionnaire(quescontent, ques);
+		response().getWriter().write("success");
 		return null;
 	}
+	
+	public String updateStatus() throws Exception {
+		Questionnaire ques = quesService.getQuestionnaireById(id);
+		ques.setStatus(status);
+		quesService.updateQuestionnaire(ques);
+		return "updateStatus";
+	}
+	
 	
 	/**
 	 * Use appService to update a questionnaire,including its basic information and content
 	 * @return
 	 */
-	public String update(){
-
-
+	public String update() throws Exception {
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		ques.setEndTime(endTime);
 		ques.setIsPublic(isPublic);
 		ques.setReleaseTime(releaseTime);
 		ques.setStatus(status);
 		ques.setTitle(title);
-
-		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
-		quescontent.setContent(content);
-		quesService.updateQuestionnaire(quescontent, ques);
-		return null;
+		quesService.updateQuestionnaire(ques);
+		return "update";
 	}
 	
 	/**
 	 * Use appService to delete a questionnaire,including its basic information and content
 	 * @return
 	 */
-	public String delete(){
+	public String delete1(){
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
 		quesService.deleteQuestionnaire(quescontent, ques);
-		return null;
+		return "delete1";
+	}
+	
+	public String delete2(){
+		Questionnaire ques = quesService.getQuestionnaireById(id);
+		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
+		quesService.deleteQuestionnaire(quescontent, ques);
+		return "delete2";
 	}
 	
 	/**
@@ -146,20 +166,40 @@ public class QuestionnaireActions extends BaseAction{
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
 		JSONObject questot = new JSONObject(quescontent.getContent());
 		questot.put("id", ques.getId());
+		questot.put("title", ques.getTitle());
 		response().getWriter().print(questot.toString());
 		return null;
+	}
+	
+	public String getInfo() throws IOException{
+		Questionnaire ques = quesService.getQuestionnaireById(id);
+		request().setAttribute("quesinfo", ques);
+		return "getInfo";
 	}
 	
 	/**
 	 * Use appService to get basic information of all questionnaires
 	 * @return
 	 */
-	public String getAll(){
+	public String all(){
 		List<Questionnaire> questionnaires = quesService.getAllQuestionnaires();
 		request().setAttribute("Questionnaires", questionnaires);
-		return "getall";
+		return "all";
 	}
 	
+	public String search() throws Exception{
+		List<Questionnaire> Questionnaires = quesService.findQuestionnaires(condi);
+		request().setAttribute("ResultList", Questionnaires);
+		return "search";
+	}
+	
+	public String My() throws Exception{
+		User user = (User)session().getAttribute("user");
+		int userid = user.getId();
+		List<Questionnaire> Questionnaires = quesService.getQuestionnaireByUserId(userid);
+		request().setAttribute("MyQuess", Questionnaires);
+		return "My";
+	}
 }
 
 

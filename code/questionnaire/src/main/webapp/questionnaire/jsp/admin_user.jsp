@@ -37,10 +37,12 @@
 			<div class="sidebar-nav navbar-collapse">
 				<ul class="nav" id="side-menu">
 					<li><a href="#" class="active"><i 
-							class="fa fa-user fa-fw"></i>用户管理</a></li>
-					<li><a href="admin_ques.jsp"><i
-							class="fa fa-book fa-fw"></i>问卷管理</a></li>
-					<li><a href="login.jsp"><i 
+							class="fa fa-user fa-fw"></i> 用户管理</a></li>
+					<li><a href="allQuestionnaire"><i
+							class="fa fa-book fa-fw"></i> 问卷管理</a></li>
+					<li><a href="FrontPage"><i 
+							class="fa fa-university fa-fw"></i> 首页</a></li>
+					<li><a href="logoutPro"><i 
 							class="fa fa-power-off fa-fw"></i> 登出</a></li>
 				</ul>
 			</div>
@@ -167,44 +169,44 @@
       </tr>
       <tr>
         <td colspan="3">Username</td>
-        <td><input type="text" name="username" value="data-username"></td>
+        <td><input type="text" name="username" ></td>
       </tr>
       <tr>
         <td colspan="3">Age</td>
-        <td><input type="text" name="age" value="data-age"></td>
+        <td><input type="text" name="age"></td>
       </tr>
       <tr>
         <td colspan="3">Sex</td>
-        <td><input type="text" name="sex" value="data-sex"></td>
+        <td><input type="text" name="sex" ></td>
       </tr>
       <tr>
         <td colspan="3">City</td>
-        <td><input type="text" name="city" value="data-city"></td>
+        <td><input type="text" name="city" ></td>
       </tr>
       <tr>
         <td colspan="3">Country</td>
-        <td><input type="text" name="country" value="data-country"></td>
+        <td><input type="text" name="country" ></td>
       </tr>
       <tr>
         <td colspan="3">Email</td>
-        <td><input type="text" name="email" value="data-email"></td>
+        <td><input type="text" name="email" ></td>
       </tr>
       <tr>
         <td colspan="3">Mobile</td>
-        <td><input type="text" name="mobile" value="data-mobile"></td>
+        <td><input type="text" name="mobile" ></td>
       </tr>
       <tr>
         <td colspan="3">Qq</td>
-        <td><input type="text" name="qq" value="data-qq"></td>
+        <td><input type="text" name="qq" ></td>
       </tr>
       <tr>
         <td colspan="3">Wechat</td>
-        <td><input type="text" name="wechat" value="data-wechat"></td>
+        <td><input type="text" name="wechat" ></td>
       </tr>
       <tr>
         <td colspan="3">Role</td>
      	<td> 
-			<select class="form-control" name = "role">
+			<select class="form-control" id="role">
 				<option>admin</option>
 				<option>user</option>
 			</select>
