@@ -11,5 +11,8 @@
 		<property name="quesid" type="int">
 			<column name="quesid" />
 		</property>
+		<property name="time" type="java.util.Date">
+			<column name="time" />
+		</property>
 	</class>
 </hibernate-mapping>
