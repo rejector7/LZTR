@@ -197,7 +197,14 @@
 			<version>${slf4j.version}</version>
 		</dependency>
 
-
+<!-- https://mvnrepository.com/artifact/jfree/jfreechart -->
+<!-- for drawing pictures -->
+<dependency>
+    <groupId>jfree</groupId>
+    <artifactId>jfreechart</artifactId>
+    <version>1.0.13</version>
+</dependency>
+		
 
 		<!-- Struts2 -->
 		<dependency>
@@ -268,8 +275,8 @@
 					<path>/${project.artifactId}</path>
 					<uriEncoding>${project.build.sourceEncoding}</uriEncoding>
 					<server>tomcat7</server>
-					<username>admin</username>
-					<password>tomcat</password>
+					<username>tomcat</username>
+					<password>password</password>
 				</configuration>
 			</plugin>
 

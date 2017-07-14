@@ -1,5 +1,6 @@
 package action;
 
+import java.util.Date;
 import java.util.List;
 
 import model.Answer;
@@ -11,6 +12,7 @@ public class AnswerAction extends BaseAction{
 	private int id;
 	private int quesid;
 	private int userid;
+	private Date time;
 	private String content;
 	public int getId() {
 		return id;
@@ -36,12 +38,18 @@ public class AnswerAction extends BaseAction{
 	public void setContent(String content) {
 		this.content = content;
 	}
+	public Date getTime() {
+		return time;
+	}
+	public void setTime(Date time) {
+		this.time = time;
+	}
 	public void setAnsService(AnswerSheetService ansService) {
 		this.ansService = ansService;
 	}
 	
 	public String add(){
-		Answer ans = new Answer(quesid);
+		Answer ans = new Answer(quesid, time);
 		AnswerSheet anst  = new AnswerSheet(content);
 		if(userid != 0){
 			anst.setUserid(userid);
