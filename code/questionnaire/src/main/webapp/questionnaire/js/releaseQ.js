@@ -1,4 +1,4 @@
-var DELETE_NUM_QUESTION = 0;
+var DELETE_NUM_QUESTION = -1;
 var QUES_ID = 0;
 
 $(function() {	
@@ -475,6 +475,8 @@ function addSlider() {
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	button.appendChild(i);
+	
+	body.setAttribute("value", value * 1 + 1);
 };
 
 function modify(result, id){
