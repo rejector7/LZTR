@@ -23,6 +23,8 @@
 
     <!-- Custom styles for this template -->
     <link href="<%=path %>/questionnaire/css/justified-nav.css" rel="stylesheet">
+    
+    <link href="<%=path %>/questionnaire/css/font-awesome.min.css" rel="stylesheet">
 
   </head>
 
@@ -38,8 +40,11 @@
 		<button class="btn btn-default addMultiple"  type="button" style="floating:right">
 				<i class="fa fa-plus  fa-2x">Multiple Option Question</i>
 		</button>
+		<button class="btn btn-default addSlider"  type="button" style="floating:right">
+				<i class="fa fa-plus  fa-2x">Slider Question</i>
+		</button>
 		
-		<div class="row">
+		<div class="row pre-scrollable">
 			 <label ><font size="5">Title</font></label>
 			 <input type="text" name="title"  class="form-control">
 		</div>
