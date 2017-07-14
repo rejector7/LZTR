@@ -157,8 +157,8 @@ function addOption(value){
 			"<div class='row container col-lg-10'>" +
 			"<input class='form-control' name='" + value +"_" + num + "option'>" +
 			"</div>" +
-			"<div class='col-lg-2'><div id='" + value +"_" + num +"button'></div></div></div>" +
-			"");
+			"<div class='col-lg-2'><div id='" + value +"_" + num +"button'>" +
+					"</div></div></div>");
 	div.setAttribute("value",  num * 1 + 1);
 	
 	//create button to delete an question
@@ -257,7 +257,7 @@ function addBlank() {
 	
 	//create input
 	var div3 = document.createElement("div");
-	div3.className = "col-lg-11";
+	div3.className = "col-lg-10";
 	div2.appendChild(div3);	
 	var input = document.createElement("input");
 	input.className = "form-control";
@@ -266,7 +266,7 @@ function addBlank() {
 	
 	//create required label
 	var div4 = document.createElement("div");
-	div4.className = "col-lg-1";
+	div4.className = "col-lg-2";
 	div2.appendChild(div4);
 	var label2 = document.createElement("label");
 	label2.innerText="required";
@@ -303,9 +303,9 @@ function addSingle() {
 			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label></div>" +
 			"<div class='col-lg-2' id='" + value + "button'></div></div>" +
 			"<div class='row container'>" +
-			"<div class='col-lg-11'>" +
+			"<div class='col-lg-10'>" +
 			"<input class='form-control' name=" + value +"></div>" +
-			"<div class='col-lg-1'>" +
+			"<div class='col-lg-2'>" +
 			"<label>required</label>" +
 			"<input type='checkbox' id='" + value + "required'>" +
 			"</div></div>" +
@@ -368,9 +368,9 @@ function addMultiple() {
 			"<div class='col-lg-2'><input class='form-control' type='number' step='1' name='" + value +"min'></div>" +
 			"<div class='col-lg-2'><div id='" + value + "button'></div></div></div>" +
 			"<div class='row container'>" +
-			"<div class='col-lg-11'>" +
+			"<div class='col-lg-10'>" +
 			"<input class='form-control' name=" + value + "></div>" +
-			"<div class='col-lg-1'>" +
+			"<div class='col-lg-2'>" +
 			"<label>required</label>" +
 			"<input type='checkbox' id='" + value + "required'>" +
 			"</div></div>" +
