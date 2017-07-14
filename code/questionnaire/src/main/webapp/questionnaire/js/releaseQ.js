@@ -33,7 +33,7 @@ $(function() {
 		var result = {};
 		
 		var title = $("input[name='title']").val();
-		if(title==null) alert("Title can not be empty");
+		if(title=="") {alert("Title can not be empty");return;}
 		var intro = $("input[name='introduction']").val();
 		//result['title'] = title;
 		result['introduction'] = intro;
@@ -115,6 +115,23 @@ $(function() {
 					result['questions'][k]['options'][m-1]['option'] = option;
 				}
 				break;
+			case '3':
+				result['questions'][k]['type'] = 'Slider';
+				//get min & max
+				var min = $("input[name='" + i + "min']").val();
+				if(min==""){alert("the min of question is empty");return;}
+				var max = $("input[name='" + i + "max']").val();
+				if(max==""){alert("the max of question is empty");return;}
+				var mintext = $("input[name='" + i + "mintext']").val();
+				if(mintext==""){alert("the min label of question is empty");return;}
+				var maxtext = $("input[name='" + i + "maxtext']").val();
+				if(maxtext==""){alert("the max label of question is empty");return;}
+				if(min > max) {alert("min must smaller than max");return;}
+				result['questions'][k]['min'] = min;
+				result['questions'][k]['max'] = max;
+				result['questions'][k]['mintext'] = mintext;
+				result['questions'][k]['maxtext'] = maxtext;
+				break;
 			}
 		}
 		jQuery.ajax({
@@ -143,6 +160,7 @@ $(function() {
 	
 	$(".addMultiple").click(function(e) {addMultiple()});
 	
+	$(".addSlider").click(function(e) {addSlider()});
 	
 });
 
@@ -405,6 +423,60 @@ function addMultiple() {
 	button.appendChild(i);
 };
 
+function addSlider() {
+	var body = document.body;
+	var value = body.getAttribute("value");
+	//create form
+	if(value=="0"){
+	var form = document.createElement("form");
+	form.id = 'form';
+	form.role = "role";
+	body.appendChild(form);
+	}
+	else{
+		var form = document.getElementById("form");
+	}
+	var div = document.createElement("div");
+	div.setAttribute("value", "3");
+	div.id = (value+"div");
+	form.appendChild(div);
+	$("#"+value+"div").html("" +
+			"<div class='container'><div class='row'>" +
+			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label></div>" +
+			"<div class='col-lg-2'><div id='" + value + "button'></div></div></div>" +
+			"<div class='row container'>" +
+			"<div class='col-lg-11'>" +
+			"<input class='form-control' name=" + value + "></div>" +
+			"<div class='col-lg-1'>" +
+			"<label>required</label>" +
+			"<input type='checkbox' id='" + value + "required'>" +
+			"</div></div>" +
+			"<div class='container'><div class='row'>" +
+			"<div class='col-lg-1'><label><font size='5'>max</font></label></div>" +
+			"<div class='col-lg-2'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
+			"<div class='col-lg-2'><label><font size='5'>max label</font></label></div>" +
+			"<div class='col-lg-7'><input class='form-control' type='text' name='" + value +"maxtext'></div></div>" +
+			"<div class='row'>" +
+			"<div class='col-lg-1'><label><font size='5'>min</font></label></div>" +
+			"<div class='col-lg-2'><input class='form-control' type='number' step='1' name='" + value +"min'></div>" +
+			"<div class='col-lg-2'><label><font size='5'>min label</font></label></div>" +
+			"<div class='col-lg-7'><input class='form-control' type='text' name='" + value +"mintext'></div></div>" +
+			"</div></div></div>");
+	
+	
+	//create button to delete an question
+	var button = document.createElement("button");
+	button.className = "btn btn-default";
+	button.type = "button";
+	button.style="floating:left";
+	button.onclick = function(){deleteQuestion(value)};
+	document.getElementById(value + "button").appendChild(button);
+	
+	var i = document.createElement("i");
+	i.className = "fa fa-times";
+	button.appendChild(i);
+};
+
 function modify(result, id){
 	$("input[name='title']").val(result['title']);
 	$("input[name='introduction']").val(result['introduction']);
@@ -444,6 +516,18 @@ function modify(result, id){
 				addOption(i);
 				$("input[name="+i+"_"+j+"option]").val(result['questions'][i]['options'][j]['option']);
 			}
+		}
+		else if(type=="Slider"){
+			addSlider();
+			$("input[name="+i+"]").val(result['questions'][i]['stem']);
+			if(result['questions'][i]['required']==true){
+				var required = document.getElementById(i+"required");
+				required.checked=true;
+			}
+			$("input[name="+i+"min]").val(result['questions'][i]['min']);
+			$("input[name="+i+"mintext]").val(result['questions'][i]['mintext']);
+			$("input[name="+i+"max]").val(result['questions'][i]['max']);
+			$("input[name="+i+"maxtext]").val(result['questions'][i]['maxtext']);
 		}
 	}
 };
