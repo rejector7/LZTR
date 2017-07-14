@@ -118,6 +118,11 @@ $(function() {
 					result['questions'][k]['options'][m-1] = {};
 					result['questions'][k]['options'][m-1]['id'] = m;
 					result['questions'][k]['options'][m-1]['option'] = option;
+					var cf = document.getElementById(i+"_"+(m-1)+"cf");
+					if(cf.checked){
+						result['questions'][k]['options'][m-1]['hasWords'] = true;
+					}
+					else result['questions'][k]['options'][m-1]['hasWords'] = false;
 				}
 				break;
 			case '3':
@@ -144,9 +149,9 @@ $(function() {
 			processData : true,
 			dataType : "text",
 			data : {
-				title:title,
+				title:encodeURI(encodeURI(title)),
 				id:QUES_ID,
-				content : JSON.stringify(result)
+				content : encodeURI(encodeURI(JSON.stringify(result)))
 			},
 			success : function(data) {
 				bootbox.alert({
