@@ -76,10 +76,15 @@ $(function() {
 					//alert($("input[name='" + i + "_" + j + "option']").val())
 					var name = options[m].getAttribute("id").split("div")[0];
 					var option = $("input[name=" + name + "]").val();
-					if(option == "") {alert("the content of question "+ i + " option "  + j + " is empty");return;}
+					var cf = document.getElementById(i+"_"+(m-1)+"cf");
+					if(option == "") {alert("the content of question "+ i + " option "  + (m-1) + " is empty");return;}
 					result['questions'][k]['options'][m-1] = {};
 					result['questions'][k]['options'][m-1]['id'] = m;
 					result['questions'][k]['options'][m-1]['option'] = option;
+					if(cf.checked){
+						result['questions'][k]['options'][m-1]['hasWords'] = true;
+					}
+					else result['questions'][k]['options'][m-1]['hasWords'] = false;
 				}
 				break;
 			case '2':
@@ -172,10 +177,15 @@ function addOption(value){
 	div.appendChild(newdiv);
 	$("#" + value + "_" + num + "optiondiv").html("" +
 			"<div class='container'>" +
-			"<div class='row container col-lg-10'>" +
+			"<div class='row container col-lg-8'>" +
 			"<input class='form-control' name='" + value +"_" + num + "option'>" +
 			"</div>" +
-			"<div class='col-lg-2'><div id='" + value +"_" + num +"button'></div></div></div>" +
+			"<div class='col-lg-2'><div id='" + value +"_" + num +"button'>" +
+			"</div></div>" +
+			"<div class='col-lg-2'>" +
+			"<label>comment field</label>" +
+			"<input type='checkbox' id='" + value + "_" + num + "cf'>" +
+			"</div>"+
 			"");
 	div.setAttribute("value",  num * 1 + 1);
 	
@@ -275,7 +285,7 @@ function addBlank() {
 	
 	//create input
 	var div3 = document.createElement("div");
-	div3.className = "col-lg-11";
+	div3.className = "col-lg-10";
 	div2.appendChild(div3);	
 	var input = document.createElement("input");
 	input.className = "form-control";
@@ -284,7 +294,7 @@ function addBlank() {
 	
 	//create required label
 	var div4 = document.createElement("div");
-	div4.className = "col-lg-1";
+	div4.className = "col-lg-2";
 	div2.appendChild(div4);
 	var label2 = document.createElement("label");
 	label2.innerText="required";
@@ -321,9 +331,9 @@ function addSingle() {
 			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label></div>" +
 			"<div class='col-lg-2' id='" + value + "button'></div></div>" +
 			"<div class='row container'>" +
-			"<div class='col-lg-11'>" +
+			"<div class='col-lg-10'>" +
 			"<input class='form-control' name=" + value +"></div>" +
-			"<div class='col-lg-1'>" +
+			"<div class='col-lg-2'>" +
 			"<label>required</label>" +
 			"<input type='checkbox' id='" + value + "required'>" +
 			"</div></div>" +
@@ -386,9 +396,9 @@ function addMultiple() {
 			"<div class='col-lg-2'><input class='form-control' type='number' step='1' name='" + value +"min'></div>" +
 			"<div class='col-lg-2'><div id='" + value + "button'></div></div></div>" +
 			"<div class='row container'>" +
-			"<div class='col-lg-11'>" +
+			"<div class='col-lg-10'>" +
 			"<input class='form-control' name=" + value + "></div>" +
-			"<div class='col-lg-1'>" +
+			"<div class='col-lg-2'>" +
 			"<label>required</label>" +
 			"<input type='checkbox' id='" + value + "required'>" +
 			"</div></div>" +
@@ -503,6 +513,8 @@ function modify(result, id){
 			for(var j = 0; j < result['questions'][i]['options'].length; j++){
 				addOption(i);
 				$("input[name="+i+"_"+j+"option]").val(result['questions'][i]['options'][j]['option']);
+				var cf = document.getElementById(i+"_"+j+"cf");
+				cf.checked=result['questions'][i]['options'][j]['hasWords'];
 			}
 		}
 		else if(type=="Multiple"){
@@ -517,6 +529,8 @@ function modify(result, id){
 			for(var j = 0; j < result['questions'][i]['options'].length; j++){
 				addOption(i);
 				$("input[name="+i+"_"+j+"option]").val(result['questions'][i]['options'][j]['option']);
+				var cf = document.getElementById(i+"_"+j+"cf");
+				cf.checked=result['questions'][i]['options'][j]['hasWords'];
 			}
 		}
 		else if(type=="Slider"){
