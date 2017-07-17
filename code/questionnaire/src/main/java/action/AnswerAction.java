@@ -3,15 +3,17 @@ package action;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import model.Answer;
 import model.AnswerSheet;
+import model.User;
 import service.AnswerSheetService;
 
 public class AnswerAction extends BaseAction{
 	private AnswerSheetService ansService;
 	private int id;
 	private int quesid;
-	private int userid;
 	private Date time;
 	private String content;
 	public int getId() {
@@ -25,12 +27,6 @@ public class AnswerAction extends BaseAction{
 	}
 	public void setQuesid(int quesid) {
 		this.quesid = quesid;
-	}
-	public int getUserid() {
-		return userid;
-	}
-	public void setUserid(int userid) {
-		this.userid = userid;
 	}
 	public String getContent() {
 		return content;
@@ -50,16 +46,19 @@ public class AnswerAction extends BaseAction{
 	
 	public String add(){
 		Answer ans = new Answer(quesid, time);
-		AnswerSheet anst  = new AnswerSheet(content);
-		if(userid != 0){
-			anst.setUserid(userid);
+		JSONObject pack = new JSONObject();
+		pack.put("content", content);
+		AnswerSheet anst  = new AnswerSheet(pack.toString());
+		if(session().getAttribute("user") != null){
+			User user = (User)session().getAttribute("user");
+			anst.setUserid(user.getId());
 		}
+		ansService.addAnswer(ans, anst);
 		return null;
 	}
 	
 	public String update(){
-		AnswerSheet anst = ansService.getAnswerSheetById(id);
-		anst.setContent(content);
+		
 		return null;
 	}
 	

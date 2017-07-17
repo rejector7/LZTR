@@ -202,9 +202,39 @@ function addOption(value){
 	button.onclick = function(){deleteOption(value, num)};
 	document.getElementById(value +"_" + num +"button").appendChild(button);
 	
+	var upbutton = document.createElement("button");
+	upbutton.className = "btn btn-default";
+	upbutton.type = "button";
+	upbutton.style="floating:left";
+	upbutton.onclick = function(){upOption(value, num)};
+	document.getElementById(value +"_" + num +"button").appendChild(upbutton);
+	
+	var downbutton = document.createElement("button");
+	downbutton.className = "btn btn-default";
+	downbutton.type = "button";
+	downbutton.style="floating:left";
+	downbutton.onclick = function(){downOption(value, num)};
+	document.getElementById(value +"_" + num +"button").appendChild(downbutton);
+	
+	var appendbutton = document.createElement("button");
+	appendbutton.className = "btn btn-default";
+	appendbutton.type = "button";
+	appendbutton.style="floating:left";
+	appendbutton.onclick = function(){appendOption(value, num)};
+	document.getElementById(value +"_" + num +"button").appendChild(appendbutton);
+	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	button.appendChild(i);
+	var iup = document.createElement("i");
+	iup.className = "fa fa-chevron-up";
+	upbutton.appendChild(iup);
+	var idown = document.createElement("i");
+	idown.className = "fa fa-chevron-down";
+	downbutton.appendChild(idown);
+	var iappend = document.createElement("i");
+	iappend.className = "fa fa-plus";
+	appendbutton.appendChild(iappend);
 }
 
 function deleteQuestion(value){
@@ -228,6 +258,117 @@ function deleteOption(value, num){
 	container.removeChild(victim);
 }
 
+function upOption(value, num){
+	if(num==0){
+		return false;
+	}
+	var option_form = document.getElementById(value +"container");
+	var options = option_form.childNodes;
+	var name1 = options[num*1+1].getAttribute("id").split("div")[0];
+	var option1 = $("input[name=" + name1 + "]").val();
+	var id1 = name1.split("option")[0];
+	var cf1 = document.getElementById(id1+"cf");
+	var name2 = options[num].getAttribute("id").split("div")[0];
+	var option2 = $("input[name=" + name2 + "]").val();
+	var id2 = name2.split("option")[0];
+	var cf2 = document.getElementById(id2+"cf");
+	$("input[name=" + name1 + "]").val(option2);
+	$("input[name=" + name2 + "]").val(option1);
+	var tmp = cf1.checked;
+	cf1.checked = cf2.checked;
+	cf2.checked = tmp;
+}
+
+function downOption(value, num){
+	var option_form = document.getElementById(value +"container");
+	var options = option_form.childNodes;
+	if(num==(options.length-2)){
+		return false;
+	}
+	var name1 = options[num*1+1].getAttribute("id").split("div")[0];
+	var option1 = $("input[name=" + name1 + "]").val();
+	var id1 = name1.split("option")[0];
+	var cf1 = document.getElementById(id1+"cf");
+	var name2 = options[num*1+2].getAttribute("id").split("div")[0];
+	var option2 = $("input[name=" + name2 + "]").val();
+	var id2 = name2.split("option")[0];
+	var cf2 = document.getElementById(id2+"cf");
+	$("input[name=" + name1 + "]").val(option2);
+	$("input[name=" + name2 + "]").val(option1);
+	var tmp = cf1.checked;
+	cf1.checked = cf2.checked;
+	cf2.checked = tmp;
+}
+
+function appendOption(value, oldnum){
+	var div = document.getElementById(value + "container");
+	var num = div.getAttribute("value");
+	var newdiv = document.createElement("div");
+	newdiv.id = value + "_" +num + "optiondiv";
+	var olddiv = document.getElementById(value+"_"+oldnum+"optiondiv").nextSibling;
+	if(olddiv==null){
+		div.appendChild(newdiv);
+	}
+	else{
+		div.insertBefore(newdiv, olddiv);
+	}
+	$("#" + value + "_" + num + "optiondiv").html("" +
+			"<div class='container'>" +
+			"<div class='row container col-lg-8'>" +
+			"<input class='form-control' name='" + value +"_" + num + "option'>" +
+			"</div>" +
+			"<div class='col-lg-2'><div id='" + value +"_" + num +"button'>" +
+			"</div></div>" +
+			"<div class='col-lg-2'>" +
+			"<label>comment field</label>" +
+			"<input type='checkbox' id='" + value + "_" + num + "cf'>" +
+			"</div>"+
+			"");
+	div.setAttribute("value",  num * 1 + 1);
+	
+	//create button to delete an question
+	var button = document.createElement("button");
+	button.className = "btn btn-default";
+	button.type = "button";
+	button.style="floating:left";
+	button.onclick = function(){deleteOption(value, num)};
+	document.getElementById(value +"_" + num +"button").appendChild(button);
+	
+	var upbutton = document.createElement("button");
+	upbutton.className = "btn btn-default";
+	upbutton.type = "button";
+	upbutton.style="floating:left";
+	upbutton.onclick = function(){upOption(value, num)};
+	document.getElementById(value +"_" + num +"button").appendChild(upbutton);
+	
+	var downbutton = document.createElement("button");
+	downbutton.className = "btn btn-default";
+	downbutton.type = "button";
+	downbutton.style="floating:left";
+	downbutton.onclick = function(){downOption(value, num)};
+	document.getElementById(value +"_" + num +"button").appendChild(downbutton);
+	
+	var appendbutton = document.createElement("button");
+	appendbutton.className = "btn btn-default";
+	appendbutton.type = "button";
+	appendbutton.style="floating:left";
+	appendbutton.onclick = function(){appendOption(value, num)};
+	document.getElementById(value +"_" + num +"button").appendChild(appendbutton);
+	
+	var i = document.createElement("i");
+	i.className = "fa fa-times";
+	button.appendChild(i);
+	var iup = document.createElement("i");
+	iup.className = "fa fa-chevron-up";
+	upbutton.appendChild(iup);
+	var idown = document.createElement("i");
+	idown.className = "fa fa-chevron-down";
+	downbutton.appendChild(idown);
+	var iappend = document.createElement("i");
+	iappend.className = "fa fa-plus";
+	appendbutton.appendChild(iappend);
+}
+
 function addBlank() {
 	var body = document.body;
 	var value = body.getAttribute("value");
@@ -237,6 +378,17 @@ function addBlank() {
 	form.id = 'form';
 	form.role = "role";
 	body.appendChild(form);
+	$("#form").sortable({
+		axis: "y" ,
+		cursor: "move",
+		stop: function( event, ui ) {
+			var children = form.childNodes;
+			for(var i=0;i<children.length;i++){
+				var id = children[i].getAttribute("id");
+				$("#"+id+"font").html(i+1);
+			}
+		}
+	});
 	}
 	else{
 		var form = document.getElementById("form");
@@ -322,6 +474,17 @@ function addSingle() {
 	form.id = 'form';
 	form.role = "role";
 	body.appendChild(form);
+	$("#form").sortable({
+		axis: "y" ,
+		cursor: "move",
+		stop: function( event, ui ) {
+			var children = form.childNodes;
+			for(var i=0;i<children.length;i++){
+				var id = children[i].getAttribute("id");
+				$("#"+id+"font").html(i+1);
+			}
+		}
+	});
 	}
 	else{
 		var form = document.getElementById("form");
@@ -384,6 +547,17 @@ function addMultiple() {
 	form.id = 'form';
 	form.role = "role";
 	body.appendChild(form);
+	$("#form").sortable({
+		axis: "y" ,
+		cursor: "move",
+		stop: function( event, ui ) {
+			var children = form.childNodes;
+			for(var i=0;i<children.length;i++){
+				var id = children[i].getAttribute("id");
+				$("#"+id+"font").html(i+1);
+			}
+		}
+	});
 	}
 	else{
 		var form = document.getElementById("form");
@@ -447,6 +621,17 @@ function addSlider() {
 	form.id = 'form';
 	form.role = "role";
 	body.appendChild(form);
+	$("#form").sortable({
+		axis: "y" ,
+		cursor: "move",
+		stop: function( event, ui ) {
+			var children = form.childNodes;
+			for(var i=0;i<children.length;i++){
+				var id = children[i].getAttribute("id");
+				$("#"+id+"font").html(i+1);
+			}
+		}
+	});
 	}
 	else{
 		var form = document.getElementById("form");
