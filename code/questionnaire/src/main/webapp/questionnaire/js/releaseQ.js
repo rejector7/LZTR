@@ -452,7 +452,8 @@ function addBlank() {
 	//create required label
 	var div4 = document.createElement("div");
 	div4.className = "col-lg-2";
-	div2.appendChild(div4);
+	div4.style="float:right";
+	div5.appendChild(div4);
 	var label2 = document.createElement("label");
 	label2.innerText="required";
 	div4.appendChild(label2);
@@ -496,15 +497,16 @@ function addSingle() {
 	form.appendChild(div);
 	$("#"+value+"div").html("" +
 			"<div class='form-group container'><div class='row'>" +
-			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label></div>" +
+			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label>" +
+			"<div class='col-lg-2' style='float:right'>" +
+			"<label>required</label>" +
+			"<input type='checkbox' id='" + value + "required'>" +
+			"</div></div>" +
 			"<div class='col-lg-2' id='" + value + "button'></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
 			"<input class='form-control' name=" + value +"></div>" +
-			"<div class='col-lg-2'>" +
-			"<label>required</label>" +
-			"<input type='checkbox' id='" + value + "required'>" +
-			"</div></div>" +
+			"</div>" +
 			"<div class='container' id='" + value + "container' value='0'>" +
 			"<label><font size='5'>input your option</font></label></div>" +
 			"<\label>" +
@@ -570,17 +572,18 @@ function addMultiple() {
 			"<div class='container'><div class='row'>" +
 			"<div class='col-lg-4'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label></div>" +
 			"<div class='col-lg-1'><label><font size='5'>max</font></label></div>" +
-			"<div class='col-lg-2'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
+			"<div class='col-lg-1'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
 			"<div class='col-lg-1'><label><font size='5'>min</font></label></div>" +
-			"<div class='col-lg-2'><input class='form-control' type='number' step='1' name='" + value +"min'></div>" +
+			"<div class='col-lg-1'><input class='form-control' type='number' step='1' name='" + value +"min'></div>" +
+			"<div class='col-lg-2'>" +
+			"<label>required</label>" +
+			"<input type='checkbox' id='" + value + "required'>" +
+			"</div>" +
 			"<div class='col-lg-2'><div id='" + value + "button'></div></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
 			"<input class='form-control' name=" + value + "></div>" +
-			"<div class='col-lg-2'>" +
-			"<label>required</label>" +
-			"<input type='checkbox' id='" + value + "required'>" +
-			"</div></div>" +
+			"</div>" +
 			"<div class='container' id='" + value + "container' value='0'>" +
 			"<label><font size='5'>input your option</font></label></div>" +
 			"<\label>" +
@@ -642,7 +645,7 @@ function addSlider() {
 	form.appendChild(div);
 	$("#"+value+"div").html("" +
 			"<div class='container'><div class='row'>" +
-			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label></div>" +
+			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label>" +
 			"<div class='col-lg-2'><div id='" + value + "button'></div></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-11'>" +
