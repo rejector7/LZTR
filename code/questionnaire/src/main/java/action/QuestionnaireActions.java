@@ -3,6 +3,7 @@ package action;
 import service.QuestionnaireService;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +97,10 @@ public class QuestionnaireActions extends BaseAction{
 	 * @throws IOException 
 	 */
 	public String add() throws IOException{
+		content =  URLDecoder.decode(content, "UTF-8");
+		content =  URLDecoder.decode(content, "UTF-8");
+		title =  URLDecoder.decode(title, "UTF-8");
+		title =  URLDecoder.decode(title, "UTF-8");
 		if(id!=0){
 			Questionnaire ques = quesService.getQuestionnaireById(id);
 			QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
@@ -165,8 +170,9 @@ public class QuestionnaireActions extends BaseAction{
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
 		JSONObject questot = new JSONObject(quescontent.getContent());
-		questot.put("id", ques.getId());
 		questot.put("title", ques.getTitle());
+		response().setCharacterEncoding("utf-8");
+		response().setContentType("text/html;charset:utf-8");
 		response().getWriter().print(questot.toString());
 		return null;
 	}

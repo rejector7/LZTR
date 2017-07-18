@@ -23,7 +23,16 @@
 
     <!-- Custom styles for this template -->
     <link href="<%=path %>/questionnaire/css/justified-nav.css" rel="stylesheet">
-
+    
+    <link href="<%=path %>/questionnaire/css/font-awesome.min.css" rel="stylesheet">
+	 <link href="<%=path %>/questionnaire/css/jquery-ui.min.css" rel="stylesheet">
+	 <style>
+	 .portlet-placeholder {
+    	border: 1px dotted black;
+    	margin: 0 1em 1em 0;
+    	height: 50px;
+  	 }
+	 </style>
   </head>
 
   <body value="0">
@@ -38,8 +47,11 @@
 		<button class="btn btn-default addMultiple"  type="button" style="floating:right">
 				<i class="fa fa-plus  fa-2x">Multiple Option Question</i>
 		</button>
+		<button class="btn btn-default addSlider"  type="button" style="floating:right">
+				<i class="fa fa-plus  fa-2x">Slider Question</i>
+		</button>
 		
-		<div class="row">
+		<div class="row pre-scrollable">
 			 <label ><font size="5">Title</font></label>
 			 <input type="text" name="title"  class="form-control">
 		</div>
@@ -56,7 +68,8 @@
 		</button>
     </div> <!-- /container -->
     
-    	<script src="questionnaire/js/jquery-1.11.1.min.js"></script>
+    <script src="questionnaire/js/jquery-1.11.1.min.js"></script>
+    <script src="questionnaire/js/jquery-ui.min.js"></script>
     <script src="questionnaire/js/bootstrap.min.js"></script>
     <script src="questionnaire/js/bootbox.min.js"></script>
 	<script src="questionnaire/js/releaseQ.js"></script>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="model.Answer" table="answer">
+	<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<property name="quesid" type="int">
+			<column name="quesid" />
+		</property>
+		<property name="time" type="java.util.Date">
+			<column name="time" />
+		</property>
+	</class>
+</hibernate-mapping>

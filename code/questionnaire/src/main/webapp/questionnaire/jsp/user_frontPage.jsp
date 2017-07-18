@@ -50,7 +50,11 @@
             <li><a href="<%=path %>/ReleaseQuestionnaire">问卷发布</a></li>
             <li><a href="<%=path %>/FillQuestionnaire">填写问卷</a></li>
             <li><a href="<%=path %>/HelpContact">帮助</a></li>
+            <%if(session.getAttribute("user") != null){%>
             <li><a href="<%=path %>/logoutPro">登出</a></li>
+            <%}else{%>
+             <li><a href="<%=path %>/loginPage">登陆</a></li>
+             <%} %>
             <%if(session.getAttribute("role")!=null&&((String)session.getAttribute("role")).equals("admin")){%>
 				<li><a href="<%=path %>/allUser" ><i class="fa fa-table fa-fw"></i>系统信息管理</a></li>
 			<%}%>
