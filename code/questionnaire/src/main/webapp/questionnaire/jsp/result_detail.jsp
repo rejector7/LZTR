@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="model.Answer" %>
+<%@ page import="java.util.ArrayList"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%
 	String path=request.getContextPath();
@@ -27,18 +29,68 @@
         <nav>
           <ul class="nav nav-justified">
             <li><a href="<%=path%>/questionnaire/jsp/result.jsp">统计数据</a></li>
-            <li class="active"><a href="#">详细信息</a></li>
+            <li class="active"><a href="getAnswerByQuesid?quesid=1">详细信息</a></li>
           </ul>
         </nav>
       </div>
     </div>
 	
+	<!-- 从request获取answer数据 -->
+	<%
+		ArrayList<Answer> answers = new ArrayList<Answer>();
+			if (request.getAttribute("answers") != null) {
+		answers = (ArrayList<Answer>) request.getAttribute("answers");
+			}
+	%>
 	<!-- 网页主体内容 -->
 	<!-- 回答数据的列表 -->
 	<!-- 使用后台json，js生成 -->
-	<table id="answerList"><p>Answer List</p></table>
-	
-	
+			<!-- /.row -->
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="panel panel-default">
+						<!-- /.panel-heading -->
+						<div class="panel-body">
+							<div class="dataTable_wrapper">
+								<table class="table table-striped table-bordered table-hover"
+									id="dataTables">
+									<thead>
+										<tr>
+										    <th>ID</th>
+											<th>Answer Time</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<%
+											for (int i = 0; i < answers.size(); i++) {
+																				Answer answer = answers.get(i);
+										%>
+										<tr>
+										    <td><%=answer.getId()%></td>
+											<td><%=answer.getTime()%></td>
+											<td>
+												<!-- data-id what are they？ -->
+												<button class="btn btn-default search" type="button"
+													data-id="<%=answer.getId()%>">
+													<i class="fa fa-search"></i>
+												</button>
+											</td>
+										</tr>
+										<%
+											}
+										%>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- /.panel-body -->
+					</div>
+					<!-- /.panel -->
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
 	
 	
 	

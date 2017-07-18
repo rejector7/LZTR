@@ -57,6 +57,21 @@
 		<action name="signupPro" class="action.UserActions" method="add">
 			<result>/questionnaire/jsp/signup.jsp</result>
 		</action>
+		
+		
+		
+		
+		<action name="getAnswerByQuesid" class="action.AnswerAction" method="getByQuesid">
+			<result name="getByQuesid">/questionnaire/jsp/result_detail.jsp</result>
+		</action>
+		
+		
+		
+		
+		
+		
+		
+		
 		<action name="*">
 			<result>/{1}.jsp</result>
 		</action>
