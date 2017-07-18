@@ -72,6 +72,6 @@ public class AnswerAction extends BaseAction{
 	public String getByQuesid(){
 		List<Answer> anss = ansService.getAnswerByQuestion(quesid);
 		request().setAttribute("answers", anss);
-		return null;
+		return "getByQuesid";
 	}
 }

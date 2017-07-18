@@ -79,7 +79,7 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-12">
-					<a class="btn btn-lg btn-success" href="<%=path %>/ReleaseQuestionnaire" role="button">新建问卷</a>
+					<a class="btn btn-lg btn-success" href="<%=path %>/ReleaseQuestionnaire" role="button"><i class="fa fa-plus-square-o"></i>  新建问卷</a>
 				</div>
 			</div>
 			</br>
@@ -131,9 +131,10 @@
 													data-endtime="<%=ques.getEndTime()%>"
 													data-status="<%=ques.getStatus()%>"
 													>
-													<i class="fa fa-edit"></i>
+													<i class="fa fa-cog"></i>
 												</button>
-												<a class="btn btn-default" href="getInfoQuestionnaire?id=<%=ques.getId() %>" role="button">edit content</a>
+												<a class="btn btn-default" href="getInfoQuestionnaire?id=<%=ques.getId() %>" role="button"><i class="fa fa-edit"></i> edit content</a>
+												<a class="btn btn-default" href="#" role="button"><i class="fa fa-bar-chart"></i> view result</a>
 											</td>
 										</tr>
 										<%

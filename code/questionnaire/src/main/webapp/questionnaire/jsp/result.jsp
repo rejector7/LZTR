@@ -19,10 +19,9 @@
 <body>
 	<div class="container">
       <div class="masthead">
-      <h1>此处填写该问卷部分信息（问卷名字，序号，描述等）</h1>
-      <p>问卷序号： </p>
-      <p>问卷名字：</p>
-      <p>问卷描述：</p>
+      <p><strong>问卷序号： </strong></p>
+      <p><strong>问卷名字：</strong></p>
+      <p><strong>问卷描述：</strong></p>
         <nav>
           <ul class="nav nav-justified">
             <li class="active"><a href="#">统计数据</a></li>
