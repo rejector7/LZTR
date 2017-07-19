@@ -15,7 +15,7 @@ import model.Questionnaire;
 import model.QuestionnaireQuestions;
 
 
-public class QuestionnaireActions extends BaseAction{
+public class QuestionnaireAction extends BaseAction{
 	private QuestionnaireService quesService;
 	private int id;
 	private int userid;

@@ -82,7 +82,7 @@
 			                        </div>
 			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-email">Email</label>
-			                        	<input type="email" name="email" placeholder="Email..." class="form-email form-control" id="form-email" email="true">
+			                        	<input type="email" name="email" placeholder="Email..." class="form-email form-control" id="form-email" required>
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-country">Country</label>
@@ -94,7 +94,7 @@
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-mobile">Mobile</label>
-			                        	<input type="text" name="mobile" placeholder="Mobile..." class="form-mobile form-control" id="form-mobile" digits rangelength="[11,11]">
+			                        	<input type="text" name="mobile" placeholder="Mobile..." class="form-mobile form-control" id="form-mobile" digits rangelength="[11,11]" required>
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-qq">QQ</label>
