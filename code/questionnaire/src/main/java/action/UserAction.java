@@ -5,7 +5,7 @@ import java.util.List;
 import model.User;
 import service.UserService;
 
-public class UserActions extends BaseAction{
+public class UserAction extends BaseAction{
 	/**
 	 * 
 	 */
