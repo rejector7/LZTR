@@ -28,6 +28,7 @@
     <script src="<%=path %>/questionnaire/js/ie-emulation-modes-warning.js"></script>
     <link href="<%=path %>/questionnaire/css/font-awesome.min.css" rel="stylesheet">
     <link href="<%=path %>/questionnaire/css/jquery-ui.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="<%=path %>/questionnaire/css/validation.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -83,11 +84,25 @@
     <script src="questionnaire/js/bootstrap.min.js"></script>
     <script src="questionnaire/js/bootbox.min.js"></script>
     <script src="<%=path %>/questionnaire/js/jquery-ui.min.js"></script>
+            <script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
         <script src="<%=path %>/questionnaire/js/fillinQ.js"></script>
     	<script>
-	<%if(request.getParameter("quesid")==null){%>alert("no questionnaire id input");
+	<%if(request.getParameter("quesid")==null){%>//alert("no questionnaire id input");
 	<%}else{%>getQ(<%=request.getParameter("quesid")%>);
 	<%}%>
+	</script>
+	<script>
+	$("form").validate({
+		errorPlacement : function(error ,element){
+			//alert(element);
+			if(element.is(":radio")||element.is(":checkbox")){
+				error.prependTo(element.parent().parent().parent());
+			}
+			else{
+				error.prependTo(element.parent().parent());
+			}
+		}
+	});
 	</script>
   </body>
 </html>
