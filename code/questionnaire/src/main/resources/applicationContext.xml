@@ -49,8 +49,8 @@
 	<!-- Hibernate Bean -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close" p:driverClass="com.mysql.jdbc.Driver"
-		p:jdbcUrl="jdbc:mysql://localhost:3306/lztr" p:user="root"
-		p:password="qaz,./123456789" p:maxPoolSize="40" p:minPoolSize="1"
+		p:jdbcUrl="jdbc:mysql://localhost:3306/questionnaire" p:user="root"
+		p:password="123456" p:maxPoolSize="40" p:minPoolSize="1"
 		p:initialPoolSize="1" p:maxIdleTime="20" />
 
 
@@ -117,6 +117,11 @@
 	<bean id="ansService" class="service.impl.AnswerSheetServiceImpl">
 		<property name="ansDao" ref="ansDao"></property>
 		<property name="anssheetDao" ref="anssheetDao"></property>
+	</bean>
+	<bean id="statisticService" class="service.impl.StatisticServiceImpl">
+		<property name="ansDao" ref="ansDao"></property>
+		<property name="anssheetDao" ref="anssheetDao"></property>
+		<property name="quesDao" ref="questionsDao"></property>
 	</bean>
 	<!-- End of Service -->
 	

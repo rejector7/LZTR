@@ -12,11 +12,13 @@ $(function(){
 				equalTo:"Please enter the same password again."
 			},
 			email:{
+				required:"Email is required.",
 				email:"Please enter a valid email address."
 			},
 			mobile:{
 				rangelength:"Please enter a cellphone number.",
-				digits:"Please enter a cellphone number."
+				digits:"Please enter a cellphone number.",
+				required:"Cellphone number is required."
 			},
 			qq:{
 				digits:"Please enter a cellphone number."
@@ -36,7 +38,8 @@ $(function(){
 		var sex = $("#form-sex").val();
 		var age = $("input[name='age']").val();
 		var job = $("input[name='job']").val();
-		if(!$("#registerform").validate({
+		var reg=/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
+			if(!$("#registerform").validate({
 			messages:{
 				username:{
 					required:"Username is required."
@@ -49,11 +52,13 @@ $(function(){
 					equalTo:"Please enter the same password again."
 				},
 				email:{
+					required:"Email is required.",
 					email:"Please enter a valid email address."
 				},
 				mobile:{
 					rangelength:"Please enter a cellphone number.",
-					digits:"Please enter a cellphone number."
+					digits:"Please enter a cellphone number.",
+					required:"Cellphone number is required."
 				},
 				qq:{
 					digits:"Please enter a cellphone number."

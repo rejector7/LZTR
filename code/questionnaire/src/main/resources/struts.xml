@@ -8,7 +8,7 @@
 	<constant name="struts.devMode" value="true" />
 	<package name="process" extends="struts-default">
 	<!-- User -->
-		<action name="*User" class="action.UserActions" method="{1}">
+		<action name="*User" class="action.UserAction" method="{1}">
 		<result name="update">/questionnaire/jsp/admin_user.jsp</result>
 			<result name="add">/questionnaire/jsp/admin_user.jsp</result>
 			<result name="search">/questionnaire/jsp/admin_user.jsp</result>
@@ -16,7 +16,7 @@
 			<result name="all">/questionnaire/jsp/admin_user.jsp</result>
 		</action> 
 		
-		<action name="*Questionnaire" class="action.QuestionnaireActions" method="{1}">
+		<action name="*Questionnaire" class="action.QuestionnaireAction" method="{1}">
 		<result name="update">/questionnaire/jsp/user_myQuestionnaire.jsp</result>
 		<result name="updateStatus">/questionnaire/jsp/admin_ques.jsp</result>
 			<result name="search">/questionnaire/jsp/admin_ques.jsp</result>
