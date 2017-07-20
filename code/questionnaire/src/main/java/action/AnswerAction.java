@@ -1,5 +1,7 @@
 package action;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +18,6 @@ public class AnswerAction extends BaseAction{
 	private int quesid;
 	private Date time;
 	private String content;
-	private String ip;
 	public int getId() {
 		return id;
 	}
@@ -41,12 +42,6 @@ public class AnswerAction extends BaseAction{
 	public void setTime(Date time) {
 		this.time = time;
 	}
-	public String getIp() {
-		return ip;
-	}
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
 	public void setAnsService(AnswerSheetService ansService) {
 		this.ansService = ansService;
 	}
@@ -54,8 +49,12 @@ public class AnswerAction extends BaseAction{
 	/**
 	 * Create a new answer sheet
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
-	public String add(){
+	public String add() throws UnsupportedEncodingException{
+		content =  URLDecoder.decode(content, "UTF-8");
+		content =  URLDecoder.decode(content, "UTF-8");
+		String ip = request().getRemoteAddr();
 		Answer ans = new Answer(quesid, time, ip);
 		JSONObject pack = new JSONObject();
 		pack.put("content", content);
@@ -71,8 +70,12 @@ public class AnswerAction extends BaseAction{
 	/**
 	 * Update an answer sheet, requiring user logged
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
-	public String update(){
+	public String update() throws UnsupportedEncodingException{
+		content =  URLDecoder.decode(content, "UTF-8");
+		content =  URLDecoder.decode(content, "UTF-8");
+		String ip = request().getRemoteAddr();
 		Answer ans = ansService.getAnswerById(id);
 		AnswerSheet anst = ansService.getAnswerSheetById(id);
 		ans.setIp(ip);
@@ -90,7 +93,7 @@ public class AnswerAction extends BaseAction{
 		Answer ans = ansService.getAnswerById(id);
 		AnswerSheet anst = ansService.getAnswerSheetById(id);
 		ansService.deleteAnswer(ans, anst);
-		return null;
+		return "delete";
 	}
 	
 	/**

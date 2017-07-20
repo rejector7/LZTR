@@ -127,22 +127,6 @@ public class QuestionnaireAction extends BaseAction{
 		return "updateStatus";
 	}
 	
-	
-	/**
-	 * Use appService to update a questionnaire,including its basic information and content
-	 * @return
-	 */
-	public String update() throws Exception {
-		Questionnaire ques = quesService.getQuestionnaireById(id);
-		ques.setEndTime(endTime);
-		ques.setIsPublic(isPublic);
-		ques.setReleaseTime(releaseTime);
-		ques.setStatus(status);
-		ques.setTitle(title);
-		quesService.updateQuestionnaire(ques);
-		return "update";
-	}
-	
 	/**
 	 * Use appService to delete a questionnaire,including its basic information and content
 	 * @return

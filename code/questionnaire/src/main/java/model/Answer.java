@@ -40,4 +40,10 @@ public class Answer {
 	public Answer() {
 		super();
 	}
+	@Override
+	public String toString() {
+		return "{\"id\":\"" + id + "\", \"quesid\":\"" + quesid + "\", \"time\":\"" + time + "\", \"ip\":\"" + ip
+				+ "\"}";
+	}
+	
 }
