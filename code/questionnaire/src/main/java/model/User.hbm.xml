@@ -44,5 +44,17 @@
 		<property name="job" type="java.lang.String">
 			<column name="job"></column>
 		</property>
+		<property name="status" type="int">
+			<column name="status"></column>
+		</property>
+				<property name="createDate" type="java.util.Date">
+			<column name="createDate"></column>
+		</property>
+				<property name="activateTime" type="java.lang.Long">
+			<column name="activateTime"></column>
+		</property>
+				<property name="token" type="java.lang.String">
+			<column name="token"></column>
+		</property>
 	</class>
 </hibernate-mapping>

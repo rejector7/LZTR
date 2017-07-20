@@ -84,11 +84,15 @@ $(function(){
 				job:job
 			},
 			success : function(data) {
-				if(data=="itdepends"){
+				if(data=="dupusername"){
 					document.getElementById("dupname").innerHTML=
 						"User exists";
 				}
-				else{window.location.href="loginPage";}
+				else if(data=="dupemail"){
+					document.getElementById("dupname").innerHTML=
+						"Email exists";
+				}
+				//else{window.location.href="loginPage";}
 			}
 		});
 	});

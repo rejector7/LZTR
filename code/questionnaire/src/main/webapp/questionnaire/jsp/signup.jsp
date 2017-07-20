@@ -55,7 +55,7 @@
                         		</div>
                             </div>
                             <div class="form-bottom">
-			                    <form role="form" method="post" class="login-form" id="registerform">
+			                    <form role="form" method="post"  action="signupPro" class="login-form" id="registerform">
 			                    	<div class="form-group">
 			                    		<label class="sr-only" for="form-username">Username</label>
 			                        	<input type="text" name="username" placeholder="Username..." class="form-username form-control" id="form-username" required>
@@ -94,7 +94,7 @@
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-mobile">Mobile</label>
-			                        	<input type="text" name="mobile" placeholder="Mobile..." class="form-mobile form-control" id="form-mobile" digits rangelength="[11,11]" required>
+			                        	<input type="text" name="mobile" placeholder="Mobile..." class="form-mobile form-control" id="form-mobile" digits rangelength="[11,11]" >
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-qq">QQ</label>
