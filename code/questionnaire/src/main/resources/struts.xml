@@ -64,6 +64,9 @@
 		<action name="getAnswerByQuesid" class="action.AnswerAction" method="getByQuesid">
 			<result name="getByQuesid">/questionnaire/jsp/result_detail.jsp</result>
 		</action>
+		<action name="deleteAnswer" class="action.AnswerAction" method="delete">
+			<result>/questionnaire/jsp/result_detail.jsp</result>
+		</action>
 		
 		
 		
