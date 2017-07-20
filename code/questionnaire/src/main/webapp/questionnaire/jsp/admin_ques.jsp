@@ -111,6 +111,11 @@
 													>
 													<i class="fa fa-edit"></i>
 												</button>
+												<button class="btn btn-default backup" type="button"
+												data-id="<%=ques.getId() %>"
+												>
+												<i class="fa fa-copy"></i>backup
+												</button>
 											</td>
 										</tr>
 										<%
@@ -175,9 +180,10 @@
 	<script src="<%=path%>/questionnaire/js/dataTables.bootstrap.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/bootbox.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/questionnaire.js"></script>
-
+	<script src="<%=path%>/questionnaire/js/download.js"></script>
+	<script src="<%=path%>/questionnaire/js/questionnaireExport.js"></script>
 	<script src="<%=path%>/questionnaire/js/admin_ques.js"></script>
-	
+	<script src="<%=path%>/questionnaire/js/questionnaireExport.js"></script>
 
 	<script>
 		$(document).ready(function() {

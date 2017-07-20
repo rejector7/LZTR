@@ -15,7 +15,12 @@
 			<result name="delete">/questionnaire/jsp/admin_user.jsp</result>
 			<result name="all">/questionnaire/jsp/admin_user.jsp</result>
 		</action> 
-		
+		<action name="FillQuestionnaire">
+			<result>/questionnaire/jsp/user_fillQuestionnaire.jsp</result>
+		</action>
+		<action name="PreviewQuestionnaire">
+			<result>/questionnaire/jsp/user_previewQuestionnaire.jsp</result>
+		</action>
 		<action name="*Questionnaire" class="action.QuestionnaireAction" method="{1}">
 		<result name="update">/questionnaire/jsp/user_myQuestionnaire.jsp</result>
 		<result name="updateStatus">/questionnaire/jsp/admin_ques.jsp</result>
@@ -26,9 +31,7 @@
 			<result name="My">/questionnaire/jsp/user_myQuestionnaire.jsp</result>
 			<result name="getInfo">/questionnaire/jsp/user_releaseQuestionnaire.jsp</result>
 		</action>
-		<action name="FillQuestionnaire">
-			<result>/questionnaire/jsp/user_fillQuestionnaire.jsp</result>
-		</action>
+		
 		<action name="FrontPage">
 			<result>/questionnaire/jsp/user_frontPage.jsp</result>
 		</action>
@@ -59,17 +62,17 @@
 		</action>
 		
 		
-		
-		
+		<action name="*Answer" class="action.AnswerAction" method="{1}">
+			<result name="delete">/questionnaire/jsp/result_detail.jsp</result>
+		</action>
 		<action name="getAnswerByQuesid" class="action.AnswerAction" method="getByQuesid">
 			<result name="getByQuesid">/questionnaire/jsp/result_detail.jsp</result>
 		</action>
-		<action name="deleteAnswer" class="action.AnswerAction" method="delete">
-			<result>/questionnaire/jsp/result_detail.jsp</result>
+		
+		
+		
+		<action name="*port" class="action.ImportExportAction" method="{1}">
 		</action>
-		
-		
-		
 		
 		
 		
