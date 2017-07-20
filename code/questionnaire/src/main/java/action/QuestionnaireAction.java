@@ -15,7 +15,7 @@ import model.Questionnaire;
 import model.QuestionnaireQuestions;
 
 
-public class QuestionnaireActions extends BaseAction{
+public class QuestionnaireAction extends BaseAction{
 	private QuestionnaireService quesService;
 	private int id;
 	private int userid;
@@ -125,22 +125,6 @@ public class QuestionnaireActions extends BaseAction{
 		ques.setStatus(status);
 		quesService.updateQuestionnaire(ques);
 		return "updateStatus";
-	}
-	
-	
-	/**
-	 * Use appService to update a questionnaire,including its basic information and content
-	 * @return
-	 */
-	public String update() throws Exception {
-		Questionnaire ques = quesService.getQuestionnaireById(id);
-		ques.setEndTime(endTime);
-		ques.setIsPublic(isPublic);
-		ques.setReleaseTime(releaseTime);
-		ques.setStatus(status);
-		ques.setTitle(title);
-		quesService.updateQuestionnaire(ques);
-		return "update";
 	}
 	
 	/**

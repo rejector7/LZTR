@@ -185,18 +185,18 @@ function addSlider(question, i){
 	return;
 }
 
-function submit(){
+function wordexport(){
+	var content = $("#questionnaire").html();
+	var fc = "";
 	var form = document.getElementById("form");
 	var questions = form.childNodes;
 	var length = questions.length;
-	var result=[];
 	for(var i = 0; i < length; i++){
-		var answer = {};
+		var answer="";
 		var type = document.getElementById(i).getAttribute("value");
 		switch(type){
 		case'0':
 			answer['words'] = $("input[name='" + i +"'").val();
-			//alert($("input[name='" + i + "'").val())}
 			break;
 		case'1':
 			var optionid = $("input[name='" + i +"']:checked").val();
@@ -245,26 +245,6 @@ function submit(){
 		}
 		result.push(answer);
 	}
-	alert(JSON.stringify(Q));
-	if(!$("#form").validate().form()){
-		return;
-	}    
-	var t = new Date();
-	var time = t.getFullYear()+"-"+(t.getMonth()+1)+"-"+t.getDate()
-						+" "+t.getHours()+":"+t.getMinutes()+":"+t.getSeconds();     
-	jQuery.ajax({
-		url : 'addAnswer',  //get content
-		processData : true,
-		dataType : "json",
-		data : {
-			quesid : QUESID,
-			time : time,
-			content : encodeURI(encodeURI(JSON.stringify(result)))
-		},
-		success : function(data) { //把title，id都放在里面
-			alert("success")
-		}
-	});
-
-
+	var filename = $("h1").html();
+	exportDoc(content,filename)
 }

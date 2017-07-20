@@ -25,7 +25,14 @@
     <link href="<%=path %>/questionnaire/css/justified-nav.css" rel="stylesheet">
     
     <link href="<%=path %>/questionnaire/css/font-awesome.min.css" rel="stylesheet">
-
+	 <link href="<%=path %>/questionnaire/css/jquery-ui.min.css" rel="stylesheet">
+	 <style>
+	 .portlet-placeholder {
+    	border: 1px dotted black;
+    	margin: 0 1em 1em 0;
+    	height: 50px;
+  	 }
+	 </style>
   </head>
 
   <body value="0">
@@ -61,7 +68,8 @@
 		</button>
     </div> <!-- /container -->
     
-    	<script src="questionnaire/js/jquery-1.11.1.min.js"></script>
+    <script src="questionnaire/js/jquery-1.11.1.min.js"></script>
+    <script src="questionnaire/js/jquery-ui.min.js"></script>
     <script src="questionnaire/js/bootstrap.min.js"></script>
     <script src="questionnaire/js/bootbox.min.js"></script>
 	<script src="questionnaire/js/releaseQ.js"></script>

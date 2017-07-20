@@ -61,6 +61,7 @@
 			<list>
 				<value>model/User.hbm.xml</value>
 				<value>model/Questionnaire.hbm.xml</value>
+				<value>model/Answer.hbm.xml</value>
 			</list>
 		</property>
 		<!-- Hibernate SessionFactory -->
@@ -116,6 +117,17 @@
 	<bean id="ansService" class="service.impl.AnswerSheetServiceImpl">
 		<property name="ansDao" ref="ansDao"></property>
 		<property name="anssheetDao" ref="anssheetDao"></property>
+	</bean>
+	<bean id="statisticService" class="service.impl.StatisticServiceImpl">
+		<property name="ansDao" ref="ansDao"></property>
+		<property name="anssheetDao" ref="anssheetDao"></property>
+		<property name="quesDao" ref="questionsDao"></property>
+	</bean>
+	<bean id="ioService" class="service.impl.ImportExportServiceImpl">
+		<property name="ansDao" ref="ansDao"></property>
+		<property name="anssheetDao" ref="anssheetDao"></property>
+		<property name="quesDao" ref="quesDao"></property>
+		<property name="questionnairequestionsDao" ref="questionsDao"></property>
 	</bean>
 	<!-- End of Service -->
 	

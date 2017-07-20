@@ -14,5 +14,8 @@
 		<property name="time" type="java.util.Date">
 			<column name="time" />
 		</property>
+		<property name="ip" type="java.lang.String">
+			<column name="ip" />
+		</property>
 	</class>
 </hibernate-mapping>

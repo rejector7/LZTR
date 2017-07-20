@@ -73,4 +73,10 @@ public class Questionnaire{
 	public void setEndTime(Date endTime){
 		this.endTime = endTime;
 	}
+	@Override
+	public String toString() {
+		return "{\"id\":\"" + id + "\", \"userid\":\"" + userid + "\", \"title\":\"" + title + "\", \"status\":\""
+				+ status + "\", \"isPublic\":\"" + isPublic + "\", \"releaseTime\":\"" + releaseTime
+				+ "\", \"endTime\":\"" + endTime + "\"}";
+	}
 }

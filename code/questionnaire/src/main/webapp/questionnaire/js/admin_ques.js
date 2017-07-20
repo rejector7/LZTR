@@ -82,4 +82,19 @@ $(function() {
 		$('#modal').modal('show');
 	});
 
+	$(".backup").click(function(e) {
+		var dataset = e.currentTarget.dataset;
+		var id = dataset.id;
+		jQuery.ajax({
+			url : 'backupexport',
+			processData : true,
+			dataType : "text",
+			data : {
+				quesid : id
+			},
+			success : function(data) {
+				exportBackup(data,id);
+			}
+		});
+	});
 });
