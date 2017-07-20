@@ -26,6 +26,9 @@
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="<%=path %>/questionnaire/js/ie-emulation-modes-warning.js"></script>
+    <link href="<%=path %>/questionnaire/css/font-awesome.min.css" rel="stylesheet">
+    <link href="<%=path %>/questionnaire/css/jquery-ui.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="<%=path %>/questionnaire/css/validation.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -57,36 +60,15 @@
           </ul>
         </nav>
       </div>
-
-      <!-- Jumbotron -->
-      <div class="jumbotron">
-        <h1>免费在线问卷调查</h1>
-        <p class="lead">免费，轻松的在线问卷网，欢迎您使用我们的系统来进行问卷调查，希望您能得到对于您工作或者学习有用的信息。</p>
-        <p><a class="btn btn-lg btn-success" href="#" role="button">马上发布你的问卷！</a></p>
-      </div>
-	  
-	  <div class="jumbotron">
-          <h1>时下热门</h1>
-	  </div>
-	  <!-- 此处代码需要修改，到时候项目基本完成后，需要修改为动态变化的（显示数据库中填写次数最多的前三个仍然开放的问卷） -->
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-lg-4">
-          <h2>大学生作息时间调查</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-primary" href="#" role="button">填写问卷 &raquo;</a></p>
-        </div>
-        <div class="col-lg-4">
-          <h2>编程语言使用调查</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-primary" href="#" role="button">填写问卷 &raquo;</a></p>
-       </div>
-        <div class="col-lg-4">
-          <h2>上海交大软件学院学生心理调查问卷</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
-          <p><a class="btn btn-primary" href="#" role="button">填写问卷 &raquo;</a></p>
-        </div>
-      </div>
+      
+      <div id = "questionnaire"></div>
+      <form id = "form"></form>
+      <div class="row">&nbsp</div>
+      <div align='center'>
+      <button style='floating:right' class="btn btn-primary" onclick="submit()" type="button" style="floating:right">
+			<i class="fa fa-check fa-2x">提交</i>
+		</button>
+</div>
 
       <!-- Site footer -->
       <footer class="footer">
@@ -98,5 +80,29 @@
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="<%=path %>/questionnaire/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="questionnaire/js/jquery-1.11.1.min.js"></script>
+    <script src="questionnaire/js/bootstrap.min.js"></script>
+    <script src="questionnaire/js/bootbox.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/jquery-ui.min.js"></script>
+            <script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
+        <script src="<%=path %>/questionnaire/js/fillinQ.js"></script>
+    	<script>
+	<%if(request.getParameter("quesid")==null){%>//alert("no questionnaire id input");
+	<%}else{%>getQ(<%=request.getParameter("quesid")%>);
+	<%}%>
+	</script>
+	<script>
+	$("form").validate({
+		errorPlacement : function(error ,element){
+			//alert(element);
+			if(element.is(":radio")||element.is(":checkbox")){
+				error.prependTo(element.parent().parent().parent());
+			}
+			else{
+				error.prependTo(element.parent().parent());
+			}
+		}
+	});
+	</script>
   </body>
 </html>
