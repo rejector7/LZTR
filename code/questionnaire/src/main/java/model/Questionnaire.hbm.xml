@@ -20,10 +20,10 @@
 		<property name="isPublic" type="int">
 			<column name="isPublic" />
 		</property>
-		<property name="releaseTime" type="java.sql.Date">
+		<property name="releaseTime" type="java.util.Date">
 			<column name="releaseTime" />
 		</property>
-		<property name="endTime" type="java.sql.Date">
+		<property name="endTime" type="java.util.Date">
 			<column name="endTime" />
 		</property>
 		

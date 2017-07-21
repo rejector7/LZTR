@@ -101,11 +101,11 @@ $(function() {
 				//get min & max
 				var min = $("input[name='" + i + "min']").val();
 				var max = $("input[name='" + i + "max']").val();
+				if(min==""){min=0;}
+				if(max==""){max=options.length-1;}
 				if(min > max) {alert("min must smaller than max");return;}
 				if(min < 0) {alert("min must bigger than 0");return;}
 				if(max > num) {alert("max must bigger than the number of options");return;}
-				if(min=""){min=0;}
-				if(max=""){max=options.length-1;}
 				result['questions'][k]['min'] = min;
 				result['questions'][k]['max'] = max;
  				//alert(min);alert(max);

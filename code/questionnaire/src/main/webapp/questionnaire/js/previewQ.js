@@ -47,7 +47,10 @@ function addStem(question, i){
 	div.id = i;
 	div.className = "container";
 	form.appendChild(div);
-	$("#"+i).html("<p2><font size='4'>" + (i+1)  + " "+ question['stem'] + "</font>")
+	if(question['type']=="Multiple"&&question['min']!=undefined&&question['min']!=null&&question['min']!=""){
+		$("#"+i).html("<p2><font size='4'>" + (i+1)  + " "+ question['stem'] + "("+question['min']+"~"+question['max']+"项)</font>");
+	}
+	else $("#"+i).html("<p2><font size='4'>" + (i+1)  + " "+ question['stem'] + "</font>");
 	if(question['required']==true){
 		$("#"+i).append("<font color='red' size='4'>&nbsp*</font>");
 	}
@@ -192,59 +195,90 @@ function wordexport(){
 	var questions = form.childNodes;
 	var length = questions.length;
 	for(var i = 0; i < length; i++){
-		var answer="";
 		var type = document.getElementById(i).getAttribute("value");
 		switch(type){
 		case'0':
-			answer['words'] = $("input[name='" + i +"'").val();
+			var question = document.getElementById(i);
+			var stem = question.getElementsByTagName("p2")[0];
+			if(stem.nextSibling.tagName=="FONT"){
+				fc+="<p>"+stem.innerHTML;
+				fc+="<font color='red' size='4'>&nbsp;*</font></p>";			}
+			else{
+				fc+="<p>"+stem.innerHTML+"</p>";
+			}
+			fc += "<p>____________</p>";
 			break;
 		case'1':
-			var optionid = $("input[name='" + i +"']:checked").val();
-			answer['option'] = optionid;
-			if(optionid == null) {
-				answer['option'] = "";
-				break;
+			var question = document.getElementById(i);
+			var stem = question.getElementsByTagName("p2")[0];
+			if(stem.nextSibling.tagName=="FONT"){
+				fc+="<p>"+stem.innerHTML;
+				fc+="<font color='red' size='4'>&nbsp;*</font></p>";			}
+			else{
+				fc+="<p>"+stem.innerHTML+"</p>";
 			}
-			if(Q['questions'][i]['options'][optionid*1]['hasWords']==true){
-				answer['words'] = $("input[name='" + i +"_" + optionid + "words']").val();;
+			var optiondiv = document.getElementById(i+"div");
+			var opts = optiondiv.getElementsByTagName("strong");
+			var divs = optiondiv.getElementsByTagName("input");
+			var options = new Array();
+			for(var k=0;k<opts.length;k++){
+				options[k] = "<p>○"+opts[k].innerHTML+"</p>";
+			}
+			for(var k=0;k<divs.length;k++){
+				var words = divs[k];
+				if(words.name[words.name.length-1]=="s"){
+					options[words.name[0]]="<p>○"+opts[words.name[0]].innerHTML+"_________</p>";
+				}
+			}
+			for(var k=0;k<options.length;k++){
+				fc+=options[k];
 			}
 			break;
 		case'2':
-	    	var a = document.getElementsByName(i);
-	    	answer['option']="";
-	    	answer['words']=[];
-	    	var count = 0;
-	    	for(var j=0; j<a.length; j++){
-	    		if(a[j].checked){
-	    			answer['option'] += j +",";
-	    			if(Q['questions'][i]['options'][j*1]['hasWords']==true){
-	    				var word = {};
-	    				word['optionid'] = j;
-	    				word['word'] = $("input[name='" + i +"_" + j + "words']").val();
-	    				answer['words'].push(word);
-	    				if(word['word']==""){
-	    					document.getElementById(i + "message").innerText = "Please enter the message of option " + j;
-	    		    		return;
-	    				}
-	    			}
-	    			count += 1;
-	    		}
-	    	}
-	    	if(count < Q['questions'][i]['min'] && count > 0){
-	    		document.getElementById(i + "message").innerText = "Please choose equal or more than " + Q['questions'][i]['min'] + " options";
-	    		return;
-	    	}
-	    	if(count > Q['questions'][i]['max']){
-	    		$("#" + i + "message").innerText = "Please choose equal or less than " + Q['questions'][i]['max'] + " options";
-	    		return;
-	    	}
+			var question = document.getElementById(i);
+			var stem = question.getElementsByTagName("p2")[0];
+			if(stem.nextSibling.tagName=="FONT"){
+				fc+="<p>"+stem.innerHTML;
+				fc+="<font color='red' size='4'>&nbsp;*</font></p>";			}
+			else{
+				fc+="<p>"+stem.innerHTML+"</p>";
+			}
+			var optiondiv = document.getElementById(i+"div");
+			var opts = optiondiv.getElementsByTagName("strong");
+			var divs = optiondiv.getElementsByTagName("input");
+			var options = new Array();
+			for(var k=1;k<opts.length;k++){
+				options[k] = "<p>☐"+opts[k].innerHTML+"</p>";
+			}
+			for(var k=0;k<divs.length;k++){
+				var words = divs[k];
+				if(words.name[words.name.length-1]=="s"){
+					options[words.name[0]]="<p>☐"+opts[words.name[0]].innerHTML+"_________</p>";
+				}
+			}
+			for(var k=1;k<options.length;k++){
+				fc+=options[k];
+			}
+			break;
 	    	break;
 		case'3':
-			var num = $("input[name='" + i +"'").val();
-			answer['number'] = num;
+			var question = document.getElementById(i);
+			var stem = question.getElementsByTagName("p2")[0];
+			if(stem.nextSibling.tagName=="FONT"){
+				fc+="<p>"+stem.innerHTML;
+				fc+="<font color='red' size='4'>&nbsp;*</font></p>";
+			}
+			else{
+				fc+="<p>"+stem.innerHTML+"</p>";
+			}
+			var slider = document.getElementById(i + "slider");
+			var min = slider.nextSibling.innerText.split(" ")[0];
+			var max = slider.nextSibling.nextSibling.innerText.split(" ")[1];
+			fc += "<font size='2'>取值范围在" + min + "与" + max + "之间</font>"; 
 		}
-		result.push(answer);
 	}
-	var filename = $("h1").html();
+	content+=fc;
+	var header = document.getElementById("questionnaire");
+	var filename = header.getElementsByTagName("h1")[0].getElementsByTagName("font")[0].innerHTML;
 	exportDoc(content,filename)
 }
