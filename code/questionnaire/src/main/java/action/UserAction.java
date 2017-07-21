@@ -173,6 +173,8 @@ public class UserAction extends BaseAction{
 	
 	public String update() throws Exception {
 		User user = userService.getUserById(id);
+		System.out.println(city + "city");
+		System.out.println(user.getUsername());
 		user.setCity(city);
 		user.setAge(age);
 		user.setCountry(country);

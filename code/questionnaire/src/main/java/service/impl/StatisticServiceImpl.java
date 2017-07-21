@@ -3,6 +3,9 @@ package service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import dao.AnswerDao;
 import dao.AnswerSheetDao;
 import dao.QuestionnaireQuestionsDao;
@@ -40,11 +43,11 @@ public class StatisticServiceImpl implements StatisticService {
 	 * @see service.impl.StatisticService#getAnssheetsByQuesid(int)
 	 */
 	@Override
-	public List<AnswerSheet> getAnssheetsByQuesid(int quesid){
-		List<AnswerSheet> ansts = new ArrayList<AnswerSheet>();
+	public JSONArray getAnssheetsByQuesid(int quesid){
+		JSONArray ansts = new JSONArray();
 		List<Answer> anss = ansDao.getAnswersByQuesId(quesid);
 		for(Answer ans : anss){
-			ansts.add(anssheetDao.getAnswerSheetById(ans.getId()));
+			ansts.put(new JSONArray(anssheetDao.getAnswerSheetById(ans.getId()).getContent()));
 		}
 		return ansts;
 	}
