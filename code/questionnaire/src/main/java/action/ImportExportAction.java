@@ -50,7 +50,7 @@ public class ImportExportAction extends BaseAction{
 	}
 	
 	public String backupim() throws FileNotFoundException{
-		ioService.backupImport(file.getPath());
+		//ioService.backupImport(file.getPath());
 		return null;
 	}
 }

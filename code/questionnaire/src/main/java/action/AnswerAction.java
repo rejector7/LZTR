@@ -9,8 +9,10 @@ import org.json.JSONObject;
 
 import model.Answer;
 import model.AnswerSheet;
+import model.Questionnaire;
 import model.User;
 import service.AnswerSheetService;
+import service.QuestionnaireService;
 
 public class AnswerAction extends BaseAction{
 	private AnswerSheetService ansService;
@@ -18,6 +20,8 @@ public class AnswerAction extends BaseAction{
 	private int quesid;
 	private Date time;
 	private String content;
+	private String ip;
+	private QuestionnaireService quesService;
 	public int getId() {
 		return id;
 	}
@@ -44,6 +48,10 @@ public class AnswerAction extends BaseAction{
 	}
 	public void setAnsService(AnswerSheetService ansService) {
 		this.ansService = ansService;
+	}
+	
+	public void setQuesService(QuestionnaireService quesService) {
+		this.quesService = quesService;
 	}
 	
 	/**
@@ -103,6 +111,8 @@ public class AnswerAction extends BaseAction{
 	public String getByQuesid(){
 		List<Answer> anss = ansService.getAnswerByQuestion(quesid);
 		request().setAttribute("answers", anss);
+		Questionnaire ques = quesService.getQuestionnaireById(quesid);
+		request().setAttribute("quesinfo", ques);
 		return "getByQuesid";
 	}
 }

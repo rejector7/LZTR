@@ -1,21 +1,4 @@
 $(function() {
-	//search
-	$(".search").click(function(e) {
-		var dataset = e.currentTarget.dataset;
-		var id = dataset.id;
-		jQuery.ajax({
-			url : 'getAnswerByQuesid',
-			processData : true,
-			dataType : "text",
-			data : {
-				id : id
-			},
-			success : function(data) {
-				console.log(id);
-				location.reload();
-			}
-		});
-	});
 	
 	//delete	
 	$(".delete").click(function(e) {
@@ -44,7 +27,7 @@ $(function() {
 						success : function(data) {
 							console.log(id);
 							bootbox.alert({
-								message : 'Delete Successfully! ',
+								message : 'Delete Successfully!',
 								callback : function() {
 									location.reload();
 								}

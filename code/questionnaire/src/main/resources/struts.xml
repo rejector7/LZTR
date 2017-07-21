@@ -71,9 +71,20 @@
 			<result name="getByQuesid">/questionnaire/jsp/result_detail.jsp</result>
 		</action>
 		
+		<!-- 暂时的跳转 -->
+		<action name="*Statistic" class="action.StatisticAction" method="{1}">
+			<result name="getQuesAndAns"  type="redirect">/questionnaire/jsp/answer_detail.jsp</result>
+			<result name="getAns">/questionnaire/jsp/result_detail.jsp</result>
+		</action>
+		
 		
 		
 		<action name="*port" class="action.ImportExportAction" method="{1}">
+		</action>
+		
+		<!-- 暂时性逻辑跳转 -->
+		<action name="Result">
+			<result>/questionnaire/jsp/result.jsp</result>
 		</action>
 		
 		
