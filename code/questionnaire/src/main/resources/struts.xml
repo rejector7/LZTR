@@ -15,6 +15,9 @@
 			<result name="delete">/questionnaire/jsp/admin_user.jsp</result>
 			<result name="all">/questionnaire/jsp/admin_user.jsp</result>
 		</action> 
+		<action name="updateMyInfoPro" class="action.UserAction" method="update">
+			<result name="update">/questionnaire/jsp/user_selfinfo.jsp</result>
+		</action>
 		<action name="FillQuestionnaire">
 			<result>/questionnaire/jsp/user_fillQuestionnaire.jsp</result>
 		</action>
@@ -70,6 +73,13 @@
 		<action name="getAnswerByQuesid" class="action.AnswerAction" method="getByQuesid">
 			<result name="getByQuesid">/questionnaire/jsp/result_detail.jsp</result>
 		</action>
+		<action name="getAnserByQuesidToStatistic" class="action.AnswerAction" method="getByQuesid">
+			<result name="getByQuesid">/questionnaire/jsp/result_statistic.jsp</result>
+		</action>
+		<action name="getStatistic" class="action.StatisticAction" method="getStatistic">
+		</action>
+		
+		
 		
 		<!-- 暂时的跳转 -->
 		<action name="*Statistic" class="action.StatisticAction" method="{1}">
