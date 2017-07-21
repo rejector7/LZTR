@@ -93,7 +93,7 @@ function Execute(arg1, arg2)
 			}
 			else{
 				var set = answ.option.split(',');
-				var answer;
+				var answer = '';
 				if (Size(set) == 0){
 					AddText(i+1,ques.stem,'多选题','非必答','');
 				}
@@ -117,4 +117,15 @@ function Execute(arg1, arg2)
 			}
 		}	
 	}
+}
+
+function downloadthis(){
+	var content="";
+	var headers = document.getElementsByTagName("p");
+	content += "<p>"+headers[0].innerHTML+"</p>";
+	content += "<p>"+headers[1].innerHTML+"</p>";
+	content += "<p>"+headers[2].innerHTML+"</p>";
+	var table = $("div.dataTable_wrapper").html();
+	content += table;
+	exportDoc(content,headers[1].getElementsByTagName("strong")[0].innerHTML.split("：")[1]);
 }

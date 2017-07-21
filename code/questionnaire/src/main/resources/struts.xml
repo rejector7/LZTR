@@ -73,7 +73,7 @@
 		
 		<!-- 暂时的跳转 -->
 		<action name="*Statistic" class="action.StatisticAction" method="{1}">
-			<result name="getQuesAndAns"  type="redirect">/questionnaire/jsp/answer_detail.jsp</result>
+			<result name="getQuesAndAns">/questionnaire/jsp/answer_detail.jsp</result>
 			<result name="getAns">/questionnaire/jsp/result_detail.jsp</result>
 		</action>
 		

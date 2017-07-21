@@ -248,7 +248,6 @@ function submit(){
 		}
 		result.push(answer);
 	}
-	alert(JSON.stringify(Q));
 	if(!$("#form").validate().form()){
 		return;
 	}    

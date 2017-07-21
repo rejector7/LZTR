@@ -137,7 +137,6 @@
 
 												<a class="btn btn-default" href="getAnswerByQuesid?quesid=<%=ques.getId() %>" role="button"><i class="fa fa-bar-chart"></i> view result</a>
 
-												<a class="btn btn-default" href="#" role="button"><i class="fa fa-bar-chart"></i> view result</a>
 												<a class="btn btn-default" href="PreviewQuestionnaire?quesid=<%=ques.getId() %>" role="button">preview</a>
 
 											</td>
