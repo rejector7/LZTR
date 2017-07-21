@@ -48,18 +48,17 @@
                         			<h3>Signup to Questionnaire Website</h3>
                             		<p>Enter your username and password to sign up</p>
                             		<p>Click here to  <a href="<%=path %>/loginPage"><strong>Log in</strong></a></p>
-                   
+                   					<p><strong><font color="red" id="dupname"></font></strong></p>
                         		</div>
                         		<div class="form-top-right">
                         			<i class="fa fa-lock"></i>
                         		</div>
                             </div>
                             <div class="form-bottom">
-			                    <form role="form" method="post" class="login-form" id="registerform">
+			                    <form role="form" method="post"  action="signupPro" class="login-form" id="registerform">
 			                    	<div class="form-group">
 			                    		<label class="sr-only" for="form-username">Username</label>
 			                        	<input type="text" name="username" placeholder="Username..." class="form-username form-control" id="form-username" required>
-			                        	<div><span id="dupname"></span></div>
 			                        </div>
 			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-password">Password</label>
@@ -94,7 +93,7 @@
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-mobile">Mobile</label>
-			                        	<input type="text" name="mobile" placeholder="Mobile..." class="form-mobile form-control" id="form-mobile" digits rangelength="[11,11]" required>
+			                        	<input type="text" name="mobile" placeholder="Mobile..." class="form-mobile form-control" id="form-mobile" digits rangelength="[11,11]" >
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-qq">QQ</label>
