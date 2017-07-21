@@ -5,7 +5,7 @@
 <hibernate-mapping>
 	<class name="model.Questionnaire" table="questionnaire">
 		<id name="id" type="int">
-			<column name="id" />
+			<column name="qid" />
 			<generator class="identity" />
 		</id>
 		<property name="userid" type="int">

@@ -43,7 +43,7 @@
       <p><strong>问卷名字：<%=ques.getTitle() %></strong></p><!-- request().getRemoteAddr()可以拿到ip地址  -->
         <nav>
           <ul class="nav nav-justified">
-            <li><a href="#">统计数据</a></li>
+            <li><a href="getAnserByQuesidToStatistic?quesid=<%=ques.getId() %>">统计数据</a></li>
             <li class="active"><a href="#">详细信息</a></li> 
           </ul>
         </nav>
