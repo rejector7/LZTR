@@ -18,6 +18,15 @@
 </head>
 <body>
 	<div class="container">
+		<a href="MyQuestionnaire">
+			<button class="btn btn-default" type="button">
+				<strong>返回“我的问卷”</strong>
+			</button>
+		</a>
+	</div>
+	</br>
+
+	<div class="container">
       <div class="masthead">
       <p><strong>问卷序号： </strong></p>
       <p><strong>问卷名字：</strong></p>
@@ -25,7 +34,7 @@
         <nav>
           <ul class="nav nav-justified">
             <li class="active"><a href="#">统计数据</a></li>
-            <li><a href="<%=path%>/questionnaire/jsp/result_detail.jsp">详细信息</a></li>
+            <li><a href="#">详细信息</a></li>
           </ul>
         </nav>
       </div>

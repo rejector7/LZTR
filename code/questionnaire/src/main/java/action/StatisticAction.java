@@ -1,5 +1,7 @@
 package action;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import model.Answer;
@@ -47,11 +49,15 @@ public class StatisticAction extends BaseAction{
 	 * Get a specific answer with its information and content, along with the information and
 	 * the content of the questionnaire it related to
 	 * @return
+	 * @throws IOException 
 	 */
-	public String getQuesAndAns(){
-		QuestionnaireQuestions ques = quesService.getQuestionnaireQuestionsById(quesid);
-		AnswerSheet anst = ansService.getAnswerSheetById(id);
-		return null;
+	public String getQuesAndAns() throws IOException{
+		QuestionnaireQuestions Qques = quesService.getQuestionnaireQuestionsById(quesid);
+		AnswerSheet anst = ansService.getAnswerSheetById(id);    //这个id是answer id，根据mysql的answer id去拿mongoDB中的answer sheet
+		request().setAttribute("Qques", Qques);
+		request().setAttribute("anst", anst);
+		
+		return "getQuesAndAns";
 	}
 	
 	/**
@@ -60,6 +66,7 @@ public class StatisticAction extends BaseAction{
 	 */
 	public String getAns(){
 		List<AnswerSheet> ansts = statisticService.getAnssheetsByQuesid(quesid);
-		return null;
+		request().setAttribute("ansts", ansts);
+		return "getAns";
 	}
 }
