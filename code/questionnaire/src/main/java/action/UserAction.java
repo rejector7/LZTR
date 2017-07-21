@@ -152,11 +152,11 @@ public class UserAction extends BaseAction{
 	public String add() throws Exception {
 		if(userService.getUserByName(username)!=null){
 			response().getWriter().print("dupusername");
-			return "add";
+			return null;
 		}
 		if(userService.getUserByEmail(email)!=null){
 			response().getWriter().print("dupemail");
-			return "add";
+			return null;
 		}
 		if(role==null) role = "user";
 		System.out.println("1");
@@ -168,7 +168,7 @@ public class UserAction extends BaseAction{
 		userService.addUser(user);
 		System.out.println("4");
 		response().getWriter().print("success");
-		return "add";
+		return null;
 	}
 	
 	public String update() throws Exception {
@@ -235,8 +235,10 @@ public class UserAction extends BaseAction{
 					}
 				}
 			}
-			else if(u.getStatus()!=1){
+			else if(u.getStatus()==1){
 				//已经被激活重复点链接
+				request().setAttribute("flag", 3);
+				return SUCCESS;
 			}
 		}
 		else if(u==null){

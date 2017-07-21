@@ -87,12 +87,22 @@ $(function(){
 				if(data=="dupusername"){
 					document.getElementById("dupname").innerHTML=
 						"User exists";
+					return;
 				}
 				else if(data=="dupemail"){
 					document.getElementById("dupname").innerHTML=
 						"Email exists";
+					return;
 				}
-				//else{window.location.href="loginPage";}
+				else{
+					var addr = "https://mail." + email.split("@")[1];
+					bootbox.alert({
+						message : 'We have sent an activation email to your mailbox. Please check it out. ',
+					    callback : function() {
+					    	window.location.href= addr ;
+						}
+					});
+				}
 			}
 		});
 	});

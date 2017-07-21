@@ -58,7 +58,6 @@
 			<result name="success">/questionnaire/jsp/login.jsp</result>
 		</action>
 		<action name="signupPro" class="action.UserAction" method="add">
-			<result>/questionnaire/jsp/signup.jsp</result>
 		</action>
 		<action name="activatemail" class="action.UserAction" method="activate">
 			<result>/questionnaire/jsp/login.jsp</result>
