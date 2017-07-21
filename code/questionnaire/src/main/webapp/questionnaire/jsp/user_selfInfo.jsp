@@ -14,7 +14,11 @@
     <meta name="author" content="">
 
     <title>LZTR 问卷网</title>
-
+	<link href="<%=path%>/questionnaire/css/bootstrap.min.css" 			rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/dataTables.bootstrap.css" 	rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/dataTables.responsive.css" 	rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/questionnaire.css" 			rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/font-awesome.min.css" 		rel="stylesheet" type="text/css">
     <!-- Bootstrap core CSS -->
     <link href="<%=path %>/questionnaire/css/bootstrap3.3.7.min.css" rel="stylesheet">
 
@@ -63,16 +67,73 @@ User user = (User) session.getAttribute("user");
         </nav>
       </div>
 
-	<div class="row conatiner"><div class="col-lg-2"></div><div class="col-lg-8">
-	<h3>Account : <%=user.getUsername()%></h3>
-	<%if (user.getEmail()!=null) {%> <h3>Email : <%=user.getEmail()%></h3><%}%>
-	<%if (user.getSex()!=null) {%> <h3>Sex : <%=user.getSex()%></h3><%}%>
-	<%if (user.getMobile()!=null) {%><h3>Phone : <%=user.getMobile()%></h3><%}%>
-	<%if (user.getCountry()!=null) {%> <h3>Country : <%=user.getCountry()%></h3><%}%>
-	<%if (user.getCity()!=null) {%> <h3>City : <%=user.getCity()%></h3><%}%>
-	<%if (user.getJob()!=null) {%> <h3>Job : <%=user.getJob()%></h3><%}%>
-	<%if (user.getAge()!=0) {%><h3>Age : <%=user.getAge()%></h3><%}%></div>
-	</div></div>
+	<div id="page-wrapper">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class="page-header">个人信息</h1>
+				</div>
+			</div>
+			<!-- /.row -->
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="panel panel-default">
+						<!-- /.panel-heading -->
+						<div class="panel-body">
+							<div class="dataTable_wrapper">
+								<table class="table table-striped table-bordered table-hover"
+									id="dataTables">
+									<thead>
+										<tr><td>Item</td>
+											<td>Info</td></tr>
+									</thead>
+									<tbody>
+										
+											<tr><td>Account :</td><td><%=user.getUsername()%></td></tr>
+											<tr><td>Email :</td><td><%=user.getEmail()%></td></tr>
+											<tr><td>Age :</td><td><%=user.getAge()%></td></tr>
+											<tr><td>Sex :</td><td><%=user.getSex()%></td></tr>
+											<tr><td>City :</td><td><%=user.getCity()%></td></tr>
+											<tr><td>Country :</td><td><%=user.getCountry()%></td></tr>
+											
+											<tr><td>Moblie :</td><td><%=user.getMobile()%></td></tr>
+											<tr><td>Qq :</td><td><%=user.getQq()%></td></tr>
+											<tr><td>Wechat :</td><td><%=user.getWechat()%></td></tr>
+											
+											
+											<tr>
+												<td><button class="btn btn-default edit" type="button"
+													data-id="<%=user.getId()%>"
+													data-username="<%=user.getUsername()%>"
+													data-age="<%=user.getAge()%>"
+													data-sex="<%=user.getSex()%>"
+													data-city="<%=user.getCity()%>"
+													data-country="<%=user.getCountry()%>"
+													data-email="<%=user.getEmail()%>"
+													data-mobile="<%=user.getMobile() %>"
+													data-qq="<%=user.getQq() %>"
+													data-wechat="<%=user.getWechat() %>"
+													data-role="<%=user.getRole() %>"
+													>
+													<h3>Change</h3>
+													<i class="fa fa-edit"></i>
+												</button>
+												</td>
+											</tr>
+									
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- /.panel-body -->
+					</div>
+					<!-- /.panel -->
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /#page-wrapper -->
+	
 
       <!-- Site footer -->
       <footer class="footer">
@@ -84,5 +145,22 @@ User user = (User) session.getAttribute("user");
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="<%=path %>/questionnaire/js/ie10-viewport-bug-workaround.js"></script>
+    
+	<script src="<%=path%>/questionnaire/js/jquery.min.js"></script>
+	<script src="<%=path%>/questionnaire/js/bootstrap.min.js"></script>
+	<script src="<%=path%>/questionnaire/js/jquery.dataTables.min.js"></script>
+	<script src="<%=path%>/questionnaire/js/dataTables.bootstrap.min.js"></script>
+	<script src="<%=path%>/questionnaire/js/bootbox.min.js"></script>
+	<script src="<%=path%>/questionnaire/js/questionnaire.js"></script>
+
+	<script src="<%=path%>/questionnaire/js/update_selfinfo.js"></script>
+
+	<script>
+		$(document).ready(function() {
+			$('#dataTables').DataTable({
+				responsive : true
+			});
+		});
+	</script>
   </body>
 </html>
