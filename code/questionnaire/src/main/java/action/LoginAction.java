@@ -29,6 +29,10 @@ public class LoginAction extends BaseAction{
 	public String login(){
 		User user = loginService.login(username,  password);
 		if(user != null) {
+			if(user.getStatus()==0){
+				request().setAttribute("flag", "1");
+				return INPUT;
+			}
 			session().setAttribute("user", user);
 			session().setAttribute("role",user.getRole());
 			return SUCCESS;
