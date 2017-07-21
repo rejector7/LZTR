@@ -123,6 +123,12 @@
 		<property name="anssheetDao" ref="anssheetDao"></property>
 		<property name="quesDao" ref="questionsDao"></property>
 	</bean>
+	<bean id="ioService" class="service.impl.ImportExportServiceImpl">
+		<property name="ansDao" ref="ansDao"></property>
+		<property name="anssheetDao" ref="anssheetDao"></property>
+		<property name="quesDao" ref="quesDao"></property>
+		<property name="questionnairequestionsDao" ref="questionsDao"></property>
+	</bean>
 	<!-- End of Service -->
 	
 
