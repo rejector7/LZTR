@@ -47,7 +47,10 @@ function addStem(question, i){
 	div.id = i;
 	div.className = "container";
 	form.appendChild(div);
-	$("#"+i).html("<p2><font size='4'>" + (i+1)  + " "+ question['stem'] + "</font>")
+	if(question['type']=="Multiple"&&question['min']!=undefined&&question['min']!=null&&question['min']!=""){
+		$("#"+i).html("<p2><font size='4'>" + (i+1)  + " "+ question['stem'] + "("+question['min']+"~"+question['max']+"项)</font>");
+	}
+	else $("#"+i).html("<p2><font size='4'>" + (i+1)  + " "+ question['stem'] + "</font>");
 	if(question['required']==true){
 		$("#"+i).append("<font color='red' size='4'>&nbsp*</font>");
 	}

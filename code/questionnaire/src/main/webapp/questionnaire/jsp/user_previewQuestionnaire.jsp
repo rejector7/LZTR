@@ -66,7 +66,7 @@
       <div class="row">&nbsp</div>
       <div align='center'>
       <button style='floating:right' class="btn btn-primary" onclick="wordexport()" type="button" style="floating:right">
-			<i class="fa fa-check fa-2x">导出为.doc文件</i>
+			<i class="fa fa-download fa-2x">导出为.doc文件</i>
 		</button>
 </div>
 
