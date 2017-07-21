@@ -1,5 +1,6 @@
 var DELETE_NUM_QUESTION = -1;
 var QUES_ID = 0;
+var FLAG = 0;
 
 $(function() {	
 	$(".cancel").click(function(e){
@@ -14,7 +15,8 @@ $(function() {
 			},
 			message : "Sure to Leave? Your changes won't be saved",
 			callback : function(result) {
-				location.href = 'FrontPage';
+				if(result){
+				location.href = 'FrontPage';}
 			}
 		});
 	});
@@ -145,6 +147,42 @@ $(function() {
 				result['questions'][k]['maxtext'] = maxtext;
 				break;
 			}
+		}
+		if(FLAG==1){
+			bootbox.confirm({
+				buttons : {
+					confirm : {
+						label : 'Confirm'
+					},
+					cancel : {
+						label : 'Cancel'
+					}
+				},
+				message : 'This will delete all the answers got before, sure to update?',
+				callback : function(test) {
+					if (test) {
+						jQuery.ajax({
+							url : 'addQuestionnaire',
+							processData : true,
+							dataType : "text",
+							data : {
+								title:encodeURI(encodeURI(title)),
+								id:QUES_ID,
+								content : encodeURI(encodeURI(JSON.stringify(result)))
+							},
+							success : function(data) {
+								bootbox.alert({
+									message : 'success',
+								    callback : function() {
+								    	location.href = 'FrontPage';
+									}
+								});
+							}
+						});
+					}
+					
+					}});
+			return;
 		}
 		jQuery.ajax({
 			url : 'addQuestionnaire',
@@ -647,8 +685,8 @@ function addSlider() {
 	form.appendChild(div);
 	$("#"+value+"div").html("" +
 			"<div class='container'><div class='row'>" +
-			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label>" +
-			"<div class='col-lg-2'><div id='" + value + "button'></div></div></div>" +
+			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label></div>" +
+			"<div class='col-lg-2'><div id='" + value + "button'></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-11'>" +
 			"<input class='form-control' name=" + value + "></div>" +
@@ -745,6 +783,7 @@ function modify(result, id){
 
 
 function update(quesid){
+	FLAG=1;
 	QUES_ID = quesid;
 	jQuery.ajax({
 		url : 'getQuestionnaire',  //get content

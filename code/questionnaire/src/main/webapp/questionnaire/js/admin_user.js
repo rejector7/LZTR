@@ -101,7 +101,7 @@ $(function() {
 		$("input[name='wechat']").val(dataset.wechat);
 		$("input[name='sex']").val(dataset.sex);
 		$("input[name='age']").val(dataset.age);
-		$("#role"),val(dataset.role);
+		$("#role").val(dataset.role);
 
 		/*$("select[name='status']").val(dataset.status);*/
 
