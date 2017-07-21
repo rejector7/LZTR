@@ -69,7 +69,7 @@ function Execute(arg1, arg2)
 		else{
 			if (ques.required == true){
 				var set = answ.option.split(',');
-				var answer;
+				var answer = '';
 				if (Size(set) == 0){
 					AddText(i+1,ques.stem,'多选题','必答','');
 				}
