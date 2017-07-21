@@ -25,21 +25,21 @@
 	<!-- 获取问卷问题信息 -->
 	<%
 	QuestionnaireQuestions Qques = new QuestionnaireQuestions();
-	//	Qques = (QuestionnaireQuestions)request.getAttribute("Qques");
+		Qques = (QuestionnaireQuestions)request.getAttribute("Qques");
 	%>
 	<!-- 从request获取answer sheet数据 -->
 	<%
 		AnswerSheet anst = new AnswerSheet();
-	//			anst = (AnswerSheet)request.getAttribute("anst");
+				anst = (AnswerSheet)request.getAttribute("anst");
 	%>
 	
 	<!-- test only, in this PC, there is no data -->
 	<%
-		Qques.setQuesid(1);
-		Qques.setContent("{\"introduction\":\"23\",\"questions\":[{\"id\":0,\"stem\":\"tsts\",\"required\":true,\"type\":\"Subjective\"},{\"id\":1,\"stem\":\"danxuanti\",\"required\":true,\"type\":\"Single\",\"options\":[{\"id\":1,\"option\":\"xuanxiangyi\",\"hasWords\":false},{\"id\":2,\"option\":\"xuanxianger\",\"hasWords\":true}]},{\"id\":2,\"stem\":\"duoxianti,lakshdl\",\"required\":true,\"type\":\"Multiple\",\"min\":\"\",\"max\":\"\",\"options\":[{\"id\":1,\"option\":\"xuanxinagyi\",\"hasWords\":false},{\"id\":2,\"option\":\"xianxianger\",\"hasWords\":true},{\"id\":3,\"option\":\"xxuanxianoasdsan\",\"hasWords\":true}]},{\"id\":3,\"stem\":\"huakuaiti\",\"required\":false,\"type\":\"Slider\",\"min\":\"1\",\"max\":\"5\",\"mintext\":\"wwwa\",\"maxtext\":\"lala\"}]}");
-		anst.setUserid(1);
-		anst.setAnswerid(1);
-		anst.setContent("[{\"words\":\"0daana\"},{\"option\":\"1\",\"words\":\"1.1daana\"},{\"option\":\"0,2,\",\"words\":[{\"optionid\":2,\"word\":\"2.2daan\"}]},{\"number\":\"1\"}]");
+		//Qques.setQuesid(1);
+		//Qques.setContent("{\"introduction\":\"23\",\"questions\":[{\"id\":0,\"stem\":\"tsts\",\"required\":true,\"type\":\"Subjective\"},{\"id\":1,\"stem\":\"danxuanti\",\"required\":true,\"type\":\"Single\",\"options\":[{\"id\":1,\"option\":\"xuanxiangyi\",\"hasWords\":false},{\"id\":2,\"option\":\"xuanxianger\",\"hasWords\":true}]},{\"id\":2,\"stem\":\"duoxianti,lakshdl\",\"required\":true,\"type\":\"Multiple\",\"min\":\"\",\"max\":\"\",\"options\":[{\"id\":1,\"option\":\"xuanxinagyi\",\"hasWords\":false},{\"id\":2,\"option\":\"xianxianger\",\"hasWords\":true},{\"id\":3,\"option\":\"xxuanxianoasdsan\",\"hasWords\":true}]},{\"id\":3,\"stem\":\"huakuaiti\",\"required\":false,\"type\":\"Slider\",\"min\":\"1\",\"max\":\"5\",\"mintext\":\"wwwa\",\"maxtext\":\"lala\"}]}");
+		//anst.setUserid(1);
+		//anst.setAnswerid(1);
+		//anst.setContent("[{\"words\":\"0daana\"},{\"option\":\"1\",\"words\":\"1.1daana\"},{\"option\":\"0,2,\",\"words\":[{\"optionid\":2,\"word\":\"2.2daan\"}]},{\"number\":\"1\"}]");
 	%>
 	
 	<p><%=Qques.getContent()%></p>
