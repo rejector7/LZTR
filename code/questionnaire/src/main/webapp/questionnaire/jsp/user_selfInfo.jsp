@@ -14,7 +14,11 @@
     <meta name="author" content="">
 
     <title>LZTR 问卷网</title>
-
+	<link href="<%=path%>/questionnaire/css/bootstrap.min.css" 			rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/dataTables.bootstrap.css" 	rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/dataTables.responsive.css" 	rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/questionnaire.css" 			rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/font-awesome.min.css" 		rel="stylesheet" type="text/css">
     <!-- Bootstrap core CSS -->
     <link href="<%=path %>/questionnaire/css/bootstrap3.3.7.min.css" rel="stylesheet">
 
@@ -150,7 +154,9 @@ User user = (User) session.getAttribute("user");
 				</div>
 			</div>
 		</div>
-	</div>
+
+    	</div>
+
 
       <!-- Site footer -->
       <footer class="footer">
@@ -162,6 +168,8 @@ User user = (User) session.getAttribute("user");
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="<%=path %>/questionnaire/js/ie10-viewport-bug-workaround.js"></script>
+
     <script src="<%=path %>/questionnaire/js/user.js"></script>
+
   </body>
 </html>
