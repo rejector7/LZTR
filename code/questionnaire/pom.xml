@@ -251,6 +251,7 @@
 			<scope>provided</scope>
 		</dependency>
 		
+		<!--  Email activate -->
 		<dependency>
     <groupId>javax.mail</groupId>
     <artifactId>javax.mail-api</artifactId>
@@ -261,6 +262,19 @@
     <artifactId>javax.mail</artifactId>
     <version>1.5.3</version>
 	</dependency>
+	
+	
+	<!--  chart  -->
+	<dependency>
+    <groupId>org.jfree</groupId>
+    <artifactId>jcommon</artifactId>
+    <version>1.0.23</version>
+</dependency>
+<dependency>
+    <groupId>org.jfree</groupId>
+    <artifactId>jfreechart</artifactId>
+    <version>1.0.19</version>
+</dependency>
 		
 
 	</dependencies>
