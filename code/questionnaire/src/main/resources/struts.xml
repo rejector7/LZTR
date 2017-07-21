@@ -57,8 +57,10 @@
 		<action name="logoutPro" class="action.LoginAction" method="logout">
 			<result name="success">/questionnaire/jsp/login.jsp</result>
 		</action>
-		<action name="signupPro" class="action.UserActions" method="add">
-			<result>/questionnaire/jsp/signup.jsp</result>
+		<action name="signupPro" class="action.UserAction" method="add">
+		</action>
+		<action name="activatemail" class="action.UserAction" method="activate">
+			<result>/questionnaire/jsp/login.jsp</result>
 		</action>
 		
 		
@@ -71,7 +73,7 @@
 		
 		<!-- 暂时的跳转 -->
 		<action name="*Statistic" class="action.StatisticAction" method="{1}">
-			<result name="getQuesAndAns"  type="redirect">/questionnaire/jsp/answer_detail.jsp</result>
+			<result name="getQuesAndAns">/questionnaire/jsp/answer_detail.jsp</result>
 			<result name="getAns">/questionnaire/jsp/result_detail.jsp</result>
 		</action>
 		

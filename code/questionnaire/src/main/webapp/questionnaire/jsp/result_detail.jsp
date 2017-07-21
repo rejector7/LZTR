@@ -86,7 +86,7 @@
 										<tr>
 										    <td><%=answer.getId()%></td>
 											<td><%=answer.getTime()%></td>
-											<td>hhh</td> <!-- need to be changed later -->
+											<td><%=answer.getIp()%></td> <!-- need to be changed later -->
 											<td>
 												<a class="btn btn-default" href="getQuesAndAnsStatistic?id=<%=answer.getId()%> & quesid=<%=ques.getId() %>" role="button" target="_blank"><i class="fa fa-search"></i>回答详细情况</a>
 												<button class="btn btn-default delete" type="button"

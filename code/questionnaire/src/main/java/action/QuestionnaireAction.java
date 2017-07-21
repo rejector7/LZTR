@@ -114,7 +114,6 @@ public class QuestionnaireAction extends BaseAction{
 		int userid = ((User)request().getSession().getAttribute("user")).getId();
 		Questionnaire ques = new Questionnaire(userid,status,title,isPublic,releaseTime,endTime);
 		QuestionnaireQuestions quescontent = new QuestionnaireQuestions(content);
-		System.out.println(content);
 		quesService.addQuestionnaire(quescontent, ques);
 		response().getWriter().write("success");
 		return null;

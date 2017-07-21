@@ -50,10 +50,15 @@
                             		<%
                             			if(request.getAttribute("flag") == "0"){
                             		%>
-                            		<p><font color="red">wrong username or password, please try again</font>
+                            		<p><font color="red" class="error">wrong username or password, please try again</font>
                             		<%
+                            			} else if(request.getAttribute("flag") == "1"){
+                            		%>
+                            		<p><font color="red" class="error">your account has not been activated, please check your email</font>
+                            		                            		<%
                             			} 
                             		%>
+                            		
                         		</div>
                         		<div class="form-top-right">
                         			<i class="fa fa-lock"></i>
@@ -85,6 +90,16 @@
         <script src="<%=path %>/questionnaire/js/bootstrap.min.js"></script>
         <script src="<%=path %>/questionnaire/js/jquery.backstretch.min.js"></script>
         <script src="<%=path %>/questionnaire/js/scripts.js"></script>
+        <script>
+        window.onload = function(){
+        <%if(request.getAttribute("flag")!=null){
+        if(request.getAttribute("flag").equals(2)){%>
+			alert("Activate succfully!");
+			<%}else if(request.getAttribute("flag").equals(3)){%>
+			alert("Don not activate again!");
+			<%}}%>
+        }
+        </script>
     </body>
 
 </html>
