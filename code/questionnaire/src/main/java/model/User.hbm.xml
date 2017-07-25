@@ -6,7 +6,7 @@
 	<class name="model.User" table="user">
 		<id name="id" type="int">
 			<column name="id" />
-			<generator class="assigned" />
+			<generator class="identity" />
 		</id>
 		<property name="username" type="java.lang.String">
 			<column name="username" />

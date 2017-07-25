@@ -51,7 +51,7 @@
 		destroy-method="close" p:driverClass="com.mysql.jdbc.Driver"
 
 		p:jdbcUrl="jdbc:mysql://localhost:3306/questionnaire" p:user="root"
-		p:password="327453nmg" p:maxPoolSize="40" p:minPoolSize="1"
+		p:password="123456" p:maxPoolSize="40" p:minPoolSize="1"
 
 		p:initialPoolSize="1" p:maxIdleTime="20" />
 
