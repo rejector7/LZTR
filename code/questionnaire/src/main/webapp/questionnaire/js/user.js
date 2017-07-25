@@ -161,7 +161,7 @@ $(function(){
 
 		if (id != "") { // Edit
 			jQuery.ajax({
-				url : 'updateMyInfoPro',
+				url : 'updateUser',
 				processData : true,
 				dataType : "text",
 				data : {
@@ -176,7 +176,6 @@ $(function(){
 				},
 				success : function(data) {
 					console.log(id);
-					alert(age);
 					bootbox.alert({
 						message : 'Modify Successfully! ',
 						callback : function() {

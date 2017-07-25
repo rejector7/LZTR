@@ -42,6 +42,7 @@
       <div class="masthead">
       <p><strong>问卷序号：<%=ques.getId() %></strong></p>
       <p><strong>问卷名字：<%=ques.getTitle() %></strong></p><!-- request().getRemoteAddr()可以拿到ip地址  -->
+      <button type='button' class='btn btn-default' onclick='downloadthis()'>下载doc文件</button>
         <nav>
           <ul class="nav nav-justified">
             <li class="active"><a href="#">统计数据</a></li>
@@ -63,7 +64,8 @@
 	<script src="<%=path%>/questionnaire/js/questionnaire.js"></script>
 	<script src="<%=path%>/questionnaire/js/bootbox.min.js"></script>
 		<script src="<%=path%>/questionnaire/js/Chart.js"></script>
-	
+	<script src="<%=path%>/questionnaire/js/download.js"></script>
+	<script src="<%=path%>/questionnaire/js/questionnaireExport.js"></script>
 	
 	<script src="<%=path%>/questionnaire/js/result_statistic.js"></script>	
 	

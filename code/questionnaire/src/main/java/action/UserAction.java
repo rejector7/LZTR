@@ -173,20 +173,18 @@ public class UserAction extends BaseAction{
 	
 	public String update() throws Exception {
 		User user = userService.getUserById(id);
-		System.out.println(city + "city");
-		System.out.println(user.getUsername());
 		user.setCity(city);
 		user.setAge(age);
 		user.setCountry(country);
 		user.setEmail(email);
 		user.setMobile(mobile);
 		user.setQq(qq);
-		user.setRole(role);
 		user.setSex(sex);
-		user.setUsername(username);
 		user.setWechat(wechat);
 		user.setJob(job);
 		userService.updateUser(user);
+		session().removeAttribute("user");
+		session().setAttribute("user", user);
 		return "update";
 	}
 	
