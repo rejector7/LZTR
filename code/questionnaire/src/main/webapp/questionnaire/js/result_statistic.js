@@ -73,6 +73,12 @@ function formStatistic(data){
 			canvas.id = i + "canvas";
 			div.appendChild(canvas);
 			draw(label, result, i);
+			var button = document.createElement("button");
+			button.className="btn btn-default";
+			alert(canvas.id);
+			button.onclick=function(){downloadimg(canvas.id)};
+			button.innerText="下载图片";
+			div.appendChild(button);
 		}
 		else if(type=="Multiple"){
 			var result = [];
@@ -132,8 +138,15 @@ function formStatistic(data){
 
 function draw(label, result, i){
 	var ctx = document.getElementById(i + "canvas");
+	var j=0;
+	for(var i=0;i<result.length;i++){
+		j+=result[i];
+	}
+	for(var i=0;i<result.length;i++){
+		result[i]/=j;
+	}
 	var myChart = new Chart(ctx, {
-	    type: "bar",
+	    type: "pie",
 	    data: {
 	        labels: label,
 	        datasets: [{
@@ -145,13 +158,23 @@ function draw(label, result, i){
 	        }]
 	    },
 	    options: {
-	        scales: {
-	            yAxes: [{
-	                ticks: {
-	                    beginAtZero:true
-	                }
-	            }]
-	        }
+	        
 	    }
 	});
+}
+
+function downloadthis(){
+		var content="";
+		var headers = document.getElementsByTagName("p");
+		content += "<p>"+headers[0].innerHTML+"</p>";
+		content += "<p>"+headers[1].innerHTML+"</p>";
+		var table = $("#container").html();
+		content += table; 
+		exportDoc(content,headers[1].getElementsByTagName("strong")[0].innerHTML.split("：")[1]);
+}
+
+function downloadimg(id){
+	alert(id);
+	var imgData = document.getElementById(id).toDataURL("image/png");
+	download(imgData,id+".png","image/png");
 }

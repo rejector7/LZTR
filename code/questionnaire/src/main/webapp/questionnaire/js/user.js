@@ -163,7 +163,7 @@ $(function(){
 
 		if (id != "") { // Edit
 			jQuery.ajax({
-				url : 'updateMyInfoPro',
+				url : 'updateUser',
 				processData : true,
 				dataType : "text",
 				data : {

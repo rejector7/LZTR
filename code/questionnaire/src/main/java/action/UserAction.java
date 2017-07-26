@@ -180,11 +180,12 @@ public class UserAction extends BaseAction{
 		user.setEmail(email);
 		user.setMobile(mobile);
 		user.setQq(qq);
-		user.setRole(role);
 		user.setSex(sex);
 		user.setWechat(wechat);
 		user.setJob(job);
 		userService.updateUser(user);
+		session().removeAttribute("user");
+		session().setAttribute("user", user);
 		return "update";
 	}
 	
