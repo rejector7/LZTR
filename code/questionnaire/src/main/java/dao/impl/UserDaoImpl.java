@@ -32,6 +32,7 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
 	 */
 	@Override
 	public void updateUser(User user) {
+		System.out.println(user.getCity() + "22city");
 		getHibernateTemplate().merge(user);
 	}
 

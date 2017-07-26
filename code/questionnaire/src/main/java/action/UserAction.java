@@ -164,6 +164,7 @@ public class UserAction extends BaseAction{
 				city, mobile, qq, wechat, role, job, null, null, null, 0);
 		System.out.println("2");
 		user = userService.activateMail(user);
+		
 		System.out.println("3");
 		userService.addUser(user);
 		System.out.println("4");
@@ -173,8 +174,6 @@ public class UserAction extends BaseAction{
 	
 	public String update() throws Exception {
 		User user = userService.getUserById(id);
-		System.out.println(city + "city");
-		System.out.println(user.getUsername());
 		user.setCity(city);
 		user.setAge(age);
 		user.setCountry(country);
@@ -183,7 +182,6 @@ public class UserAction extends BaseAction{
 		user.setQq(qq);
 		user.setRole(role);
 		user.setSex(sex);
-		user.setUsername(username);
 		user.setWechat(wechat);
 		user.setJob(job);
 		userService.updateUser(user);

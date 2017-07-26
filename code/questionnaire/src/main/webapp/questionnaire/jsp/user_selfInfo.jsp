@@ -74,12 +74,14 @@ User user = (User) session.getAttribute("user");
 
 	<div class="row conatiner"><div class="col-lg-2"></div><div class="col-lg-8">
 	<h3>Account : <%=user.getUsername()%></h3>
-	<%if (user.getEmail()!=null) {%> <h3>Email : <%=user.getEmail()%></h3><%}%>
-	<%if (user.getSex()!=null) {%> <h3>Sex : <%=user.getSex()%></h3><%}%>
-	<%if (user.getMobile()!=null) {%><h3>Phone : <%=user.getMobile()%></h3><%}%>
-	<%if (user.getCountry()!=null) {%> <h3>Country : <%=user.getCountry()%></h3><%}%>
-	<%if (user.getCity()!=null) {%> <h3>City : <%=user.getCity()%></h3><%}%>
-	<%if (user.getJob()!=null) {%> <h3>Job : <%=user.getJob()%></h3><%}%>
+	<%if (user.getEmail()!="") {%> <h3>Email : <%=user.getEmail()%></h3><%}%>
+	<%if (user.getSex()!="") {%> <h3>Sex : <%=user.getSex()%></h3><%}%>
+	<%if (user.getMobile()!="") {%><h3>Phone : <%=user.getMobile()%></h3><%}%>
+	<%if (user.getCountry()!="") {%> <h3>Country : <%=user.getCountry()%></h3><%}%>
+	<%if (user.getCity()!="") {%> <h3>City : <%=user.getCity()%></h3><%}%>
+	<%if (user.getJob()!="") {%> <h3>Job : <%=user.getJob()%></h3><%}%>
+	<%if (user.getQq()!="") {%> <h3>QQ : <%=user.getQq()%></h3><%}%>
+	<%if (user.getWechat()!="") {%> <h3>Wechat : <%=user.getWechat()%></h3><%}%>
 	<%if (user.getAge()!=0) {%><h3>Age : <%=user.getAge()%></h3><%}%></div>
 	</div></div>
 	
@@ -92,12 +94,14 @@ User user = (User) session.getAttribute("user");
 													data-email="<%=user.getEmail()%>"
 													data-age="<%=user.getAge()%>"
 													data-job="<%=user.getJob()%>"
+													data-qq="<%=user.getQq()%>"
+													data-wechat="<%=user.getWechat()%>"
 													data-password="<%=user.getPassword()%>">
 													<i class="fa fa-edit">&nbspModify Property</i>
 												</button>
 												
 												
-													<div class="modal fade" id="modal" tabindex="-1" role="dialog"
+	<div class="modal fade" id="modal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -138,6 +142,14 @@ User user = (User) session.getAttribute("user");
 																<div class="form-group">
 									<label>Job</label> <input class="form-control"
 										name="job">
+								</div>
+																								<div class="form-group">
+									<label>Wechat</label> <input class="form-control"
+										name="wechat">
+								</div>
+																								<div class="form-group">
+									<label>QQ</label> <input class="form-control"
+										name="qq">
 								</div>
 								
 							</form>
