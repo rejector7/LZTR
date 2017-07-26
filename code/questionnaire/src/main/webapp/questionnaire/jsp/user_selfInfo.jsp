@@ -86,8 +86,8 @@ User user = (User) session.getAttribute("user");
 	<%if (user.getJob()!="") {%> <h3>Job : <%=user.getJob()%></h3><%}%>
 	<%if (user.getQq()!="") {%> <h3>QQ : <%=user.getQq()%></h3><%}%>
 	<%if (user.getWechat()!="") {%> <h3>Wechat : <%=user.getWechat()%></h3><%}%>
-	<%if (user.getAge()!=0) {%><h3>Age : <%=user.getAge()%></h3><%}%></div>
-	</div></div>
+	<%if (user.getAge()!=0) {%><h3>Age : <%=user.getAge()%></h3><%}%>
+	
 	
 													<button class="btn btn-default edit" type="button"
 													data-id="<%=user.getId()%>"
@@ -104,8 +104,19 @@ User user = (User) session.getAttribute("user");
 													<i class="fa fa-edit">&nbspModify Property</i>
 												</button>
 												
-												
-	<div class="modal fade" id="modal" tabindex="-1" role="dialog"
+						</div>						
+</div>
+
+
+      <!-- Site footer -->
+      <footer class="footer">
+        <p>&copy; 2017 LZTR Group.</p>
+      </footer>
+
+    </div> <!-- /container -->
+    
+    
+    	<div class="modal fade" id="modal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -168,14 +179,6 @@ User user = (User) session.getAttribute("user");
 		</div>
 
     	</div>
-
-
-      <!-- Site footer -->
-      <footer class="footer">
-        <p>&copy; 2017 LZTR Group.</p>
-      </footer>
-
-    </div> <!-- /container -->
 
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
