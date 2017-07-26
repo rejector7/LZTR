@@ -45,10 +45,12 @@
         <nav>
           <ul class="nav nav-justified">
             <li class="active"><a href="">首页</a></li>
+            <%if(session.getAttribute("user") != null){%>
             <li><a href="<%=path %>/SelfInfo">个人信息</a></li>
             <li><a href="<%=path %>/MyQuestionnaire">我的问卷</a></li>
             <li><a href="<%=path %>/ReleaseQuestionnaire">问卷发布</a></li>
             <li><a href="<%=path %>/FillQuestionnaire">填写问卷</a></li>
+             <%}%>
             <li><a href="<%=path %>/HelpContact">帮助</a></li>
             <%if(session.getAttribute("user") != null){%>
             <li><a href="<%=path %>/logoutPro">登出</a></li>
