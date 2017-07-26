@@ -99,7 +99,7 @@ $(function(){
 					bootbox.alert({
 						message : 'We have sent an activation email to your mailbox. Please check it out. ',
 					    callback : function() {
-					    	window.location.href= addr ;
+					    	//window.location.href= addr ;
 						}
 					});
 				}
@@ -154,7 +154,9 @@ $(function(){
 		var email = $("input[name='email']").val();
 		var age = $("input[name='age']").val();
 		var job = $("input[name='job']").val();
-		console.log(sex, mobile, country, city, email, age, job);
+		var qq = $("input[name='qq']").val();
+		var wechat = $("input[name='wechat']").val();
+		console.log(sex, mobile, country, city, email, age, job, wechat, qq);
 
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
@@ -172,7 +174,9 @@ $(function(){
 					city : city,
 					email : email,
 					age : age,
-					job : job
+					job : job,
+					wechat : wechat,
+					qq : qq
 				},
 				success : function(data) {
 					console.log(id);
@@ -223,6 +227,8 @@ $(function(){
 		if(dataset.age=="0")$("input[name='age']").val();
 		else $("input[name='age']").val(dataset.age);
 		$("input[name='job']").val(dataset.job);
+		$("input[name='qq']").val(dataset.qq);
+		$("input[name='wechat']").val(dataset.wechat);
 
 		$("#save").attr("data-id", dataset.id);
 		$('#modal').modal('show');

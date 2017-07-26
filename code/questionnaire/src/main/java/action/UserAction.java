@@ -164,6 +164,7 @@ public class UserAction extends BaseAction{
 				city, mobile, qq, wechat, role, job, null, null, null, 0);
 		System.out.println("2");
 		user = userService.activateMail(user);
+		
 		System.out.println("3");
 		userService.addUser(user);
 		System.out.println("4");
