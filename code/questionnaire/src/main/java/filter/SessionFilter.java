@@ -38,7 +38,6 @@ public class SessionFilter implements Filter{
 		ServletException{
 		HttpServletRequest hrequest = (HttpServletRequest)request;
 		HttpServletResponseWrapper wrapper = new HttpServletResponseWrapper((HttpServletResponse) response);
-		
 		String loginStrings = config.getInitParameter("loginStrings");
 		String diabletestfilter = config.getInitParameter("diabletestfilter");
 		String adminStrings = config.getInitParameter("adminStrings");
@@ -49,6 +48,11 @@ public class SessionFilter implements Filter{
 		}
 		String[] loginList = loginStrings.split(";");
 		String[] adminList = adminStrings.split(";");
+		String from = ((HttpServletRequest) request).getServletPath();
+		if(from.endsWith(".css")||from.endsWith(".js")||from.endsWith(".jpg")||from.endsWith(".jpeg")||from.endsWith(".png")){
+			chain.doFilter(request, response);
+			return;
+		}
 		if(this.isContains(hrequest.getRequestURI(), loginList)){
 			chain.doFilter(request, response);
 			return;

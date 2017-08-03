@@ -88,7 +88,7 @@
 											<td><%=answer.getTime()%></td>
 											<td><%=answer.getIp()%></td> <!-- need to be changed later -->
 											<td>
-												<a class="btn btn-default" href="getQuesAndAnsStatistic?id=<%=answer.getId()%> & quesid=<%=ques.getId() %>" role="button" target="_blank"><i class="fa fa-search"></i></a>
+												<a class="btn btn-default" href="questionnaire/jsp/answer_detail.jsp?ansid=<%=answer.getId()%>&quesid=<%=ques.getId() %>" role="button" target="_blank"><i class="fa fa-search"></i></a>
 												<button class="btn btn-default delete" type="button"
 													data-id="<%=answer.getId()%>">
 													<i class="fa fa-trash"></i>

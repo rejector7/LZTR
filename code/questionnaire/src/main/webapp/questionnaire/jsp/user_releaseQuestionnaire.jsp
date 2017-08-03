@@ -36,8 +36,30 @@
   </head>
 
   <body value="0">
-
+	
     <div class="container">
+
+      <!-- The justified navigation menu is meant for single line per list item.
+           Multiple lines will require custom code not provided by Bootstrap. -->
+      <div class="masthead">
+        <h1 class="text-muted">LZTR 问卷网 </h1>
+        <nav>
+          <ul class="nav nav-justified">
+            <li><a href="<%=path %>/FrontPage">首页</a></li>
+            <li><a href="<%=path %>/SelfInfo">个人信息</a></li>
+            <li><a href="">我的问卷</a></li>
+            <li class="active"><a href="<%=path %>/ReleaseQuestionnaire">问卷发布</a></li>
+            <li><a href="<%=path %>/FillQuestionnaire">填写问卷</a></li>
+            <li><a href="<%=path %>/HelpContact">帮助</a></li>
+            <li><a href="<%=path %>/logoutPro">登出</a></li>
+            <%if(((String)session.getAttribute("role")).equals("admin")){%>
+				<li><a href="<%=path %>/allUser" ><i class="fa fa-table fa-fw"></i>系统信息管理</a></li>
+			<%}%>
+          </ul>
+        </nav>
+      </div>
+      
+      
 		<button class="btn btn-default addBlank" type="button" style="floating:right">
 				<i class="fa fa-plus  fa-2x">Blank-filling Question</i>
 		</button>

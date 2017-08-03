@@ -68,6 +68,8 @@
       <button style='floating:right' class="btn btn-primary" onclick="submit()" type="button" style="floating:right">
 			<i class="fa fa-check fa-2x">提交</i>
 		</button>
+		<div id="errors">
+		</div>
 </div>
 
       <!-- Site footer -->

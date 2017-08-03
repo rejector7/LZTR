@@ -68,4 +68,12 @@ public class AnswerSheetServiceImpl implements AnswerSheetService {
 	public List<Answer> getAnswerByQuestion(int quesid){
 		return ansDao.getAnswersByQuesId(quesid);
 	}
+	
+	@Override
+	public void deleteAnswersByQuestionId(int quesid){
+		List<Answer> anss= ansDao.getAnswersByQuesId(quesid);
+		for(Answer ans:anss){
+			deleteAnswer(ans, getAnswerSheetById(ans.getId()));
+		}
+	}
 }

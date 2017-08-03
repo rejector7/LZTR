@@ -22,27 +22,12 @@
 <title>问卷统计结果</title>
 </head>
 <body>	
-	<!-- 获取问卷问题信息 -->
-	<%
-	QuestionnaireQuestions Qques = new QuestionnaireQuestions();
-		Qques = (QuestionnaireQuestions)request.getAttribute("Qques");
-		String name = (String)request.getAttribute("name");
-	%>
-	<!-- 从request获取answer sheet数据 -->
-	<%
-		AnswerSheet anst = new AnswerSheet();
-				anst = (AnswerSheet)request.getAttribute("anst");
-	%>
-	
-	
-	
-	
 	<!-- 跳转标签 -->
 	<div class="container">
       <div class="masthead">
-      <p><strong>问卷id：<%=Qques.getQuesid()%></strong></p>
-      <p><strong>问卷名：<%=name%></strong></p>
-      <p><strong>用户id：<%=anst.getUserid()==0 ? "NULL" : anst.getUserid()%></strong></p> <!-- 判断是否是未登录用户填写的问卷 -->
+      <p><strong id="quesid">问卷id：</strong></p>
+      <p><strong id="quesname">问卷名：</strong></p>
+      <p><strong id="userid">用户id：</strong></p> <!-- 判断是否是未登录用户填写的问卷 -->
       <button type='button' class='btn btn-default' onclick='downloadthis()'>下载doc文件</button>
       </div>
     </div>
@@ -89,7 +74,10 @@
 
 <!-- add date to table -->
 <script>
-	Execute(<%=Qques.getContent()%>, <%=anst.getContent()%>);
+	<%if(request.getParameter("ansid")!=null){%>
+	getcontent(<%=request.getParameter("ansid")%>,<%=request.getParameter("quesid")%>);
+	
+	<%}%>
 </script>
 </body>
 </html>

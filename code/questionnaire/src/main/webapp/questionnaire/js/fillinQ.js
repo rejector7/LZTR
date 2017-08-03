@@ -48,13 +48,13 @@ function addStem(question, i){
 	div.className = "container";
 	form.appendChild(div);
 	if(question['type']=="Multiple"&&question['min']!=undefined&&question['min']!=null&&question['min']!=""){
-		$("#"+i).html("<p2><font size='4'>" + (i+1)  + " "+ question['stem'] + "("+question['min']+"~"+question['max']+"项)</font>");
+		$("#"+i).html("<br><font size='4'>" + (i+1)  + " "+ question['stem'] + "("+question['min']+"~"+question['max']+"项)</font>");
 	}
-	else $("#"+i).html("<p2><font size='4'>" + (i+1)  + " "+ question['stem'] + "</font>");
+	else $("#"+i).html("<br><font size='4'>" + (i+1)  + " "+ question['stem'] + "</font>");
 	if(question['required']==true){
 		$("#"+i).append("<font color='red' size='4'>&nbsp*</font>");
 	}
-	$("#"+i).append("</p2>");
+	$("#"+i).append("</br>");
 }
 
 function addSubjective(question, i){
@@ -82,6 +82,7 @@ function addSingle(question, i){
 	newDiv.id = i + "div";
 	newDiv.className = "container";
 	div.appendChild(newDiv);
+	$("#"+i + "div").append("<strong><div id='" + i + "message' class='error'></div></strong>")
 	for(var j = 0 ; j < question['options'].length; j++){
 		if(question['options'][j]['hasWords']==true){
 			if(question['required']==false){
@@ -193,6 +194,8 @@ function submit(){
 	var questions = form.childNodes;
 	var length = questions.length;
 	var result=[];
+	var report = "<p>本次提交中，以下题号的问题回答有缺漏或回答格式不正确，请查看修改并重新提交：</p><p>";
+	var ids = new Array();
 	for(var i = 0; i < length; i++){
 		var answer = {};
 		var type = document.getElementById(i).getAttribute("value");
@@ -209,7 +212,11 @@ function submit(){
 				break;
 			}
 			if(Q['questions'][i]['options'][optionid*1]['hasWords']==true){
-				answer['words'] = $("input[name='" + i +"_" + optionid + "words']").val();;
+				answer['words'] = $("input[name='" + i +"_" + optionid + "words']").val();
+				if(answer['words']==""){
+					document.getElementById(i + "message").innerText = "Please enter the message of option " + (optionid*1+1);
+					ids.push((i*1)+1);
+				}
 			}
 			break;
 		case'2':
@@ -217,6 +224,7 @@ function submit(){
 	    	answer['option']="";
 	    	answer['words']=[];
 	    	var count = 0;
+	    	document.getElementById(i + "message").innerText="";
 	    	for(var j=0; j<a.length; j++){
 	    		if(a[j].checked){
 	    			answer['option'] += j +",";
@@ -226,8 +234,8 @@ function submit(){
 	    				word['word'] = $("input[name='" + i +"_" + j + "words']").val();
 	    				answer['words'].push(word);
 	    				if(word['word']==""){
-	    					document.getElementById(i + "message").innerText = "Please enter the message of option " + j;
-	    		    		return;
+	    					document.getElementById(i + "message").innerText = "Please enter the message of option " + (j*1+1);
+	    					ids.push((i*1+1));
 	    				}
 	    			}
 	    			count += 1;
@@ -235,11 +243,11 @@ function submit(){
 	    	}
 	    	if(count < Q['questions'][i]['min'] && count > 0){
 	    		document.getElementById(i + "message").innerText = "Please choose equal or more than " + Q['questions'][i]['min'] + " options";
-	    		return;
+	    		ids.push((i*1+1));
 	    	}
 	    	if(count > Q['questions'][i]['max']){
-	    		$("#" + i + "message").innerText = "Please choose equal or less than " + Q['questions'][i]['max'] + " options";
-	    		return;
+	    		$(i + "message").innerText = "Please choose equal or less than " + Q['questions'][i]['max'] + " options";
+	    		ids.push((i*1+1));
 	    	}
 	    	break;
 		case'3':
@@ -249,8 +257,33 @@ function submit(){
 		result.push(answer);
 	}
 	if(!$("#form").validate().form()){
+		var form = document.getElementById("form");
+		var quess = form.childNodes;
+		for(var i=0;i<quess.length;i++){
+			var labels = quess[i].getElementsByTagName("label");
+			var errors = 0;
+			for(var j=0;j<labels.length;j++){
+				if(labels[j].className=="error"){
+					errors+=1;
+				}
+			}
+			if(errors!=0){
+				ids.push(i+1);
+			}
+		}
+	}   
+	if(ids.length>0){
+		var len = document.getElementById("form").childNodes.length;
+		for(var i=1;i<=len;i++){
+			if(ids.indexOf(i)!=-1){
+				report+=i+" ";
+			}
+		}
+		report+="</p>";
+		$("#errors").html(report);
 		return;
-	}    
+	}
+	$("#errors").html("");
 	var t = new Date();
 	var time = t.getFullYear()+"-"+(t.getMonth()+1)+"-"+t.getDate()
 						+" "+t.getHours()+":"+t.getMinutes()+":"+t.getSeconds();     
