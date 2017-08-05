@@ -178,7 +178,7 @@
 								</div>
 								<div class="form-group">
 									<label>IsPublic</label>
-									<select class="form-control" id="selectf1" name = "inpublic">
+									<select class="form-control" id="selectf1" name = "ispublic">
 										<option>1</option>
 										<option>0</option>
 									</select>

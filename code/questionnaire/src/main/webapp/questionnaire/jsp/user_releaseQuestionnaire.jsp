@@ -36,8 +36,30 @@
   </head>
 
   <body value="0">
-
+	
     <div class="container">
+
+      <!-- The justified navigation menu is meant for single line per list item.
+           Multiple lines will require custom code not provided by Bootstrap. -->
+      <div class="masthead">
+        <h1 class="text-muted">LZTR 问卷网 </h1>
+        <nav>
+          <ul class="nav nav-justified">
+            <li><a href="<%=path %>/FrontPage">首页</a></li>
+            <li><a href="<%=path %>/SelfInfo">个人信息</a></li>
+            <li><a href="">我的问卷</a></li>
+            <li class="active"><a href="<%=path %>/ReleaseQuestionnaire">问卷发布</a></li>
+            <li><a href="<%=path %>/FillQuestionnaire">填写问卷</a></li>
+            <li><a href="<%=path %>/HelpContact">帮助</a></li>
+            <li><a href="<%=path %>/logoutPro">登出</a></li>
+            <%if(((String)session.getAttribute("role")).equals("admin")){%>
+				<li><a href="<%=path %>/allUser" ><i class="fa fa-table fa-fw"></i>系统信息管理</a></li>
+			<%}%>
+          </ul>
+        </nav>
+      </div>
+      
+      
 		<button class="btn btn-default addBlank" type="button" style="floating:right">
 				<i class="fa fa-plus  fa-2x">Blank-filling Question</i>
 		</button>
@@ -66,8 +88,57 @@
 		<button class="btn btn-default cancel" type="button" style="floating:right">
 				<i class="fa fa-check fa-2x">cancel</i>
 		</button>
+		<button class="btn btn-default publish" type="button" style="floating:right">
+				<i class="fa fa-check fa-2x">
+				<%if(request.getAttribute("quesinfo")!=null){%>
+				republish now
+				<%} else{%>
+				publish now<%} %></i>
+		</button>
     </div> <!-- /container -->
-    
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title" id="modalTitle"></h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-lg-12">
+						<form id="form2">
+							<div class="form-group">
+								<label>IsPublic</label>
+								<select class="form-control" id="selectf1" name = "ispublic">
+										<option>yes</option>
+										<option>no</option>
+								</select>
+								</div>
+								<div class="form-group">
+									<label>Release Time</label>
+									<input class="form-control" name="releasetime" type="date" oninput="statechanger()" required>
+									<p id="starta"></p>
+								</div>
+								<div class="form-group">
+									<label>End Time(You can leave this blank blank if you didn't decide when to close)</label>
+									<input class="form-control" name="endtime" type="date" oninput="statechanger()">
+									<p id="enda"></p>
+								</div>
+								<div class="form-group">
+									<label>State:</label>
+									<p id="state">pub</p>
+								</div>
+						</form>
+						</div></div></div>
+						<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+					<button type="button" class="btn btn-primary" id="publishconfirm">confirm</button>
+				</div>
+			</div>
+		</div>
     <script src="questionnaire/js/jquery-1.11.1.min.js"></script>
     <script src="questionnaire/js/jquery-ui.min.js"></script>
     <script src="questionnaire/js/bootstrap.min.js"></script>

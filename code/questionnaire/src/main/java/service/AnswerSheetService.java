@@ -19,4 +19,6 @@ public interface AnswerSheetService {
 
 	List<Answer> getAnswerByQuestion(int quesid);
 
+	void deleteAnswersByQuestionId(int quesid);
+
 }

@@ -103,7 +103,11 @@ User user = (User) session.getAttribute("user");
 													data-password="<%=user.getPassword()%>">
 													<i class="fa fa-edit">&nbspModify Property</i>
 												</button>
-												
+											<button class="btn btn-default modifypw" type="button"
+											data-id="<%=user.getId()%>"
+											>
+											<i class="fa fa-edit">&nbspModify Password</i>
+											</button>	
 						</div>						
 </div>
 
@@ -129,14 +133,20 @@ User user = (User) session.getAttribute("user");
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-lg-12">
-							<form role="form" id="registerform">
-																<div class="form-group">
-									<label>Sex</label> <input class="form-control"
-										name="sex">
-								</div>
+							<form role="form" id="infoform">
+								<div class="form-group">
+			                        	<label>Sex</label>
+			                        	<select  id="form-sex" name="sex" class="form-control">
+											<option value="male">Male</option>
+											<option value="female">Female</option>
+										</select>
+			                        </div>
 																<div class="form-group">
 									<label>Mobile</label> <input class="form-control" mobile
-										name="mobile">
+										name="mobile" required id="mobile"  oninput="changephonechecker()">
+								</div>
+								<div id="phonechecker">
+									
 								</div>
 																<div class="form-group">
 									<label>Country</label> <input class="form-control"
@@ -147,12 +157,8 @@ User user = (User) session.getAttribute("user");
 										name="city">
 								</div>
 																<div class="form-group">
-									<label>Email</label> <input class="form-control" email
-										name="email">
-								</div>
-																<div class="form-group">
 									<label>Age</label> <input class="form-control" min="0"
-										name="age">
+										name="age" number step="1" digits>
 								</div>
 																<div class="form-group">
 									<label>Job</label> <input class="form-control"
@@ -180,7 +186,42 @@ User user = (User) session.getAttribute("user");
 
     	</div>
 
+<div class="modal fade" id="modal2" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title" id="modalTitle2"></h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-lg-12">
+						<form id="passwordform">
+						 <div class="form-group">
+			                        	<label >旧密码</label>
+			                        	<input type="password" name="oldpassword" placeholder="" class="form-control" required>
+			                        </div>
+			                        <div class="form-group">
+			                        	<label >新密码</label>
+			                        	<input type="password" name="newpassword" placeholder="" class="form-control" id="form-password" required>
+			                        </div>
+			                        <div class="form-group">
+			                        	<label >确认新密码</label>
+			                        	<input type="password" name="confirmpassword" placeholder="" class="form-control" required equalTo="#form-password">
+			                        </div>
+						</form>
+						</div></div></div>
+						<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="modify">确认</button>
+				</div>
+			</div>
+		</div>
 
+    	</div>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="<%=path %>/questionnaire/js/ie10-viewport-bug-workaround.js"></script>
 

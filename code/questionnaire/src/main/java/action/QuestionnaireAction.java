@@ -1,5 +1,6 @@
 package action;
 
+import service.AnswerSheetService;
 import service.QuestionnaireService;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import model.QuestionnaireQuestions;
 
 
 public class QuestionnaireAction extends BaseAction{
+	private AnswerSheetService ansService;
 	private QuestionnaireService quesService;
 	private int id;
 	private int userid;
@@ -91,6 +93,9 @@ public class QuestionnaireAction extends BaseAction{
 	 * @return
 	 */
 	
+	public void setAnsService(AnswerSheetService ansService) {
+		this.ansService = ansService;
+	}
 	/**
 	 * Use appService to add a questionnaire,including its basic information and content
 	 * @return
@@ -104,7 +109,15 @@ public class QuestionnaireAction extends BaseAction{
 		if(id!=0){
 			Questionnaire ques = quesService.getQuestionnaireById(id);
 			QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
-			ques.setTitle(title);
+			if(ques.getStatus().equals("pub")||ques.getStatus().equals("end")){
+				ansService.deleteAnswersByQuestionId(id);
+			}
+			if(status!=null){
+				ques.setEndTime(endTime);
+				ques.setIsPublic(isPublic);
+				ques.setReleaseTime(releaseTime);
+				ques.setStatus(status);
+			}
 			quescontent.setContent(content);
 			quesService.updateQuestionnaire(quescontent, ques);
 			response().getWriter().write("success");

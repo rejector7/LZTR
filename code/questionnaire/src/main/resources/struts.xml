@@ -61,6 +61,8 @@
 		</action>
 		<action name="signupPro" class="action.UserAction" method="add">
 		</action>
+		<action name="updatePasswordPro" class="action.UserAction" method="updatepass">
+		</action>
 		<action name="activatemail" class="action.UserAction" method="activate">
 			<result>/questionnaire/jsp/login.jsp</result>
 		</action>
@@ -75,14 +77,8 @@
 		<action name="getAnserByQuesidToStatistic" class="action.AnswerAction" method="getByQuesid">
 			<result name="getByQuesid">/questionnaire/jsp/result_statistic.jsp</result>
 		</action>
-		<action name="getStatistic" class="action.StatisticAction" method="getStatistic">
-		</action>
-		
-		
-		
 		<!-- 暂时的跳转 -->
 		<action name="*Statistic" class="action.StatisticAction" method="{1}">
-			<result name="getQuesAndAns">/questionnaire/jsp/answer_detail.jsp</result>
 		</action>
 		
 		

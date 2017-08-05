@@ -70,7 +70,7 @@
 			                        </div>
 			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-age">Age</label>
-			                        	<input type="number" name="age" step="1" placeholder="Age..." class="form-age form-control" id="form-age" min="0">
+			                        	<input type="number" name="age" step="1" placeholder="Age..." class="form-age form-control" id="form-age" min="0" digits>
 			                        </div>
 			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-sex">Sex</label>
@@ -93,8 +93,11 @@
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-mobile">Mobile</label>
-			                        	<input type="text" name="mobile" placeholder="Mobile..." class="form-mobile form-control" id="form-mobile" digits rangelength="[11,11]" >
+			                        	<input type="text" name="mobile" placeholder="Mobile..." class="form-mobile form-control" id="form-mobile" required oninput="changephonechecker()" >
 			                        </div>
+			                        <div id="phonechecker">
+									
+									</div>
 			                        			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-qq">QQ</label>
 			                        	<input type="text" name="qq" placeholder="QQ..." class="form-qq form-control" id="form-qq" digits>
