@@ -73,7 +73,9 @@ public class AnswerSheetServiceImpl implements AnswerSheetService {
 	public void deleteAnswersByQuestionId(int quesid){
 		List<Answer> anss= ansDao.getAnswersByQuesId(quesid);
 		for(Answer ans:anss){
-			deleteAnswer(ans, getAnswerSheetById(ans.getId()));
+			AnswerSheet anst = anssheetDao.getAnswerSheetById(ans.getId());
+			System.out.println(anst.getId());		
+			deleteAnswer(ans, anst);
 		}
 	}
 }

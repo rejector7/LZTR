@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection="AnswerSheets")
 public class AnswerSheet {
+	private String id;
 	private int answerid;
 	private int userid;
 	private String content;
@@ -46,6 +47,12 @@ public class AnswerSheet {
 		this.answerid = answerid;
 		this.userid = userid;
 		this.content = content;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	public int getUserid() {
 		return userid;

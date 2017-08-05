@@ -107,12 +107,17 @@ public class QuestionnaireAction extends BaseAction{
 		title =  URLDecoder.decode(title, "UTF-8");
 		title =  URLDecoder.decode(title, "UTF-8");
 		if(id!=0){
-			if(status=="pub"||status=="end"){
-				ansService.deleteAnswersByQuestionId(id);
-			}
 			Questionnaire ques = quesService.getQuestionnaireById(id);
 			QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
-			ques.setTitle(title);
+			if(ques.getStatus().equals("pub")||ques.getStatus().equals("end")){
+				ansService.deleteAnswersByQuestionId(id);
+			}
+			if(status!=null){
+				ques.setEndTime(endTime);
+				ques.setIsPublic(isPublic);
+				ques.setReleaseTime(releaseTime);
+				ques.setStatus(status);
+			}
 			quescontent.setContent(content);
 			quesService.updateQuestionnaire(quescontent, ques);
 			response().getWriter().write("success");
