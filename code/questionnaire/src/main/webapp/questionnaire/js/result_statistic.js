@@ -31,22 +31,25 @@ function formStatistic(data){
 					'			<div class="dataTable_wrapper">' +
 					'				<table class="table table-striped table-bordered table-hover"' +
 					'					id="dataTables">' +
-					'					<thead>' +
-					'						<tr>' +
-					'						    <th width="40%">Key</th>' +
-					'							<th width="60%">Value</th>' +
-					'						</tr>' +
-					'					</thead>' +
-					'					<tbody id ="' + i + 'body">')
+					'					<thead id="'+i+'"head>' +
+					'						</thead><tbody id ="' + i + 'body">');
 		if(type=="Subjective"){
+			$("#"+i+"head").append('<th width="40%">答卷号</th>' +
+			'							<th width="60%">答案</th>' +
+			'						</tr>');
 			for(var j = 0 ; j < answers.length; j++){
-				$("#" + i + "body").append('<tr id="' + i + '_' + j + 'tr">');
-				$("#" + i+ "_" + j+ "tr").append('<td>' + j + "</td>");
-				$("#" + i+ "_" + j+ "tr").append('<td>' + answers[j][i]['words'] + "</td>");
-				$("#" + i+ "body").append('</tr>');
+				if(answers[j][i]['words']!=null&&answers[j][i]['words']!=undefined&&answers[j][i]['words']!=""){
+					$("#" + i + "body").append('<tr id="' + i + '_' + j + 'tr">');
+					$("#" + i+ "_" + j+ "tr").append('<td>' + (j+1) + "</td>");
+					$("#" + i+ "_" + j+ "tr").append('<td>' + answers[j][i]['words'] + "</td>");
+					$("#" + i+ "body").append('</tr>');
+				}
 			}
 		}
 		else if(type=="Single"){
+			$("#"+i+"head").append('<th width="40%">选项号</th>' +
+					'							<th width="60%">选择数</th>' +
+					'						</tr>');
 			var result = [];
 			var label = [];
 			for(var j = 0 ; j < ques['options'].length; j++){
@@ -75,12 +78,15 @@ function formStatistic(data){
 			draw(label, result, i);
 			var button = document.createElement("button");
 			button.className="btn btn-default";
-			alert(canvas.id);
+			//alert(canvas.id);
 			button.onclick=function(){downloadimg(canvas.id)};
 			button.innerText="下载图片";
 			div.appendChild(button);
 		}
 		else if(type=="Multiple"){
+			$("#"+i+"head").append('<th width="40%">选项号</th>' +
+					'							<th width="60%">选择数</th>' +
+					'						</tr>');
 			var result = [];
 			var label = [];
 			for(var j = 0 ; j < ques['options'].length; j++){
@@ -112,12 +118,23 @@ function formStatistic(data){
 			draw(label, result, i);
 		}
 		else if(type=="Slider"){
+			$("#"+i+"head").append('<th width="40%">填写数量</th>' +
+					'							<th width="60%">平均值</th>' +
+					'						</tr>');
+			var totamt = 0;
+			var tot = 0;
+			var avg = 0;
 			for(var j = 0 ; j < answers.length; j++){
-				$("#" + i + "body").append('<tr id="' + i + '_' + j + 'tr">');
-				$("#" + i+ "_" + j+ "tr").append('<td>' + j + "</td>");
-				$("#" + i+ "_" + j+ "tr").append('<td>' + answers[j][i]['number'] + "</td>");
-				$("#" + i+ "body").append('</tr>');
+				if(answers[j][i]['number'] >= ques["min"]){
+					totamt += 1;
+					tot += answers[j][i]['number']*1;
+				}	
 			}
+			avg = (tot/totamt).toFixed(2)
+			$("#" + i + "body").append('<tr id="' + i + '_' + 0 + 'tr">');
+			$("#" + i+ "_" + 0+ "tr").append('<td>' + totamt + "</td>");
+			$("#" + i+ "_" + 0+ "tr").append('<td>' + avg + "</td>");
+			$("#" + i+ "body").append('</tr>');
 		}
 		$("#" + i).append('									</tbody> '+
 				'</table>'+
@@ -170,11 +187,11 @@ function downloadthis(){
 		content += "<p>"+headers[1].innerHTML+"</p>";
 		var table = $("#container").html();
 		content += table; 
-		exportDoc(content,headers[1].getElementsByTagName("strong")[0].innerHTML.split("：")[1]);
+		xportDoc(content,headers[1].getElementsByTagName("strong")[0].innerHTML.split("：")[1]);
 }
 
 function downloadimg(id){
-	alert(id);
+	//alert(id);
 	var imgData = document.getElementById(id).toDataURL("image/png");
 	download(imgData,id+".png","image/png");
 }

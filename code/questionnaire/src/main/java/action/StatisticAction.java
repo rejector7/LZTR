@@ -75,7 +75,7 @@ public class StatisticAction extends BaseAction{
 	 * @return
 	 * @throws IOException 
 	 */
-	public String getStatistic() throws IOException{
+	public String get() throws IOException{
 		JSONArray ansts = statisticService.getAnssheetsByQuesid(quesid);
 		QuestionnaireQuestions Qques = quesService.getQuestionnaireQuestionsById(quesid);
 		Questionnaire ques = quesService.getQuestionnaireById(quesid);
