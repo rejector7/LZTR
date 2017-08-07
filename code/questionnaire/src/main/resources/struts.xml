@@ -8,6 +8,8 @@
 	<constant name="struts.devMode" value="true" />
 	<package name="process" extends="struts-default">
 	<!-- User -->
+		<action name="updateMyInfoPro" class="action.UserAction" method="update">
+		</action>
 		<action name="*User" class="action.UserAction" method="{1}">
 		<result name="update">/questionnaire/jsp/admin_user.jsp</result>
 			<result name="add">/questionnaire/jsp/admin_user.jsp</result>
@@ -57,8 +59,10 @@
 		<action name="logoutPro" class="action.LoginAction" method="logout">
 			<result name="success">/questionnaire/jsp/login.jsp</result>
 		</action>
-		<action name="signupPro" class="action.UserActions" method="add">
-			<result>/questionnaire/jsp/signup.jsp</result>
+		<action name="signupPro" class="action.UserAction" method="add">
+		</action>
+		<action name="activatemail" class="action.UserAction" method="activate">
+			<result>/questionnaire/jsp/login.jsp</result>
 		</action>
 		
 		
@@ -68,11 +72,17 @@
 		<action name="getAnswerByQuesid" class="action.AnswerAction" method="getByQuesid">
 			<result name="getByQuesid">/questionnaire/jsp/result_detail.jsp</result>
 		</action>
+		<action name="getAnserByQuesidToStatistic" class="action.AnswerAction" method="getByQuesid">
+			<result name="getByQuesid">/questionnaire/jsp/result_statistic.jsp</result>
+		</action>
+		<action name="getStatistic" class="action.StatisticAction" method="getStatistic">
+		</action>
+		
+		
 		
 		<!-- 暂时的跳转 -->
 		<action name="*Statistic" class="action.StatisticAction" method="{1}">
 			<result name="getQuesAndAns">/questionnaire/jsp/answer_detail.jsp</result>
-			<result name="getAns">/questionnaire/jsp/result_detail.jsp</result>
 		</action>
 		
 		

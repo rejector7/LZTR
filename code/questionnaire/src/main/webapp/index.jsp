@@ -2,7 +2,7 @@
 <body>
 <h2>Hello World!</h2>
 <%
-	response.sendRedirect("loginPage");
+	response.sendRedirect("FrontPage");
 %>
 </body>
 </html>

@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import model.Answer;
 import model.AnswerSheet;
+import model.Questionnaire;
 import model.QuestionnaireQuestions;
 import service.AnswerSheetService;
 import service.QuestionnaireService;
@@ -54,19 +58,27 @@ public class StatisticAction extends BaseAction{
 	public String getQuesAndAns() throws IOException{
 		QuestionnaireQuestions Qques = quesService.getQuestionnaireQuestionsById(quesid);
 		AnswerSheet anst = ansService.getAnswerSheetById(id);    //这个id是answer id，根据mysql的answer id去拿mongoDB中的answer sheet
+		Questionnaire ques = quesService.getQuestionnaireById(quesid);
 		request().setAttribute("Qques", Qques);
 		request().setAttribute("anst", anst);
-		
+		request().setAttribute("name", ques.getTitle());
 		return "getQuesAndAns";
 	}
 	
 	/**
 	 * Get all answers of a specific questionnaire
 	 * @return
+	 * @throws IOException 
 	 */
-	public String getAns(){
-		List<AnswerSheet> ansts = statisticService.getAnssheetsByQuesid(quesid);
-		request().setAttribute("ansts", ansts);
-		return "getAns";
+	public String getStatistic() throws IOException{
+		JSONArray ansts = statisticService.getAnssheetsByQuesid(quesid);
+		QuestionnaireQuestions Qques = quesService.getQuestionnaireQuestionsById(quesid);
+		Questionnaire ques = quesService.getQuestionnaireById(quesid);
+		JSONObject result = new JSONObject();
+		result.put("question", new JSONObject(Qques.getContent())).put("answers", ansts).put("title", ques.getTitle());
+		response().setCharacterEncoding("utf-8");
+		response().setContentType("text/html;charset:utf-8");
+		response().getWriter().print(result.toString());
+		return null;
 	}
 }

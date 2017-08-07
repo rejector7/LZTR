@@ -4,7 +4,7 @@ import service.QuestionnaireService;
 
 import java.io.IOException;
 import java.net.URLDecoder;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONObject;
@@ -114,9 +114,19 @@ public class QuestionnaireAction extends BaseAction{
 		int userid = ((User)request().getSession().getAttribute("user")).getId();
 		Questionnaire ques = new Questionnaire(userid,status,title,isPublic,releaseTime,endTime);
 		QuestionnaireQuestions quescontent = new QuestionnaireQuestions(content);
-		System.out.println(content);
 		quesService.addQuestionnaire(quescontent, ques);
 		response().getWriter().write("success");
+		return null;
+	}
+	
+	public String update() throws IOException {
+		Questionnaire ques = quesService.getQuestionnaireById(id);
+		ques.setEndTime(endTime);
+		ques.setIsPublic(isPublic);
+		ques.setReleaseTime(releaseTime);
+		ques.setStatus(status);
+		quesService.updateQuestionnaire(ques);
+		response().getWriter().print("success");
 		return null;
 	}
 	

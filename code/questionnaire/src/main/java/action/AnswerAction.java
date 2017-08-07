@@ -5,6 +5,7 @@ import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import model.Answer;
@@ -64,9 +65,7 @@ public class AnswerAction extends BaseAction{
 		content =  URLDecoder.decode(content, "UTF-8");
 		String ip = request().getRemoteAddr();
 		Answer ans = new Answer(quesid, time, ip);
-		JSONObject pack = new JSONObject();
-		pack.put("content", content);
-		AnswerSheet anst  = new AnswerSheet(pack.toString());
+		AnswerSheet anst  = new AnswerSheet(content);
 		if(session().getAttribute("user") != null){
 			User user = (User)session().getAttribute("user");
 			anst.setUserid(user.getId());

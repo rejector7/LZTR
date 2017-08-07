@@ -1,6 +1,11 @@
 package action;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import javax.servlet.http.HttpServletRequest;
 
 import model.User;
 import service.UserService;
@@ -146,15 +151,25 @@ public class UserAction extends BaseAction{
 	
 	public String add() throws Exception {
 		if(userService.getUserByName(username)!=null){
-			response().getWriter().print("itdepends");
-			return "add";
+			response().getWriter().print("dupusername");
+			return null;
+		}
+		if(userService.getUserByEmail(email)!=null){
+			response().getWriter().print("dupemail");
+			return null;
 		}
 		if(role==null) role = "user";
+		System.out.println("1");
 		User user = new User(username, password, age, sex, email, country,
-				city, mobile, qq, wechat, role, job);
+				city, mobile, qq, wechat, role, job, null, null, null, 0);
+		System.out.println("2");
+		user = userService.activateMail(user);
+		
+		System.out.println("3");
 		userService.addUser(user);
+		System.out.println("4");
 		response().getWriter().print("success");
-		return "add";
+		return null;
 	}
 	
 	public String update() throws Exception {
@@ -165,12 +180,12 @@ public class UserAction extends BaseAction{
 		user.setEmail(email);
 		user.setMobile(mobile);
 		user.setQq(qq);
-		user.setRole(role);
 		user.setSex(sex);
-		user.setUsername(username);
 		user.setWechat(wechat);
 		user.setJob(job);
 		userService.updateUser(user);
+		session().removeAttribute("user");
+		session().setAttribute("user", user);
 		return "update";
 	}
 	
@@ -190,6 +205,49 @@ public class UserAction extends BaseAction{
 		List<User> Users = userService.findUsers(condi);
 		request().setAttribute("ResultList", Users);
 		return "search";
+	}
+	
+	public String activate() throws AddressException, MessagingException{
+		String email = request().getParameter("email");
+		String token = request().getParameter("token");
+		Long time = System.currentTimeMillis();
+		User u = userService.getUserByEmail(email);
+		if(u!=null){
+			if(u.getStatus()==0 && u.getActivateTime()!= 1){
+				if(u.getActivateTime()<time){
+					//过期，激活失败
+					u.setActivateTime(Long.parseLong("-1"));
+					//重新发送
+					u = userService.activateMail(u);
+					userService.updateUser(u);
+				}
+				else if(u.getActivateTime()>time){
+					//在时间内
+					u.setActivateTime(Long.parseLong("1"));
+					if(u.getToken().equals(token)){
+						//激活码通过
+						u.setStatus(1);
+						u.setCreateDate(new Date());
+						u.setToken("");
+						userService.updateUser(u);
+					}
+					else{
+						//激活码错误
+					}
+				}
+			}
+			else if(u.getStatus()==1){
+				//已经被激活重复点链接
+				request().setAttribute("flag", 3);
+				return SUCCESS;
+			}
+		}
+		else if(u==null){
+			
+		}
+		request().setAttribute("flag", 2);
+		return SUCCESS;
+		
 	}
 
 }

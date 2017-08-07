@@ -43,7 +43,7 @@
       <p><strong>问卷名字：<%=ques.getTitle() %></strong></p><!-- request().getRemoteAddr()可以拿到ip地址  -->
         <nav>
           <ul class="nav nav-justified">
-            <li><a href="#">统计数据</a></li>
+            <li><a href="getAnserByQuesidToStatistic?quesid=<%=ques.getId() %>">统计数据</a></li>
             <li class="active"><a href="#">详细信息</a></li> 
           </ul>
         </nav>
@@ -86,9 +86,9 @@
 										<tr>
 										    <td><%=answer.getId()%></td>
 											<td><%=answer.getTime()%></td>
-											<td>hhh</td> <!-- need to be changed later -->
+											<td><%=answer.getIp()%></td> <!-- need to be changed later -->
 											<td>
-												<a class="btn btn-default" href="getQuesAndAnsStatistic?id=<%=answer.getId()%> & quesid=<%=ques.getId() %>" role="button" target="_blank"><i class="fa fa-search"></i>回答详细情况</a>
+												<a class="btn btn-default" href="getQuesAndAnsStatistic?id=<%=answer.getId()%> & quesid=<%=ques.getId() %>" role="button" target="_blank"><i class="fa fa-search"></i></a>
 												<button class="btn btn-default delete" type="button"
 													data-id="<%=answer.getId()%>">
 													<i class="fa fa-trash"></i>

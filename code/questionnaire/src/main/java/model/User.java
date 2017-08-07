@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Date;
+
 public class User {
 	private int id;
 	private String username;
@@ -10,18 +12,23 @@ public class User {
 	private String country;
 	private String city;
 	
+	private int status;
 	private String mobile;
 	private String qq;
 	private String wechat;
 	private String job;
 	private String role; //admin or user(it means common user)
 	
+	private String token;
+	private Date createDate;
+	private Long activateTime;
+	
 	public User(){
 		
 	}
 	
 	public User(String username, String password, int age, String sex, String email, String country,
-			String city, String mobile, String qq, String wechat, String role, String job) {
+			String city, String mobile, String qq, String wechat, String role, String job, String token, Date createDate, Long activateTime, int status) {
 		this.username = username;
 		this.password = password;
 		this.age = age;
@@ -34,6 +41,10 @@ public class User {
 		this.wechat = wechat;
 		this.role = role;
 		this.job = job;
+		this.createDate = createDate;
+		this.token = token;
+		this.activateTime = activateTime;
+		this.status = status;
 	}
 
 	public int getId() {
@@ -138,6 +149,38 @@ public class User {
 
 	public void setJob(String job) {
 		this.job = job;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public Long getActivateTime() {
+		return activateTime;
+	}
+
+	public void setActivateTime(Long activateTime) {
+		this.activateTime = activateTime;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	
 	

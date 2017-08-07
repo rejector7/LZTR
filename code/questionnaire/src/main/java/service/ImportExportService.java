@@ -8,6 +8,5 @@ public interface ImportExportService {
 
 	String backupExport(int quesid);
 
-	void backupImport(String url) throws FileNotFoundException;
 
 }
