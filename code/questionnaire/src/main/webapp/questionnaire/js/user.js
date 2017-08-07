@@ -7,6 +7,9 @@ $(function(){
 			password:{
 				required:"Password is required."
 			},
+			age:{
+				digits:"请输入整数。"
+			},
 			confirmpassword:{
 				required:"Confirm Password is required.",
 				equalTo:"Please enter the same password again."
@@ -16,16 +19,44 @@ $(function(){
 				email:"Please enter a valid email address."
 			},
 			mobile:{
-				rangelength:"Please enter a cellmobile number.",
-				digits:"Please enter a cellmobile number.",
 				required:"Cellmobile number is required."
 			},
 			qq:{
-				digits:"Please enter a cellmobile number."
+				digits:"Please enter a qq number."
 			}
 		}
 	});
 
+	$("#infoform").validate({
+		messages:{
+			mobile:{
+				required:"请输入手机号码"
+			},
+			qq:{
+				digits:"请输入一个正确的QQ号"
+			},
+			age:{
+				digits:"请输入整数。",
+				min:"请输入一个非负整数"
+			}
+		}
+	});
+	
+	$("#passwordform").validate({
+		messages:{
+			oldpassword:{
+				required:"请输入你的旧密码。"
+			},
+			newpassword:{
+				required:"请输入你的新密码。"
+			},
+			confirmpassword:{
+				required:"请再次输入密码确认。",
+				equalTo:"输入的密码与新密码不同。"
+			}
+		}
+	});
+	
 	$("#register").click(function(){
 		var username = $("input[name='username']").val();
 		var password = $("input[name='password']").val();
@@ -39,7 +70,7 @@ $(function(){
 		var age = $("input[name='age']").val();
 		var job = $("input[name='job']").val();
 		var reg=/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
-			if(!$("#registerform").validate({
+		if(!$("#registerform").validate({
 			messages:{
 				username:{
 					required:"Username is required."
@@ -56,8 +87,6 @@ $(function(){
 					email:"Please enter a valid email address."
 				},
 				mobile:{
-					rangelength:"Please enter a cellmobile number.",
-					digits:"Please enter a cellmobile number.",
 					required:"Cellmobile number is required."
 				},
 				qq:{
@@ -114,13 +143,31 @@ $(function(){
 		
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
+		if(!$("#passwordform").validate({
+			messages:{
+			oldpassword:{
+				required:"请输入你的旧密码。"
+			},
+			newpassword:{
+				required:"请输入你的新密码。"
+			},
+			confirmpassword:{
+				required:"请再次输入密码确认。",
+				equalTo:"输入的密码与新密码不同。"
+			},
+			
+		}
+		}).form()){
+			return false;
+		}
+		
 		jQuery.ajax({
 			url : 'updatePasswordPro',
 			processData : true,
 			dataType : "text",
 			data : {
 				id : id,
-				old : oldpassword,
+				oldpassword : oldpassword,
 				password : newpassword
 			},
 			success : function(data) {
@@ -128,9 +175,6 @@ $(function(){
 				if(data=="false"){
 					bootbox.alert({
 						message : 'old password is wrong',
-						callback : function() {
-							location.reload();
-						}
 					});
 				}
 				else{
@@ -147,20 +191,37 @@ $(function(){
 	});
 
 	$("#save").click(function(e) {
-		var sex = $("input[name='sex']").val();
+		var sex = $("#form-sex").val();
 		var mobile = $("input[name='mobile']").val();
 		var country = $("input[name='country']").val();
 		var city = $("input[name='city']").val();
-		var email = $("input[name='email']").val();
 		var age = $("input[name='age']").val();
 		var job = $("input[name='job']").val();
 		var qq = $("input[name='qq']").val();
 		var wechat = $("input[name='wechat']").val();
-		console.log(sex, mobile, country, city, email, age, job, wechat, qq);
+		console.log(sex, mobile, country, city,  age, job, wechat, qq);
 
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
-
+		if(!$("#infoform").validate({
+		messages:{
+			mobile:{
+				required:"请输入手机号码"
+			},
+			qq:{
+				digits:"请输入一个正确的QQ号"
+			},
+			age:{
+				digits:"请输入整数。",
+				min:"请输入一个非负整数"
+			}
+		}
+		}).form()){
+			return false;
+		}
+		if(!isPhoneNo(mobile)){
+			return false;
+		}
 		if (id != "") { // Edit
 			jQuery.ajax({
 				url : 'updateUser',
@@ -172,7 +233,6 @@ $(function(){
 					mobile : mobile,
 					country : country,
 					city : city,
-					email : email,
 					age : age,
 					job : job,
 					wechat : wechat,
@@ -218,12 +278,11 @@ $(function(){
 		var id = dataset.id;
 		console.log(id);
 
-		$("input[name='sex']").val(dataset.sex);
+		$("#form-sex").val(dataset.sex);
 		if(dataset.mobile=="0")$("input[name='mobile']").val();
 		else $("input[name='mobile']").val(dataset.mobile);
 		$("input[name='country']").val(dataset.country);
 		$("input[name='city']").val(dataset.city);
-		$("input[name='email']").val(dataset.email);
 		if(dataset.age=="0")$("input[name='age']").val();
 		else $("input[name='age']").val(dataset.age);
 		$("input[name='job']").val(dataset.job);
@@ -249,3 +308,15 @@ $(function(){
 	});
 
 });
+function isPhoneNo(phone) { 
+	var pattern = /^1[34578]\d{9}$/; 
+	return pattern.test(phone); 
+}
+function changephonechecker(){
+	if(!isPhoneNo($("input[name='mobile']").val())){
+		$("#phonechecker").html("<label style='color:#de615e;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;'>请输入一个正确的手机号码</label>");
+	}
+	else{
+		$("#phonechecker").html("");
+	}
+}

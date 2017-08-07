@@ -1,3 +1,4 @@
+
 function AddText(str0,str1,str2,str3,str4)
 {
 	var asheet = document.getElementById("ASheet");
@@ -14,13 +15,15 @@ function Size(json)
 	return len;
 }
 
-function Execute(arg1, arg2)
+function Execute(arg1, arg2, arg3, arg4, quesid)
 {
 	var Tques = arg1;
 	//只去除问题和回答的部分，然后加入到表格中。两者应该是相同长度的
 	var quess = Tques.questions;
 	var answs = arg2;
-	
+	$("#quesid").append(quesid);
+	$("#quesname").append(arg3);
+	$("#userid").append(arg4);
 	//开始添加
 	var len = Size(quess);
 	for (var i = 0; i < len; ++i){
@@ -131,4 +134,19 @@ function downloadthis(){
 	var table = $("div.dataTable_wrapper").html();
 	content += table;
 	exportDoc(content,headers[1].getElementsByTagName("strong")[0].innerHTML.split("：")[1]);
+}
+
+function getcontent(ansid, quesid){
+	jQuery.ajax({
+		url : 'getQuesAndAnsStatistic',  //get content
+		processData : true,
+		dataType : "json",
+		data : {
+			id : ansid,
+			quesid : quesid
+		},
+		success : function(data) { //把title，id都放在里面
+			Execute(data["Qques"],data["anst"],data["name"],data["userid"].quesid);
+		}
+	});
 }

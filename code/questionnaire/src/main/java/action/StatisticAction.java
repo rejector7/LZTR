@@ -59,10 +59,15 @@ public class StatisticAction extends BaseAction{
 		QuestionnaireQuestions Qques = quesService.getQuestionnaireQuestionsById(quesid);
 		AnswerSheet anst = ansService.getAnswerSheetById(id);    //这个id是answer id，根据mysql的answer id去拿mongoDB中的answer sheet
 		Questionnaire ques = quesService.getQuestionnaireById(quesid);
-		request().setAttribute("Qques", Qques);
-		request().setAttribute("anst", anst);
-		request().setAttribute("name", ques.getTitle());
-		return "getQuesAndAns";
+		JSONObject result = new JSONObject();
+		result.put("Qques", new JSONObject(Qques.getContent()));
+		result.put("anst", new JSONArray(anst.getContent()));
+		result.put("name", ques.getTitle());
+		result.put("userid", anst.getUserid());
+		response().setCharacterEncoding("utf-8");
+		response().setContentType("text/html;charset:utf-8");
+		response().getWriter().print(result.toString());
+		return null;
 	}
 	
 	/**
@@ -70,7 +75,7 @@ public class StatisticAction extends BaseAction{
 	 * @return
 	 * @throws IOException 
 	 */
-	public String getStatistic() throws IOException{
+	public String get() throws IOException{
 		JSONArray ansts = statisticService.getAnssheetsByQuesid(quesid);
 		QuestionnaireQuestions Qques = quesService.getQuestionnaireQuestionsById(quesid);
 		Questionnaire ques = quesService.getQuestionnaireById(quesid);
