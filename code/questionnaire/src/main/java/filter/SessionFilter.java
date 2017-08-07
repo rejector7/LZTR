@@ -49,6 +49,7 @@ public class SessionFilter implements Filter{
 		String[] loginList = loginStrings.split(";");
 		String[] adminList = adminStrings.split(";");
 		String from = ((HttpServletRequest) request).getServletPath();
+
 		if(from.endsWith(".css")||from.endsWith(".js")||from.endsWith(".jpg")||from.endsWith(".jpeg")||from.endsWith(".png")||from.endsWith(".ttf")||from.endsWith(".woff")){
 			chain.doFilter(request, response);
 			return;
