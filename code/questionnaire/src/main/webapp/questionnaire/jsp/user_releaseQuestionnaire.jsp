@@ -83,7 +83,7 @@
 		</div>
 		
 		<button class="btn btn-default submit" type="button" style="floating:right">
-				<i class="fa fa-check fa-2x">confirm</i>
+				<i class="fa fa-check fa-2x">save</i>
 		</button>
 		<button class="btn btn-default cancel" type="button" style="floating:right">
 				<i class="fa fa-check fa-2x">cancel</i>
@@ -139,6 +139,41 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	 <div class="modal fade" id="modal2" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" id="relacloser">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title" id="modalTitle"></h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-lg-12">
+						<form id="form3">
+							<div class="form-group">
+								<label>Select a question</label>
+								<select class="form-control" id="formerques">
+										
+								</select>
+							</div>
+							<!-- <div class="form-group" id="specoptiondiv">
+								<label>Select an option</label>
+								<select class="form-control" id="specoption">
+										
+								</select>
+							</div> -->
+						</form>
+						</div></div></div>
+						<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="relatconfirm">confirm</button>
+				</div>
+			</div>
+		</div>
+	</div>
     <script src="questionnaire/js/jquery-1.11.1.min.js"></script>
     <script src="questionnaire/js/jquery-ui.min.js"></script>
     <script src="questionnaire/js/bootstrap.min.js"></script>
