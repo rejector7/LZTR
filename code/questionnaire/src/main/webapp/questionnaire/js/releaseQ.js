@@ -710,6 +710,17 @@ function addBlank() {
 	input.className = "form-control";
 	input.name = value;
 	div3.appendChild(input);
+	var div8 = document.createElement("div");
+	div8.className = "col-lg-2";
+	div2.appendChild(div8);	
+	var input2 = document.createElement("input");
+	input2.type = "checkbox";
+	input2.onclick = function(){relevancy(value)};
+	input2.id = value + "relevancy";
+	var label3 = document.createElement("label");
+	label3.innerText="relevancy";
+	div8.appendChild(input2);
+	div8.appendChild(label3);
 	
 	//create required label
 	var div4 = document.createElement("div");
@@ -768,6 +779,8 @@ function addSingle() {
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
 			"<input class='form-control' name=" + value +"></div>" +
+			"<div class='col-lg-2'>" +
+			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label>relevancy</label></div>"+
 			"</div>" +
 			"<div class='container' id='" + value + "container' value='0'>" +
 			"<label><font size='5'>input your option</font></label></div>" +
@@ -845,6 +858,9 @@ function addMultiple() {
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
 			"<input class='form-control' name=" + value + "></div>" +
+			"<div class='col-lg-2'>" +
+			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label>relevancy</label></div>"+
+			"</div>" +
 			"</div>" +
 			"<div class='container' id='" + value + "container' value='0'>" +
 			"<label><font size='5'>input your option</font></label></div>" +
@@ -907,15 +923,19 @@ function addSlider() {
 	form.appendChild(div);
 	$("#"+value+"div").html("" +
 			"<div class='container'><div class='row'>" +
-			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label></div>" +
-			"<div class='col-lg-2'><div id='" + value + "button'></div></div>" +
-			"<div class='row container'>" +
-			"<div class='col-lg-11'>" +
-			"<input class='form-control' name=" + value + "></div>" +
-			"<div class='col-lg-1'>" +
+			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label>" +
+			"<div class='col-lg-2' style='float:right'>" +
 			"<label>required</label>" +
 			"<input type='checkbox' id='" + value + "required'>" +
 			"</div></div>" +
+			"<div class='col-lg-2'><div id='" + value + "button'></div></div>" +
+			"<div class='row container'>" +
+			"<div class='col-lg-10'>" +
+			"<input class='form-control' name=" + value + "></div>" +
+			"<div class='col-lg-2'>" +
+			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label>relevancy</label></div>"+
+			"</div>" +
+			"</div>" +
 			"<div class='container'><div class='row'>" +
 			"<div class='col-lg-1'><label><font size='5'>max</font></label></div>" +
 			"<div class='col-lg-2'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
@@ -1031,4 +1051,39 @@ function statechanger(){
 	else if($("input[name='releasetime']").val()<=new Date().toISOString().split("T")[0]){
 		$("#state").html("pub");
 	}}
+}
+
+function relevancy(value){
+	if(document.getElementById(value+"relevancy").checked==true){
+		var num = $("#"+value+"divfont").html();
+		if(num == 0){
+			bootbox.alert("No option to choose");
+			document.getElementById(value+"relevancy").checked=false;
+			return;
+		}
+		var quess = document.getElementById("form").childNodes;
+		var opts = "";
+		for(var i=0;i<num-1;i++){
+			if(quess[i].getAttributeNode("value").value=="1"||quess[i].getAttributeNode("value").value=="2"){
+				if(document.getElementById(quess[i].id.split("d")[0]+"container").getElementsByTagName("DIV").length!=0){
+				opts+="<option>"+
+						$("#"+quess[i].id.split("d")[0]+"divfont").html()+
+						"."+
+						$("input[name='"+quess[i].id.split("d")[0]+"']")
+						+"</option>";
+				}
+			}
+		}
+		$("#formerques").html(opts);
+		if(document.getElementById("formerques").getElementsByTagName("OPTION").length==0){
+			bootbox.alert("No option to choose");
+			document.getElementById(value+"relevancy").checked=false;
+			return;
+		}
+		$('#modal2').modal('show');
+		
+	}
+	else{
+		
+	}
 }
