@@ -15,5 +15,9 @@ public interface MessageDao {
 	
 	List<Message> getMessageByRid(int rid);
 
-	void updateMessage(Message message);
+	void update1Message(Message message); //单纯的修改消息的状态（已读--》未读）
+	
+	void update0Message(Message message);
+	
+	Message getMsgById(String id);
 }
