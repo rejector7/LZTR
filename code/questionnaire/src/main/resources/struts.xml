@@ -91,7 +91,13 @@
 			<result>/questionnaire/jsp/result.jsp</result>
 		</action>
 		
-		
+		<action name="*Message" class="action.MessageAction" method="{1}">
+			<result name="allSend">/questionnaire/jsp/user_sendMessage.jsp</result>
+			<result name="send1" type="chain">allSendMessage</result>
+			<result name="send2">/questionnaire/jsp/answer_detail.jsp</result>
+			<result name="allRece">/questionnaire/jsp/user_receMessage.jsp</result>
+			<result name="read">/questionnaire/jsp/user_receMessage.jsp</result>
+		</action>
 		
 		
 		

@@ -64,6 +64,9 @@ public class StatisticAction extends BaseAction{
 		result.put("anst", new JSONArray(anst.getContent()));
 		result.put("name", ques.getTitle());
 		result.put("userid", anst.getUserid());
+		request().setAttribute("s_quesid", ques.getId());
+		request().setAttribute("s_quesname", ques.getTitle());
+		request().setAttribute("s_userid", anst.getUserid());
 		response().setCharacterEncoding("utf-8");
 		response().setContentType("text/html;charset:utf-8");
 		response().getWriter().print(result.toString());
