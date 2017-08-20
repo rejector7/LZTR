@@ -10,18 +10,19 @@ public class Questionnaire{
 	private int isPublic;    	/* 1(default) or 0 */
 	private Date releaseTime;
 	private Date endTime;
-	
+	private int allowDup;
 	public Questionnaire(){
 		
 	}
 	
-	public Questionnaire(int userid, String status, String title, int isPublic, Date releaseTime, Date endTime){
+	public Questionnaire(int userid, String status, String title, int isPublic, Date releaseTime, Date endTime, int allowDup){
 		this.userid = userid;
 		this.status = status;
 		this.isPublic = isPublic;
 		this.releaseTime = releaseTime;
 		this.endTime = endTime;
 		this.title = title;
+		this.allowDup = allowDup;
 	}
 	
 	public int getId(){
@@ -73,6 +74,14 @@ public class Questionnaire{
 	public void setEndTime(Date endTime){
 		this.endTime = endTime;
 	}
+	public int getAllowDup() {
+		return allowDup;
+	}
+
+	public void setAllowDup(int allowDup) {
+		this.allowDup = allowDup;
+	}
+
 	@Override
 	public String toString() {
 		return "{\"id\":\"" + id + "\", \"userid\":\"" + userid + "\", \"title\":\"" + title + "\", \"status\":\""

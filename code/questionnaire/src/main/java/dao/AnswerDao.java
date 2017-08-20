@@ -16,4 +16,6 @@ public interface AnswerDao {
 
 	List<Answer> getAnswersByQuesId(int quesid);
 
+	List<Answer> getAnswersByIp(String ip);
+
 }

@@ -78,4 +78,9 @@ public class AnswerSheetServiceImpl implements AnswerSheetService {
 			deleteAnswer(ans, anst);
 		}
 	}
+	
+	@Override
+	public List<Answer> getAnswersByIp(String ip){
+		return ansDao.getAnswersByIp(ip);
+	}
 }
