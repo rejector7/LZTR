@@ -1,7 +1,7 @@
 package model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
-
+import java.util.Date;
 @Document(collection="Message")
 public class Message {
 	private String id;
@@ -9,7 +9,7 @@ public class Message {
 	private int rid;  //receiver id
 	private String msg; //message 
 	private int isread;
-	
+	private Date senddate;
 	public Message() {
 		super();
 	}
@@ -20,6 +20,7 @@ public class Message {
 		this.rid = rid;
 		this.msg = msg;
 		this.isread = 0;  //默认新建的信息未读
+		this.senddate = new Date(); //获取当前时间
 	}
 	public String getId() {
 		return id;
@@ -56,4 +57,10 @@ public class Message {
 		this.msg = msg;
 	}
 	
+	public Date getSenddate(){
+		return senddate;
+	}
+	public void setSenddate(Date senddate){
+		this.senddate = senddate;
+	}
 }

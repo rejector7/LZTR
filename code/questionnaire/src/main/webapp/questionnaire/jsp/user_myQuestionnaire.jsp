@@ -55,10 +55,12 @@
             <li class="active"><a href="">我的问卷</a></li>
             <li><a href="<%=path %>/ReleaseQuestionnaire">问卷发布</a></li>
             <li><a href="<%=path %>/FillQuestionnaire">填写问卷</a></li>
+            <li><a href="<%=path %>/allSendMessage">消息</a></li>
             <li><a href="<%=path %>/HelpContact">帮助</a></li>
+            
             <li><a href="<%=path %>/logoutPro">登出</a></li>
             <%if(((String)session.getAttribute("role")).equals("admin")){%>
-				<li><a href="<%=path %>/allUser" ><i class="fa fa-table fa-fw"></i>系统信息管理</a></li>
+				<li><a href="<%=path %>/allUser" ></i>系统信息管理</a></li>
 			<%}%>
           </ul>
         </nav>

@@ -39,10 +39,30 @@ public class MessageDaoImpl implements MessageDao{
 	}
 	
 	//当用户点击某一信息的时候，就设置为已读
-	public void updateMessage(Message message){
+	public void update1Message(Message message){
 		Criteria criteria = Criteria.where("id").is(message.getId());
 	      Query query = new Query(criteria);
 	      Update update = new Update().set("isread", 1);
 	      mongoTemplate.updateFirst(query, update, Message.class);
+	}
+	
+	//用户可以将一个已读消息设为未读
+	public void update0Message(Message message){
+		Criteria criteria = Criteria.where("id").is(message.getId());
+	      Query query = new Query(criteria);
+	      Update update = new Update().set("isread", 0);
+	      mongoTemplate.updateFirst(query, update, Message.class);
+	}
+	
+	public Message getMsgById(String id){
+		Criteria criteria = Criteria.where("id").is(id);
+		Query query = new Query(criteria);
+		List<Message> Messages=mongoTemplate.find(query, Message.class);
+		if(!(Messages==null||Messages.isEmpty())){
+			return Messages.get(0);
+		}
+		else {
+			return null;
+		}
 	}
 }
