@@ -22,27 +22,12 @@
 <title>问卷统计结果</title>
 </head>
 <body>	
-	<!-- 获取问卷问题信息 -->
-	<%
-	QuestionnaireQuestions Qques = new QuestionnaireQuestions();
-		Qques = (QuestionnaireQuestions)request.getAttribute("Qques");
-		String name = (String)request.getAttribute("name");
-	%>
-	<!-- 从request获取answer sheet数据 -->
-	<%
-		AnswerSheet anst = new AnswerSheet();
-				anst = (AnswerSheet)request.getAttribute("anst");
-	%>
-	
-	
-	
-	
 	<!-- 跳转标签 -->
 	<div class="container">
       <div class="masthead">
-      <p><strong>问卷id：<%=Qques.getQuesid()%></strong></p>
-      <p><strong>问卷名：<%=name%></strong></p>
-      <p><strong>用户id：<%=anst.getUserid()==0 ? "NULL" : anst.getUserid()%></strong></p> <!-- 判断是否是未登录用户填写的问卷 -->
+      <p><strong id="quesid">问卷id：<%=request.getAttribute("s_quesid") %></strong></p>
+      <p><strong id="quesname">问卷名：<%=request.getAttribute("s_quesname") %></strong></p>
+      <p><strong id="userid">用户id：<%=request.getAttribute("s_userid") %></strong></p> <!-- 判断是否是未登录用户填写的问卷 -->
       <button type='button' class='btn btn-default' onclick='downloadthis()'>下载doc文件</button>
       </div>
     </div>
@@ -71,9 +56,19 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		
 	
-	
+	<!-- 问卷发起者添加留言反馈 -->
+	<form role="form">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="留言反馈..." name="msg">
+      <span class="input-group-btn">
+      	<button class="btn btn-default" id="reply" data-rid="<%=request.getAttribute("s_userid") %>"><i class="fa fa-reply"></i></button>
+      </span>
+    </div>
+    </form>
+    </div>
+   
 	
 	<!-- js file -->
 	<script src="<%=path%>/questionnaire/js/jquery.min.js"></script>
@@ -89,7 +84,37 @@
 
 <!-- add date to table -->
 <script>
-	Execute(<%=Qques.getContent()%>, <%=anst.getContent()%>);
+	<%if(request.getParameter("ansid")!=null){%>
+	getcontent(<%=request.getParameter("ansid")%>,<%=request.getParameter("quesid")%>);
+	
+	<%}%>
 </script>
+ <script>	
+ $(function() { 
+    	$("#reply").click(function(e){
+    		var dataset = e.currentTarget.dataset;
+    		var rid = dataset.rid;
+    		var msg = $("input[name='msg']").val();
+			console.log(msg);
+			jQuery.ajax({
+				url : 'send2Message',
+				processData : true,
+				dataType : "text",
+				data : {
+					rid : rid,
+					msg : msg
+				},
+				success : function(data) {
+					bootbox.alert({
+						message : '发送成功! ',
+						callback : function() {
+							location.reload();
+						}
+					});
+				}
+			});
+		});
+ });
+	</script>
 </body>
 </html>

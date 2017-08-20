@@ -212,6 +212,228 @@ $(function() {
 	
 	$(".addSlider").click(function(e) {addSlider()});
 	
+	$(".publish").click(function(e) {
+		var d = new Date().toISOString().split("T")[0];
+		$("input[name='releasetime']").val(d);
+		$("input[name='endtime']").val("");
+		$("select[name='ispublic']").val("no");
+		$('#modal').modal('show');
+	});
+	
+	$("#publishconfirm").click(function(e) {
+		var form = document.getElementById("form");
+		if(form == null){
+			alert("no question");
+			return;
+		}
+		var childs = form.childNodes;  
+		if(childs.length == 0){
+			alert("no question");
+			return;
+		}
+		var result = {};
+		
+		var title = $("input[name='title']").val();
+		if(title=="") {alert("Title can not be empty");return;}
+		var intro = $("input[name='introduction']").val();
+		//result['title'] = title;
+		result['introduction'] = intro;
+		result['questions'] = [];
+		for(var k = 0 ; k < childs.length ; k++ ){
+			result['questions'][k] = {};
+			result['questions'][k]['id'] = k;
+			var i = childs[k].getAttribute("id").split("div")[0];
+			//result += "{id :" + i;
+			//get the question stem
+			//alert($("input[name=" + i + "]").val());
+			var stem = $("input[name=" + i + "]").val();
+			if(stem ==""){alert("the stem of question " + i + " is empty");return;}
+			result['questions'][k]['stem'] = stem;
+			//get the required
+			var required = document.getElementById(i + "required");
+			if(required.checked){
+				result['questions'][k]['required'] = true;
+			}
+			else result['questions'][k]['required'] = false;
+			//get the question type
+			var type = (document.getElementById(i + "div")).getAttribute("value");
+			switch(type){
+			case '0':
+				//alert("blank");
+				result['questions'][k]['type'] = 'Subjective';
+				break;
+			case '1':
+				result['questions'][k]['type'] = 'Single';
+				//alert("single");
+				//get all the options
+				var option_form = document.getElementById(i + "container");
+				var options = option_form.childNodes;
+				if(options.length == 1){
+					alert("question " + (i-DELETE_NUM_QUESTION) + " no option");
+					return;
+				}
+				result['questions'][k]['options'] = [];
+				for(var m = 1; m < options.length; m++){
+					//alert($("input[name='" + i + "_" + j + "option']").val())
+					var name = options[m].getAttribute("id").split("div")[0];
+					var option = $("input[name=" + name + "]").val();
+					var cf = document.getElementById(i+"_"+(m-1)+"cf");
+					if(option == "") {alert("the content of question "+ i + " option "  + (m-1) + " is empty");return;}
+					result['questions'][k]['options'][m-1] = {};
+					result['questions'][k]['options'][m-1]['id'] = m;
+					result['questions'][k]['options'][m-1]['option'] = option;
+					if(cf.checked){
+						result['questions'][k]['options'][m-1]['hasWords'] = true;
+					}
+					else result['questions'][k]['options'][m-1]['hasWords'] = false;
+				}
+				break;
+			case '2':
+				result['questions'][k]['type'] = 'Multiple';
+				var option_form = document.getElementById(i + "container");
+				var options = option_form.childNodes;
+				if(options.length == 1){
+					alert("question " + (i-DELETE_NUM_QUESTION) + " no option");
+					return;
+				}
+				//get the number of options
+				var num = (document.getElementById(i + "container")).getAttribute("value");
+				if(num == 0 ){alert("question " + i + " must have at least 1 option");return;}
+				//get min & max
+				var min = $("input[name='" + i + "min']").val();
+				var max = $("input[name='" + i + "max']").val();
+				if(min==""){min=0;}
+				if(max==""){max=options.length-1;}
+				if(min > max) {alert("min must smaller than max");return;}
+				if(min < 0) {alert("min must bigger than 0");return;}
+				if(max > num) {alert("max must bigger than the number of options");return;}
+				result['questions'][k]['min'] = min;
+				result['questions'][k]['max'] = max;
+ 				//alert(min);alert(max);
+				//alert("multiple");
+ 				//get all the options
+				result['questions'][k]['options'] = [];
+				for(var m = 1; m < options.length; m++){
+					//alert($("input[name='" + i + "_" + j + "option']").val())
+					var name = options[m].getAttribute("id").split("div")[0];
+					var option = $("input[name=" + name + "]").val();
+					if(option == "") {alert("the content of question "+ i + " option "  + j + " is empty");return;}
+					result['questions'][k]['options'][m-1] = {};
+					result['questions'][k]['options'][m-1]['id'] = m;
+					result['questions'][k]['options'][m-1]['option'] = option;
+					var cf = document.getElementById(i+"_"+(m-1)+"cf");
+					if(cf.checked){
+						result['questions'][k]['options'][m-1]['hasWords'] = true;
+					}
+					else result['questions'][k]['options'][m-1]['hasWords'] = false;
+				}
+				break;
+			case '3':
+				result['questions'][k]['type'] = 'Slider';
+				//get min & max
+				var min = $("input[name='" + i + "min']").val();
+				if(min==""){alert("the min of question is empty");return;}
+				var max = $("input[name='" + i + "max']").val();
+				if(max==""){alert("the max of question is empty");return;}
+				var mintext = $("input[name='" + i + "mintext']").val();
+				if(mintext==""){alert("the min label of question is empty");return;}
+				var maxtext = $("input[name='" + i + "maxtext']").val();
+				if(maxtext==""){alert("the max label of question is empty");return;}
+				if(min > max) {alert("min must smaller than max");return;}
+				result['questions'][k]['min'] = min;
+				result['questions'][k]['max'] = max;
+				result['questions'][k]['mintext'] = mintext;
+				result['questions'][k]['maxtext'] = maxtext;
+				break;
+			}
+		}
+		var isPublic = $("#selectf1").val();
+		if(isPublic == "yes"){
+			isPublic = 1;
+		}
+		else{
+			isPublic = 0;
+		}
+		var status = $("#state").html();
+		var releaseTime = $("input[name='releasetime']").val();
+		var endTime = $("input[name='endtime']").val();
+		if(releaseTime==""){
+			$("#starta").html("Please choose a date");
+			return false;
+		}
+		else{
+			$("#starta").html("");
+		}
+		if(releaseTime>=endTime && endTime!=""){
+			$("#enda").html("End date must be later than start");
+			return false;
+		}
+		else{
+			$("#enda").html("");
+		}
+		if(FLAG==1){
+			bootbox.confirm({
+				buttons : {
+					confirm : {
+						label : 'Confirm'
+					},
+					cancel : {
+						label : 'Cancel'
+					}
+				},
+				message : 'This will delete all the answers got before, sure to update?',
+				callback : function(test) {
+					if (test) {
+						jQuery.ajax({
+							url : 'addQuestionnaire',
+							processData : true,
+							dataType : "text",
+							data : {
+								title:encodeURI(encodeURI(title)),
+								id:QUES_ID,
+								content : encodeURI(encodeURI(JSON.stringify(result))),
+								isPublic : isPublic,
+								status : status,
+							    endTime : endTime,
+							    releaseTime : releaseTime
+							},
+							success : function(data) {
+								bootbox.alert({
+									message : 'success',
+								    callback : function() {
+								    	location.href = 'FrontPage';
+									}
+								});
+							}
+						});
+					}
+					
+					}});
+			return;
+		}
+		jQuery.ajax({
+			url : 'addQuestionnaire',
+			processData : true,
+			dataType : "text",
+			data : {
+				title:encodeURI(encodeURI(title)),
+				id:QUES_ID,
+				content : encodeURI(encodeURI(JSON.stringify(result))),
+				isPublic : isPublic,
+				status : status,
+			    endTime : endTime,
+			    releaseTime : releaseTime
+			},
+			success : function(data) {
+				bootbox.alert({
+					message : 'success',
+				    callback : function() {
+				    	location.href = 'FrontPage';
+					}
+				});
+			}
+		});
+	});
 });
 
 function addOption(value){
@@ -488,6 +710,17 @@ function addBlank() {
 	input.className = "form-control";
 	input.name = value;
 	div3.appendChild(input);
+	var div8 = document.createElement("div");
+	div8.className = "col-lg-2";
+	div2.appendChild(div8);	
+	var input2 = document.createElement("input");
+	input2.type = "checkbox";
+	input2.onclick = function(){relevancy(value)};
+	input2.id = value + "relevancy";
+	var label3 = document.createElement("label");
+	label3.innerText="relevancy";
+	div8.appendChild(input2);
+	div8.appendChild(label3);
 	
 	//create required label
 	var div4 = document.createElement("div");
@@ -546,6 +779,8 @@ function addSingle() {
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
 			"<input class='form-control' name=" + value +"></div>" +
+			"<div class='col-lg-2'>" +
+			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label>relevancy</label></div>"+
 			"</div>" +
 			"<div class='container' id='" + value + "container' value='0'>" +
 			"<label><font size='5'>input your option</font></label></div>" +
@@ -623,6 +858,9 @@ function addMultiple() {
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
 			"<input class='form-control' name=" + value + "></div>" +
+			"<div class='col-lg-2'>" +
+			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label>relevancy</label></div>"+
+			"</div>" +
 			"</div>" +
 			"<div class='container' id='" + value + "container' value='0'>" +
 			"<label><font size='5'>input your option</font></label></div>" +
@@ -685,15 +923,19 @@ function addSlider() {
 	form.appendChild(div);
 	$("#"+value+"div").html("" +
 			"<div class='container'><div class='row'>" +
-			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label></div>" +
-			"<div class='col-lg-2'><div id='" + value + "button'></div></div>" +
-			"<div class='row container'>" +
-			"<div class='col-lg-11'>" +
-			"<input class='form-control' name=" + value + "></div>" +
-			"<div class='col-lg-1'>" +
+			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label>" +
+			"<div class='col-lg-2' style='float:right'>" +
 			"<label>required</label>" +
 			"<input type='checkbox' id='" + value + "required'>" +
 			"</div></div>" +
+			"<div class='col-lg-2'><div id='" + value + "button'></div></div>" +
+			"<div class='row container'>" +
+			"<div class='col-lg-10'>" +
+			"<input class='form-control' name=" + value + "></div>" +
+			"<div class='col-lg-2'>" +
+			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label>relevancy</label></div>"+
+			"</div>" +
+			"</div>" +
 			"<div class='container'><div class='row'>" +
 			"<div class='col-lg-1'><label><font size='5'>max</font></label></div>" +
 			"<div class='col-lg-2'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
@@ -796,4 +1038,52 @@ function update(quesid){
 			modify(data, QUES_ID);
 		}
 	});
+}
+
+function statechanger(){
+	if($("input[name='endtime']").val()!="" && $("input[name='endtime']").val()<new Date().toISOString().split("T")[0]){
+		$("#state").html("end");
+	}
+	else{
+	if($("input[name='releasetime']").val()>new Date().toISOString().split("T")[0]){
+		$("#state").html("unp");
+	}
+	else if($("input[name='releasetime']").val()<=new Date().toISOString().split("T")[0]){
+		$("#state").html("pub");
+	}}
+}
+
+function relevancy(value){
+	if(document.getElementById(value+"relevancy").checked==true){
+		var num = $("#"+value+"divfont").html();
+		if(num == 0){
+			bootbox.alert("No option to choose");
+			document.getElementById(value+"relevancy").checked=false;
+			return;
+		}
+		var quess = document.getElementById("form").childNodes;
+		var opts = "";
+		for(var i=0;i<num-1;i++){
+			if(quess[i].getAttributeNode("value").value=="1"||quess[i].getAttributeNode("value").value=="2"){
+				if(document.getElementById(quess[i].id.split("d")[0]+"container").getElementsByTagName("DIV").length!=0){
+				opts+="<option>"+
+						$("#"+quess[i].id.split("d")[0]+"divfont").html()+
+						"."+
+						$("input[name='"+quess[i].id.split("d")[0]+"']")
+						+"</option>";
+				}
+			}
+		}
+		$("#formerques").html(opts);
+		if(document.getElementById("formerques").getElementsByTagName("OPTION").length==0){
+			bootbox.alert("No option to choose");
+			document.getElementById(value+"relevancy").checked=false;
+			return;
+		}
+		$('#modal2').modal('show');
+		
+	}
+	else{
+		
+	}
 }

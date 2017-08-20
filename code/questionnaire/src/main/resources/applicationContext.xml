@@ -50,8 +50,8 @@
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close" p:driverClass="com.mysql.jdbc.Driver"
 
-		p:jdbcUrl="jdbc:mysql://localhost:3306/questionnaire" p:user="root"
-		p:password="123456" p:maxPoolSize="40" p:minPoolSize="1"
+		p:jdbcUrl="jdbc:mysql://localhost:3306/lztr" p:user="root"
+		p:password="qaz,./123456789" p:maxPoolSize="40" p:minPoolSize="1"
 
 		p:initialPoolSize="1" p:maxIdleTime="20" />
 
@@ -100,6 +100,10 @@
 	<bean id="anssheetDao" class="dao.impl.AnswerSheetDaoImpl">
 		<property name="mongoTemplate" ref="mongoTemplate" />
 	</bean>
+	<!-- Message -->
+	<bean id="messageDao" class="dao.impl.MessageDaoImpl">
+		<property name="mongoTemplate" ref="mongoTemplate" />
+	</bean>
 	<!-- End of Dao -->
 	
 	
@@ -130,6 +134,9 @@
 		<property name="anssheetDao" ref="anssheetDao"></property>
 		<property name="quesDao" ref="quesDao"></property>
 		<property name="questionnairequestionsDao" ref="questionsDao"></property>
+	</bean>
+	<bean id="messageService" class="service.impl.MessageServiceImpl">
+		<property name="messageDao" ref="messageDao"></property>
 	</bean>
 	<!-- End of Service -->
 	

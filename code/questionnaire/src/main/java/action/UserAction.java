@@ -1,5 +1,6 @@
 package action;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class UserAction extends BaseAction{
 	private int id;
 	private String username;
 	private String password;
+	private String oldpassword;
 	private int age;
 	private String sex;		//male and female
 	private String email;
@@ -145,6 +147,14 @@ public class UserAction extends BaseAction{
 		return this.condi;
 	}
 
+	public String getOldpassword() {
+		return oldpassword;
+	}
+
+	public void setOldpassword(String oldpassword) {
+		this.oldpassword = oldpassword;
+	}
+
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
@@ -177,7 +187,9 @@ public class UserAction extends BaseAction{
 		user.setCity(city);
 		user.setAge(age);
 		user.setCountry(country);
+		if(email!=null||email!=""){
 		user.setEmail(email);
+		}
 		user.setMobile(mobile);
 		user.setQq(qq);
 		user.setSex(sex);
@@ -250,4 +262,18 @@ public class UserAction extends BaseAction{
 		
 	}
 
+	public String updatepass() throws IOException{
+		User user = userService.getUserById(id);
+		System.out.println("id:"+id+"oldpassword:"+oldpassword+"user.getPassword():"+user.getPassword());
+		if(!user.getPassword().equals(oldpassword)){
+			response().getWriter().print("false");
+			return null;
+		}
+		user.setPassword(password);
+		userService.updateUser(user);
+		session().removeAttribute("user");
+		session().removeAttribute("role");
+		response().getWriter().print("true");
+		return null;
+	}
 }

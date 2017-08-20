@@ -45,14 +45,23 @@
         <nav>
           <ul class="nav nav-justified">
             <li><a href="<%=path %>/FrontPage">首页</a></li>
+            <%if(session.getAttribute("user") != null){%>
             <li><a href="<%=path %>/SelfInfo">个人信息</a></li>
             <li><a href="<%=path %>/MyQuestionnaire">我的问卷</a></li>
             <li><a href="<%=path %>/ReleaseQuestionnaire">问卷发布</a></li>
             <li><a href="<%=path %>/FillQuestionnaire">填写问卷</a></li>
+            <li><a href="<%=path %>/allSendMessage">消息</a></li>
+            <%}%>
             <li class="active"><a href="">帮助</a></li>
+            
+            <%if(session.getAttribute("user") != null){%>
             <li><a href="<%=path %>/logoutPro">登出</a></li>
-            <%if(((String)session.getAttribute("role")).equals("admin")){%>
-				<li><a href="<%=path %>/allUser" ><i class="fa fa-table fa-fw"></i>系统信息管理</a></li>
+            <%}else{%>
+             <li><a href="<%=path %>/loginPage">登陆</a></li>
+            <%} %>
+            
+            <%if(session.getAttribute("role")!=null&&((String)session.getAttribute("role")).equals("admin")){%>
+				<li><a href="<%=path %>/allUser" ></i>系统信息管理</a></li>
 			<%}%>
           </ul>
         </nav>
