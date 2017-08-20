@@ -1,7 +1,10 @@
 var DELETE_NUM_QUESTION = -1;
 var QUES_ID = 0;
 var FLAG = 0;
-
+/*array.splice(index,howmany,item1,,,,itemx
+ * {"opt(id)":[
+ * quesid1,quesid2,,,,,quesidx
+ * ]}*/
 $(function() {	
 	$(".cancel").click(function(e){
 		bootbox.confirm({
@@ -33,7 +36,12 @@ $(function() {
 			return;
 		}
 		var result = {};
-		
+		if(document.getElementById("allowDup").checked==true){
+			var allowDup=1;
+		}
+		else{
+			var allowDup=0;
+		}
 		var title = $("input[name='title']").val();
 		if(title=="") {alert("Title can not be empty");return;}
 		var intro = $("input[name='introduction']").val();
@@ -168,7 +176,8 @@ $(function() {
 							data : {
 								title:encodeURI(encodeURI(title)),
 								id:QUES_ID,
-								content : encodeURI(encodeURI(JSON.stringify(result)))
+								content : encodeURI(encodeURI(JSON.stringify(result))),
+								allowDup : allowDup
 							},
 							success : function(data) {
 								bootbox.alert({
@@ -191,7 +200,8 @@ $(function() {
 			data : {
 				title:encodeURI(encodeURI(title)),
 				id:QUES_ID,
-				content : encodeURI(encodeURI(JSON.stringify(result)))
+				content : encodeURI(encodeURI(JSON.stringify(result))),
+				allowDup : allowDup
 			},
 			success : function(data) {
 				bootbox.alert({
@@ -232,7 +242,12 @@ $(function() {
 			return;
 		}
 		var result = {};
-		
+		if(document.getElementById("allowDup").checked==true){
+			var allowDup=1;
+		}
+		else{
+			allowDup=0;
+		}
 		var title = $("input[name='title']").val();
 		if(title=="") {alert("Title can not be empty");return;}
 		var intro = $("input[name='introduction']").val();
@@ -395,7 +410,8 @@ $(function() {
 								isPublic : isPublic,
 								status : status,
 							    endTime : endTime,
-							    releaseTime : releaseTime
+							    releaseTime : releaseTime,
+							    allowDup : allowDup
 							},
 							success : function(data) {
 								bootbox.alert({
@@ -422,7 +438,8 @@ $(function() {
 				isPublic : isPublic,
 				status : status,
 			    endTime : endTime,
-			    releaseTime : releaseTime
+			    releaseTime : releaseTime,
+			    allowDup : allowDup
 			},
 			success : function(data) {
 				bootbox.alert({
@@ -434,7 +451,110 @@ $(function() {
 			}
 		});
 	});
+	
+	$('#modal2').on('hide.bs.modal', function () {
+		if(document.getElementById("relacloser").dataset.id!=""){
+			document.getElementById(document.getElementById("relacloser").dataset.id+"relevancy").checked=false;
+		}
+	});
+	
+	$("#relatconfirm").click(function(e) {
+		var opts = document.getElementById("specoptiondiv").getElementsByTagName("INPUT");
+		var optlabels = document.getElementById("specoptiondiv").getElementsByTagName("LABEL");
+		var quess = document.getElementById("laterques").getElementsByTagName("INPUT");
+		var queslabels = document.getElementById("laterques").getElementsByTagName("LABEL");
+		var index = document.getElementById("formerques").selectedIndex;
+		var releques = document.getElementById("formerques").options[index].innerHTML;
+		var formquess = document.getElementById("form").childNodes;
+		var optids = "";
+		var quesids = e.currentTarget.dataset.id+" ";
+		for(var i=0;i<opts.length;i++){
+			if(opts[i].checked==true){
+				optids += optlabels[i].innerHTML+" ";
+			}
+		}
+		if(optids==""){
+			document.getElementById(document.getElementById("relacloser").dataset.id+"relevancy").checked=false;
+			$("#relacloser").attr("data-id", "");
+			$("#relatconfirm").attr("data-id", "");
+			$('#modal2').modal('hide');
+			return;
+		}
+		for(var i=0;i<quess.length;i++){
+			if(quess[i].checked==true){
+				var j = queslabels[i].innerHTML.split(".")[0];
+				for(var k=0;k<formquess.length;k++){
+			    	if($("#"+formquess[k].id.split("d")[0]+"divfont").html() == j){
+			    		j = formquess[k].id.split("d")[0];
+			    		break;
+			    	}
+			    }
+				quesids += j+" ";
+			}
+		}
+		var quesidarray = quesids.split(" ");
+		for(var i=0;i<quesidarray.length-1;i++){
+			$("#"+quesidarray[i]+"showrelevancy").html("Relevancy: " +
+				"This question appears when one of the following options in question <span>" +
+				releques+
+				"</span> is selected: <span>" +
+				optids+"</span>");
+			document.getElementById(quesidarray[i]+"relevancy").checked=true;
+		}
+		var relequesid = releques.split(".")[0];
+		for(var k=0;k<formquess.length;k++){
+	    	if($("#"+formquess[k].id.split("d")[0]+"divfont").html() == relequesid){
+	    		relequesid = formquess[k].id.split("d")[0];
+	    		break;
+	    	}
+	    }
+		optids="";
+		for(var i=0;i<opts.length;i++){
+			if(opts[i].checked==true){
+				optids += document.getElementById(relequesid+"container").childNodes[i+1].id.split("_")[1].split("o")[0]+" ";
+			}
+		}
+		var optidarray = optids.split(" ");
+		quesids = $("#"+e.currentTarget.dataset.id+"divfont").html()+" ";
+		for(var i=0;i<quess.length;i++){
+			if(quess[i].checked==true){
+				var j = queslabels[i].innerHTML.split(".")[0];
+				quesids += j+" ";
+			}
+		}
+		
+		for(var i=0;i<optidarray.length-1;i++){
+			if($("#"+relequesid+"_"+optidarray[i]+"optrele").html()==""){
+			$("#"+relequesid+"_"+optidarray[i]+"optrele").html(
+				"This option has following questions related to: <span>" +
+				quesids+
+				"</span>"
+				);
+			}
+			else{
+				$("#"+relequesid+"_"+optidarray[i]+"optrele").html(
+						"This option has following questions related to: <span>" +
+						document.getElementById(relequesid+"_"+optidarray[i]+"optrele").getElementsByTagName("SPAN")[0].innerHTML+quesids+
+						"</span>"
+				);
+			}
+		}
+		$("#relacloser").attr("data-id", "");
+		$("#relatconfirm").attr("data-id", "");
+		$('#modal2').modal('hide');
+	});
 });
+
+function seekQuesByQuesNo(quesid){
+	var quess = document.getElementById("form").childNodes;
+	for(var i=0;i<quess.length;i++){
+    	if($("#"+quess[i].id.split("d")[0]+"divfont").html() == quesid){
+    		quesid = quess[i].id.split("d")[0];
+    		break;
+    	}
+    }
+	return quesid;
+}
 
 function addOption(value){
 	var div = document.getElementById(value + "container");
@@ -452,8 +572,9 @@ function addOption(value){
 			"<div class='col-lg-2'>" +
 			"<label>comment field</label>" +
 			"<input type='checkbox' id='" + value + "_" + num + "cf'>" +
-			"</div>"+
-			"");
+			"</div>" +
+			"<div class='col-lg-12' id='" + value + "_" + num + "optrele'></div>"+
+			"</div>");
 	div.setAttribute("value",  num * 1 + 1);
 	
 	//create button to delete an question
@@ -499,8 +620,64 @@ function addOption(value){
 	appendbutton.appendChild(iappend);
 }
 
+function getRelesFromOpt(optrele){
+	if(optrele.innerHTML==""){
+		return null;
+	}
+	return optrele.getElementsByTagName("SPAN")[0].split(" ");
+}
+
+function deleteRelevancyByQuestion(value){
+	if(document.getElementById(value+"showrelevancy").innerHTML==""){
+		return false;
+	}
+	var quesno = document.getElementById(value+"showrelevancy").getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+	var optcontents = document.getElementById(value+"showrelevancy").getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+	quesno = seekQuesByQuesNo(quesno);
+	var optsnum = document.getElementById(quesno+"container").childNodes.length-1;
+	for(var i=0;i<optsnum;i++){
+		var input = $("input[name='"+quesno+"_"+i+"option'").val();
+		for(var j=0;j<optcontents.length-1;j++){
+			if(optcontents[j]==input){
+				if(document.getElementById(quesno+"_"+i+"optrele").innerHTML!=""){
+				var idarray = document.getElementById(quesno+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+				if(idarray.indexOf($("#"+value+"divfont").html())!=-1){
+				idarray.splice(idarray.indexOf($("#"+value+"divfont").html()),1);
+				}
+				var tmpid = "";
+				for(var k=0;k<idarray.length-1;k++){
+					tmpid+=idarray[k]+" ";
+				}
+				if(tmpid!=""){
+					document.getElementById(quesno+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+				}
+				else{
+					$("#"+quesno+"_"+i+"optrele").html("");
+				}
+			}
+		}
+	}
+	}
+	$("#"+value+"showrelevancy").html("");
+}
+
+function deleteRelevancyByOption(id){
+	var quesrelearray = getRelesFromOpt(document.getElementById(id));
+	for(var i=0; i<quesrelearray.length; i++){
+		var thisquesid = seekQuesByQuesNo(quesrelearray[i]);
+		var thisquesrele = document.getElementById(thisquesid+"showrelevancy").getElementsByTagName("SPAN");
+		var relequesid = seekQuesByQuesNo(thisquesrele[0].split(".")[0]);
+		var optcontents = thisquesrele[1].split(" ");
+		
+	}
+}
+
 function deleteQuestion(value){
 	var victim = document.getElementById(value +"div");
+	deleteRelevancyByQuestion(value);
+	if(victim.value==1||victim.value==2){
+		alert("add deleteRele !!");
+	}
 	var next = victim.nextSibling;
 	while(next !=null){
 		var id = next.getAttribute("id");
@@ -511,13 +688,18 @@ function deleteQuestion(value){
 	var form = document.getElementById("form");
 	form.removeChild(victim);
 	DELETE_NUM_QUESTION += 1;
+	
+	
 }
 
 
 function deleteOption(value, num){
 	var container = document.getElementById(value +"container");
 	var victim = document.getElementById(value +"_" + num+"optiondiv");
+	var relequesarray = getRelesFromOpt(value+"_"+num+"optrele");
+	
 	container.removeChild(victim);
+		
 }
 
 function upOption(value, num){
@@ -539,6 +721,9 @@ function upOption(value, num){
 	var tmp = cf1.checked;
 	cf1.checked = cf2.checked;
 	cf2.checked = tmp;
+	var relequesarray1 = getRelesFromOpt(id1+"optrele");
+	var relequesarray2 = getRelesFromOpt(id2+"optrele");
+	
 }
 
 function downOption(value, num){
@@ -560,6 +745,9 @@ function downOption(value, num){
 	var tmp = cf1.checked;
 	cf1.checked = cf2.checked;
 	cf2.checked = tmp;
+	var relequesarray1 = getRelesFromOpt(id1+"optrele");
+	var relequesarray2 = getRelesFromOpt(id2+"optrele");
+	
 }
 
 function appendOption(value, oldnum){
@@ -585,7 +773,8 @@ function appendOption(value, oldnum){
 			"<label>comment field</label>" +
 			"<input type='checkbox' id='" + value + "_" + num + "cf'>" +
 			"</div>"+
-			"");
+			"<div class='col-lg-12' id='" + value + "_" + num + "optrele'></div>"+
+			"</div>");
 	div.setAttribute("value",  num * 1 + 1);
 	
 	//create button to delete an question
@@ -722,6 +911,10 @@ function addBlank() {
 	div8.appendChild(input2);
 	div8.appendChild(label3);
 	
+	var div9 = document.createElement("div");
+	div9.className = "col-lg-12";
+	div9.id = value + "showrelevancy";
+	div.appendChild(div9);
 	//create required label
 	var div4 = document.createElement("div");
 	div4.className = "col-lg-2";
@@ -782,6 +975,7 @@ function addSingle() {
 			"<div class='col-lg-2'>" +
 			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label>relevancy</label></div>"+
 			"</div>" +
+			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
 			"<div class='container' id='" + value + "container' value='0'>" +
 			"<label><font size='5'>input your option</font></label></div>" +
 			"<\label>" +
@@ -844,7 +1038,7 @@ function addMultiple() {
 	div.id = (value+"div");
 	form.appendChild(div);
 	$("#"+value+"div").html("" +
-			"<div class='container'><div class='row'>" +
+			"<div class='form-group container'><div class='row'>" +
 			"<div class='col-lg-4'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label></div>" +
 			"<div class='col-lg-1'><label><font size='5'>max</font></label></div>" +
 			"<div class='col-lg-1'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
@@ -862,6 +1056,7 @@ function addMultiple() {
 			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label>relevancy</label></div>"+
 			"</div>" +
 			"</div>" +
+			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
 			"<div class='container' id='" + value + "container' value='0'>" +
 			"<label><font size='5'>input your option</font></label></div>" +
 			"<\label>" +
@@ -922,7 +1117,7 @@ function addSlider() {
 	div.id = (value+"div");
 	form.appendChild(div);
 	$("#"+value+"div").html("" +
-			"<div class='container'><div class='row'>" +
+			"<div class='form-group container'><div class='row'>" +
 			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label>" +
 			"<div class='col-lg-2' style='float:right'>" +
 			"<label>required</label>" +
@@ -936,6 +1131,7 @@ function addSlider() {
 			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label>relevancy</label></div>"+
 			"</div>" +
 			"</div>" +
+			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
 			"<div class='container'><div class='row'>" +
 			"<div class='col-lg-1'><label><font size='5'>max</font></label></div>" +
 			"<div class='col-lg-2'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
@@ -967,6 +1163,9 @@ function addSlider() {
 function modify(result, id){
 	$("input[name='title']").val(result['title']);
 	$("input[name='introduction']").val(result['introduction']);
+	if(result['allowdup']=='0'){
+		document.getElementById("allowDup").checked=false;
+	}
 	//alert(result[0]['stem']);
 	for(var i = 0; i < result['questions'].length; i++){
 		var type = result['questions'][i]['type'];
@@ -1056,7 +1255,7 @@ function statechanger(){
 function relevancy(value){
 	if(document.getElementById(value+"relevancy").checked==true){
 		var num = $("#"+value+"divfont").html();
-		if(num == 0){
+		if(num == 1){
 			bootbox.alert("No option to choose");
 			document.getElementById(value+"relevancy").checked=false;
 			return;
@@ -1069,21 +1268,71 @@ function relevancy(value){
 				opts+="<option>"+
 						$("#"+quess[i].id.split("d")[0]+"divfont").html()+
 						"."+
-						$("input[name='"+quess[i].id.split("d")[0]+"']")
+						$("input[name='"+quess[i].id.split("d")[0]+"']").val()
 						+"</option>";
 				}
 			}
 		}
 		$("#formerques").html(opts);
+		$("#relacloser").attr("data-id", value);
+		$("#relatconfirm").attr("data-id", value);
 		if(document.getElementById("formerques").getElementsByTagName("OPTION").length==0){
 			bootbox.alert("No option to choose");
 			document.getElementById(value+"relevancy").checked=false;
 			return;
 		}
+		var opts2 = "";
+		var firstoptid = document.getElementById("formerques").getElementsByTagName("OPTION")[0].innerHTML.split(".")[0];
+		var quess = document.getElementById("form").childNodes;
+	    for(var i=0;i<quess.length;i++){
+	    	if($("#"+quess[i].id.split("d")[0]+"divfont").html() == firstoptid){
+	    		firstoptid = quess[i].id.split("d")[0];
+	    		break;
+	    	}
+	    }
+		var firstoptnum = document.getElementById(firstoptid+"container").childNodes.length-1;
+		for(var i=0;i<firstoptnum;i++){
+			opts2+="<input type='checkbox'>"+
+			"<label>" +
+			$("input[name='"+firstoptid+"_"+i+"option']").val()+
+			"</label><br>";
+		}
+		$("#specoptiondiv").html(opts2);
+		var opts3="";
+		for(var i=num;i<quess.length;i++){
+			if(document.getElementById(quess[i].id.split("d")[0]+"relevancy").checked!=true){
+				opts3+="<input type='checkbox'><label>"+
+						$("#"+quess[i].id.split("d")[0]+"divfont").html()+
+						"."+
+						$("input[name='"+quess[i].id.split("d")[0]+"']").val()
+						+"</label><br>";
+			}
+		}
+		$("#laterques").html(opts3);
 		$('#modal2').modal('show');
-		
 	}
 	else{
-		
+		deleteRelevancyByQuestion(value);
 	}
+}
+
+function releopts(){
+	var index=document.getElementById("formerques").selectedIndex;
+    var quesid=document.getElementById("formerques").options[index].innerHTML.split(".")[0];
+    var quess = document.getElementById("form").childNodes;
+    for(var i=0;i<quess.length;i++){
+    	if($("#"+quess[i].id.split("d")[0]+"divfont").html() == quesid){
+    		quesid = quess[i].id.split("d")[0];
+    		break;
+    	}
+    }
+	var optnum = document.getElementById(quesid+"container").childNodes.length-1;
+	var opts2="";
+	for(var i=0;i<optnum;i++){
+		opts2+="<input type='checkbox'>"+
+				"<label>" +
+				$("input[name='"+quesid+"_"+i+"option']").val()+
+				"</label><br>";
+	}
+	$("#specoptiondiv").html(opts2);
 }
