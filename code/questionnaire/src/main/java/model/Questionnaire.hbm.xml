@@ -26,6 +26,8 @@
 		<property name="endTime" type="java.util.Date">
 			<column name="endTime" />
 		</property>
-		
+		<property name="allowDup" type="int">
+			<column name="allowDup" />
+		</property>
 	</class>
 </hibernate-mapping>

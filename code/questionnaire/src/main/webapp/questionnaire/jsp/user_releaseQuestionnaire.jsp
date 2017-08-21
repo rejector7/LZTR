@@ -83,7 +83,10 @@
 			 <label  ><font size="5">Introduction</font></label>
 			 <input type="text" name="introduction"  class="form-control">
 		</div>
-		
+		<div class="row">
+			 <input type="checkbox" id="allowDup" checked>
+			 <label ><font size="5">Allow submits from the same IP?</font></label>
+		</div>
 		<button class="btn btn-default submit" type="button" style="floating:right">
 				<i class="fa fa-check fa-2x">save</i>
 		</button>
@@ -157,17 +160,20 @@
 						<div class="col-lg-12">
 						<form id="form3">
 							<div class="form-group">
-								<label>Select a question</label>
-								<select class="form-control" id="formerques">
+								<label>Select a question to be related with</label>
+								<select class="form-control" id="formerques" onchange="releopts()">
 										
 								</select>
 							</div>
-							<!-- <div class="form-group" id="specoptiondiv">
-								<label>Select an option</label>
-								<select class="form-control" id="specoption">
-										
-								</select>
-							</div> -->
+							<label>When one of the following options in question are selected</label>
+							<div class="form-group" id="specoptiondiv">
+								
+							</div>
+							<label>will this question appear</label>
+							<label>Copy relevancy to later questions</label>
+							<div class="form-group" id="laterques">
+								
+							</div>
 						</form>
 						</div></div></div>
 						<div class="modal-footer">

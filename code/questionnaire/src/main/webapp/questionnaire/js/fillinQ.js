@@ -297,7 +297,10 @@ function submit(){
 			content : encodeURI(encodeURI(JSON.stringify(result)))
 		},
 		success : function(data) { //把title，id都放在里面
-			alert("success")
+			if(data="dupIp"){
+				alert("dupip");
+			}
+			alert("success");
 		}
 	});
 

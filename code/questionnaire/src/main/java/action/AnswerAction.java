@@ -1,5 +1,6 @@
 package action;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
@@ -58,19 +59,27 @@ public class AnswerAction extends BaseAction{
 	/**
 	 * Create a new answer sheet
 	 * @return
-	 * @throws UnsupportedEncodingException 
+	 * @throws IOException 
 	 */
-	public String add() throws UnsupportedEncodingException{
+	public String add() throws IOException{
 		content =  URLDecoder.decode(content, "UTF-8");
 		content =  URLDecoder.decode(content, "UTF-8");
 		String ip = request().getRemoteAddr();
 		Answer ans = new Answer(quesid, time, ip);
+		int allowDup = quesService.getQuestionnaireById(quesid).getAllowDup();
+		if(allowDup==0){
+			if(ansService.getAnswersByIp(ip)!=null&&(!ansService.getAnswersByIp(ip).isEmpty())){
+				response().getWriter().print("dupIp");
+				return null;
+			}
+		}
 		AnswerSheet anst  = new AnswerSheet(content);
 		if(session().getAttribute("user") != null){
 			User user = (User)session().getAttribute("user");
 			anst.setUserid(user.getId());
 		}
 		ansService.addAnswer(ans, anst);
+		response().getWriter().print("success");
 		return null;
 	}
 	
