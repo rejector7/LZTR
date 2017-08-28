@@ -93,4 +93,9 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 	public void updateQuestionnaire(Questionnaire ques) {
 		quesDao.updateQuestionnaire(ques);
 	}
+	
+	@Override
+	public List<Questionnaire> getPublicQuestionnaires(){
+		return quesDao.getPublicQuestionnaires();
+	}
 }
