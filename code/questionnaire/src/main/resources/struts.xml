@@ -34,8 +34,8 @@
 			<result name="getInfo">/questionnaire/jsp/user_releaseQuestionnaire.jsp</result>
 		</action>
 		
-		<action name="FrontPage">
-			<result>/questionnaire/jsp/user_frontPage.jsp</result>
+		<action name="FrontPage" class="action.QuestionnaireAction" method="propel">
+			<result name="success">/questionnaire/jsp/user_frontPage.jsp</result>
 		</action>
 		<action name="HelpContact">
 			<result>/questionnaire/jsp/user_helpContact.jsp</result>
@@ -53,11 +53,11 @@
 			<result>/questionnaire/jsp/signup.jsp</result>
 		</action>
 		<action name="loginPro" class="action.LoginAction" method="login">
-			<result name="success">/questionnaire/jsp/user_frontPage.jsp</result>
+			<result name="success" type="chain">FrontPage</result>
 			<result name="input">/questionnaire/jsp/login.jsp</result>
 		</action>
 		<action name="logoutPro" class="action.LoginAction" method="logout">
-			<result name="success">/questionnaire/jsp/login.jsp</result>
+			<result name="success" type="chain">FrontPage</result>
 		</action>
 		<action name="signupPro" class="action.UserAction" method="add">
 		</action>
