@@ -63,42 +63,45 @@
       
       
 		<button class="btn btn-default addBlank" type="button" style="floating:right">
-				<i class="fa fa-plus  fa-2x">Blank-filling Question</i>
+				<i class="fa fa-plus  fa-2x">填空题</i>
 		</button>
 		<button class="btn btn-default addSingle"  type="button" style="floating:right">
-				<i class="fa fa-plus  fa-2x">Single Option Question</i>
+				<i class="fa fa-plus  fa-2x">单选题</i>
 		</button>
 		<button class="btn btn-default addMultiple"  type="button" style="floating:right">
-				<i class="fa fa-plus  fa-2x">Multiple Option Question</i>
+				<i class="fa fa-plus  fa-2x">多选题</i>
 		</button>
 		<button class="btn btn-default addSlider"  type="button" style="floating:right">
-				<i class="fa fa-plus  fa-2x">Slider Question</i>
+				<i class="fa fa-plus  fa-2x">滑块题</i>
 		</button>
 		
 		<div class="row pre-scrollable">
-			 <label ><font size="5">Title</font></label>
+			 <label ><font size="5">标题</font></label>
 			 <input type="text" name="title"  class="form-control">
 		</div>
 		<div class="row">
-			 <label  ><font size="5">Introduction</font></label>
+			 <label  ><font size="5">简介</font></label>
 			 <input type="text" name="introduction"  class="form-control">
 		</div>
 		<div class="row">
 			 <input type="checkbox" id="allowDup" checked>
-			 <label ><font size="5">Allow submits from the same IP?</font></label>
+			 <label ><font size="5">是否允许同一IP重复作答?</font></label>
 		</div>
 		<button class="btn btn-default submit" type="button" style="floating:right">
-				<i class="fa fa-check fa-2x">save</i>
+				保存</i>
 		</button>
 		<button class="btn btn-default cancel" type="button" style="floating:right">
-				<i class="fa fa-check fa-2x">cancel</i>
+				取消</i>
+		</button>
+		<button class="btn btn-default preview" type="button" style="floating:right">
+				预览</i>
 		</button>
 		<button class="btn btn-default publish" type="button" style="floating:right">
-				<i class="fa fa-check fa-2x">
+				
 				<%if(request.getAttribute("quesinfo")!=null){%>
-				republish now
+				重发布
 				<%} else{%>
-				publish now<%} %></i>
+				发布<%} %></i>
 		</button>
     </div> <!-- /container -->
     <div class="modal fade" id="modal" tabindex="-1" role="dialog"
@@ -116,31 +119,31 @@
 						<div class="col-lg-12">
 						<form id="form2">
 							<div class="form-group">
-								<label>IsPublic</label>
+								<label>是否公开</label>
 								<select class="form-control" id="selectf1" name = "ispublic">
-										<option>yes</option>
-										<option>no</option>
+										<option>是</option>
+										<option>否</option>
 								</select>
 								</div>
 								<div class="form-group">
-									<label>Release Time</label>
+									<label>发布时间</label>
 									<input class="form-control" name="releasetime" type="date" oninput="statechanger()" required>
 									<p id="starta"></p>
 								</div>
 								<div class="form-group">
-									<label>End Time(You can leave this blank blank if you didn't decide when to close)</label>
+									<label>结束时间（若不设定可不填写）</label>
 									<input class="form-control" name="endtime" type="date" oninput="statechanger()">
 									<p id="enda"></p>
 								</div>
 								<div class="form-group">
-									<label>State:</label>
-									<p id="state">pub</p>
+									<label>当前状态:</label>
+									<p id="state">已发布</p>
 								</div>
 						</form>
 						</div></div></div>
 						<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
-					<button type="button" class="btn btn-primary" id="publishconfirm">confirm</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-primary" id="publishconfirm">确认</button>
 				</div>
 			</div>
 		</div>
@@ -160,24 +163,24 @@
 						<div class="col-lg-12">
 						<form id="form3">
 							<div class="form-group">
-								<label>Select a question to be related with</label>
+								<label>选择想要关联的问题</label>
 								<select class="form-control" id="formerques" onchange="releopts()">
 										
 								</select>
 							</div>
-							<label>When one of the following options in question are selected</label>
+							<label>当以下选项被选中时</label>
 							<div class="form-group" id="specoptiondiv">
 								
 							</div>
-							<label>will this question appear</label>
-							<label>Copy relevancy to later questions</label>
+							<label>本问题会出现</label>
+							<label>将本关联复制到后续问题</label>
 							<div class="form-group" id="laterques">
 								
 							</div>
 						</form>
 						</div></div></div>
 						<div class="modal-footer">
-					<button type="button" class="btn btn-primary" id="relatconfirm">confirm</button>
+					<button type="button" class="btn btn-primary" id="relatconfirm">确认</button>
 				</div>
 			</div>
 		</div>

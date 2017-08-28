@@ -65,6 +65,7 @@
       
       <div id = "questionnaire"></div>
       <form id = "form"></form>
+      <div id = "bin" hidden></div>
       <div class="row">&nbsp</div>
       <div align='center'>
       <button style='floating:right' class="btn btn-primary" onclick="wordexport()" type="button" style="floating:right">

@@ -10,13 +10,13 @@ $(function() {
 		bootbox.confirm({
 			buttons : {
 				confirm : {
-					label : 'Confirm'
+					label : '确认'
 				},
 				cancel : {
-					label : 'Cancel'
+					label : '取消'
 				}
 			},
-			message : "Sure to Leave? Your changes won't be saved",
+			message : "是否确认离开？你的修改不会被保存",
 			callback : function(result) {
 				if(result){
 				location.href = 'FrontPage';}
@@ -25,6 +25,223 @@ $(function() {
 	});
 	
 	$(".submit").click(function(e) {
+		var form = document.getElementById("form");
+		if(form == null){
+			alert("未创建任何问题");
+			return;
+		}
+		var childs = form.childNodes;  
+		if(childs.length == 0){
+			alert("未创建任何问题");
+			return;
+		}
+		var result = {};
+		if(document.getElementById("allowDup").checked==true){
+			var allowDup=1;
+		}
+		else{
+			var allowDup=0;
+		}
+		var title = $("input[name='title']").val();
+		if(title=="") {alert("标题不可为空");return;}
+		var intro = $("input[name='introduction']").val();
+		result['introduction'] = intro;
+		result['questions'] = [];
+		for(var k = 0 ; k < childs.length ; k++ ){
+			result['questions'][k] = {};
+			result['questions'][k]['id'] = k;
+			var i = childs[k].getAttribute("id").split("div")[0];
+			var stem = $("input[name=" + i + "]").val();
+			if(stem ==""){alert("第 " + i + "题题干为空");return;}
+			result['questions'][k]['stem'] = stem;
+			//get the required
+			var required = document.getElementById(i + "required");
+			if(required.checked){
+				result['questions'][k]['required'] = true;
+			}
+			else result['questions'][k]['required'] = false;
+			//get the question type
+			var type = (document.getElementById(i + "div")).getAttribute("value");
+			switch(type){
+			case '0':
+				result['questions'][k]['type'] = 'Subjective';
+				break;
+			case '1':
+				result['questions'][k]['type'] = 'Single';
+				//get all the options
+				var option_form = document.getElementById(i + "container");
+				var options = option_form.childNodes;
+				if(options.length == 1){
+					alert("第 " + (i-DELETE_NUM_QUESTION) + "题无选项");
+					return;
+				}
+				result['questions'][k]['options'] = [];
+				for(var m = 1; m < options.length; m++){
+					var name = options[m].getAttribute("id").split("div")[0];
+					var option = $("input[name=" + name + "]").val();
+					var mm = name.split("o")[0].split("_")[1];
+					var cf = document.getElementById(i+"_"+mm+"cf");
+					var rele = document.getElementById(i+"_"+mm+"optrele");
+					if(option == "") {alert("第"+ i + "题存在选项内容为空");return;}
+					result['questions'][k]['options'][m-1] = {};
+					result['questions'][k]['options'][m-1]['id'] = m;
+					result['questions'][k]['options'][m-1]['option'] = option;
+					if(cf.checked){
+						result['questions'][k]['options'][m-1]['hasWords'] = true;
+					}
+					else result['questions'][k]['options'][m-1]['hasWords'] = false;
+					if(rele.innerHTML!=""){
+						var relearray = rele.getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+						relearray.pop();
+						result['questions'][k]['options'][m-1]['relevancy'] = [];
+						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
+					}
+					
+				}
+				break;
+			case '2':
+				result['questions'][k]['type'] = 'Multiple';
+				var option_form = document.getElementById(i + "container");
+				var options = option_form.childNodes;
+				if(options.length == 1){
+					alert("第" + (i-DELETE_NUM_QUESTION) + "题无选项");
+					return;
+				}
+				//get the number of options
+				var num = (document.getElementById(i + "container")).getAttribute("value");
+				if(num == 0 ){alert("第" + i + "题至少需要有一个选项");return;}
+				//get min & max
+				var min = $("input[name='" + i + "min']").val();
+				var max = $("input[name='" + i + "max']").val();
+				if(min==""){min=0;}
+				if(max==""){max=options.length-1;}
+				if(min > max) {alert("最小可选不得超过最大");return;}
+				if(min < 0) {alert("最小可选必须不小于0");return;}
+				if(max > num) {alert("最大选项不可超过总选项数");return;}
+				result['questions'][k]['min'] = min;
+				result['questions'][k]['max'] = max;
+ 				//get all the options
+				result['questions'][k]['options'] = [];
+				for(var m = 1; m < options.length; m++){
+					var name = options[m].getAttribute("id").split("div")[0];
+					var option = $("input[name=" + name + "]").val();
+					if(option == "") {alert("第"+ i + "题中存在选项为空");return;}
+					result['questions'][k]['options'][m-1] = {};
+					result['questions'][k]['options'][m-1]['id'] = m;
+					result['questions'][k]['options'][m-1]['option'] = option;
+					var mm = name.split("o")[0].split("_")[1];
+					var cf = document.getElementById(i+"_"+mm+"cf");
+					var rele = document.getElementById(i+"_"+mm+"optrele");
+					if(cf.checked){
+						result['questions'][k]['options'][m-1]['hasWords'] = true;
+					}
+					else result['questions'][k]['options'][m-1]['hasWords'] = false;
+					if(rele.innerHTML!=""){
+						var relearray = rele.getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+						relearray.pop();
+						result['questions'][k]['options'][m-1]['relevancy'] = [];
+						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
+					}
+				}
+				
+				break;
+			case '3':
+				result['questions'][k]['type'] = 'Slider';
+				//get min & max
+				var min = $("input[name='" + i + "min']").val();
+				if(min==""){alert("第" + i + "题最小数值为空");return;}
+				var max = $("input[name='" + i + "max']").val();
+				if(max==""){alert("第" + i + "题最大数值为空");return;}
+				var mintext = $("input[name='" + i + "mintext']").val();
+				if(mintext==""){alert("第" + i + "题最小值标签为空");return;}
+				var maxtext = $("input[name='" + i + "maxtext']").val();
+				if(maxtext==""){alert("第" + i + "题最大值标签为空");return;}
+				if(min > max) {alert("第" + i + "题最小值不得超过最大值");return;}
+				result['questions'][k]['min'] = min;
+				result['questions'][k]['max'] = max;
+				result['questions'][k]['mintext'] = mintext;
+				result['questions'][k]['maxtext'] = maxtext;
+				break;
+			}
+		}
+		if(FLAG==1){
+			bootbox.confirm({
+				buttons : {
+					confirm : {
+						label : '确认'
+					},
+					cancel : {
+						label : '取消'
+					}
+				},
+				message : '这会删除此前的所有已答答卷，是否更新问卷？',
+				callback : function(test) {
+					if (test) {
+						jQuery.ajax({
+							url : 'addQuestionnaire',
+							processData : true,
+							dataType : "text",
+							data : {
+								title:encodeURI(encodeURI(title)),
+								id:QUES_ID,
+								preview:0,
+								content : encodeURI(encodeURI(JSON.stringify(result))),
+								allowDup : allowDup
+							},
+							success : function(data) {
+								bootbox.alert({
+									message : '更新成功',
+								    callback : function() {
+								    	location.href = 'FrontPage';
+									}
+								});
+							}
+						});
+					}
+					
+					}});
+			return;
+		}
+		jQuery.ajax({
+			url : 'addQuestionnaire',
+			processData : true,
+			dataType : "text",
+			data : {
+				title:encodeURI(encodeURI(title)),
+				id:QUES_ID,
+				preview:0,
+				content : encodeURI(encodeURI(JSON.stringify(result))),
+				allowDup : allowDup
+			},
+			success : function(data) {
+				bootbox.alert({
+					message : '保存成功',
+				    callback : function() {
+				    	location.href = 'FrontPage';
+					}
+				});
+			}
+		});
+	});
+	
+	
+	$(".addBlank").click(function(e){addBlank()});
+	
+	$(".addSingle").click(function(e){addSingle()});
+	
+	$(".addMultiple").click(function(e) {addMultiple()});
+	
+	$(".addSlider").click(function(e) {addSlider()});
+	
+	$(".publish").click(function(e) {
+		var d = new Date().toISOString().split("T")[0];
+		$("input[name='releasetime']").val(d);
+		$("input[name='endtime']").val("");
+		$("select[name='ispublic']").val("no");
+		$('#modal').modal('show');
+	});
+	
+	$(".preview").click(function(e) {
 		var form = document.getElementById("form");
 		if(form == null){
 			alert("no question");
@@ -52,11 +269,8 @@ $(function() {
 			result['questions'][k] = {};
 			result['questions'][k]['id'] = k;
 			var i = childs[k].getAttribute("id").split("div")[0];
-			//result += "{id :" + i;
-			//get the question stem
-			//alert($("input[name=" + i + "]").val());
 			var stem = $("input[name=" + i + "]").val();
-			if(stem ==""){alert("the stem of question " + i + " is empty");return;}
+			if(stem ==""){alert("第 " + i + "题题干为空");return;}
 			result['questions'][k]['stem'] = stem;
 			//get the required
 			var required = document.getElementById(i + "required");
@@ -68,26 +282,25 @@ $(function() {
 			var type = (document.getElementById(i + "div")).getAttribute("value");
 			switch(type){
 			case '0':
-				//alert("blank");
 				result['questions'][k]['type'] = 'Subjective';
 				break;
 			case '1':
 				result['questions'][k]['type'] = 'Single';
-				//alert("single");
 				//get all the options
 				var option_form = document.getElementById(i + "container");
 				var options = option_form.childNodes;
 				if(options.length == 1){
-					alert("question " + (i-DELETE_NUM_QUESTION) + " no option");
+					alert("第 " + (i-DELETE_NUM_QUESTION) + "题无选项");
 					return;
 				}
 				result['questions'][k]['options'] = [];
 				for(var m = 1; m < options.length; m++){
-					//alert($("input[name='" + i + "_" + j + "option']").val())
 					var name = options[m].getAttribute("id").split("div")[0];
 					var option = $("input[name=" + name + "]").val();
-					var cf = document.getElementById(i+"_"+(m-1)+"cf");
-					if(option == "") {alert("the content of question "+ i + " option "  + (m-1) + " is empty");return;}
+					var mm = name.split("o")[0].split("_")[1];
+					var cf = document.getElementById(i+"_"+mm+"cf");
+					var rele = document.getElementById(i+"_"+mm+"optrele");
+					if(option == "") {alert("第"+ i + "题存在选项内容为空");return;}
 					result['questions'][k]['options'][m-1] = {};
 					result['questions'][k]['options'][m-1]['id'] = m;
 					result['questions'][k]['options'][m-1]['option'] = option;
@@ -95,6 +308,13 @@ $(function() {
 						result['questions'][k]['options'][m-1]['hasWords'] = true;
 					}
 					else result['questions'][k]['options'][m-1]['hasWords'] = false;
+					if(rele.innerHTML!=""){
+						var relearray = rele.getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+						relearray.pop();
+						result['questions'][k]['options'][m-1]['relevancy'] = [];
+						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
+					}
+					
 				}
 				break;
 			case '2':
@@ -102,53 +322,59 @@ $(function() {
 				var option_form = document.getElementById(i + "container");
 				var options = option_form.childNodes;
 				if(options.length == 1){
-					alert("question " + (i-DELETE_NUM_QUESTION) + " no option");
+					alert("第" + (i-DELETE_NUM_QUESTION) + "题无选项");
 					return;
 				}
 				//get the number of options
 				var num = (document.getElementById(i + "container")).getAttribute("value");
-				if(num == 0 ){alert("question " + i + " must have at least 1 option");return;}
+				if(num == 0 ){alert("第" + i + "题至少需要有一个选项");return;}
 				//get min & max
 				var min = $("input[name='" + i + "min']").val();
 				var max = $("input[name='" + i + "max']").val();
 				if(min==""){min=0;}
 				if(max==""){max=options.length-1;}
-				if(min > max) {alert("min must smaller than max");return;}
-				if(min < 0) {alert("min must bigger than 0");return;}
-				if(max > num) {alert("max must bigger than the number of options");return;}
+				if(min > max) {alert("最小可选不得超过最大");return;}
+				if(min < 0) {alert("最小可选必须不小于0");return;}
+				if(max > num) {alert("最大选项不可超过总选项数");return;}
 				result['questions'][k]['min'] = min;
 				result['questions'][k]['max'] = max;
- 				//alert(min);alert(max);
-				//alert("multiple");
  				//get all the options
 				result['questions'][k]['options'] = [];
 				for(var m = 1; m < options.length; m++){
-					//alert($("input[name='" + i + "_" + j + "option']").val())
 					var name = options[m].getAttribute("id").split("div")[0];
 					var option = $("input[name=" + name + "]").val();
-					if(option == "") {alert("the content of question "+ i + " option "  + j + " is empty");return;}
+					if(option == "") {alert("第"+ i + "题中存在选项为空");return;}
 					result['questions'][k]['options'][m-1] = {};
 					result['questions'][k]['options'][m-1]['id'] = m;
 					result['questions'][k]['options'][m-1]['option'] = option;
-					var cf = document.getElementById(i+"_"+(m-1)+"cf");
+					var mm = name.split("o")[0].split("_")[1];
+					var cf = document.getElementById(i+"_"+mm+"cf");
+					var rele = document.getElementById(i+"_"+mm+"optrele");
 					if(cf.checked){
 						result['questions'][k]['options'][m-1]['hasWords'] = true;
 					}
 					else result['questions'][k]['options'][m-1]['hasWords'] = false;
+					if(rele.innerHTML!=""){
+						var relearray = rele.getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+						relearray.pop();
+						result['questions'][k]['options'][m-1]['relevancy'] = [];
+						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
+					}
 				}
+				
 				break;
 			case '3':
 				result['questions'][k]['type'] = 'Slider';
 				//get min & max
 				var min = $("input[name='" + i + "min']").val();
-				if(min==""){alert("the min of question is empty");return;}
+				if(min==""){alert("第" + i + "题最小数值为空");return;}
 				var max = $("input[name='" + i + "max']").val();
-				if(max==""){alert("the max of question is empty");return;}
+				if(max==""){alert("第" + i + "题最大数值为空");return;}
 				var mintext = $("input[name='" + i + "mintext']").val();
-				if(mintext==""){alert("the min label of question is empty");return;}
+				if(mintext==""){alert("第" + i + "题最小值标签为空");return;}
 				var maxtext = $("input[name='" + i + "maxtext']").val();
-				if(maxtext==""){alert("the max label of question is empty");return;}
-				if(min > max) {alert("min must smaller than max");return;}
+				if(maxtext==""){alert("第" + i + "题最大值标签为空");return;}
+				if(min > max) {alert("第" + i + "题最小值不得超过最大值");return;}
 				result['questions'][k]['min'] = min;
 				result['questions'][k]['max'] = max;
 				result['questions'][k]['mintext'] = mintext;
@@ -160,13 +386,13 @@ $(function() {
 			bootbox.confirm({
 				buttons : {
 					confirm : {
-						label : 'Confirm'
+						label : '确认'
 					},
 					cancel : {
-						label : 'Cancel'
+						label : '取消'
 					}
 				},
-				message : 'This will delete all the answers got before, sure to update?',
+				message : '这会删除此前的所有已答答卷，是否更新问卷？',
 				callback : function(test) {
 					if (test) {
 						jQuery.ajax({
@@ -176,16 +402,12 @@ $(function() {
 							data : {
 								title:encodeURI(encodeURI(title)),
 								id:QUES_ID,
+								preview:1,
 								content : encodeURI(encodeURI(JSON.stringify(result))),
 								allowDup : allowDup
 							},
 							success : function(data) {
-								bootbox.alert({
-									message : 'success',
-								    callback : function() {
-								    	location.href = 'FrontPage';
-									}
-								});
+								location.href = 'PreviewQuestionnaire?quesid='+data;
 							}
 						});
 					}
@@ -200,35 +422,16 @@ $(function() {
 			data : {
 				title:encodeURI(encodeURI(title)),
 				id:QUES_ID,
+				preview:1,
 				content : encodeURI(encodeURI(JSON.stringify(result))),
 				allowDup : allowDup
 			},
 			success : function(data) {
-				bootbox.alert({
-					message : 'success',
-				    callback : function() {
-				    	location.href = 'FrontPage';
-					}
-				});
+				location.href = 'PreviewQuestionnaire?quesid='+data;
 			}
 		});
 	});
 	
-	$(".addBlank").click(function(e){addBlank()});
-	
-	$(".addSingle").click(function(e){addSingle()});
-	
-	$(".addMultiple").click(function(e) {addMultiple()});
-	
-	$(".addSlider").click(function(e) {addSlider()});
-	
-	$(".publish").click(function(e) {
-		var d = new Date().toISOString().split("T")[0];
-		$("input[name='releasetime']").val(d);
-		$("input[name='endtime']").val("");
-		$("select[name='ispublic']").val("no");
-		$('#modal').modal('show');
-	});
 	
 	$("#publishconfirm").click(function(e) {
 		var form = document.getElementById("form");
@@ -258,11 +461,8 @@ $(function() {
 			result['questions'][k] = {};
 			result['questions'][k]['id'] = k;
 			var i = childs[k].getAttribute("id").split("div")[0];
-			//result += "{id :" + i;
-			//get the question stem
-			//alert($("input[name=" + i + "]").val());
 			var stem = $("input[name=" + i + "]").val();
-			if(stem ==""){alert("the stem of question " + i + " is empty");return;}
+			if(stem ==""){alert("第 " + i + "题题干为空");return;}
 			result['questions'][k]['stem'] = stem;
 			//get the required
 			var required = document.getElementById(i + "required");
@@ -274,26 +474,25 @@ $(function() {
 			var type = (document.getElementById(i + "div")).getAttribute("value");
 			switch(type){
 			case '0':
-				//alert("blank");
 				result['questions'][k]['type'] = 'Subjective';
 				break;
 			case '1':
 				result['questions'][k]['type'] = 'Single';
-				//alert("single");
 				//get all the options
 				var option_form = document.getElementById(i + "container");
 				var options = option_form.childNodes;
 				if(options.length == 1){
-					alert("question " + (i-DELETE_NUM_QUESTION) + " no option");
+					alert("第 " + (i-DELETE_NUM_QUESTION) + "题无选项");
 					return;
 				}
 				result['questions'][k]['options'] = [];
 				for(var m = 1; m < options.length; m++){
-					//alert($("input[name='" + i + "_" + j + "option']").val())
 					var name = options[m].getAttribute("id").split("div")[0];
 					var option = $("input[name=" + name + "]").val();
-					var cf = document.getElementById(i+"_"+(m-1)+"cf");
-					if(option == "") {alert("the content of question "+ i + " option "  + (m-1) + " is empty");return;}
+					var mm = name.split("o")[0].split("_")[1];
+					var cf = document.getElementById(i+"_"+mm+"cf");
+					var rele = document.getElementById(i+"_"+mm+"optrele");
+					if(option == "") {alert("第"+ i + "题存在选项内容为空");return;}
 					result['questions'][k]['options'][m-1] = {};
 					result['questions'][k]['options'][m-1]['id'] = m;
 					result['questions'][k]['options'][m-1]['option'] = option;
@@ -301,6 +500,13 @@ $(function() {
 						result['questions'][k]['options'][m-1]['hasWords'] = true;
 					}
 					else result['questions'][k]['options'][m-1]['hasWords'] = false;
+					if(rele.innerHTML!=""){
+						var relearray = rele.getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+						relearray.pop();
+						result['questions'][k]['options'][m-1]['relevancy'] = [];
+						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
+					}
+					
 				}
 				break;
 			case '2':
@@ -308,53 +514,59 @@ $(function() {
 				var option_form = document.getElementById(i + "container");
 				var options = option_form.childNodes;
 				if(options.length == 1){
-					alert("question " + (i-DELETE_NUM_QUESTION) + " no option");
+					alert("第" + (i-DELETE_NUM_QUESTION) + "题无选项");
 					return;
 				}
 				//get the number of options
 				var num = (document.getElementById(i + "container")).getAttribute("value");
-				if(num == 0 ){alert("question " + i + " must have at least 1 option");return;}
+				if(num == 0 ){alert("第" + i + "题至少需要有一个选项");return;}
 				//get min & max
 				var min = $("input[name='" + i + "min']").val();
 				var max = $("input[name='" + i + "max']").val();
 				if(min==""){min=0;}
 				if(max==""){max=options.length-1;}
-				if(min > max) {alert("min must smaller than max");return;}
-				if(min < 0) {alert("min must bigger than 0");return;}
-				if(max > num) {alert("max must bigger than the number of options");return;}
+				if(min > max) {alert("最小可选不得超过最大");return;}
+				if(min < 0) {alert("最小可选必须不小于0");return;}
+				if(max > num) {alert("最大选项不可超过总选项数");return;}
 				result['questions'][k]['min'] = min;
 				result['questions'][k]['max'] = max;
- 				//alert(min);alert(max);
-				//alert("multiple");
  				//get all the options
 				result['questions'][k]['options'] = [];
 				for(var m = 1; m < options.length; m++){
-					//alert($("input[name='" + i + "_" + j + "option']").val())
 					var name = options[m].getAttribute("id").split("div")[0];
 					var option = $("input[name=" + name + "]").val();
-					if(option == "") {alert("the content of question "+ i + " option "  + j + " is empty");return;}
+					if(option == "") {alert("第"+ i + "题中存在选项为空");return;}
 					result['questions'][k]['options'][m-1] = {};
 					result['questions'][k]['options'][m-1]['id'] = m;
 					result['questions'][k]['options'][m-1]['option'] = option;
-					var cf = document.getElementById(i+"_"+(m-1)+"cf");
+					var mm = name.split("o")[0].split("_")[1];
+					var cf = document.getElementById(i+"_"+mm+"cf");
+					var rele = document.getElementById(i+"_"+mm+"optrele");
 					if(cf.checked){
 						result['questions'][k]['options'][m-1]['hasWords'] = true;
 					}
 					else result['questions'][k]['options'][m-1]['hasWords'] = false;
+					if(rele.innerHTML!=""){
+						var relearray = rele.getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+						relearray.pop();
+						result['questions'][k]['options'][m-1]['relevancy'] = [];
+						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
+					}
 				}
+				
 				break;
 			case '3':
 				result['questions'][k]['type'] = 'Slider';
 				//get min & max
 				var min = $("input[name='" + i + "min']").val();
-				if(min==""){alert("the min of question is empty");return;}
+				if(min==""){alert("第" + i + "题最小数值为空");return;}
 				var max = $("input[name='" + i + "max']").val();
-				if(max==""){alert("the max of question is empty");return;}
+				if(max==""){alert("第" + i + "题最大数值为空");return;}
 				var mintext = $("input[name='" + i + "mintext']").val();
-				if(mintext==""){alert("the min label of question is empty");return;}
+				if(mintext==""){alert("第" + i + "题最小值标签为空");return;}
 				var maxtext = $("input[name='" + i + "maxtext']").val();
-				if(maxtext==""){alert("the max label of question is empty");return;}
-				if(min > max) {alert("min must smaller than max");return;}
+				if(maxtext==""){alert("第" + i + "题最大值标签为空");return;}
+				if(min > max) {alert("第" + i + "题最小值不得超过最大值");return;}
 				result['questions'][k]['min'] = min;
 				result['questions'][k]['max'] = max;
 				result['questions'][k]['mintext'] = mintext;
@@ -363,13 +575,22 @@ $(function() {
 			}
 		}
 		var isPublic = $("#selectf1").val();
-		if(isPublic == "yes"){
+		if(isPublic == "是"){
 			isPublic = 1;
 		}
 		else{
 			isPublic = 0;
 		}
 		var status = $("#state").html();
+		if(status=="已发布"){
+			status = "pub";
+		}
+		else if(status=="未发布"){
+			status = "unp";
+		}
+		else if(status=="已结束"){
+			status = "end";
+		}
 		var releaseTime = $("input[name='releasetime']").val();
 		var endTime = $("input[name='endtime']").val();
 		if(releaseTime==""){
@@ -390,13 +611,13 @@ $(function() {
 			bootbox.confirm({
 				buttons : {
 					confirm : {
-						label : 'Confirm'
+						label : '确认'
 					},
 					cancel : {
-						label : 'Cancel'
+						label : '取消'
 					}
 				},
-				message : 'This will delete all the answers got before, sure to update?',
+				message : '这会删除此前的所有已答答卷，是否更新问卷？',
 				callback : function(test) {
 					if (test) {
 						jQuery.ajax({
@@ -411,11 +632,12 @@ $(function() {
 								status : status,
 							    endTime : endTime,
 							    releaseTime : releaseTime,
-							    allowDup : allowDup
+							    allowDup : allowDup,
+							    preview:0
 							},
 							success : function(data) {
 								bootbox.alert({
-									message : 'success',
+									message : '更新成功',
 								    callback : function() {
 								    	location.href = 'FrontPage';
 									}
@@ -439,11 +661,12 @@ $(function() {
 				status : status,
 			    endTime : endTime,
 			    releaseTime : releaseTime,
-			    allowDup : allowDup
+			    allowDup : allowDup,
+			    preview:0
 			},
 			success : function(data) {
 				bootbox.alert({
-					message : 'success',
+					message : '保存成功',
 				    callback : function() {
 				    	location.href = 'FrontPage';
 					}
@@ -494,10 +717,10 @@ $(function() {
 		}
 		var quesidarray = quesids.split(" ");
 		for(var i=0;i<quesidarray.length-1;i++){
-			$("#"+quesidarray[i]+"showrelevancy").html("Relevancy: " +
-				"This question appears when one of the following options in question <span>" +
+			$("#"+quesidarray[i]+"showrelevancy").html(
+				"关联：本题在 <span>" +
 				releques+
-				"</span> is selected: <span>" +
+				"</span> 中的以下选项中某一项被选中时出现: <span>" +
 				optids+"</span>");
 			document.getElementById(quesidarray[i]+"relevancy").checked=true;
 		}
@@ -526,14 +749,14 @@ $(function() {
 		for(var i=0;i<optidarray.length-1;i++){
 			if($("#"+relequesid+"_"+optidarray[i]+"optrele").html()==""){
 			$("#"+relequesid+"_"+optidarray[i]+"optrele").html(
-				"This option has following questions related to: <span>" +
+				"本选项与以下题号所代表的题目关联: <span>" +
 				quesids+
 				"</span>"
 				);
 			}
 			else{
 				$("#"+relequesid+"_"+optidarray[i]+"optrele").html(
-						"This option has following questions related to: <span>" +
+						"本选项与以下题号所代表的题目关联: <span>" +
 						document.getElementById(relequesid+"_"+optidarray[i]+"optrele").getElementsByTagName("SPAN")[0].innerHTML+quesids+
 						"</span>"
 				);
@@ -565,12 +788,12 @@ function addOption(value){
 	$("#" + value + "_" + num + "optiondiv").html("" +
 			"<div class='container'>" +
 			"<div class='row container col-lg-8'>" +
-			"<input class='form-control' name='" + value +"_" + num + "option'>" +
+			"<input class='form-control' name='" + value +"_" + num + "option' onfocusout='changeReleInQues("+value+","+num+")'  onfocusin='onchangingReleInQues("+value+","+num+")'>" +
 			"</div>" +
 			"<div class='col-lg-2'><div id='" + value +"_" + num +"button'>" +
 			"</div></div>" +
 			"<div class='col-lg-2'>" +
-			"<label>comment field</label>" +
+			"<label>是否需要填写文本</label>" +
 			"<input type='checkbox' id='" + value + "_" + num + "cf'>" +
 			"</div>" +
 			"<div class='col-lg-12' id='" + value + "_" + num + "optrele'></div>"+
@@ -624,7 +847,7 @@ function getRelesFromOpt(optrele){
 	if(optrele.innerHTML==""){
 		return null;
 	}
-	return optrele.getElementsByTagName("SPAN")[0].split(" ");
+	return optrele.getElementsByTagName("SPAN")[0].innerHTML.split(" ");
 }
 
 function deleteRelevancyByQuestion(value){
@@ -635,7 +858,9 @@ function deleteRelevancyByQuestion(value){
 	var optcontents = document.getElementById(value+"showrelevancy").getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 	quesno = seekQuesByQuesNo(quesno);
 	var optsnum = document.getElementById(quesno+"container").childNodes.length-1;
-	for(var i=0;i<optsnum;i++){
+	var subopts = document.getElementById(quesno+"container").childNodes;
+	for(var m=1;m<=optsnum;m++){
+		var i = subopts[m].id.split("_")[1].split("o")[0];
 		var input = $("input[name='"+quesno+"_"+i+"option'").val();
 		for(var j=0;j<optcontents.length-1;j++){
 			if(optcontents[j]==input){
@@ -662,57 +887,117 @@ function deleteRelevancyByQuestion(value){
 }
 
 function deleteRelevancyByOption(id){
-	var quesrelearray = getRelesFromOpt(document.getElementById(id));
-	for(var i=0; i<quesrelearray.length; i++){
+	var quesrelearray = getRelesFromOpt(document.getElementById(id+"optrele"));
+	var optvalue = $("#"+id+"option").val();
+	for(var i=0; i<quesrelearray.length-1; i++){
 		var thisquesid = seekQuesByQuesNo(quesrelearray[i]);
 		var thisquesrele = document.getElementById(thisquesid+"showrelevancy").getElementsByTagName("SPAN");
-		var relequesid = seekQuesByQuesNo(thisquesrele[0].split(".")[0]);
-		var optcontents = thisquesrele[1].split(" ");
-		
+		var relequesid = seekQuesByQuesNo(thisquesrele[0].innerHTML.split(".")[0]);
+		var optcontents = thisquesrele[1].innerHTML.split(" ");
+		var index = optcontents.indexOf($("#"+id+"divfont").html());
+		if(index=-1){
+			optcontents.splice(index,1);
+		}
+		var newoptcontents = "";
+		for(var j=0;j<optcontents.length-1;j++){
+			newoptcontents += optcontents[j]+" ";
+		}
+		if(newoptcontents != ""){
+			thisquesrele[1].innerHTML = newoptcontents;
+		}
+		else{
+			document.getElementById(thisquesid+"relevancy").checked = false;
+			$("#"+thisquesid+"showrelevancy").html("");
+		}
 	}
 }
 
 function deleteQuestion(value){
 	var victim = document.getElementById(value +"div");
 	deleteRelevancyByQuestion(value);
-	if(victim.value==1||victim.value==2){
-		alert("add deleteRele !!");
+	if(victim.getAttributeNode("value").value==1||victim.getAttributeNode("value").value==2){
+		var opts = document.getElementById(value +"container").childNodes;
+		for(var i=1;i<opts.length;i++){
+			var preid = opts[i].id.split("o")[0];
+			if($("#"+preid+"optrele").html()!=""){
+				deleteRelevancyByOption(preid);
+			}
+		}
 	}
+	var victimno = document.getElementById(value +"divfont").innerHTML;
 	var next = victim.nextSibling;
 	while(next !=null){
 		var id = next.getAttribute("id");
-		var font  = document.getElementById(id +"font");
+		var font = document.getElementById(id +"font");
 		font.innerText = font.innerText * 1 - 1;
+		var nextno = font.innerText;
+		
+		var rele = document.getElementById(next.getAttribute("id").split("d")[0]+"showrelevancy");
+		if(rele.innerHTML!=""){
+			var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+			if(releno>victimno){
+				var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
+				rele.getElementsByTagName("SPAN")[0].innerHTML = (releno-1) + "."+relecontent;
+				var quesid = seekQuesByQuesNo(releno);
+				var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+				var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+				var subopts = document.getElementById(quesid+"container").childNodes;
+				for(var m=1;m<=optsnum;m++){
+					var i = subopts[m].id.split("_")[1].split("o")[0];
+					var input = $("input[name='"+quesid+"_"+i+"option'").val();
+					for(var j=0;j<optcontents.length-1;j++){
+						if(optcontents[j]==input){
+							if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
+							var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+							if(idarray.indexOf(releno)!=-1){
+							idarray.splice(idarray.indexOf(releno),1,thisno);
+							}
+							var tmpid = "";
+							for(var k=0;k<idarray.length-1;k++){
+								tmpid+=idarray[k]+" ";
+							}
+							document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+						}
+					}
+				}
+				}
+			}		
+		}
+		
 		next = next.nextSibling;
 	}
 	var form = document.getElementById("form");
 	form.removeChild(victim);
 	DELETE_NUM_QUESTION += 1;
-	
-	
 }
 
 
 function deleteOption(value, num){
 	var container = document.getElementById(value +"container");
 	var victim = document.getElementById(value +"_" + num+"optiondiv");
-	var relequesarray = getRelesFromOpt(value+"_"+num+"optrele");
-	
+	if($("#"+value+"_"+num+"optrele").html()!=""){
+		deleteRelevancyByOption(value+"_"+num);
+	}
 	container.removeChild(victim);
-		
 }
 
 function upOption(value, num){
-	if(num==0){
-		return false;
-	}
 	var option_form = document.getElementById(value +"container");
 	var options = option_form.childNodes;
+	if(options[1].id.split("_")[1].split("o")[0]==num){
+		return false;
+	}
+	for(var i=2;i<options.length;i++){
+		if(options[i].id.split("_")[1].split("o")[0]==num){
+			num = i-1;
+			break;
+		}
+	}
 	var name1 = options[num*1+1].getAttribute("id").split("div")[0];
 	var option1 = $("input[name=" + name1 + "]").val();
 	var id1 = name1.split("option")[0];
 	var cf1 = document.getElementById(id1+"cf");
-	var name2 = options[num].getAttribute("id").split("div")[0];
+	var name2 = options[num*1].getAttribute("id").split("div")[0];
 	var option2 = $("input[name=" + name2 + "]").val();
 	var id2 = name2.split("option")[0];
 	var cf2 = document.getElementById(id2+"cf");
@@ -721,16 +1006,24 @@ function upOption(value, num){
 	var tmp = cf1.checked;
 	cf1.checked = cf2.checked;
 	cf2.checked = tmp;
-	var relequesarray1 = getRelesFromOpt(id1+"optrele");
-	var relequesarray2 = getRelesFromOpt(id2+"optrele");
+	var releques1 = $("#"+id1+"optrele").html();
+	var releques2 = $("#"+id2+"optrele").html();
+	$("#"+id1+"optrele").html(releques2);
+	$("#"+id2+"optrele").html(releques1);
 	
 }
 
 function downOption(value, num){
 	var option_form = document.getElementById(value +"container");
 	var options = option_form.childNodes;
-	if(num==(options.length-2)){
+	if(options[options.length-1].id.split("_")[1].split("o")[0]==num){
 		return false;
+	}
+	for(var i=2;i<options.length;i++){
+		if(options[i].id.split("_")[1].split("o")[0]==num){
+			num = i-1;
+			break;
+		}
 	}
 	var name1 = options[num*1+1].getAttribute("id").split("div")[0];
 	var option1 = $("input[name=" + name1 + "]").val();
@@ -745,8 +1038,10 @@ function downOption(value, num){
 	var tmp = cf1.checked;
 	cf1.checked = cf2.checked;
 	cf2.checked = tmp;
-	var relequesarray1 = getRelesFromOpt(id1+"optrele");
-	var relequesarray2 = getRelesFromOpt(id2+"optrele");
+	var releques1 = $("#"+id1+"optrele").html();
+	var releques2 = $("#"+id2+"optrele").html();
+	$("#"+id1+"optrele").html(releques2);
+	$("#"+id2+"optrele").html(releques1);
 	
 }
 
@@ -765,12 +1060,12 @@ function appendOption(value, oldnum){
 	$("#" + value + "_" + num + "optiondiv").html("" +
 			"<div class='container'>" +
 			"<div class='row container col-lg-8'>" +
-			"<input class='form-control' name='" + value +"_" + num + "option'>" +
+			"<input class='form-control' name='" + value +"_" + num + "option' onfocusout='changeReleInQues("+value+","+num+")' onfocusin='onchangingReleInQues("+value+","+num+")'>" +
 			"</div>" +
 			"<div class='col-lg-2'><div id='" + value +"_" + num +"button'>" +
 			"</div></div>" +
 			"<div class='col-lg-2'>" +
-			"<label>comment field</label>" +
+			"<label>是否需要填写文本</label>" +
 			"<input type='checkbox' id='" + value + "_" + num + "cf'>" +
 			"</div>"+
 			"<div class='col-lg-12' id='" + value + "_" + num + "optrele'></div>"+
@@ -834,10 +1129,254 @@ function addBlank() {
 		cursor: "move",
 		stop: function( event, ui ) {
 			var children = form.childNodes;
+			var thisid = ui.item.attr("id").split("d")[0];
+			var oldno = $("#"+thisid+"divfont").html();
+			var rele = document.getElementById(thisid+"showrelevancy");
+			var initquesid = "";
+			if(rele.innerHTML!=""){
+				initquesid = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+				initquesid = seekQuesByQuesNo(initquesid);
+			}
 			for(var i=0;i<children.length;i++){
 				var id = children[i].getAttribute("id");
 				$("#"+id+"font").html(i+1);
 			}
+			
+			var thisno = $("#"+thisid+"divfont").html();
+			if(rele.innerHTML!=""){
+				var quesid = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+				if(thisno*1<=quesid*1){
+					$("#form").sortable("cancel");
+					for(var i=0;i<children.length;i++){
+						var id = children[i].getAttribute("id");
+						$("#"+id+"font").html(i+1);
+					}
+					return;
+				}
+			}
+			if(ui.item.attr("value")==1||ui.item.attr("value")==2){
+				var opts = document.getElementById(ui.item.attr("id").split("d")[0]+"container").childNodes;
+				for(var i=1;i<opts.length;i++){
+					var quesrelearray = getRelesFromOpt(document.getElementById(opts[i].id.split("o")[0]+"optrele"));
+					if(quesrelearray!=null){
+						for(var j=0;j<quesrelearray.length-1;j++){
+							if(thisno*1>=quesrelearray[j]*1){
+								$("#form").sortable("cancel");
+								for(var i=0;i<children.length;i++){
+									var id = children[i].getAttribute("id");
+									$("#"+id+"font").html(i+1);
+								}
+								return;
+							}
+						}
+					}
+					
+				}
+			}
+			if(oldno>thisno){
+				if(initquesid!=""){
+					var quesid = initquesid;
+					var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+					var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+					var subopts = document.getElementById(quesid+"container").childNodes;
+					for(var m=1;m<=optsnum;m++){
+						var i = subopts[m].id.split("_")[1].split("o")[0];
+						
+						var input = $("input[name='"+quesid+"_"+i+"option'").val();
+						for(var j=0;j<optcontents.length-1;j++){
+							
+							if(optcontents[j]==input){
+								if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
+								var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+								if(idarray.indexOf(oldno)!=-1){
+								idarray.splice(idarray.indexOf(oldno),1,thisno);
+								}
+								var tmpid = "";
+								for(var k=0;k<idarray.length-1;k++){
+									tmpid+=idarray[k]+" ";
+								}
+								document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+							}
+						}
+					}
+					}
+				}
+				for(var i=thisno-1;i<children.length;i++){
+					var rele = document.getElementById(children[i].getAttribute("id").split("d")[0]+"showrelevancy");
+					if(rele.innerHTML!=""){
+						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+						
+						var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
+						if(releno==oldno){
+							rele.getElementsByTagName("SPAN")[0].innerHTML = thisno+"."+relecontent;
+						}
+						else if(releno<oldno&&releno>=thisno){
+							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1+1)+"."+relecontent;
+							if(i<oldno&&i>=thisno){
+								var quesid = seekQuesByQuesNo(releno*1+1);
+							}
+							else{
+								var quesid = seekQuesByQuesNo(releno*1);
+							}
+								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+								var subopts = document.getElementById(quesid+"container").childNodes;
+								for(var m=1;m<=optsnum;m++){
+									var n = subopts[m].id.split("_")[1].split("o")[0];
+									var input = $("input[name='"+quesid+"_"+n+"option'").val();
+									for(var j=0;j<optcontents.length-1;j++){
+										if(optcontents[j]==input){
+											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+											if(idarray.indexOf(String(i))!=-1){
+											idarray.splice(idarray.indexOf(String(i)),1,(i*1+1));
+											}
+											var tmpid = "";
+											for(var k=0;k<idarray.length-1;k++){
+												tmpid+=idarray[k]+" ";
+											}
+											document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+										}
+									}
+								}
+								}
+							
+						}
+						else if(releno<thisno){
+							
+								var quesid = seekQuesByQuesNo(releno*1);
+							
+								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+								var subopts = document.getElementById(quesid+"container").childNodes;
+								for(var m=1;m<=optsnum;m++){
+									var n = subopts[m].id.split("_")[1].split("o")[0];
+									var input = $("input[name='"+quesid+"_"+n+"option'").val();
+									for(var j=0;j<optcontents.length-1;j++){
+										
+										if(optcontents[j]==input){
+											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+											
+											if(idarray.indexOf(String(i))!=-1){
+												idarray.splice(idarray.indexOf(String(i)),1,(i*1+1));
+											}
+											var tmpid = "";
+											for(var k=0;k<idarray.length-1;k++){
+												tmpid+=idarray[k]+" ";
+											}
+											document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+										}
+									}
+								}
+								}
+						}
+						
+					}
+				}
+			}
+			else if(oldno<thisno){
+				if(initquesid!=""){
+					var quesid = initquesid;
+					var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+					var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+					var subopts = document.getElementById(quesid+"container").childNodes;
+					for(var m=1;m<=optsnum;m++){
+						var i = subopts[m].id.split("_")[1].split("o")[0];
+						var input = $("input[name='"+quesid+"_"+i+"option'").val();
+						for(var j=0;j<optcontents.length-1;j++){
+							if(optcontents[j]==input){
+								if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
+								var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+								if(idarray.indexOf(oldno)!=-1){
+								idarray.splice(idarray.indexOf(oldno),1,thisno);
+								}
+								var tmpid = "";
+								for(var k=0;k<idarray.length-1;k++){
+									tmpid+=idarray[k]+" ";
+								}
+								document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+							}
+						}
+					}
+					}
+				}
+				for(var i=oldno-1;i<children.length;i++){
+					var rele = document.getElementById(children[i].getAttribute("id").split("d")[0]+"showrelevancy");
+					if(rele.innerHTML!=""){
+						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+						var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
+						if(releno==oldno){
+							rele.getElementsByTagName("SPAN")[0].innerHTML = thisno+"."+relecontent;
+						}
+						else if(releno>oldno&&releno<=thisno){
+							if(i>=oldno-1&&i<thisno-1){
+								var quesid = seekQuesByQuesNo(releno*1-1);
+							}
+							else{
+								var quesid = seekQuesByQuesNo(releno*1);
+							}
+							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1-1)+"."+relecontent;
+							
+								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+								var subopts = document.getElementById(quesid+"container").childNodes;
+								for(var m=1;m<=optsnum;m++){
+									var n = subopts[m].id.split("_")[1].split("o")[0];
+									
+									var input = $("input[name='"+quesid+"_"+n+"option'").val();
+									for(var j=0;j<optcontents.length-1;j++){
+										
+										if(optcontents[j]==input){
+											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+											if(idarray.indexOf(String(i+2))!=-1){
+											idarray.splice(idarray.indexOf(String(i+2)),1,(i*1+1));
+											}
+											var tmpid = "";
+											for(var k=0;k<idarray.length-1;k++){
+												tmpid+=idarray[k]+" ";
+											}
+											document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+										}
+									}
+								}
+								}
+							
+						}
+						else if(releno<oldno){
+							
+							var quesid = seekQuesByQuesNo(releno*1);
+						
+							var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+							var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+							var subopts = document.getElementById(quesid+"container").childNodes;
+							for(var m=1;m<=optsnum;m++){
+								var n = subopts[m].id.split("_")[1].split("o")[0];
+								var input = $("input[name='"+quesid+"_"+n+"option'").val();
+								for(var j=0;j<optcontents.length-1;j++){
+									
+									if(optcontents[j]==input){
+										if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
+										var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+										
+										if(idarray.indexOf(String(i+2))!=-1){
+											idarray.splice(idarray.indexOf(String(i+2)),1,(i*1+1));
+										}
+										var tmpid = "";
+										for(var k=0;k<idarray.length-1;k++){
+											tmpid+=idarray[k]+" ";
+										}
+										document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+									}
+								}
+							}
+							}
+					}
+					}
+				}
+			}
+			
 		}
 	});
 	}
@@ -907,7 +1446,7 @@ function addBlank() {
 	input2.onclick = function(){relevancy(value)};
 	input2.id = value + "relevancy";
 	var label3 = document.createElement("label");
-	label3.innerText="relevancy";
+	label3.innerText="添加关联";
 	div8.appendChild(input2);
 	div8.appendChild(label3);
 	
@@ -921,7 +1460,7 @@ function addBlank() {
 	div4.style="float:right";
 	div5.appendChild(div4);
 	var label2 = document.createElement("label");
-	label2.innerText="required";
+	label2.innerText="必答";
 	div4.appendChild(label2);
 	//create required option
 	var input2 = document.createElement("input");
@@ -946,10 +1485,254 @@ function addSingle() {
 		cursor: "move",
 		stop: function( event, ui ) {
 			var children = form.childNodes;
+			var thisid = ui.item.attr("id").split("d")[0];
+			var oldno = $("#"+thisid+"divfont").html();
+			var rele = document.getElementById(thisid+"showrelevancy");
+			var initquesid = "";
+			if(rele.innerHTML!=""){
+				initquesid = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+				initquesid = seekQuesByQuesNo(initquesid);
+			}
 			for(var i=0;i<children.length;i++){
 				var id = children[i].getAttribute("id");
 				$("#"+id+"font").html(i+1);
 			}
+			
+			var thisno = $("#"+thisid+"divfont").html();
+			if(rele.innerHTML!=""){
+				var quesid = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+				if(thisno*1<=quesid*1){
+					$("#form").sortable("cancel");
+					for(var i=0;i<children.length;i++){
+						var id = children[i].getAttribute("id");
+						$("#"+id+"font").html(i+1);
+					}
+					return;
+				}
+			}
+			if(ui.item.attr("value")==1||ui.item.attr("value")==2){
+				var opts = document.getElementById(ui.item.attr("id").split("d")[0]+"container").childNodes;
+				for(var i=1;i<opts.length;i++){
+					var quesrelearray = getRelesFromOpt(document.getElementById(opts[i].id.split("o")[0]+"optrele"));
+					if(quesrelearray!=null){
+						for(var j=0;j<quesrelearray.length-1;j++){
+							if(thisno*1>=quesrelearray[j]*1){
+								$("#form").sortable("cancel");
+								for(var i=0;i<children.length;i++){
+									var id = children[i].getAttribute("id");
+									$("#"+id+"font").html(i+1);
+								}
+								return;
+							}
+						}
+					}
+					
+				}
+			}
+			if(oldno>thisno){
+				if(initquesid!=""){
+					var quesid = initquesid;
+					var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+					var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+					var subopts = document.getElementById(quesid+"container").childNodes;
+					for(var m=1;m<=optsnum;m++){
+						var i = subopts[m].id.split("_")[1].split("o")[0];
+						
+						var input = $("input[name='"+quesid+"_"+i+"option'").val();
+						for(var j=0;j<optcontents.length-1;j++){
+							
+							if(optcontents[j]==input){
+								if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
+								var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+								if(idarray.indexOf(oldno)!=-1){
+								idarray.splice(idarray.indexOf(oldno),1,thisno);
+								}
+								var tmpid = "";
+								for(var k=0;k<idarray.length-1;k++){
+									tmpid+=idarray[k]+" ";
+								}
+								document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+							}
+						}
+					}
+					}
+				}
+				for(var i=thisno-1;i<children.length;i++){
+					var rele = document.getElementById(children[i].getAttribute("id").split("d")[0]+"showrelevancy");
+					if(rele.innerHTML!=""){
+						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+						
+						var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
+						if(releno==oldno){
+							rele.getElementsByTagName("SPAN")[0].innerHTML = thisno+"."+relecontent;
+						}
+						else if(releno<oldno&&releno>=thisno){
+							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1+1)+"."+relecontent;
+							if(i<oldno&&i>=thisno){
+								var quesid = seekQuesByQuesNo(releno*1+1);
+							}
+							else{
+								var quesid = seekQuesByQuesNo(releno*1);
+							}
+								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+								var subopts = document.getElementById(quesid+"container").childNodes;
+								for(var m=1;m<=optsnum;m++){
+									var n = subopts[m].id.split("_")[1].split("o")[0];
+									var input = $("input[name='"+quesid+"_"+n+"option'").val();
+									for(var j=0;j<optcontents.length-1;j++){
+										if(optcontents[j]==input){
+											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+											if(idarray.indexOf(String(i))!=-1){
+											idarray.splice(idarray.indexOf(String(i)),1,(i*1+1));
+											}
+											var tmpid = "";
+											for(var k=0;k<idarray.length-1;k++){
+												tmpid+=idarray[k]+" ";
+											}
+											document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+										}
+									}
+								}
+								}
+							
+						}
+						else if(releno<thisno){
+							
+								var quesid = seekQuesByQuesNo(releno*1);
+							
+								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+								var subopts = document.getElementById(quesid+"container").childNodes;
+								for(var m=1;m<=optsnum;m++){
+									var n = subopts[m].id.split("_")[1].split("o")[0];
+									var input = $("input[name='"+quesid+"_"+n+"option'").val();
+									for(var j=0;j<optcontents.length-1;j++){
+										
+										if(optcontents[j]==input){
+											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+											
+											if(idarray.indexOf(String(i))!=-1){
+												idarray.splice(idarray.indexOf(String(i)),1,(i*1+1));
+											}
+											var tmpid = "";
+											for(var k=0;k<idarray.length-1;k++){
+												tmpid+=idarray[k]+" ";
+											}
+											document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+										}
+									}
+								}
+								}
+						}
+						
+					}
+				}
+			}
+			else if(oldno<thisno){
+				if(initquesid!=""){
+					var quesid = initquesid;
+					var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+					var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+					var subopts = document.getElementById(quesid+"container").childNodes;
+					for(var m=1;m<=optsnum;m++){
+						var i = subopts[m].id.split("_")[1].split("o")[0];
+						var input = $("input[name='"+quesid+"_"+i+"option'").val();
+						for(var j=0;j<optcontents.length-1;j++){
+							if(optcontents[j]==input){
+								if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
+								var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+								if(idarray.indexOf(oldno)!=-1){
+								idarray.splice(idarray.indexOf(oldno),1,thisno);
+								}
+								var tmpid = "";
+								for(var k=0;k<idarray.length-1;k++){
+									tmpid+=idarray[k]+" ";
+								}
+								document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+							}
+						}
+					}
+					}
+				}
+				for(var i=oldno-1;i<children.length;i++){
+					var rele = document.getElementById(children[i].getAttribute("id").split("d")[0]+"showrelevancy");
+					if(rele.innerHTML!=""){
+						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+						var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
+						if(releno==oldno){
+							rele.getElementsByTagName("SPAN")[0].innerHTML = thisno+"."+relecontent;
+						}
+						else if(releno>oldno&&releno<=thisno){
+							if(i>=oldno-1&&i<thisno-1){
+								var quesid = seekQuesByQuesNo(releno*1-1);
+							}
+							else{
+								var quesid = seekQuesByQuesNo(releno*1);
+							}
+							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1-1)+"."+relecontent;
+							
+								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+								var subopts = document.getElementById(quesid+"container").childNodes;
+								for(var m=1;m<=optsnum;m++){
+									var n = subopts[m].id.split("_")[1].split("o")[0];
+									
+									var input = $("input[name='"+quesid+"_"+n+"option'").val();
+									for(var j=0;j<optcontents.length-1;j++){
+										
+										if(optcontents[j]==input){
+											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+											if(idarray.indexOf(String(i+2))!=-1){
+											idarray.splice(idarray.indexOf(String(i+2)),1,(i*1+1));
+											}
+											var tmpid = "";
+											for(var k=0;k<idarray.length-1;k++){
+												tmpid+=idarray[k]+" ";
+											}
+											document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+										}
+									}
+								}
+								}
+							
+						}
+						else if(releno<oldno){
+							
+							var quesid = seekQuesByQuesNo(releno*1);
+						
+							var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+							var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+							var subopts = document.getElementById(quesid+"container").childNodes;
+							for(var m=1;m<=optsnum;m++){
+								var n = subopts[m].id.split("_")[1].split("o")[0];
+								var input = $("input[name='"+quesid+"_"+n+"option'").val();
+								for(var j=0;j<optcontents.length-1;j++){
+									
+									if(optcontents[j]==input){
+										if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
+										var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+										
+										if(idarray.indexOf(String(i+2))!=-1){
+											idarray.splice(idarray.indexOf(String(i+2)),1,(i*1+1));
+										}
+										var tmpid = "";
+										for(var k=0;k<idarray.length-1;k++){
+											tmpid+=idarray[k]+" ";
+										}
+										document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+									}
+								}
+							}
+							}
+					}
+					}
+				}
+			}
+			
 		}
 	});
 	}
@@ -965,19 +1748,19 @@ function addSingle() {
 			"<div class='form-group container'><div class='row'>" +
 			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label>" +
 			"<div class='col-lg-2' style='float:right'>" +
-			"<label>required</label>" +
+			"<label>必答</label>" +
 			"<input type='checkbox' id='" + value + "required'>" +
 			"</div></div>" +
 			"<div class='col-lg-2' id='" + value + "button'></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
-			"<input class='form-control' name=" + value +"></div>" +
+			"<input class='form-control' name='" + value +"' onchange='changeReleQInQues("+value+")'></div>" +
 			"<div class='col-lg-2'>" +
-			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label>relevancy</label></div>"+
+			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label>添加关联</label></div>"+
 			"</div>" +
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
 			"<div class='container' id='" + value + "container' value='0'>" +
-			"<label><font size='5'>input your option</font></label></div>" +
+			"<label><font size='5'>填写选项</font></label></div>" +
 			"<\label>" +
 			"</div></div>");
 	
@@ -1023,10 +1806,254 @@ function addMultiple() {
 		cursor: "move",
 		stop: function( event, ui ) {
 			var children = form.childNodes;
+			var thisid = ui.item.attr("id").split("d")[0];
+			var oldno = $("#"+thisid+"divfont").html();
+			var rele = document.getElementById(thisid+"showrelevancy");
+			var initquesid = "";
+			if(rele.innerHTML!=""){
+				initquesid = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+				initquesid = seekQuesByQuesNo(initquesid);
+			}
 			for(var i=0;i<children.length;i++){
 				var id = children[i].getAttribute("id");
 				$("#"+id+"font").html(i+1);
 			}
+			
+			var thisno = $("#"+thisid+"divfont").html();
+			if(rele.innerHTML!=""){
+				var quesid = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+				if(thisno*1<=quesid*1){
+					$("#form").sortable("cancel");
+					for(var i=0;i<children.length;i++){
+						var id = children[i].getAttribute("id");
+						$("#"+id+"font").html(i+1);
+					}
+					return;
+				}
+			}
+			if(ui.item.attr("value")==1||ui.item.attr("value")==2){
+				var opts = document.getElementById(ui.item.attr("id").split("d")[0]+"container").childNodes;
+				for(var i=1;i<opts.length;i++){
+					var quesrelearray = getRelesFromOpt(document.getElementById(opts[i].id.split("o")[0]+"optrele"));
+					if(quesrelearray!=null){
+						for(var j=0;j<quesrelearray.length-1;j++){
+							if(thisno*1>=quesrelearray[j]*1){
+								$("#form").sortable("cancel");
+								for(var i=0;i<children.length;i++){
+									var id = children[i].getAttribute("id");
+									$("#"+id+"font").html(i+1);
+								}
+								return;
+							}
+						}
+					}
+					
+				}
+			}
+			if(oldno>thisno){
+				if(initquesid!=""){
+					var quesid = initquesid;
+					var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+					var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+					var subopts = document.getElementById(quesid+"container").childNodes;
+					for(var m=1;m<=optsnum;m++){
+						var i = subopts[m].id.split("_")[1].split("o")[0];
+						
+						var input = $("input[name='"+quesid+"_"+i+"option'").val();
+						for(var j=0;j<optcontents.length-1;j++){
+							
+							if(optcontents[j]==input){
+								if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
+								var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+								if(idarray.indexOf(oldno)!=-1){
+								idarray.splice(idarray.indexOf(oldno),1,thisno);
+								}
+								var tmpid = "";
+								for(var k=0;k<idarray.length-1;k++){
+									tmpid+=idarray[k]+" ";
+								}
+								document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+							}
+						}
+					}
+					}
+				}
+				for(var i=thisno-1;i<children.length;i++){
+					var rele = document.getElementById(children[i].getAttribute("id").split("d")[0]+"showrelevancy");
+					if(rele.innerHTML!=""){
+						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+						
+						var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
+						if(releno==oldno){
+							rele.getElementsByTagName("SPAN")[0].innerHTML = thisno+"."+relecontent;
+						}
+						else if(releno<oldno&&releno>=thisno){
+							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1+1)+"."+relecontent;
+							if(i<oldno&&i>=thisno){
+								var quesid = seekQuesByQuesNo(releno*1+1);
+							}
+							else{
+								var quesid = seekQuesByQuesNo(releno*1);
+							}
+								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+								var subopts = document.getElementById(quesid+"container").childNodes;
+								for(var m=1;m<=optsnum;m++){
+									var n = subopts[m].id.split("_")[1].split("o")[0];
+									var input = $("input[name='"+quesid+"_"+n+"option'").val();
+									for(var j=0;j<optcontents.length-1;j++){
+										if(optcontents[j]==input){
+											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+											if(idarray.indexOf(String(i))!=-1){
+											idarray.splice(idarray.indexOf(String(i)),1,(i*1+1));
+											}
+											var tmpid = "";
+											for(var k=0;k<idarray.length-1;k++){
+												tmpid+=idarray[k]+" ";
+											}
+											document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+										}
+									}
+								}
+								}
+							
+						}
+						else if(releno<thisno){
+							
+								var quesid = seekQuesByQuesNo(releno*1);
+							
+								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+								var subopts = document.getElementById(quesid+"container").childNodes;
+								for(var m=1;m<=optsnum;m++){
+									var n = subopts[m].id.split("_")[1].split("o")[0];
+									var input = $("input[name='"+quesid+"_"+n+"option'").val();
+									for(var j=0;j<optcontents.length-1;j++){
+										
+										if(optcontents[j]==input){
+											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+											
+											if(idarray.indexOf(String(i))!=-1){
+												idarray.splice(idarray.indexOf(String(i)),1,(i*1+1));
+											}
+											var tmpid = "";
+											for(var k=0;k<idarray.length-1;k++){
+												tmpid+=idarray[k]+" ";
+											}
+											document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+										}
+									}
+								}
+								}
+						}
+						
+					}
+				}
+			}
+			else if(oldno<thisno){
+				if(initquesid!=""){
+					var quesid = initquesid;
+					var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+					var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+					var subopts = document.getElementById(quesid+"container").childNodes;
+					for(var m=1;m<=optsnum;m++){
+						var i = subopts[m].id.split("_")[1].split("o")[0];
+						var input = $("input[name='"+quesid+"_"+i+"option'").val();
+						for(var j=0;j<optcontents.length-1;j++){
+							if(optcontents[j]==input){
+								if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
+								var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+								if(idarray.indexOf(oldno)!=-1){
+								idarray.splice(idarray.indexOf(oldno),1,thisno);
+								}
+								var tmpid = "";
+								for(var k=0;k<idarray.length-1;k++){
+									tmpid+=idarray[k]+" ";
+								}
+								document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+							}
+						}
+					}
+					}
+				}
+				for(var i=oldno-1;i<children.length;i++){
+					var rele = document.getElementById(children[i].getAttribute("id").split("d")[0]+"showrelevancy");
+					if(rele.innerHTML!=""){
+						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+						var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
+						if(releno==oldno){
+							rele.getElementsByTagName("SPAN")[0].innerHTML = thisno+"."+relecontent;
+						}
+						else if(releno>oldno&&releno<=thisno){
+							if(i>=oldno-1&&i<thisno-1){
+								var quesid = seekQuesByQuesNo(releno*1-1);
+							}
+							else{
+								var quesid = seekQuesByQuesNo(releno*1);
+							}
+							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1-1)+"."+relecontent;
+							
+								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+								var subopts = document.getElementById(quesid+"container").childNodes;
+								for(var m=1;m<=optsnum;m++){
+									var n = subopts[m].id.split("_")[1].split("o")[0];
+									
+									var input = $("input[name='"+quesid+"_"+n+"option'").val();
+									for(var j=0;j<optcontents.length-1;j++){
+										
+										if(optcontents[j]==input){
+											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+											if(idarray.indexOf(String(i+2))!=-1){
+											idarray.splice(idarray.indexOf(String(i+2)),1,(i*1+1));
+											}
+											var tmpid = "";
+											for(var k=0;k<idarray.length-1;k++){
+												tmpid+=idarray[k]+" ";
+											}
+											document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+										}
+									}
+								}
+								}
+							
+						}
+						else if(releno<oldno){
+							
+							var quesid = seekQuesByQuesNo(releno*1);
+						
+							var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+							var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+							var subopts = document.getElementById(quesid+"container").childNodes;
+							for(var m=1;m<=optsnum;m++){
+								var n = subopts[m].id.split("_")[1].split("o")[0];
+								var input = $("input[name='"+quesid+"_"+n+"option'").val();
+								for(var j=0;j<optcontents.length-1;j++){
+									
+									if(optcontents[j]==input){
+										if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
+										var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+										
+										if(idarray.indexOf(String(i+2))!=-1){
+											idarray.splice(idarray.indexOf(String(i+2)),1,(i*1+1));
+										}
+										var tmpid = "";
+										for(var k=0;k<idarray.length-1;k++){
+											tmpid+=idarray[k]+" ";
+										}
+										document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+									}
+								}
+							}
+							}
+					}
+					}
+				}
+			}
+			
 		}
 	});
 	}
@@ -1040,27 +2067,26 @@ function addMultiple() {
 	$("#"+value+"div").html("" +
 			"<div class='form-group container'><div class='row'>" +
 			"<div class='col-lg-4'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label></div>" +
-			"<div class='col-lg-1'><label><font size='5'>max</font></label></div>" +
+			"<div class='col-lg-1'><label><font size='5'>最大可选</font></label></div>" +
 			"<div class='col-lg-1'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
-			"<div class='col-lg-1'><label><font size='5'>min</font></label></div>" +
+			"<div class='col-lg-1'><label><font size='5'>最小可选</font></label></div>" +
 			"<div class='col-lg-1'><input class='form-control' type='number' step='1' name='" + value +"min'></div>" +
 			"<div class='col-lg-2'>" +
-			"<label>required</label>" +
+			"<label>必答</label>" +
 			"<input type='checkbox' id='" + value + "required'>" +
 			"</div>" +
 			"<div class='col-lg-2'><div id='" + value + "button'></div></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
-			"<input class='form-control' name=" + value + "></div>" +
+			"<input class='form-control' name=" + value + " onchange='changeReleQInQues("+value+")'></div>" +
 			"<div class='col-lg-2'>" +
-			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label>relevancy</label></div>"+
-			"</div>" +
+			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label>添加关联</label></div>"+
 			"</div>" +
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
 			"<div class='container' id='" + value + "container' value='0'>" +
-			"<label><font size='5'>input your option</font></label></div>" +
+			"<label><font size='5'>填写选项</font></label></div>" +
 			"<\label>" +
-			"</div></div>");
+			"</div></div></div>");
 	
 	//create button to add an option
 	var button = document.createElement("button");
@@ -1102,10 +2128,254 @@ function addSlider() {
 		cursor: "move",
 		stop: function( event, ui ) {
 			var children = form.childNodes;
+			var thisid = ui.item.attr("id").split("d")[0];
+			var oldno = $("#"+thisid+"divfont").html();
+			var rele = document.getElementById(thisid+"showrelevancy");
+			var initquesid = "";
+			if(rele.innerHTML!=""){
+				initquesid = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+				initquesid = seekQuesByQuesNo(initquesid);
+			}
 			for(var i=0;i<children.length;i++){
 				var id = children[i].getAttribute("id");
 				$("#"+id+"font").html(i+1);
 			}
+			
+			var thisno = $("#"+thisid+"divfont").html();
+			if(rele.innerHTML!=""){
+				var quesid = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+				if(thisno*1<=quesid*1){
+					$("#form").sortable("cancel");
+					for(var i=0;i<children.length;i++){
+						var id = children[i].getAttribute("id");
+						$("#"+id+"font").html(i+1);
+					}
+					return;
+				}
+			}
+			if(ui.item.attr("value")==1||ui.item.attr("value")==2){
+				var opts = document.getElementById(ui.item.attr("id").split("d")[0]+"container").childNodes;
+				for(var i=1;i<opts.length;i++){
+					var quesrelearray = getRelesFromOpt(document.getElementById(opts[i].id.split("o")[0]+"optrele"));
+					if(quesrelearray!=null){
+						for(var j=0;j<quesrelearray.length-1;j++){
+							if(thisno*1>=quesrelearray[j]*1){
+								$("#form").sortable("cancel");
+								for(var i=0;i<children.length;i++){
+									var id = children[i].getAttribute("id");
+									$("#"+id+"font").html(i+1);
+								}
+								return;
+							}
+						}
+					}
+					
+				}
+			}
+			if(oldno>thisno){
+				if(initquesid!=""){
+					var quesid = initquesid;
+					var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+					var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+					var subopts = document.getElementById(quesid+"container").childNodes;
+					for(var m=1;m<=optsnum;m++){
+						var i = subopts[m].id.split("_")[1].split("o")[0];
+						
+						var input = $("input[name='"+quesid+"_"+i+"option'").val();
+						for(var j=0;j<optcontents.length-1;j++){
+							
+							if(optcontents[j]==input){
+								if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
+								var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+								if(idarray.indexOf(oldno)!=-1){
+								idarray.splice(idarray.indexOf(oldno),1,thisno);
+								}
+								var tmpid = "";
+								for(var k=0;k<idarray.length-1;k++){
+									tmpid+=idarray[k]+" ";
+								}
+								document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+							}
+						}
+					}
+					}
+				}
+				for(var i=thisno-1;i<children.length;i++){
+					var rele = document.getElementById(children[i].getAttribute("id").split("d")[0]+"showrelevancy");
+					if(rele.innerHTML!=""){
+						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+						
+						var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
+						if(releno==oldno){
+							rele.getElementsByTagName("SPAN")[0].innerHTML = thisno+"."+relecontent;
+						}
+						else if(releno<oldno&&releno>=thisno){
+							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1+1)+"."+relecontent;
+							if(i<oldno&&i>=thisno){
+								var quesid = seekQuesByQuesNo(releno*1+1);
+							}
+							else{
+								var quesid = seekQuesByQuesNo(releno*1);
+							}
+								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+								var subopts = document.getElementById(quesid+"container").childNodes;
+								for(var m=1;m<=optsnum;m++){
+									var n = subopts[m].id.split("_")[1].split("o")[0];
+									var input = $("input[name='"+quesid+"_"+n+"option'").val();
+									for(var j=0;j<optcontents.length-1;j++){
+										if(optcontents[j]==input){
+											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+											if(idarray.indexOf(String(i))!=-1){
+											idarray.splice(idarray.indexOf(String(i)),1,(i*1+1));
+											}
+											var tmpid = "";
+											for(var k=0;k<idarray.length-1;k++){
+												tmpid+=idarray[k]+" ";
+											}
+											document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+										}
+									}
+								}
+								}
+							
+						}
+						else if(releno<thisno){
+							
+								var quesid = seekQuesByQuesNo(releno*1);
+							
+								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+								var subopts = document.getElementById(quesid+"container").childNodes;
+								for(var m=1;m<=optsnum;m++){
+									var n = subopts[m].id.split("_")[1].split("o")[0];
+									var input = $("input[name='"+quesid+"_"+n+"option'").val();
+									for(var j=0;j<optcontents.length-1;j++){
+										
+										if(optcontents[j]==input){
+											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+											
+											if(idarray.indexOf(String(i))!=-1){
+												idarray.splice(idarray.indexOf(String(i)),1,(i*1+1));
+											}
+											var tmpid = "";
+											for(var k=0;k<idarray.length-1;k++){
+												tmpid+=idarray[k]+" ";
+											}
+											document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+										}
+									}
+								}
+								}
+						}
+						
+					}
+				}
+			}
+			else if(oldno<thisno){
+				if(initquesid!=""){
+					var quesid = initquesid;
+					var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+					var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+					var subopts = document.getElementById(quesid+"container").childNodes;
+					for(var m=1;m<=optsnum;m++){
+						var i = subopts[m].id.split("_")[1].split("o")[0];
+						var input = $("input[name='"+quesid+"_"+i+"option'").val();
+						for(var j=0;j<optcontents.length-1;j++){
+							if(optcontents[j]==input){
+								if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
+								var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+								if(idarray.indexOf(oldno)!=-1){
+								idarray.splice(idarray.indexOf(oldno),1,thisno);
+								}
+								var tmpid = "";
+								for(var k=0;k<idarray.length-1;k++){
+									tmpid+=idarray[k]+" ";
+								}
+								document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+							}
+						}
+					}
+					}
+				}
+				for(var i=oldno-1;i<children.length;i++){
+					var rele = document.getElementById(children[i].getAttribute("id").split("d")[0]+"showrelevancy");
+					if(rele.innerHTML!=""){
+						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
+						var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
+						if(releno==oldno){
+							rele.getElementsByTagName("SPAN")[0].innerHTML = thisno+"."+relecontent;
+						}
+						else if(releno>oldno&&releno<=thisno){
+							if(i>=oldno-1&&i<thisno-1){
+								var quesid = seekQuesByQuesNo(releno*1-1);
+							}
+							else{
+								var quesid = seekQuesByQuesNo(releno*1);
+							}
+							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1-1)+"."+relecontent;
+							
+								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+								var subopts = document.getElementById(quesid+"container").childNodes;
+								for(var m=1;m<=optsnum;m++){
+									var n = subopts[m].id.split("_")[1].split("o")[0];
+									
+									var input = $("input[name='"+quesid+"_"+n+"option'").val();
+									for(var j=0;j<optcontents.length-1;j++){
+										
+										if(optcontents[j]==input){
+											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+											if(idarray.indexOf(String(i+2))!=-1){
+											idarray.splice(idarray.indexOf(String(i+2)),1,(i*1+1));
+											}
+											var tmpid = "";
+											for(var k=0;k<idarray.length-1;k++){
+												tmpid+=idarray[k]+" ";
+											}
+											document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+										}
+									}
+								}
+								}
+							
+						}
+						else if(releno<oldno){
+							
+							var quesid = seekQuesByQuesNo(releno*1);
+						
+							var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
+							var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
+							var subopts = document.getElementById(quesid+"container").childNodes;
+							for(var m=1;m<=optsnum;m++){
+								var n = subopts[m].id.split("_")[1].split("o")[0];
+								var input = $("input[name='"+quesid+"_"+n+"option'").val();
+								for(var j=0;j<optcontents.length-1;j++){
+									
+									if(optcontents[j]==input){
+										if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
+										var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
+										
+										if(idarray.indexOf(String(i+2))!=-1){
+											idarray.splice(idarray.indexOf(String(i+2)),1,(i*1+1));
+										}
+										var tmpid = "";
+										for(var k=0;k<idarray.length-1;k++){
+											tmpid+=idarray[k]+" ";
+										}
+										document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML = tmpid;
+									}
+								}
+							}
+							}
+					}
+					}
+				}
+			}
+			
 		}
 	});
 	}
@@ -1120,7 +2390,7 @@ function addSlider() {
 			"<div class='form-group container'><div class='row'>" +
 			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label>" +
 			"<div class='col-lg-2' style='float:right'>" +
-			"<label>required</label>" +
+			"<label>必答</label>" +
 			"<input type='checkbox' id='" + value + "required'>" +
 			"</div></div>" +
 			"<div class='col-lg-2'><div id='" + value + "button'></div></div>" +
@@ -1133,15 +2403,15 @@ function addSlider() {
 			"</div>" +
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
 			"<div class='container'><div class='row'>" +
-			"<div class='col-lg-1'><label><font size='5'>max</font></label></div>" +
+			"<div class='col-lg-2'><label><font size='5'>最大值</font></label></div>" +
 			"<div class='col-lg-2'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
-			"<div class='col-lg-2'><label><font size='5'>max label</font></label></div>" +
-			"<div class='col-lg-7'><input class='form-control' type='text' name='" + value +"maxtext'></div></div>" +
+			"<div class='col-lg-2'><label><font size='5'>最大值标签</font></label></div>" +
+			"<div class='col-lg-6'><input class='form-control' type='text' name='" + value +"maxtext'></div></div>" +
 			"<div class='row'>" +
-			"<div class='col-lg-1'><label><font size='5'>min</font></label></div>" +
+			"<div class='col-lg-2'><label><font size='5'>最小值</font></label></div>" +
 			"<div class='col-lg-2'><input class='form-control' type='number' step='1' name='" + value +"min'></div>" +
-			"<div class='col-lg-2'><label><font size='5'>min label</font></label></div>" +
-			"<div class='col-lg-7'><input class='form-control' type='text' name='" + value +"mintext'></div></div>" +
+			"<div class='col-lg-2'><label><font size='5'>最小值标签</font></label></div>" +
+			"<div class='col-lg-6'><input class='form-control' type='text' name='" + value +"mintext'></div></div>" +
 			"</div></div></div>");
 	
 	
@@ -1166,6 +2436,8 @@ function modify(result, id){
 	if(result['allowdup']=='0'){
 		document.getElementById("allowDup").checked=false;
 	}
+	var releqlist = {};
+	var releolist = {};
 	//alert(result[0]['stem']);
 	for(var i = 0; i < result['questions'].length; i++){
 		var type = result['questions'][i]['type'];
@@ -1189,6 +2461,22 @@ function modify(result, id){
 				$("input[name="+i+"_"+j+"option]").val(result['questions'][i]['options'][j]['option']);
 				var cf = document.getElementById(i+"_"+j+"cf");
 				cf.checked=result['questions'][i]['options'][j]['hasWords'];
+				if(result['questions'][i]['options'][j]['relevancy']!=undefined){
+					var relearray = result['questions'][i]['options'][j]['relevancy'];
+					var tmp = "本选项与以下题号所代表的题目关联: <span>";
+					for(var p=0;p<relearray.length;p++){
+						tmp+=relearray[p]+" ";
+						if(releqlist[relearray[p]]==undefined){
+							releqlist[relearray[p]] = (i+1)+"."+result['questions'][i]['stem'];
+						}
+						if(releolist[relearray[p]]==undefined){
+							releolist[relearray[p]]="";
+						}
+						releolist[relearray[p]]+=result['questions'][i]['options'][j]['option']+" ";
+					}
+					tmp += "</span>";
+					$("#"+i+"_"+j+"optrele").html(tmp);
+				}
 			}
 		}
 		else if(type=="Multiple"){
@@ -1205,6 +2493,22 @@ function modify(result, id){
 				$("input[name="+i+"_"+j+"option]").val(result['questions'][i]['options'][j]['option']);
 				var cf = document.getElementById(i+"_"+j+"cf");
 				cf.checked=result['questions'][i]['options'][j]['hasWords'];
+				if(result['questions'][i]['options'][j]['relevancy']!=undefined){
+					var relearray = result['questions'][i]['options'][j]['relevancy'];
+					var tmp = "本选项与以下题号所代表的题目关联: <span>";
+					for(var p=0;p<relearray.length;p++){
+						tmp+=relearray[p]+" ";
+						if(releqlist[relearray[p]]==undefined){
+							releqlist[relearray[p]] = (i+1)+"."+result['questions'][i]['stem'];
+						}
+						if(releolist[relearray[p]]==undefined){
+							releolist[relearray[p]]="";
+						}
+						releolist[relearray[p]]+=result['questions'][i]['options'][j]['option']+" ";
+					}
+					tmp += "</span>";
+					$("#"+i+"_"+j+"optrele").html(tmp);
+				}
 			}
 		}
 		else if(type=="Slider"){
@@ -1219,6 +2523,12 @@ function modify(result, id){
 			$("input[name="+i+"max]").val(result['questions'][i]['max']);
 			$("input[name="+i+"maxtext]").val(result['questions'][i]['maxtext']);
 		}
+	}
+	for(x in releqlist){
+		document.getElementById(x-1+"relevancy").checked = true;
+		$("#"+(x*1-1)+"showrelevancy").html(
+				"关联：本题在 <span>"
+				+releqlist[x]+"</span> 中的以下选项中某一项被选中时出现: <span>"+releolist[x]+"</span>");
 	}
 };
 
@@ -1241,14 +2551,14 @@ function update(quesid){
 
 function statechanger(){
 	if($("input[name='endtime']").val()!="" && $("input[name='endtime']").val()<new Date().toISOString().split("T")[0]){
-		$("#state").html("end");
+		$("#state").html("已结束");
 	}
 	else{
 	if($("input[name='releasetime']").val()>new Date().toISOString().split("T")[0]){
-		$("#state").html("unp");
+		$("#state").html("未发布");
 	}
 	else if($("input[name='releasetime']").val()<=new Date().toISOString().split("T")[0]){
-		$("#state").html("pub");
+		$("#state").html("已发布");
 	}}
 }
 
@@ -1256,7 +2566,7 @@ function relevancy(value){
 	if(document.getElementById(value+"relevancy").checked==true){
 		var num = $("#"+value+"divfont").html();
 		if(num == 1){
-			bootbox.alert("No option to choose");
+			bootbox.alert("无可选选项");
 			document.getElementById(value+"relevancy").checked=false;
 			return;
 		}
@@ -1277,7 +2587,7 @@ function relevancy(value){
 		$("#relacloser").attr("data-id", value);
 		$("#relatconfirm").attr("data-id", value);
 		if(document.getElementById("formerques").getElementsByTagName("OPTION").length==0){
-			bootbox.alert("No option to choose");
+			bootbox.alert("无可选选项");
 			document.getElementById(value+"relevancy").checked=false;
 			return;
 		}
@@ -1290,11 +2600,12 @@ function relevancy(value){
 	    		break;
 	    	}
 	    }
-		var firstoptnum = document.getElementById(firstoptid+"container").childNodes.length-1;
-		for(var i=0;i<firstoptnum;i++){
+	    var firstsubopts = document.getElementById(firstoptid+"container").childNodes;
+		var firstoptnum = firstsubopts.length;
+		for(var i=1;i<firstoptnum;i++){
 			opts2+="<input type='checkbox'>"+
 			"<label>" +
-			$("input[name='"+firstoptid+"_"+i+"option']").val()+
+			$("input[name='"+firstsubopts[i].id.split("o")[0]+"option']").val()+
 			"</label><br>";
 		}
 		$("#specoptiondiv").html(opts2);
@@ -1326,13 +2637,60 @@ function releopts(){
     		break;
     	}
     }
-	var optnum = document.getElementById(quesid+"container").childNodes.length-1;
+    var subopts = document.getElementById(quesid+"container").childNodes;
+	var optnum = document.getElementById(quesid+"container").childNodes.length;
 	var opts2="";
-	for(var i=0;i<optnum;i++){
+	for(var i=1;i<optnum;i++){
 		opts2+="<input type='checkbox'>"+
 				"<label>" +
-				$("input[name='"+quesid+"_"+i+"option']").val()+
+				$("input[name='"+subopts[i].id.split("o")[0]+"option']").val()+
 				"</label><br>";
 	}
 	$("#specoptiondiv").html(opts2);
+}
+
+function onchangingReleInQues(num, value){
+	var quesarray = getRelesFromOpt(document.getElementById(num+"_"+value+"optrele"));
+	var opt = $("input[name='" + num+"_"+value+"option']").val();
+	if(quesarray!=null){
+		for(var i=0;i<quesarray.length-1;i++){
+			var rele = document.getElementById(seekQuesByQuesNo(quesarray[i])+"showrelevancy").getElementsByTagName("SPAN")[1];
+			var optarray = rele.innerHTML.split(" ");
+			for(var j=0;j<optarray.length-1;j++){
+				if(optarray[j]==opt){
+					optarray.splice(j,1);
+					break;
+				}
+			}
+			var tmp = "";
+			for(var j=0;j<optarray.length-1;j++){
+					tmp+=optarray[j]+" ";
+			}
+			rele.innerHTML = tmp;
+		}
+	}
+}
+
+function changeReleInQues(num, value){
+	var quesarray = getRelesFromOpt(document.getElementById(num+"_"+value+"optrele"));
+	var opt = $("input[name='" + num+"_"+value+"option']").val();
+	if(quesarray!=null){
+		for(var i=0;i<quesarray.length-1;i++){
+			var rele = document.getElementById(seekQuesByQuesNo(quesarray[i])+"showrelevancy").getElementsByTagName("SPAN")[1];
+			rele.innerHTML = rele.innerHTML + opt + " ";
+		}
+	}
+}
+
+function changeReleQInQues(value){
+	var opts = document.getElementById(value+"container").childNodes;
+	for(var i=1;i<opts.length;i++){
+		var quesarray = getRelesFromOpt(document.getElementById(opts[i].id.split("o")[0]+"optrele"));
+		if(quesarray!=null){
+			for(var i=0;i<quesarray.length-1;i++){
+				var rele = document.getElementById(seekQuesByQuesNo(quesarray[i])+"showrelevancy").getElementsByTagName("SPAN")[0];
+				rele.innerHTML = rele.innerHTML.split(".")[0] + "." + $("input[name='"+value+"']").val();
+			}
+		}
+	}
 }
