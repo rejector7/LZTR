@@ -37,6 +37,7 @@ public interface QuestionnaireDao {
 
 	List<Questionnaire> findQuestionnaires(String condi);
 
+	List<Questionnaire> getPublicQuestionnaires();
 
 
 }
