@@ -223,6 +223,20 @@ public class QuestionnaireAction extends BaseAction{
 		request().setAttribute("MyQuess", Questionnaires);
 		return "My";
 	}
+	
+	public String propel(){
+		List<Questionnaire> questionnaires = quesService.getPublicQuestionnaires();
+		for(int i=0;i<6;i++){
+			QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(questionnaires.get(i).getId());
+			System.out.println(questionnaires.get(i).getId());
+			System.out.println(quescontent);
+			JSONObject questot = new JSONObject(quescontent.getContent());
+			String intro = questot.getString("introduction");
+			request().setAttribute(i + "intro", intro);
+		}
+		request().setAttribute("quesByTime", questionnaires);
+		return SUCCESS;
+	}
 }
 
 
