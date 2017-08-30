@@ -3,8 +3,10 @@ package action;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import model.Answer;
@@ -45,12 +47,13 @@ public class ImportExportAction extends BaseAction{
 	}
 	public String backupex() throws IOException{
 		String backup = ioService.backupExport(quesid);
+		System.out.println(backup);
 		response().getWriter().print(backup);
 		return null;
 	}
 	
-	public String backupim() throws FileNotFoundException{
-		//ioService.backupImport(file.getPath());
+	public String backupim() throws JSONException, IOException, ParseException{
+		ioService.backupImport(file.getPath());
 		return null;
 	}
 }

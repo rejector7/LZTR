@@ -296,12 +296,32 @@ function drawLine(label, result, i){
 
 function downloadthis(){
 		var content="";
-		var headers = document.getElementsByTagName("p");
+		
+		/*var styles = document.getElementsByTagName("LINK");
+		var style = "<style>";
+		for(var i=0;i<styles.length;i++){
+			var len = document.styleSheets[i].cssRules.length;
+			for(var j=0;j<len;j++){
+				style+=document.styleSheets[i].cssRules[j].cssText;
+			}
+		}
+		style+="</style>";
+		content+=style;*/
+		var styles = document.getElementsByTagName("LINK");
+		var style = "<style>";
+		
+		style+="table, td, th {border-collapse: collapse;border: 1px solid black;}</style>";
+		content+=style;
+		content+="</head><body>";
+		var headers = document.getElementsByTagName("P");
 		content += "<p>"+headers[0].innerHTML+"</p>";
 		content += "<p>"+headers[1].innerHTML+"</p>";
 		var table = $("#container").html();
-		content += table; 
-		xportDoc(content,headers[1].getElementsByTagName("strong")[0].innerHTML.split("：")[1]);
+		var canvas = document.getElementById("1canvas");
+		$("#container").append("<img src = "+canvas.toDataURL('image/jpeg')+">");
+		content += $("#container").html(); 
+		content+=table+"</body>";
+		exportDoc(content,headers[1].getElementsByTagName("strong")[0].innerHTML.split("：")[1]);
 }
 
 function downloadimg(id){

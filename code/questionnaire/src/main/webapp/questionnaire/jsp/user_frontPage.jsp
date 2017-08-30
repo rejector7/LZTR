@@ -120,6 +120,7 @@
     <%
 		ArrayList<Questionnaire> quesListByTime = new ArrayList<Questionnaire>();
     quesListByTime = (ArrayList<Questionnaire>) request.getAttribute("quesByTime");
+    int length = quesListByTime.size();
 	%>
 
   
@@ -137,6 +138,7 @@
       <div class="row">
       <div class="row col-lg-9">
       <div class="row">
+      <%if(length>=3){ %>
       <%for(int i=0;i<3;i++){ %>
       
         <div class="col-lg-4">
@@ -147,8 +149,24 @@
           <p><font color="#cccccc"><%=request.getAttribute(i+ "intro")%></font></p>
 	</div></div>
         <%} %>
+        <%}
+      else{ 
+      for(int i=0;i<length;i++){ %>
+      
+        <div class="col-lg-4">
+        <div class="thumbnail" style="word-wrap:break-word;height:115px;overflow:hidden">
+       <a href="FillQuestionnaire?quesid=<%=quesListByTime.get(i).getId()%>">
+       <h3><span class="badge" align="left" style="float:left;align:left"><%=i+1 %></span><%=quesListByTime.get(i).getTitle() %></h3>
+       </a>
+          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro")%></font></p>
+	</div></div>
+        <%}%>
+        <%}%>
+      
         </div>
+        <%if(length>=6) {%>
               <div class="row">
+       
       <%for(int i=3;i<6;i++){ %>
         <div class="col-lg-4">
         <div class="thumbnail" style="word-wrap:break-word;height:115px;overflow:hidden">
@@ -159,7 +177,22 @@
 	</div></div>
         <%} %>
         </div></div>
+        <%}
+        else if(length>3){ %>
+        <div class="row">
+        <%for(int i=3;i<length;i++){ %>
+        <div class="col-lg-4">
+        <div class="thumbnail" style="word-wrap:break-word;height:115px;overflow:hidden">
+       <a href="FillQuestionnaire?quesid=<%=quesListByTime.get(i).getId()%>">
+       <h3><span class="badge" align="left" style="float:left;align:left"><%=i+1 %></span><%=quesListByTime.get(i).getTitle() %></h3>
+       </a>
+          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro")%></font></p>
+	</div></div>
+        <%}%> 
+        </div></div>
+        <%}%>
         
+        <%if(length>12){%>
       <div class="col-lg-3">
       <ul class="list-group">
       <%for (int i = 6 ; i < 12; i++){ %>
@@ -169,7 +202,7 @@
       <a href="FillQuestionnaire?quesid=<%=quesListByTime.get(i).getId()%>"><%=quesListByTime.get(i).getTitle() %>
       </a></li>
       <%}%>
-
+	<%} %>
       </ul>
       </div>
        </div>

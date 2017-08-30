@@ -24,6 +24,7 @@ function Execute(arg1, arg2, arg3, arg4, quesid)
 	$("#quesid").append(quesid);
 	$("#quesname").append(arg3);
 	$("#userid").append(arg4);
+	$("#reply").attr("data-rid",arg4);
 	//开始添加
 	var len = Size(quess);
 	for (var i = 0; i < len; ++i){
@@ -146,7 +147,7 @@ function getcontent(ansid, quesid){
 			quesid : quesid
 		},
 		success : function(data) { //把title，id都放在里面
-			Execute(data["Qques"],data["anst"],data["name"],data["userid"].quesid);
+			Execute(data["Qques"],data["anst"],data["name"],data["userid"],quesid);
 		}
 	});
 }

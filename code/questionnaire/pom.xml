@@ -196,7 +196,6 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
-
 <!-- https://mvnrepository.com/artifact/jfree/jfreechart -->
 <!-- for drawing pictures -->
 <dependency>
