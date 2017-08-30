@@ -174,12 +174,12 @@ $(function(){
 				console.log(id);
 				if(data=="false"){
 					bootbox.alert({
-						message : 'old password is wrong',
+						message : '原密码输入错误',
 					});
 				}
 				else{
 				bootbox.alert({
-					message : 'Modify Successfully! ',
+					message : '修改成功！ ',
 					callback : function() {
 						location.href='loginPage';
 					}
@@ -241,7 +241,7 @@ $(function(){
 				success : function(data) {
 					console.log(id);
 					bootbox.alert({
-						message : 'Modify Successfully! ',
+						message : '修改成功！ ',
 						callback : function() {
 							location.reload();
 						}

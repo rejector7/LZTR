@@ -121,7 +121,7 @@ User user = (User) session.getAttribute("user");
     </nav>
 
  <div class="bg jumbotron"></div>
-    <div class="container">
+    <div class="container" >
     
     
     
@@ -144,42 +144,42 @@ User user = (User) session.getAttribute("user");
 			                    <form oninput="buttonable()"  role="form" action="<%=path %>/signupPro" method="post" class="login-form" id="infoform">
 			                        			                        <div class="form-group">
 			                        	<label  for="form-sex">性别</label>
-			                        	<select  id="form-sex" name="sex" class="form-sex" >
-											<option value="male">男</option>
-											<option value="female">女</option>
+			                        	<select  id="form-sex" name="sex" class="form-sex" value="<%=user.getSex() %>">
+											<option value="male" <%if(!user.getSex().equals("female")){%>selected="selected"<%} %>>男</option>
+											<option value="female" <%if(user.getSex().equals("female")){%>selected="selected"<%} %>>女</option>
 										</select>
 			                        </div>
 			                        <div class="form-group">
 			                        	<label for="form-age" >年龄</label>
-			                        	<input type="number" name="age" step="1" class="form-age " id="form-age" min="0" digits>
+			                        	<input type="number" name="age" step="1" class="form-age " id="form-age" min="0" value="<%=user.getAge() %>" digits>
 			                        </div>
 
 			                        			                        <div class="form-group">
 			                        	<label  for="form-country">国家</label>
-			                        	<input type="text" name="country"  class="form-country " id="form-country">
+			                        	<input type="text" name="country"  class="form-country " value="<%=user.getCountry() %>" id="form-country">
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label  for="form-city">城市</label>
-			                        	<input type="text" name="city" class="form-city " id="form-city">
+			                        	<input type="text" name="city" class="form-city " value="<%=user.getCity() %>" id="form-city">
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label  for="form-mobile">电话</label>
-			                        	<input type="text" name="mobile"  class="form-mobile" id="form-mobile" oninput="changephonechecker()" >
+			                        	<input type="text" name="mobile"  class="form-mobile" id="form-mobile" value="<%=user.getMobile() %>" oninput="changephonechecker()" >
 			                        </div>
 			                        <div id="phonechecker">
 									
 									</div>
 			                        			                        <div class="form-group">
 			                        	<label  for="form-qq">QQ&nbsp</label>
-			                        	<input type="text" name="qq"  class="form-qq" id="form-qq" digits>
+			                        	<input type="text" name="qq"  class="form-qq" id="form-qq" value="<%=user.getQq() %>"digits>
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label  for="form-wechat">微信</label>
-			                        	<input type="text" name="wechat"  class="form-wechat " id="form-wechat">
+			                        	<input type="text" name="wechat"  class="form-wechat " value="<%=user.getWechat() %>" id="form-wechat">
 			                        </div>
 			                        			                        			                        <div class="form-group">
 			                        	<label  for="form-job">职业</label>
-			                        	<input type="text" name="job"  class="form-job " id="form-job">
+			                        	<input type="text" name="job"  class="form-job " value="<%=user.getJob() %>" id="form-job">
 			                        </div>
 
 									<button type="button" class="btn btn-primary" style="width:" id="save" 
