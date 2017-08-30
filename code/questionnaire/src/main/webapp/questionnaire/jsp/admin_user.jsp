@@ -68,17 +68,17 @@
 									<thead>
 										<tr>
 										    <th>ID</th>
-											<th>User Name</th>
-											<th>Age</th>
-											<th>Sex</th>
-											<th>City</th>
-											<th>Country</th>
-											<th>Email</th>
-											<th>Mobile</th>
+											<th>用户名</th>
+											<th>年龄</th>
+											<th>性别</th>
+											<th>城市</th>
+											<th>国家</th>
+											<th>邮箱</th>
+											<th>手机号</th>
 											<th>QQ</th>
-											<th>Wechat</th>
-											<th>Role</th>
-											<th>Operation</th>
+											<th>微信</th>
+											<th>身份</th>
+											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>

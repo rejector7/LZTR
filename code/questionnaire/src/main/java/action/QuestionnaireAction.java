@@ -179,6 +179,7 @@ public class QuestionnaireAction extends BaseAction{
 	 * @return
 	 */
 	public String delete1(){
+		ansService.deleteAnswersByQuestionId(id);
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
 		quesService.deleteQuestionnaire(quescontent, ques);
@@ -186,6 +187,7 @@ public class QuestionnaireAction extends BaseAction{
 	}
 	
 	public String delete2(){
+		ansService.deleteAnswersByQuestionId(id);
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
 		quesService.deleteQuestionnaire(quescontent, ques);
@@ -241,13 +243,21 @@ public class QuestionnaireAction extends BaseAction{
 	
 	public String propel(){
 		List<Questionnaire> questionnaires = quesService.getPublicQuestionnaires();
+		if(questionnaires.size()>=6){
 		for(int i=0;i<6;i++){
 			QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(questionnaires.get(i).getId());
-			System.out.println(questionnaires.get(i).getId());
-			System.out.println(quescontent);
 			JSONObject questot = new JSONObject(quescontent.getContent());
 			String intro = questot.getString("introduction");
 			request().setAttribute(i + "intro", intro);
+		}
+		}
+		else {
+			for(int i=0;i<questionnaires.size();i++){
+				QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(questionnaires.get(i).getId());
+				JSONObject questot = new JSONObject(quescontent.getContent());
+				String intro = questot.getString("introduction");
+				request().setAttribute(i + "intro", intro);
+			}
 		}
 		request().setAttribute("quesByTime", questionnaires);
 		return SUCCESS;

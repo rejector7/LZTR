@@ -70,14 +70,18 @@
 									id="dataTables">
 									<thead>
 										<tr>
-										    <th>ID</th>
-											<th>User ID</th>
-											<th>Title</th>
-											<th>IsPublic</th>
-											<th>Release Time</th>
-											<th>End Time</th>
-											<th>Status</th>
-											<th>Operation</th>
+										    <th>问卷ID</th>
+											<th>用户ID</th>
+											<th>标题</th>
+											<th>是否公开</th>
+											<th>发布时间</th>
+											<th>结束时间</th>
+											<th>发布状态</th>
+											<th>操作<button class="btn btn-default backup" type="button"
+												data-id="0"
+												>
+												<i class="fa fa-copy"></i>全部备份
+												</button></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -114,7 +118,7 @@
 												<button class="btn btn-default backup" type="button"
 												data-id="<%=ques.getId() %>"
 												>
-												<i class="fa fa-copy"></i>backup
+												<i class="fa fa-copy"></i>备份
 												</button>
 											</td>
 										</tr>
@@ -136,7 +140,10 @@
 		<!-- /#page-wrapper -->
 	</div>
 	<!-- /#wrapper -->
-
+	<form action="<%=path %>/backupimport" method="post" enctype="multipart/form-data">
+			<input type="file" name="file">
+			<input type="submit" value="导入">
+	</form>
 	<div class="modal fade" id="modal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
