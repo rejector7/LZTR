@@ -59,7 +59,7 @@
     <nav class="navbar navbar-fixed-top my-navbar" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="allBooksClientPro"><font size=5>LZTR 问卷网</font></a>
+                <a class="navbar-brand" href="FrontPage"><font size=5>LZTR 问卷网</font></a>
             </div>
             <div class="collapse navbar-collapse" id="example-navbar-collapse">
                 <ul class="nav navbar-nav">

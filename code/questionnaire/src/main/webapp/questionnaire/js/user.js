@@ -219,7 +219,7 @@ $(function(){
 		}).form()){
 			return false;
 		}
-		if(!isPhoneNo(mobile)){
+		if(mobile!="" && !isPhoneNo(mobile)){
 			return false;
 		}
 		if (id != "") { // Edit
@@ -295,7 +295,7 @@ $(function(){
 
 	
 	$(".modifypw").click(function(e){
-		$('#modalTitle2').html("modify password");
+		$('#modalTitle2').html("修改密码");
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
 		console.log(id);
