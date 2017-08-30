@@ -174,12 +174,12 @@ $(function(){
 				console.log(id);
 				if(data=="false"){
 					bootbox.alert({
-						message : 'old password is wrong',
+						message : '原密码输入错误',
 					});
 				}
 				else{
 				bootbox.alert({
-					message : 'Modify Successfully! ',
+					message : '修改成功！ ',
 					callback : function() {
 						location.href='loginPage';
 					}
@@ -219,7 +219,7 @@ $(function(){
 		}).form()){
 			return false;
 		}
-		if(!isPhoneNo(mobile)){
+		if(mobile!="" && !isPhoneNo(mobile)){
 			return false;
 		}
 		if (id != "") { // Edit
@@ -241,7 +241,7 @@ $(function(){
 				success : function(data) {
 					console.log(id);
 					bootbox.alert({
-						message : 'Modify Successfully! ',
+						message : '修改成功！ ',
 						callback : function() {
 							location.reload();
 						}
@@ -295,7 +295,7 @@ $(function(){
 
 	
 	$(".modifypw").click(function(e){
-		$('#modalTitle2').html("modify password");
+		$('#modalTitle2').html("修改密码");
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
 		console.log(id);

@@ -1,142 +1,168 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+    <%@ page import="java.util.ArrayList"%>
+<%@ page import="model.Questionnaire"%>
+<%@ page import="model.User"%>
 <!DOCTYPE html>
-<html lang="en">
-
-    <head>
-	<%
+<%
 	String path=request.getContextPath();
-	%>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Signup Questionnaire</title>
+%>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+	<meta charset="utf-8" />
+        <title>LZTR 问卷网</title>
 
-        <!-- CSS -->
-        <link rel="stylesheet" href="<%=path %>/questionnaire/css/css.css">
-        <link rel="stylesheet" href="<%=path %>/questionnaire/css/bootstrap.min.css">
-        <link rel="stylesheet" href="<%=path %>/questionnaire/css/font-awesome.min.css">
-		<link rel="stylesheet" href="<%=path %>/questionnaire/css/form-elements.css">
-        <link rel="stylesheet" href="<%=path %>/questionnaire/css/style.css">
-        <link rel="stylesheet" href="<%=path %>/questionnaire/css/validation.css">
+    <!-- Bootstrap core CSS -->
+    <link href="<%=path %>/questionnaire/css/bootstrap3.3.7.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="<%=path %>/questionnaire/css/font-awesome.min.css">
+
+
+        <link href="<%=path %>/questionnaire/css/font-awesome.min.css" rel="stylesheet">
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="questionnaire/js/jquery.min.js"></script>
+    <script src="questionnaire/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        html, body {width:100%;height:100%;}
+        .bg {display: table;width: 100%;height: 10%;padding: 20px 0;text-align: center;color: #fff;background: url(questionnaire/img/homepage.jpg) no-repeat bottom center;background-color: #000;background-size: cover;}
+        .my-navbar {padding:20px 0;transition: background 0.5s ease-in-out, padding 0.5s ease-in-out;}
+        .my-navbar a{background:transparent !important;color:#fff !important}
+        .my-navbar a:hover {color:#45bcf9 !important;background:transparent;outline:0}
+        .my-navbar a {transition: color 0.5s ease-in-out;}
+        .top-nav {padding:0;background:#000;}
+        button.navbar-toggle {background-color:#fbfbfb;}
+        button.navbar-toggle > span.icon-bar {background-color:#dedede}
+        .dropdown-nemu>li>a{color:#333!important;display:block!important;}
         
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
+		.mydiv{
+		width:250px;height:auto;border:#909090 1px solid;background:#fff;color:#333;
+		filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=3);
+		-moz-box-shadow: 2px 2px 10px #909090;
+		-webkit-box-shadow: 2px 2px 10px #909090;
+		box-shadow:2px 2px 10px #909090;
 
-        <!-- Favicon and touch icons -->
-        <link rel="shortcut icon" href="<%=path %>/questionnaire/img/favicon.png">
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<%=path %>/questionnaire/img/apple-touch-icon-144-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<%=path %>/questionnaire/img/apple-touch-icon-114-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<%=path %>/questionnaire/img/apple-touch-icon-72-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" href="<%=path %>/questionnaire/img/apple-touch-icon-57-precomposed.png">
+		}
+    </style>
+</head>
+<body style="background:
+#F5F5F5">
+    <nav class="navbar navbar-fixed-top my-navbar" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="allBooksClientPro"><font size=5>LZTR 问卷网</font></a>
+            </div>
+            <div class="collapse navbar-collapse" id="example-navbar-collapse">
+            </div>
+            
 
-    </head>
+        </div>
+    </nav>
 
-    <body>
+ <div class="bg jumbotron"></div>
+    <div class="container">
+    
+    
+    
+     <h2 color="#505050" align="center">欢迎注册LZTR问卷网！</h2>
+     <p align="right">已有账号？<a href="loginPage"><strong>登陆</strong></a></p>
+     <hr style="color:black;border-top:1px solid #C0C0C0">
 
-        <!-- Top content -->
-        <div class="top-content">
-        	
-            <div class="inner-bg">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-6 col-sm-offset-3 form-box">
-                        	<div class="form-top">
-                        		<div class="form-top-left">
-                        			<h3>Signup to Questionnaire Website</h3>
-                            		<p>Enter your username and password to sign up</p>
-                            		<p>Click here to  <a href="<%=path %>/loginPage"><strong>Log in</strong></a></p>
-                   					<p><strong><font color="red" id="dupname"></font></strong></p>
-                        		</div>
-                        		<div class="form-top-right">
-                        			<i class="fa fa-lock"></i>
-                        		</div>
-                            </div>
-                            <div class="form-bottom">
-			                    <form role="form" method="post"  action="signupPro" class="login-form" id="registerform">
+
+                        <div class="col-sm-6 col-sm-offset-3 form-box" style="float:none">
+                            <div class="form-bottom" >
+			                    <form role="form" action="<%=path %>/signupPro" method="post" class="login-form" id="registerform">
 			                    	<div class="form-group">
-			                    		<label class="sr-only" for="form-username">Username</label>
-			                        	<input type="text" name="username" placeholder="Username..." class="form-username form-control" id="form-username" required>
+			                    		<label  for="form-username">用户名<font color="red">*</font></label>
+			                        	<input type="text" name="username"  class="form-username form-control" id="form-username" required>
 			                        </div>
 			                        <div class="form-group">
-			                        	<label class="sr-only" for="form-password">Password</label>
-			                        	<input type="password" name="password" placeholder="Password..." class="form-password form-control" id="form-password" required>
+			                        	<label for="form-password">密码<font color="red">*</font></label>
+			                        	<input type="password" name="password"  class="form-password form-control" id="form-password" required>
 			                        </div>
 			                        <div class="form-group">
-			                        	<label class="sr-only" >Confirm the Password</label>
-			                        	<input type="password" name="confirmpassword" placeholder="Confirm the Password..." class="form-password form-control" required equalTo="#form-password">
+			                        	<label  >请再次输入密码<font color="red">*</font></label>
+			                        	<input type="password" name="confirmpassword"  class="form-password form-control" required equalTo="#form-password">
 			                        </div>
 			                        <div class="form-group">
-			                        	<label class="sr-only" for="form-age">Age</label>
-			                        	<input type="number" name="age" step="1" placeholder="Age..." class="form-age form-control" id="form-age" min="0" digits>
+			                        	<label for="form-email">邮箱<font color="red">*</font></label>
+			                        	<input type="email" name="email"  class="form-email form-control" id="form-email" required>
+			                        </div>
+			                        	<hr style="color:black;border-top:1px solid #C0C0C0">
+			                    	     <div align="center"> <font>以下为个性化信息</font></div>
+			                        <div class="form-group">
+			                        	<label for="form-age">年龄</label>
+			                        	<input type="number" name="age" step="1"  class="form-age form-control" id="form-age" min="0" digits>
 			                        </div>
 			                        <div class="form-group">
-			                        	<label class="sr-only" for="form-sex">Sex</label>
+			                        	<label  for="form-sex">性别</label>
 			                        	<select  id="form-sex" name="sex" class="form-sex form-control">
-											<option value="male">Male</option>
-											<option value="female">Female</option>
+											<option value="male">男</option>
+											<option value="female">女</option>
 										</select>
 			                        </div>
-			                        <div class="form-group">
-			                        	<label class="sr-only" for="form-email">Email</label>
-			                        	<input type="email" name="email" placeholder="Email..." class="form-email form-control" id="form-email" required>
+			                        			                        <div class="form-group">
+			                        	<label  for="form-country">国家</label>
+			                        	<input type="text" name="country"  class="form-country form-control" id="form-country">
 			                        </div>
 			                        			                        <div class="form-group">
-			                        	<label class="sr-only" for="form-country">Country</label>
-			                        	<input type="text" name="country" placeholder="Country..." class="form-country form-control" id="form-country">
+			                        	<label  for="form-city">城市</label>
+			                        	<input type="text" name="city" class="form-city form-control" id="form-city">
 			                        </div>
 			                        			                        <div class="form-group">
-			                        	<label class="sr-only" for="form-city">City</label>
-			                        	<input type="text" name="city" placeholder="City..." class="form-city form-control" id="form-city">
-			                        </div>
-			                        			                        <div class="form-group">
-			                        	<label class="sr-only" for="form-mobile">Mobile</label>
-			                        	<input type="text" name="mobile" placeholder="Mobile..." class="form-mobile form-control" id="form-mobile" required oninput="changephonechecker()" >
+			                        	<label  for="form-mobile">电话</label>
+			                        	<input type="text" name="mobile"  class="form-mobile form-control" id="form-mobile" oninput="changephonechecker()" >
 			                        </div>
 			                        <div id="phonechecker">
 									
 									</div>
 			                        			                        <div class="form-group">
-			                        	<label class="sr-only" for="form-qq">QQ</label>
-			                        	<input type="text" name="qq" placeholder="QQ..." class="form-qq form-control" id="form-qq" digits>
+			                        	<label  for="form-qq">QQ</label>
+			                        	<input type="text" name="qq"  class="form-qq form-control" id="form-qq" digits>
 			                        </div>
 			                        			                        <div class="form-group">
-			                        	<label class="sr-only" for="form-wechat">WeChat</label>
-			                        	<input type="text" name="wechat" placeholder="WeChat..." class="form-wechat form-control" id="form-wechat">
+			                        	<label  for="form-wechat">微信</label>
+			                        	<input type="text" name="wechat"  class="form-wechat form-control" id="form-wechat">
 			                        </div>
 			                        			                        			                        <div class="form-group">
-			                        	<label class="sr-only" for="form-job">Job</label>
-			                        	<input type="text" name="job" placeholder="Job..." class="form-job form-control" id="form-job">
+			                        	<label  for="form-job">职业</label>
+			                        	<input type="text" name="job"  class="form-job form-control" id="form-job">
 			                        </div>
-			                        
-			                        <button type="button" id="register" class="btn btn-success">Sign up!</button>
+
+												                        <button type="submit" class="btn btn-primary" style="width:100%">注册！</button>
 			                    </form>
 		                    </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
+
+<hr style="color:black;border-top:1px solid #C0C0C0">
+      <!-- Site footer -->
+      <footer class="footer" style="float:none">
+        <p>&copy; 2017 LZTR Group.</p>
+      </footer>
+
+    </div> <!-- /container -->
 
 
-        <!-- Javascript -->
-        <script src="<%=path %>/questionnaire/js/jquery-1.11.1.min.js"></script>
-        <script src="<%=path %>/questionnaire/js/bootstrap.min.js"></script>
-        <script src="<%=path %>/questionnaire/js/bootbox.min.js"></script>
-        <script src="<%=path %>/questionnaire/js/jquery.backstretch.min.js"></script>
-        <script src="<%=path %>/questionnaire/js/scripts.js"></script>
-        <script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
-        <script src="<%=path %>/questionnaire/js/user.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="<%=path %>/questionnaire/js/ie10-viewport-bug-workaround.js"></script>
+    
         <script>
-                $(function () {
-            $.backstretch([
-                  "<%=path %>/questionnaire/img/backgrounds/1.jpg",
-            ], { duration: 3000, fade: 750 });
-        });
+        $(window).scroll(function () {
+            if ($(".navbar").offset().top > 50) {$(".navbar-fixed-top").addClass("top-nav");
+            }else {$(".navbar-fixed-top").removeClass("top-nav");}
+        })
         </script>
-    </body>
-
+        
+  </body>
 </html>

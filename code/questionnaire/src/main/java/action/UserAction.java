@@ -187,7 +187,8 @@ public class UserAction extends BaseAction{
 		user.setCity(city);
 		user.setAge(age);
 		user.setCountry(country);
-		if(email!=null||email!=""){
+		System.out.println(email+"wreergergerg");
+		if(email!=null&&email!=""){
 		user.setEmail(email);
 		}
 		user.setMobile(mobile);

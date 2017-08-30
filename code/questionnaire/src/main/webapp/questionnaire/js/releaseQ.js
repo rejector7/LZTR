@@ -1386,87 +1386,39 @@ function addBlank() {
 	
 	//create div
 	var div = document.createElement("div");
-	div.className = "form-group container";
 	div.id = value + "div";
 	div.setAttribute("value", "0");
 	form.appendChild(div);
-	
-	//create stem label
-	var div7 = document.createElement("div");
-	div7.className = "row";
-	div.appendChild(div7);
-	
-	var div5 = document.createElement("div");
-	div5.className = "col-lg-10";
-	div7.appendChild(div5);
-	
-	var label = document.createElement("label");
-	div5.appendChild(label);
-	
-	var font = document.createElement("font");
-	font.size = 5;
-	font.id = value + "divfont";
-	font.innerText = value-DELETE_NUM_QUESTION;
-	label.appendChild(font);
+	$("#"+value+"div").html("" +
+			"<div class='form-group container' style='background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
+			"<div class='col-lg-8'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font><font size='3'>" + "  填空题  点击输入框编辑题目" + "</label></div>" +
+			"<div class='col-lg-1' >" +
+			"<label><font size='3'>必答</font></label>" +
+			"<input type='checkbox' id='" + value + "required'>" +
+			"</div>" +
+			"<div class='col-lg-3' id='" + value + "button'></div></div>" +
+			"<div class='row container'>" +
+			"<div class='col-lg-10'>" +
+			"<input class='form-control' name='" + value +"' onchange='changeReleQInQues("+value+")'></div>" +
+			"<div class='col-lg-2'>" +
+			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</font></label></div>"+
+			"</div>" +
+			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
+			"<\label>" +
+			"</div></div>");
 	
 	//create button to delete an question
-	var div6 = document.createElement("div");
-	div6.className = "col-lg-2";
-	div7.appendChild(div6);
-	
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){deleteQuestion(value)};
-	div6.appendChild(button);
+	document.getElementById(value + "button").appendChild(button);
 	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
+	i.innerText = "删除本题";
 	button.appendChild(i);
-	
-	//create div for input and required
-	var div2 = document.createElement("div");
-	div2.className = "row container";
-	div.appendChild(div2);
-	
-	//create input
-	var div3 = document.createElement("div");
-	div3.className = "col-lg-10";
-	div2.appendChild(div3);	
-	var input = document.createElement("input");
-	input.className = "form-control";
-	input.name = value;
-	div3.appendChild(input);
-	var div8 = document.createElement("div");
-	div8.className = "col-lg-2";
-	div2.appendChild(div8);	
-	var input2 = document.createElement("input");
-	input2.type = "checkbox";
-	input2.onclick = function(){relevancy(value)};
-	input2.id = value + "relevancy";
-	var label3 = document.createElement("label");
-	label3.innerText="添加关联";
-	div8.appendChild(input2);
-	div8.appendChild(label3);
-	
-	var div9 = document.createElement("div");
-	div9.className = "col-lg-12";
-	div9.id = value + "showrelevancy";
-	div.appendChild(div9);
-	//create required label
-	var div4 = document.createElement("div");
-	div4.className = "col-lg-2";
-	div4.style="float:right";
-	div5.appendChild(div4);
-	var label2 = document.createElement("label");
-	label2.innerText="必答";
-	div4.appendChild(label2);
-	//create required option
-	var input2 = document.createElement("input");
-	input2.type = "checkbox";
-	input2.id = value + "required";
-	label2.appendChild(input2);
 	
 	body.setAttribute("value", value * 1 + 1);
 };
@@ -1745,22 +1697,22 @@ function addSingle() {
 	div.setAttribute("value", "1");
 	form.appendChild(div);
 	$("#"+value+"div").html("" +
-			"<div class='form-group container'><div class='row'>" +
-			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label>" +
-			"<div class='col-lg-2' style='float:right'>" +
-			"<label>必答</label>" +
+			"<div class='form-group container' style='background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
+			"<div class='col-lg-8'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font><font size='3'>" + "  单选题  点击输入框编辑题目" + "</label></div>" +
+			"<div class='col-lg-1' >" +
+			"<label><font size='3'>必答</font></label>" +
 			"<input type='checkbox' id='" + value + "required'>" +
-			"</div></div>" +
-			"<div class='col-lg-2' id='" + value + "button'></div></div>" +
+			"</div>" +
+			"<div class='col-lg-3' id='" + value + "button'></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
 			"<input class='form-control' name='" + value +"' onchange='changeReleQInQues("+value+")'></div>" +
 			"<div class='col-lg-2'>" +
-			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label>添加关联</label></div>"+
+			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</font></label></div>"+
 			"</div>" +
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
 			"<div class='container' id='" + value + "container' value='0'>" +
-			"<label><font size='5'>填写选项</font></label></div>" +
+			"<label><font size='3'>添加并填写选项</font></label></div>" +
 			"<\label>" +
 			"</div></div>");
 	
@@ -1775,6 +1727,7 @@ function addSingle() {
 	
 	var i = document.createElement("i");
 	i.className = "fa fa-plus";
+	i.innerText = "添加选项"
 	button.appendChild(i);
 	
 	//create button to delete an question
@@ -1787,6 +1740,7 @@ function addSingle() {
 	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
+	i.innerText = "删除本题";
 	button.appendChild(i);
 	
 	body.setAttribute("value", value * 1 + 1);
@@ -2065,26 +2019,27 @@ function addMultiple() {
 	div.id = (value+"div");
 	form.appendChild(div);
 	$("#"+value+"div").html("" +
-			"<div class='form-group container'><div class='row'>" +
-			"<div class='col-lg-4'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label></div>" +
-			"<div class='col-lg-1'><label><font size='5'>最大可选</font></label></div>" +
+			"<div class='form-group container' style='background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
+			"<div class='col-lg-3'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font><font size='3'>"+"  多选题  点击输入框编辑题目" + "</font></label></div>" +
+			"<div class='col-lg-1'><label><font size='3'>最大可选</font></label></div>" +
 			"<div class='col-lg-1'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
-			"<div class='col-lg-1'><label><font size='5'>最小可选</font></label></div>" +
+			"<div class='col-lg-1'><label><font size='3'>最小可选</font></label></div>" +
 			"<div class='col-lg-1'><input class='form-control' type='number' step='1' name='" + value +"min'></div>" +
-			"<div class='col-lg-2'>" +
-			"<label>必答</label>" +
+					"<div class='col-lg-1'></div>" +
+			"<div class='col-lg-1'>" +
+			"<label><font size='3'>必答</font></label>" +
 			"<input type='checkbox' id='" + value + "required'>" +
 			"</div>" +
-			"<div class='col-lg-2'><div id='" + value + "button'></div></div></div>" +
+			"<div class='col-lg-3'><div id='" + value + "button'></div></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
 			"<input class='form-control' name=" + value + " onchange='changeReleQInQues("+value+")'></div>" +
 			"<div class='col-lg-2'>" +
-			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label>添加关联</label></div>"+
+			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</label></div>"+
 			"</div>" +
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
 			"<div class='container' id='" + value + "container' value='0'>" +
-			"<label><font size='5'>填写选项</font></label></div>" +
+			"<label><font size='3'>添加并填写选项</font></label></div>" +
 			"<\label>" +
 			"</div></div></div>");
 	
@@ -2098,6 +2053,7 @@ function addMultiple() {
 	
 	var i = document.createElement("i");
 	i.className = "fa fa-plus";
+	i.innerText = "添加选项";
 	button.appendChild(i);
 	body.setAttribute("value", value * 1 + 1);
 	
@@ -2111,6 +2067,7 @@ function addMultiple() {
 	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
+	i.innerText = "删除本题";
 	button.appendChild(i);
 };
 
@@ -2387,32 +2344,31 @@ function addSlider() {
 	div.id = (value+"div");
 	form.appendChild(div);
 	$("#"+value+"div").html("" +
-			"<div class='form-group container'><div class='row'>" +
-			"<div class='col-lg-10'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font></label>" +
-			"<div class='col-lg-2' style='float:right'>" +
+			"<div class='form-group container' style='background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
+			"<div class='col-lg-8'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font><font size='3'>" + "  滑块题  点击输入框编辑题目" + "</label></div>" +
+			"<div class='col-lg-1' >" +
 			"<label>必答</label>" +
 			"<input type='checkbox' id='" + value + "required'>" +
-			"</div></div>" +
-			"<div class='col-lg-2'><div id='" + value + "button'></div></div>" +
+			"</div>" +
+			"<div class='col-lg-2'><div id='" + value + "button'></div></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
 			"<input class='form-control' name=" + value + "></div>" +
 			"<div class='col-lg-2'>" +
-			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label>relevancy</label></div>"+
-			"</div>" +
+			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</font></label></div>"+
 			"</div>" +
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
 			"<div class='container'><div class='row'>" +
-			"<div class='col-lg-2'><label><font size='5'>最大值</font></label></div>" +
-			"<div class='col-lg-2'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
-			"<div class='col-lg-2'><label><font size='5'>最大值标签</font></label></div>" +
-			"<div class='col-lg-6'><input class='form-control' type='text' name='" + value +"maxtext'></div></div>" +
+			"<div class='col-lg-1'><label><font size='3'>最大值</font></label></div>" +
+			"<div class='col-lg-3'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
+			"<div class='col-lg-2'><label><font size='3'>最大值标签</font></label></div>" +
+			"<div class='col-lg-5'><input class='form-control' type='text' name='" + value +"maxtext'></div></div>" +
 			"<div class='row'>" +
-			"<div class='col-lg-2'><label><font size='5'>最小值</font></label></div>" +
-			"<div class='col-lg-2'><input class='form-control' type='number' step='1' name='" + value +"min'></div>" +
-			"<div class='col-lg-2'><label><font size='5'>最小值标签</font></label></div>" +
-			"<div class='col-lg-6'><input class='form-control' type='text' name='" + value +"mintext'></div></div>" +
-			"</div></div></div>");
+			"<div class='col-lg-1'><label><font size='3'>最小值</font></label></div>" +
+			"<div class='col-lg-3'><input class='form-control' type='number' step='1' name='" + value +"min'></div>" +
+			"<div class='col-lg-2'><label><font size='3'>最小值标签</font></label></div>" +
+			"<div class='col-lg-5'><input class='form-control' type='text' name='" + value +"mintext'></div></div>" +
+			"</div><br></div></div>");
 	
 	
 	//create button to delete an question
@@ -2425,6 +2381,7 @@ function addSlider() {
 	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
+	i.innerText = "删除本题";
 	button.appendChild(i);
 	
 	body.setAttribute("value", value * 1 + 1);

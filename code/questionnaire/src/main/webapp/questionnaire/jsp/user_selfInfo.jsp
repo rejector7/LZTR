@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
-<%@ page import="model.User" %>
+    <%@ page import="java.util.ArrayList"%>
+<%@ page import="model.Questionnaire"%>
+<%@ page import="model.User"%>
 <!DOCTYPE html>
 <%
 	String path=request.getContextPath();
@@ -12,8 +14,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    
+	<meta charset="utf-8" />
+        <title>LZTR 问卷网</title>
 
-    <title>LZTR 问卷网</title>
+    <!-- Bootstrap core CSS -->
 	<link href="<%=path%>/questionnaire/css/bootstrap.min.css" 			rel="stylesheet">
 	<link href="<%=path%>/questionnaire/css/dataTables.bootstrap.css" 	rel="stylesheet">
 	<link href="<%=path%>/questionnaire/css/dataTables.responsive.css" 	rel="stylesheet">
@@ -22,15 +27,9 @@
     <!-- Bootstrap core CSS -->
     <link href="<%=path %>/questionnaire/css/bootstrap3.3.7.min.css" rel="stylesheet">
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="<%=path %>/questionnaire/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="<%=path %>/questionnaire/css/justified-nav.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="<%=path %>/questionnaire/js/ie-emulation-modes-warning.js"></script>
     	<script src="questionnaire/js/jquery.min.js"></script>
     	<script src="questionnaire/js/jquery.validate.min.js"></script>
     	     <link rel="stylesheet" href="questionnaire/css/validation.css">
@@ -40,155 +39,165 @@
 		<script src="questionnaire/js/bootbox.min.js"></script>
 	    <link href="questionnaire/css/font-awesome.min.css" rel="stylesheet">
 	         <link rel="stylesheet" href="questionnaire/css/validation.css">
+    <style type="text/css">
+        html, body {width:100%;height:100%;}
+        .bg {display: table;width: 100%;height: 10%;padding: 20px 0;text-align: center;color: #fff;background: url(questionnaire/img/homepage.jpg) no-repeat bottom center;background-color: #000;background-size: cover;}
+        .my-navbar {padding:20px 0;transition: background 0.5s ease-in-out, padding 0.5s ease-in-out;}
+        .my-navbar a{background:transparent !important;color:#fff !important}
+        .my-navbar a:hover {color:#45bcf9 !important;background:transparent;outline:0}
+        .my-navbar a {transition: color 0.5s ease-in-out;}
+        .top-nav {padding:0;background:#000;}
+        button.navbar-toggle {background-color:#fbfbfb;}
+        button.navbar-toggle > span.icon-bar {background-color:#dedede}
+        .dropdown-nemu>li>a{color:#333!important;display:block!important;}
+        
+		.mydiv{
+		width:250px;height:auto;border:#909090 1px solid;background:#fff;color:#333;
+		filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=3);
+		-moz-box-shadow: 2px 2px 10px #909090;
+		-webkit-box-shadow: 2px 2px 10px #909090;
+		box-shadow:2px 2px 10px #909090;
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
+		}
+    </style>
+</head>
+<body style="background:
+#F5F5F5">
 <% 
 User user = (User) session.getAttribute("user");
 %>
-
-
-  <body>
-
-    <div class="container">
-
-      <!-- The justified navigation menu is meant for single line per list item.
-           Multiple lines will require custom code not provided by Bootstrap. -->
-      <div class="masthead">
-        <h1 class="text-muted">LZTR 问卷网 </h1>
-        <nav>
-          <ul class="nav nav-justified">
-            <li><a href="<%=path %>/FrontPage">首页</a></li>
-            <li class="active"><a href="">个人信息</a></li>
-            <li><a href="<%=path %>/MyQuestionnaire">我的问卷</a></li>
-            <li><a href="<%=path %>/ReleaseQuestionnaire">问卷发布</a></li>
-            <li><a href="<%=path %>/FillQuestionnaire">填写问卷</a></li>
-            <li><a href="<%=path %>/allSendMessage">消息</a></li>
-            <li><a href="<%=path %>/HelpContact">帮助</a></li>
+   <nav class="navbar navbar-fixed-top my-navbar" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="FrontPage"><font size=5>LZTR 问卷网</font></a>
+            </div>
+            <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                <ul class="nav navbar-nav">
+				<% response.setCharacterEncoding("UTF-8"); 
+					if(session.getAttribute("user")!=null){ %>
+				
+				<%String role = user.getRole();
+				if(role.equals("admin")){ System.out.println("1111");%>
+				<li><a class="navbar-brand" href="<%=path %>/allUser"><span class="glyphicon glyphicon-wrench">系统信息管理</span></a></li>
+				<%} }%>
+                </ul>
+                
+                     <form class="navbar-form navbar-right" role="search" action="searchPro" accept-charset="UTF-8">
+              			<div class="form-group">
+                			<input type="text" class="form-control" name="key" placeholder="搜索问卷名称......">
+                			<button type="submit" class="btn btn-default-lg">搜索</button>
+                		</div>
+              		</form>
+                
+              <ul class="nav navbar-nav navbar-right">
+              <% 
+              if(user==null){ %>
+              <li data-toggle="modal" data-target="#signin-signup-tab" id="signin-button"><a href="loginPage" class="navbar-brand" >登陆</a></li>
+              <li data-toggle="modal" data-target="#signin-signup-tab" id="signup-button"><a href="signupPage" class="navbar-brand" >注册</a></li>
+              <li data-toggle="modal" data-target="#signin-signup-tab" id="signup-button"><a href="<%=path %>/HelpContact" class="navbar-brand" >帮助</a></li>
+              <%}else{ %>
+              	<li><a class="navbar-brand" href="<%=path %>/MyQuestionnaire"><span class="glyphicon glyphicon-list">我的问卷</span></a></li>
+              
+            	<li class="dropdown">
+                <a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-expanded="false">
+                    <span class="glyphicon glyphicon-user"><%=((User)session.getAttribute("user")).getUsername()%></span>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu" style="background:#333!important" role="menu" >
+                	<li><a href="<%=path %>/SelfInfo">个人信息</a></li>
+					<li><a href="<%=path %>/allSendMessage">我的消息</a></li>
+					<li role="presentation" class="divider"></li>
+					<li><a href="<%=path %>/HelpContact">帮助</a></li>
+                </ul>
+            	</li>
+            	
+               <li data-toggle="modal" data-target="#signin-signup-tab" id="signin-button"><a href="logoutPro" class="navbar-brand" >登出</a></li>
+               <%} %>
+              </ul>
+            </div>
             
-            <li><a href="<%=path %>/logoutPro">登出</a></li>
-            <%if(((String)session.getAttribute("role")).equals("admin")){%>
-				<li><a href="<%=path %>/allUser" ></i>系统信息管理</a></li>
-			<%}%>
-          </ul>
-        </nav>
-      </div>
 
-	<div class="row conatiner"><div class="col-lg-2"></div><div class="col-lg-8">
-	<h3>Account : <%=user.getUsername()%></h3>
-	<%if (user.getEmail()!="") {%> <h3>Email : <%=user.getEmail()%></h3><%}%>
-	<%if (user.getSex()!="") {%> <h3>Sex : <%=user.getSex()%></h3><%}%>
-	<%if (user.getMobile()!="") {%><h3>Phone : <%=user.getMobile()%></h3><%}%>
-	<%if (user.getCountry()!="") {%> <h3>Country : <%=user.getCountry()%></h3><%}%>
-	<%if (user.getCity()!="") {%> <h3>City : <%=user.getCity()%></h3><%}%>
-	<%if (user.getJob()!="") {%> <h3>Job : <%=user.getJob()%></h3><%}%>
-	<%if (user.getQq()!="") {%> <h3>QQ : <%=user.getQq()%></h3><%}%>
-	<%if (user.getWechat()!="") {%> <h3>Wechat : <%=user.getWechat()%></h3><%}%>
-	<%if (user.getAge()!=0) {%><h3>Age : <%=user.getAge()%></h3><%}%>
-	
-	
-													<button class="btn btn-default edit" type="button"
-													data-id="<%=user.getId()%>"
-													data-sex="<%=user.getSex()%>"
-													data-mobile="<%=user.getMobile()%>"
-													data-country="<%=user.getCountry()%>"
-													data-city="<%=user.getCity()%>"
-													data-email="<%=user.getEmail()%>"
-													data-age="<%=user.getAge()%>"
-													data-job="<%=user.getJob()%>"
-													data-qq="<%=user.getQq()%>"
-													data-wechat="<%=user.getWechat()%>"
-													data-password="<%=user.getPassword()%>">
-													<i class="fa fa-edit">&nbspModify Property</i>
-												</button>
-											<button class="btn btn-default modifypw" type="button"
+        </div>
+    </nav>
+
+ <div class="bg jumbotron"></div>
+    <div class="container" >
+    
+    
+    
+ 	<div class="row"  style="float:left"><font size=5><strong>安全信息</strong></font></div>
+ 												<button class="btn btn-default modifypw" type="button" style="float:right;"
 											data-id="<%=user.getId()%>"
 											>
-											<i class="fa fa-edit">&nbspModify Password</i>
+											<i class="fa fa-edit">&nbsp修改密码</i>
 											</button>	
-						</div>						
-</div>
+    <hr> <hr style="color:black;border-top:1px solid #C0C0C0">
+    <div class="container">
+     <label>用户名 : <%=user.getUsername()%></label><p></p>
+	 <label>邮箱 : <%=user.getEmail()%></label><br><br><br></div>
+	 <div class="row" ><font size=5><strong>个性信息</strong></font></div>
+     <hr style="color:black;border-top:1px solid #C0C0C0">
 
 
+                        <div class="col-sm-6  form-box" style="float:none">
+                            <div class="form-bottom" >
+			                    <form oninput="buttonable()"  role="form" action="<%=path %>/signupPro" method="post" class="login-form" id="infoform">
+			                        			                        <div class="form-group">
+			                        	<label  for="form-sex">性别</label>
+			                        	<select  id="form-sex" name="sex" class="form-sex" value="<%=user.getSex() %>">
+											<option value="male" <%if(!user.getSex().equals("female")){%>selected="selected"<%} %>>男</option>
+											<option value="female" <%if(user.getSex().equals("female")){%>selected="selected"<%} %>>女</option>
+										</select>
+			                        </div>
+			                        <div class="form-group">
+			                        	<label for="form-age" >年龄</label>
+			                        	<input type="number" name="age" step="1" class="form-age " id="form-age" min="0" value="<%=user.getAge() %>" digits>
+			                        </div>
+
+			                        			                        <div class="form-group">
+			                        	<label  for="form-country">国家</label>
+			                        	<input type="text" name="country"  class="form-country " value="<%=user.getCountry() %>" id="form-country">
+			                        </div>
+			                        			                        <div class="form-group">
+			                        	<label  for="form-city">城市</label>
+			                        	<input type="text" name="city" class="form-city " value="<%=user.getCity() %>" id="form-city">
+			                        </div>
+			                        			                        <div class="form-group">
+			                        	<label  for="form-mobile">电话</label>
+			                        	<input type="text" name="mobile"  class="form-mobile" id="form-mobile" value="<%=user.getMobile() %>" oninput="changephonechecker()" >
+			                        </div>
+			                        <div id="phonechecker">
+									
+									</div>
+			                        			                        <div class="form-group">
+			                        	<label  for="form-qq">QQ&nbsp</label>
+			                        	<input type="text" name="qq"  class="form-qq" id="form-qq" value="<%=user.getQq() %>"digits>
+			                        </div>
+			                        			                        <div class="form-group">
+			                        	<label  for="form-wechat">微信</label>
+			                        	<input type="text" name="wechat"  class="form-wechat " value="<%=user.getWechat() %>" id="form-wechat">
+			                        </div>
+			                        			                        			                        <div class="form-group">
+			                        	<label  for="form-job">职业</label>
+			                        	<input type="text" name="job"  class="form-job " value="<%=user.getJob() %>" id="form-job">
+			                        </div>
+
+									<button type="button" class="btn btn-primary" style="width:" id="save" 
+									data-id="<%=user.getId()%>" 
+									disabled>保存修改</button>
+			                    </form>
+		                    </div>
+                        </div>
+
+<hr style="color:black;border-top:1px solid #C0C0C0">
       <!-- Site footer -->
-      <footer class="footer">
+      <footer class="footer" style="float:none">
         <p>&copy; 2017 LZTR Group.</p>
       </footer>
 
     </div> <!-- /container -->
     
-    
-    	<div class="modal fade" id="modal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-					</button>
-					<h4 class="modal-title" id="modalTitle"></h4>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-						<div class="col-lg-12">
-							<form role="form" id="infoform">
-								<div class="form-group">
-			                        	<label>Sex</label>
-			                        	<select  id="form-sex" name="sex" class="form-control">
-											<option value="male">Male</option>
-											<option value="female">Female</option>
-										</select>
-			                        </div>
-																<div class="form-group">
-									<label>Mobile</label> <input class="form-control" mobile
-										name="mobile" required id="mobile"  oninput="changephonechecker()">
-								</div>
-								<div id="phonechecker">
-									
-								</div>
-																<div class="form-group">
-									<label>Country</label> <input class="form-control"
-										name="country">
-								</div>
-																<div class="form-group">
-									<label>City</label> <input class="form-control"
-										name="city">
-								</div>
-																<div class="form-group">
-									<label>Age</label> <input class="form-control" min="0"
-										name="age" number step="1" digits>
-								</div>
-																<div class="form-group">
-									<label>Job</label> <input class="form-control"
-										name="job">
-								</div>
-																								<div class="form-group">
-									<label>Wechat</label> <input class="form-control"
-										name="wechat">
-								</div>
-																								<div class="form-group">
-									<label>QQ</label> <input class="form-control"
-										name="qq">
-								</div>
-								
-							</form>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="save">Save</button>
-				</div>
-			</div>
-		</div>
-
-    	</div>
-
-<div class="modal fade" id="modal2" tabindex="-1" role="dialog"
+    <div class="modal fade" id="modal2" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -222,12 +231,22 @@ User user = (User) session.getAttribute("user");
 				</div>
 			</div>
 		</div>
+		</div>
 
-    	</div>
+
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="<%=path %>/questionnaire/js/ie10-viewport-bug-workaround.js"></script>
-
     <script src="<%=path %>/questionnaire/js/user.js"></script>
-
+        <script>
+        $(window).scroll(function () {
+            if ($(".navbar").offset().top > 50) {$(".navbar-fixed-top").addClass("top-nav");
+            }else {$(".navbar-fixed-top").removeClass("top-nav");}
+        })
+         </script><script>
+        function buttonable(){
+        	document.getElementById("save").disabled=false;
+        };
+        
+        </script>
+        
   </body>
 </html>
