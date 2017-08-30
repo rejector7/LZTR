@@ -79,6 +79,7 @@ img { max-width: 100%; }
 .btn-link-2:active, .btn-link-2:active:focus { outline: 0; opacity: 0.6; background: rgba(0, 0, 0, 0.3); color: #fff; }
 
 
+
 /***** Top content *****/
 
 .inner-bg {
@@ -138,10 +139,10 @@ img { max-width: 100%; }
 
 .form-bottom {
 	padding: 25px 25px 30px 25px;
-	background: #444;
-	background: rgba(0, 0, 0, 0.3);
+	background: #fff;
 	-moz-border-radius: 0 0 4px 4px; -webkit-border-radius: 0 0 4px 4px; border-radius: 0 0 4px 4px;
 	text-align: left;
+	color: #505050;
 }
 
 .form-bottom form textarea {

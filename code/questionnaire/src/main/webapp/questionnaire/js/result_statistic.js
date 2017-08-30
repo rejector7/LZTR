@@ -1,3 +1,12 @@
+var colors = [
+    'rgba(255, 99, 132, 0.2)',
+    'rgba(54, 162, 235, 0.2)',
+    'rgba(255, 206, 86, 0.2)',
+    'rgba(75, 192, 192, 0.2)',
+    'rgba(153, 102, 255, 0.2)',
+    'rgba(255, 159, 64, 0.2)',
+	];
+
 function getStatistic(quesid){
 	jQuery.ajax({
 		url : 'getStatistic',
@@ -68,20 +77,14 @@ function formStatistic(data){
 				$("#" + i+ "_" + j+ "tr").append('<td>' + result[j] + "</td>");
 				$("#" + i+ "body").append('</tr>');
 			}
-			var div = document.createElement("div");
-			div.id = i + "div";
-			div.className = "col-lg-6";
-			document.getElementById(i).appendChild(div);
-			var canvas = document.createElement("canvas");
-			canvas.id = i + "canvas";
-			div.appendChild(canvas);
-			draw(label, result, i);
+			/*draw(label, result, i);
 			var button = document.createElement("button");
 			button.className="btn btn-default";
 			//alert(canvas.id);
 			button.onclick=function(){downloadimg(canvas.id)};
 			button.innerText="下载图片";
-			div.appendChild(button);
+			div.appendChild(button);*/
+			drawButton(i, label, result);
 		}
 		else if(type=="Multiple"){
 			$("#"+i+"head").append('<th width="40%">选项号</th>' +
@@ -108,14 +111,7 @@ function formStatistic(data){
 				$("#" + i+ "_" + j+ "tr").append('<td>' + result[j] + "</td>");
 				$("#" + i+ "body").append('</tr>');
 			}
-			var div = document.createElement("div");
-			div.id = i + "div";
-			div.className = "col-lg-6";
-			document.getElementById(i).appendChild(div);
-			var canvas = document.createElement("canvas");
-			canvas.id = i + "canvas";
-			div.appendChild(canvas);
-			draw(label, result, i);
+			drawButton(i, label, result);
 		}
 		else if(type=="Slider"){
 			$("#"+i+"head").append('<th width="40%">填写数量</th>' +
@@ -153,29 +149,147 @@ function formStatistic(data){
 }
 
 
-function draw(label, result, i){
-	var ctx = document.getElementById(i + "canvas");
-	var j=0;
-	for(var i=0;i<result.length;i++){
-		j+=result[i];
+function drawPie(label, result, i){
+	var canvas = document.getElementById(i + "canvas");
+	if(canvas!=null){
+		document.getElementById(i+"beforecanvas").remove();
 	}
-	for(var i=0;i<result.length;i++){
-		result[i]/=j;
+	$("#" + i).append("<div id='" + i + "beforecanvas'><div class='col-lg-4'></div>" +
+			"<div class='col-lg-4'>" +
+					"<canvas id='"+i+"canvas'" +
+					"</div></div>");
+	canvas = document.getElementById(i + "canvas");
+	
+	
+	label = label.split(",");
+	result = result.split(",");
+	for(var i = 7 ; i < result.size; i++){
+		colors[i] =  'rgba(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) +', 0.2'+ ')';
 	}
-	var myChart = new Chart(ctx, {
+	
+	
+	var myChart = new Chart(canvas, {
 	    type: "pie",
 	    data: {
 	        labels: label,
 	        datasets: [{
-	            label: "sold book number",
+	            label: "number",
 	            data: result,
-	            backgroundColor: 'rgba(151,187,205,0.5)',
-	            borderColor: 'rgba(151,187,205,1)',
+	            backgroundColor: colors,
+	            fill : 'false'
+	        }]
+	    }
+	});
+}
+
+function drawBar(label, result, i){
+	var canvas = document.getElementById(i + "canvas");
+	if(canvas!=null){
+		document.getElementById(i+"beforecanvas").remove();
+	}
+	$("#" + i).append("<div id='" + i + "beforecanvas'><div class='col-lg-3'></div>" +
+			"<div class='col-lg-6'>" +
+					"<canvas id='"+i+"canvas'" +
+					"</div></div>");
+	canvas = document.getElementById(i + "canvas");
+	
+	label = label.split(",");
+	result = result.split(",");
+
+	for(var i = 7 ; i < result.size; i++){
+		colors[i] =  'rgba(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) +', 0.2'+ ')';
+	}
+	
+	
+	var myChart = new Chart(canvas, {
+	    type: "bar",
+	    data: {
+	        labels: label,
+	        datasets: [{
+	            label: "number",
+	            data: result,
+	            backgroundColor: colors,
 	            fill : 'false'
 	        }]
 	    },
 	    options: {
-	        
+	        scales: {
+	            yAxes: [{
+	                ticks: {
+	                    beginAtZero:true
+	                }
+	            }]
+	        }
+	    }
+	});
+}
+
+function drawDoughnut(label, result, i){
+	var canvas = document.getElementById(i + "canvas");
+	if(canvas!=null){
+		document.getElementById(i+"beforecanvas").remove();
+	}
+	$("#" + i).append("<div id='" + i + "beforecanvas'><div class='col-lg-4'></div>" +
+			"<div class='col-lg-4'>" +
+					"<canvas id='"+i+"canvas'>" +
+					"</div></div>");
+	canvas = document.getElementById(i + "canvas");
+	
+	label = label.split(",");
+	result = result.split(",");
+	
+	for(var i = 7 ; i < result.size; i++){
+		colors[i] =  'rgba(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) +', 0.2'+ ')';
+	}
+	
+	var myChart = new Chart(canvas, {
+	    type: 'doughnut',
+	    data: {
+	        labels: label,
+	        datasets: [{
+	            label: "number",
+	            data: result,
+	            backgroundColor: colors,
+	            fill : 'false'
+	        }]
+	    }
+	});
+}
+
+function drawLine(label, result, i){
+	var canvas = document.getElementById(i + "canvas");
+	if(canvas!=null){
+		document.getElementById(i+"beforecanvas").remove();
+	}
+	$("#" + i).append("<div id='" + i + "beforecanvas'><div class='col-lg-3'></div>" +
+			"<div class='col-lg-6'>" +
+					"<canvas id='"+i+"canvas'" +
+					"</div></div>");
+	canvas = document.getElementById(i + "canvas");
+	
+	label = label.split(",");
+	result = result.split(",");
+	
+	var myChart = new Chart(canvas, {
+	    type: 'line',
+	    data: {
+	        labels: label,
+	        datasets: [{
+	            label: "number",
+	            data: result,
+	            backgroundColor: 'rgba(151,187,205,0.5)',
+	            borderColor: 'rgba(151,187,205,1)',
+	            fill:false
+	        }]
+	    },
+	    options: {
+	        scales: {
+	            yAxes: [{
+	                ticks: {
+	                    beginAtZero:true
+	                }
+	            }]
+	        }
 	    }
 	});
 }
@@ -214,4 +328,21 @@ function downloadimg(id){
 	//alert(id);
 	var imgData = document.getElementById(id).toDataURL("image/png");
 	download(imgData,id+".png","image/png");
+}
+
+function drawButton(i, label, result){
+	$("#" + i).append("<div class='container row' align='right'>" +
+			"<button class='btn btn-default' type='button' >" +
+			"<i class='fa fa-bar-chart-o' onclick=\"drawBar('"+ label + "','" + result + "',"  + i + ")\">柱状图</i>" + 
+			"</button>" +
+			"<button class='btn btn-default' type='button' >" +
+			"<i class='fa fa-pie-chart' onclick=\"drawPie('"+ label + "','" + result + "',"  + i + ")\">饼状图</i>" + 
+			"</button>" +
+			"<button class='btn btn-default' type='button' >" +
+			"<i class='fa fa-circle-o-notch' onclick=\"drawDoughnut('"+ label + "','" + result + "',"  + i + ")\">圆环图</i>" + 
+			"</button>" +
+			"<button class='btn btn-default' type='button' >" +
+			"<i class='fa fa-line-chart' onclick=\"drawLine('"+ label + "','" + result + "',"  + i + ")\">折线图</i>" + 
+			"</button>" +
+					"</div>");
 }

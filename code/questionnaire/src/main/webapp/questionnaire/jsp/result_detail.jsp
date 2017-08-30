@@ -84,7 +84,7 @@
 																				Answer answer = answers.get(i);
 										%>
 										<tr>
-										    <td><%=answer.getId()%></td>
+										    <td><%=i%></td>
 											<td><%=answer.getTime()%></td>
 											<td><%=answer.getIp()%></td> <!-- need to be changed later -->
 											<td>

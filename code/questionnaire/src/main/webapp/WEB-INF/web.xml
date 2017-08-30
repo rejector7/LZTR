@@ -14,7 +14,7 @@
   	<filter-class>filter.SessionFilter</filter-class>
   	<init-param>
   		<param-name>loginStrings</param-name>
-  		<param-value>/HelpContact;/FrontPage;/loginPro;/signupPro;/signupPage;/loginPage;/searchPro;/FillQuestionnaire;</param-value>
+  		<param-value>/HelpContact;/FrontPage;/loginPro;/signupPro;/signupPage;/loginPage;/searchPro;/FillQuestionnaire;/addAnswer;/getQuestionnaire</param-value>
   	</init-param>
   	<init-param>
   		<param-name>adminStrings</param-name>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <%@ page import="model.Questionnaire"%>
+<%@ page import="model.User"%>
 <%
 	String path=request.getContextPath();
 %>
@@ -12,98 +13,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    
+	<meta charset="utf-8" />
+        <title>LZTR 问卷网</title>
 
-    <title>Create your new Questionnaire!</title>
-
+    <!-- Bootstrap core CSS -->
+	<link href="<%=path%>/questionnaire/css/bootstrap.min.css" 			rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/dataTables.bootstrap.css" 	rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/dataTables.responsive.css" 	rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/questionnaire.css" 			rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/font-awesome.min.css" 		rel="stylesheet" type="text/css">
     <!-- Bootstrap core CSS -->
     <link href="<%=path %>/questionnaire/css/bootstrap3.3.7.min.css" rel="stylesheet">
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="<%=path %>/questionnaire/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="<%=path %>/questionnaire/css/justified-nav.css" rel="stylesheet">
-    
-    <link href="<%=path %>/questionnaire/css/font-awesome.min.css" rel="stylesheet">
-	 <link href="<%=path %>/questionnaire/css/jquery-ui.min.css" rel="stylesheet">
-	 <style>
-	 .portlet-placeholder {
-    	border: 1px dotted black;
-    	margin: 0 1em 1em 0;
-    	height: 50px;
-  	 }
-	 </style>
-  </head>
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    	<script src="questionnaire/js/jquery.min.js"></script>
+    	<script src="questionnaire/js/jquery.validate.min.js"></script>
+    	     <link rel="stylesheet" href="questionnaire/css/validation.css">
+	<script src="questionnaire/js/jquery.dataTables.min.js"></script>
+	<script src="questionnaire/js/dataTables.bootstrap.min.js"></script>
+		<script src="questionnaire/js/bootstrap.min.js"></script>
+		<script src="questionnaire/js/bootbox.min.js"></script>
+	    <link href="questionnaire/css/font-awesome.min.css" rel="stylesheet">
+	         <link rel="stylesheet" href="questionnaire/css/validation.css">
+    <style type="text/css">
+        html, body {width:100%;height:100%;}
+        .bg {display: table;width: 100%;height: 10%;padding: 20px 0;text-align: center;color: #fff;background: url(questionnaire/img/homepage.jpg) no-repeat bottom center;background-color: #000;background-size: cover;}
+        .my-navbar {padding:20px 0;transition: background 0.5s ease-in-out, padding 0.5s ease-in-out;}
+        .my-navbar a{background:transparent !important;color:#fff !important}
+        .my-navbar a:hover {color:#45bcf9 !important;background:transparent;outline:0}
+        .my-navbar a {transition: color 0.5s ease-in-out;}
+        .top-nav {padding:0;background:#000;}
+        button.navbar-toggle {background-color:#fbfbfb;}
+        button.navbar-toggle > span.icon-bar {background-color:#dedede}
+        .dropdown-nemu>li>a{color:#333!important;display:block!important;}
+        
+		.mydiv{
+		width:250px;height:auto;border:#909090 1px solid;background:#fff;color:#333;
+		filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=3);
+		-moz-box-shadow: 2px 2px 10px #909090;
+		-webkit-box-shadow: 2px 2px 10px #909090;
+		box-shadow:2px 2px 10px #909090;
 
-  <body value="0">
-	
-    <div class="container">
-
-      <!-- The justified navigation menu is meant for single line per list item.
-           Multiple lines will require custom code not provided by Bootstrap. -->
-      <div class="masthead">
-        <h1 class="text-muted">LZTR 问卷网 </h1>
-        <nav>
-          <ul class="nav nav-justified">
-            <li><a href="<%=path %>/FrontPage">首页</a></li>
-            <li><a href="<%=path %>/SelfInfo">个人信息</a></li>
-            <li><a href="">我的问卷</a></li>
-            <li class="active"><a href="<%=path %>/ReleaseQuestionnaire">问卷发布</a></li>
-            <li><a href="<%=path %>/FillQuestionnaire">填写问卷</a></li>
-            <li><a href="<%=path %>/allSendMessage">消息</a></li>
-            <li><a href="<%=path %>/HelpContact">帮助</a></li>
-            
-            <li><a href="<%=path %>/logoutPro">登出</a></li>
-            <%if(((String)session.getAttribute("role")).equals("admin")){%>
-				<li><a href="<%=path %>/allUser" ></i>系统信息管理</a></li>
-			<%}%>
-          </ul>
-        </nav>
-      </div>
-      
-      
-		<button class="btn btn-default addBlank" type="button" style="floating:right">
-				<i class="fa fa-plus  fa-2x">填空题</i>
-		</button>
-		<button class="btn btn-default addSingle"  type="button" style="floating:right">
-				<i class="fa fa-plus  fa-2x">单选题</i>
-		</button>
-		<button class="btn btn-default addMultiple"  type="button" style="floating:right">
-				<i class="fa fa-plus  fa-2x">多选题</i>
-		</button>
-		<button class="btn btn-default addSlider"  type="button" style="floating:right">
-				<i class="fa fa-plus  fa-2x">滑块题</i>
-		</button>
+		}
+		input{
+			border:100px solid #000!important;
+		}
+    </style>
+</head>
+<body style="background:#F5F5F5" value="0">
+<% 
+User user = (User) session.getAttribute("user");
+%>
+ 
+     
+ <div class="bg jumbotron"><font size=5><strong>编辑问卷</strong></font></div>
+    <div class="container" ><br>
 		
-		<div class="row pre-scrollable">
+		<div class="row ">
 			 <label ><font size="5">标题</font></label>
 			 <input type="text" name="title"  class="form-control">
 		</div>
 		<div class="row">
 			 <label  ><font size="5">简介</font></label>
 			 <input type="text" name="introduction"  class="form-control">
-		</div>
+		</div><br>
 		<div class="row">
 			 <input type="checkbox" id="allowDup" checked>
 			 <label ><font size="5">是否允许同一IP重复作答?</font></label>
-		</div>
-		<button class="btn btn-default submit" type="button" style="floating:right">
-				保存</i>
+			      		<button class="btn btn-default submit" type="button" style="float:right">
+				<i class="fa fa-save" >保存</i>
 		</button>
-		<button class="btn btn-default cancel" type="button" style="floating:right">
-				取消</i>
+		<button class="btn btn-default cancel" type="button" style="float:right">
+				<i class="fa fa-mail-reply">取消</i>
 		</button>
-		<button class="btn btn-default preview" type="button" style="floating:right">
-				预览</i>
+		<button class="btn btn-default preview" type="button" style="float:right">
+				<i class="fa fa-eye">预览</i>
 		</button>
-		<button class="btn btn-default publish" type="button" style="floating:right">
-				
+		<button class="btn btn-default publish" type="button" style="float:right">
+				<i class="fa fa-paper-plane">
 				<%if(request.getAttribute("quesinfo")!=null){%>
 				重发布
 				<%} else{%>
 				发布<%} %></i>
 		</button>
-    </div> <!-- /container -->
+		</div>
+		
+		
+		<hr style="color:black;border-top:1px solid #C0C0C0">
+		 	<div class="row"  style="float:left"><font size=5><strong>添加题目</strong></font></div>
+		      
+      
+		<button class="btn btn-default addBlank" type="button" style="float:right">
+				<i class="fa fa-plus  ">填空题</i>
+		</button>
+		<button class="btn btn-default addSingle"  type="button" style="float:right">
+				<i class="fa fa-plus  ">单选题</i>
+		</button>
+		<button class="btn btn-default addMultiple"  type="button" style="float:right">
+				<i class="fa fa-plus  ">多选题</i>
+		</button>
+		<button class="btn btn-default addSlider"  type="button" style="float:right">
+				<i class="fa fa-plus ">滑块题</i>
+		</button>
+		<br><hr>
+
+    </div > <!-- /container -->
     <div class="modal fade" id="modal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
