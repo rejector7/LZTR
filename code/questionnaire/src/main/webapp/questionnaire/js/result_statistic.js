@@ -24,6 +24,7 @@ function getStatistic(quesid){
 function formStatistic(data){
 	var questions=	data['question']['questions'];
 	var answers = data['answers'];
+	var ids = data["ids"];
 	for(var i = 0 ; i < questions.length; i++){
 		var ques = questions[i];
 		$("#container").append("<p><font size='4'>" + (i+1) + " : " + ques['stem'] + "</font></p>" +
@@ -40,7 +41,7 @@ function formStatistic(data){
 					'			<div class="dataTable_wrapper">' +
 					'				<table class="table table-striped table-bordered table-hover"' +
 					'					id="dataTables">' +
-					'					<thead id="'+i+'"head>' +
+					'					<thead id="'+i+'head">' +
 					'						</thead><tbody id ="' + i + 'body">');
 		if(type=="Subjective"){
 			$("#"+i+"head").append('<th width="40%">答卷号</th>' +
@@ -49,7 +50,7 @@ function formStatistic(data){
 			for(var j = 0 ; j < answers.length; j++){
 				if(answers[j][i]['words']!=null&&answers[j][i]['words']!=undefined&&answers[j][i]['words']!=""){
 					$("#" + i + "body").append('<tr id="' + i + '_' + j + 'tr">');
-					$("#" + i+ "_" + j+ "tr").append('<td>' + (j+1) + "</td>");
+					$("#" + i+ "_" + j+ "tr").append('<td>' + ids[j] + "</td>");
 					$("#" + i+ "_" + j+ "tr").append('<td>' + answers[j][i]['words'] + "</td>");
 					$("#" + i+ "body").append('</tr>');
 				}
@@ -156,6 +157,9 @@ function drawPie(label, result, i){
 	}
 	$("#" + i).append("<div id='" + i + "beforecanvas'><div class='col-lg-4'></div>" +
 			"<div class='col-lg-4'>" +
+			"<button class='btn btn-default' type='button' >" +
+			"<i class='fa fa-line-chart' onclick=\"downloadimg("+ i + ")\">下载此图</i>" + 
+			"</button>"+
 					"<canvas id='"+i+"canvas'" +
 					"</div></div>");
 	canvas = document.getElementById(i + "canvas");
@@ -189,6 +193,9 @@ function drawBar(label, result, i){
 	}
 	$("#" + i).append("<div id='" + i + "beforecanvas'><div class='col-lg-3'></div>" +
 			"<div class='col-lg-6'>" +
+			"<button class='btn btn-default' type='button' >" +
+			"<i class='fa fa-line-chart' onclick=\"downloadimg("+ i + ")\">下载此图</i>" + 
+			"</button>"+
 					"<canvas id='"+i+"canvas'" +
 					"</div></div>");
 	canvas = document.getElementById(i + "canvas");
@@ -231,6 +238,9 @@ function drawDoughnut(label, result, i){
 	}
 	$("#" + i).append("<div id='" + i + "beforecanvas'><div class='col-lg-4'></div>" +
 			"<div class='col-lg-4'>" +
+			"<button class='btn btn-default' type='button' >" +
+			"<i class='fa fa-line-chart' onclick=\"downloadimg("+ i + ")\">下载此图</i>" + 
+			"</button>"+
 					"<canvas id='"+i+"canvas'>" +
 					"</div></div>");
 	canvas = document.getElementById(i + "canvas");
@@ -263,6 +273,9 @@ function drawLine(label, result, i){
 	}
 	$("#" + i).append("<div id='" + i + "beforecanvas'><div class='col-lg-3'></div>" +
 			"<div class='col-lg-6'>" +
+			"<button class='btn btn-default' type='button' >" +
+			"<i class='fa fa-line-chart' onclick=\"downloadimg("+ i + ")\">下载此图</i>" + 
+			"</button>"+
 					"<canvas id='"+i+"canvas'" +
 					"</div></div>");
 	canvas = document.getElementById(i + "canvas");
@@ -294,40 +307,50 @@ function drawLine(label, result, i){
 	});
 }
 
-function downloadthis(){
-		var content="";
-		
-		/*var styles = document.getElementsByTagName("LINK");
-		var style = "<style>";
-		for(var i=0;i<styles.length;i++){
-			var len = document.styleSheets[i].cssRules.length;
-			for(var j=0;j<len;j++){
-				style+=document.styleSheets[i].cssRules[j].cssText;
-			}
-		}
-		style+="</style>";
-		content+=style;*/
-		var styles = document.getElementsByTagName("LINK");
-		var style = "<style>";
-		
-		style+="table, td, th {border-collapse: collapse;border: 1px solid black;}</style>";
-		content+=style;
-		content+="</head><body>";
-		var headers = document.getElementsByTagName("P");
-		content += "<p>"+headers[0].innerHTML+"</p>";
-		content += "<p>"+headers[1].innerHTML+"</p>";
-		var table = $("#container").html();
-		var canvas = document.getElementById("1canvas");
-		$("#container").append("<img src = "+canvas.toDataURL('image/jpeg')+">");
-		content += $("#container").html(); 
-		content+=table+"</body>";
-		exportDoc(content,headers[1].getElementsByTagName("strong")[0].innerHTML.split("：")[1]);
+function downloadjpeg(id,title){	
+	$("#jpegtip").html("生成jpeg中");
+	var div = document.getElementById("container");
+	var btns = div.getElementsByTagName("BUTTON");
+	for(var i=0;i<btns.length;i++){
+		btns[i].removeAttribute("class");
+		btns[i].setAttribute("hidden",true);
+	}
+	html2canvas(div, {
+        onrendered:function(canvas) {
+            //返回图片URL，参数：图片格式和清晰度(0-1)
+            var pageData = canvas.toDataURL('image/jpeg', 1.0);
+            download(pageData,title+"统计结果.jpeg","image/jpeg");
+            $("#jpegtip").html("");
+        }
+    });
+	for(var i=0;i<btns.length;i++){
+		btns[i].removeAttribute("hidden");
+		btns[i].setAttribute("class","btn btn-default");
+	}
 }
 
-function downloadimg(id){
-	//alert(id);
-	var imgData = document.getElementById(id).toDataURL("image/png");
-	download(imgData,id+".png","image/png");
+function downloadxml(id,title){	
+	var tablehtml = "";
+	var children = document.getElementById("container").childNodes;
+	var len = document.getElementById("container").lastChild.id*1;
+	for(var i=0;i<=len;i++){
+		var stem = document.getElementById(i).previousSibling.innerHTML;
+		var thead = document.getElementById(i+"head").innerHTML;
+		var tbody = document.getElementById(i+"body").innerHTML;
+		tablehtml += "" +
+				"<thead><tr><th colspan='2'>"+stem+"</th></tr>" +
+				thead+"</thead>"+
+				"<tbody>"+tbody+"</tbody>";
+	}
+	var style = "table {border-collapse: collapse;}table, td, th {border: thin solid black;}";
+	var name = title;
+	var filename = id+"_name";
+	exportXls(tablehtml,style,name,filename);
+}
+
+function downloadimg(i){
+	var imgData = document.getElementById(i+"canvas").toDataURL("image/png");
+	download(imgData,i+".png","image/png");
 }
 
 function drawButton(i, label, result){
@@ -344,5 +367,5 @@ function drawButton(i, label, result){
 			"<button class='btn btn-default' type='button' >" +
 			"<i class='fa fa-line-chart' onclick=\"drawLine('"+ label + "','" + result + "',"  + i + ")\">折线图</i>" + 
 			"</button>" +
-					"</div>");
+			"</div>");
 }
