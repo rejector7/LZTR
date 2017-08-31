@@ -76,11 +76,11 @@ public class StatisticAction extends BaseAction{
 	 * @throws IOException 
 	 */
 	public String get() throws IOException{
-		JSONArray ansts = statisticService.getAnssheetsByQuesid(quesid);
+		JSONObject anss = statisticService.getAnssheetsByQuesid(quesid);
 		QuestionnaireQuestions Qques = quesService.getQuestionnaireQuestionsById(quesid);
 		Questionnaire ques = quesService.getQuestionnaireById(quesid);
 		JSONObject result = new JSONObject();
-		result.put("question", new JSONObject(Qques.getContent())).put("answers", ansts).put("title", ques.getTitle());
+		result.put("question", new JSONObject(Qques.getContent())).put("answers", anss.getJSONArray("contents")).put("title", ques.getTitle()).put("ids", anss.getJSONArray("ids"));
 		response().setCharacterEncoding("utf-8");
 		response().setContentType("text/html;charset:utf-8");
 		response().getWriter().print(result.toString());
