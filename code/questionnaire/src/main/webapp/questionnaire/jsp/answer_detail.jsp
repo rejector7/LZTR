@@ -25,9 +25,9 @@
 	<!-- 跳转标签 -->
 	<div class="container">
       <div class="masthead">
-      <p><strong id="quesid">问卷id：<%=request.getAttribute("s_quesid") %></strong></p>
-      <p><strong id="quesname">问卷名：<%=request.getAttribute("s_quesname") %></strong></p>
-      <p><strong id="userid">用户id：<%=request.getAttribute("s_userid") %></strong></p> <!-- 判断是否是未登录用户填写的问卷 -->
+      <p><strong id="quesid">问卷id：</strong></p>
+      <p><strong id="quesname">问卷名：</strong></p>
+      <p><strong id="userid">用户id：</strong></p> <!-- 判断是否是未登录用户填写的问卷 -->
       <button type='button' class='btn btn-default' onclick='downloadthis()'>下载doc文件</button>
       </div>
     </div>
@@ -63,7 +63,7 @@
     <div class="input-group">
       <input type="text" class="form-control" placeholder="留言反馈..." name="msg">
       <span class="input-group-btn">
-      	<button class="btn btn-default" id="reply" data-rid="<%=request.getAttribute("s_userid") %>"><i class="fa fa-reply"></i></button>
+      	<button class="btn btn-default" type='button' id="reply"><i class="fa fa-reply"></i></button>
       </span>
     </div>
     </form>

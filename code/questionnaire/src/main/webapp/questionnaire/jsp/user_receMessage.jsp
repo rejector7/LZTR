@@ -117,7 +117,7 @@ for(int i = 0; i < messages.size(); ++i){
     <form id="replyform" role="form" action="send1Message" method="POST" onsubmit="return saveReport();">
     <div class="input-group">
       <input type="text" class="form-control" placeholder="回复消息..." name="msg">
-      <input type="hidden" name="sid" value=<%=msg.getSid() %>>
+      <input type="hidden" name="rid" value=<%=msg.getSid() %>>
       <span class="input-group-btn">
       	<button class="btn btn-default reply" type="submit"><i class="fa fa-reply"></i></button>
       </span>

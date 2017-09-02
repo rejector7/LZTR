@@ -3,6 +3,7 @@ package service;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import model.AnswerSheet;
 
@@ -13,6 +14,6 @@ public interface StatisticService {
 	 * @param quesid
 	 * @return
 	 */
-	JSONArray getAnssheetsByQuesid(int quesid);
+	JSONObject getAnssheetsByQuesid(int quesid);
 
 }
