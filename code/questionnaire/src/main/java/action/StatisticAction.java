@@ -80,7 +80,7 @@ public class StatisticAction extends BaseAction{
 		QuestionnaireQuestions Qques = quesService.getQuestionnaireQuestionsById(quesid);
 		Questionnaire ques = quesService.getQuestionnaireById(quesid);
 		JSONObject result = new JSONObject();
-		result.put("question", new JSONObject(Qques.getContent())).put("answers", anss.getJSONArray("contents")).put("title", ques.getTitle()).put("ids", anss.getJSONArray("ids"));
+		result.put("question", new JSONObject(Qques.getContent())).put("answers", anss.getJSONArray("contents")).put("title", ques.getTitle());
 		response().setCharacterEncoding("utf-8");
 		response().setContentType("text/html;charset:utf-8");
 		response().getWriter().print(result.toString());
