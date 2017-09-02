@@ -6,6 +6,9 @@ var colors = [
     'rgba(153, 102, 255, 0.2)',
     'rgba(255, 159, 64, 0.2)',
 	];
+var answers = [];
+var questions = [];
+
 
 function getStatistic(quesid){
 	jQuery.ajax({
@@ -22,8 +25,8 @@ function getStatistic(quesid){
 }
 
 function formStatistic(data){
-	var questions=	data['question']['questions'];
-	var answers = data['answers'];
+	questions=	data['question']['questions'];
+	answers = data['answers'];
 	var ids = data["ids"];
 	for(var i = 0 ; i < questions.length; i++){
 		var ques = questions[i];
@@ -44,7 +47,7 @@ function formStatistic(data){
 					'					<thead id="'+i+'head">' +
 					'						</thead><tbody id ="' + i + 'body">');
 		if(type=="Subjective"){
-			$("#"+i+"head").append('<th width="40%">答卷号</th>' +
+			$("#"+i+"head").append('<tr><th width="40%">答卷号</th>' +
 			'							<th width="60%">答案</th>' +
 			'						</tr>');
 			for(var j = 0 ; j < answers.length; j++){
@@ -57,7 +60,7 @@ function formStatistic(data){
 			}
 		}
 		else if(type=="Single"){
-			$("#"+i+"head").append('<th width="40%">选项号</th>' +
+			$("#"+i+"head").append('<tr><th width="40%">选项号</th>' +
 					'							<th width="60%">选择数</th>' +
 					'						</tr>');
 			var result = [];
@@ -74,7 +77,10 @@ function formStatistic(data){
 			}
 			for(var j = 0 ; j < ques['options'].length; j++){
 				$("#" + i + "body").append('<tr id="' + i + '_' + j + 'tr">');
-				$("#" + i+ "_" + j+ "tr").append('<td>' + ques['options'][j]['option'] + "</td>");
+				$("#" + i+ "_" + j+ "tr").append('<td id="'+ i + '_' + j + 'td">'+ ques['options'][j]['option'] +'</td>');
+				if(ques['options'][j]['hasWords']==true){
+					$("#" + i+ "_" + j+ "td").append('<a onclick="detailSingle(' + i + ',' + j +')">详情</a>');
+				}
 				$("#" + i+ "_" + j+ "tr").append('<td>' + result[j] + "</td>");
 				$("#" + i+ "body").append('</tr>');
 			}
@@ -88,7 +94,7 @@ function formStatistic(data){
 			drawButton(i, label, result);
 		}
 		else if(type=="Multiple"){
-			$("#"+i+"head").append('<th width="40%">选项号</th>' +
+			$("#"+i+"head").append('<tr><th width="40%">选项号</th>' +
 					'							<th width="60%">选择数</th>' +
 					'						</tr>');
 			var result = [];
@@ -108,14 +114,17 @@ function formStatistic(data){
 			}
 			for(var j = 0 ; j < ques['options'].length; j++){
 				$("#" + i + "body").append('<tr id="' + i + '_' + j + 'tr">');
-				$("#" + i+ "_" + j+ "tr").append('<td>' + ques['options'][j]['option'] + "</td>");
+				$("#" + i+ "_" + j+ "tr").append('<td id="'+ i + '_' + j + 'td">'+ ques['options'][j]['option'] +'</td>');
+				if(ques['options'][j]['hasWords']==true){
+					$("#" + i+ "_" + j+ "td").append('<a onclick="detailMultiple('+ i + ',' + j +')">详情</a>');
+				}
 				$("#" + i+ "_" + j+ "tr").append('<td>' + result[j] + "</td>");
 				$("#" + i+ "body").append('</tr>');
 			}
 			drawButton(i, label, result);
 		}
 		else if(type=="Slider"){
-			$("#"+i+"head").append('<th width="40%">填写数量</th>' +
+			$("#"+i+"head").append('<tr><th width="40%">填写数量</th>' +
 					'							<th width="60%">平均值</th>' +
 					'						</tr>');
 			var totamt = 0;
@@ -368,4 +377,38 @@ function drawButton(i, label, result){
 			"<i class='fa fa-line-chart' onclick=\"drawLine('"+ label + "','" + result + "',"  + i + ")\">折线图</i>" + 
 			"</button>" +
 			"</div>");
+}
+
+function detailSingle(quesid, optionid){
+	$("#detailbody").html("");
+	var ids = [];
+	var details = [];
+	
+	for(var i =0; i < answers.length; i++){
+		var option = answers[i][quesid]['option'];
+		if(option==optionid){
+			$("#detailbody").append("<tr><td>"+ i + "</td><td>" + answers[i][quesid]['words']+"</td></tr>");
+		}
+	}
+	$('#modalTitle').html('题目“'+ questions[quesid]['stem'] +'”的详情统计');
+	$('#modalTitle2').html('选项“'+ questions[quesid]['options'][optionid]['option'] +'”');
+	$('#modal').modal('show');
+}
+
+function detailMultiple(quesid, optionid){
+	$("#detailbody").html("");
+	var ids = [];
+	var details = [];
+	
+	for(var i =0; i < answers.length; i++){
+		for(var j = 0; j < answers[i][quesid]['words'].length; j++){
+			if(optionid==answers[i][quesid]['words'][j]['optionid']){
+				$("#detailbody").append("<tr><td>"+ i + "</td><td>" + answers[i][quesid]['words'][j]['word']+"</td></tr>")
+			}
+		}
+	}
+	$('#modalTitle').html('题目“'+ questions[quesid]['stem'] +'”的详情统计');
+	$('#modalTitle2').html('选项“'+ questions[quesid]['options'][optionid]['option'] +'”');
+	$('#modal').modal('show');
+	
 }
