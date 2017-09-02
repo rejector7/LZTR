@@ -192,10 +192,11 @@
         </div></div>
         <%}%>
         
-        <%if(length>12){%>
+        <%if(length>6){%>
       <div class="col-lg-3">
       <ul class="list-group">
-      <%for (int i = 6 ; i < 12; i++){ %>
+      <%if(length>12)length=12;
+      for (int i = 6 ; i < length; i++){ %>
       
       <li class="list-group-item" >
       <span class="badge" align="left" style="float:left;align:left"><%=i+1 %></span>

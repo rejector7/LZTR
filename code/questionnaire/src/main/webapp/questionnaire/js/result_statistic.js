@@ -27,7 +27,6 @@ function getStatistic(quesid){
 function formStatistic(data){
 	questions=	data['question']['questions'];
 	answers = data['answers'];
-	var ids = data["ids"];
 	for(var i = 0 ; i < questions.length; i++){
 		var ques = questions[i];
 		$("#container").append("<p><font size='4'>" + (i+1) + " : " + ques['stem'] + "</font></p>" +
@@ -47,13 +46,13 @@ function formStatistic(data){
 					'					<thead id="'+i+'head">' +
 					'						</thead><tbody id ="' + i + 'body">');
 		if(type=="Subjective"){
-			$("#"+i+"head").append('<tr><th width="40%">答卷号</th>' +
+			$("#"+i+"head").append('<tr><th width="40%">答卷序号</th>' +
 			'							<th width="60%">答案</th>' +
 			'						</tr>');
 			for(var j = 0 ; j < answers.length; j++){
 				if(answers[j][i]['words']!=null&&answers[j][i]['words']!=undefined&&answers[j][i]['words']!=""){
 					$("#" + i + "body").append('<tr id="' + i + '_' + j + 'tr">');
-					$("#" + i+ "_" + j+ "tr").append('<td>' + ids[j] + "</td>");
+					$("#" + i+ "_" + j+ "tr").append('<td>' + (j*1+1) + "</td>");
 					$("#" + i+ "_" + j+ "tr").append('<td>' + answers[j][i]['words'] + "</td>");
 					$("#" + i+ "body").append('</tr>');
 				}
@@ -357,6 +356,16 @@ function downloadxml(id,title){
 	exportXls(tablehtml,style,name,filename);
 }
 
+function downloadDetailxml(){
+	var tablehtml = document.getElementById("modal").getElementsByTagName("TABLE")[0].innerHTML;
+	var style = "table {border-collapse: collapse;}table, td, th {border: thin solid black;}";
+	var title1 = $("#modalTitle").html();
+	var title2 = $("#modalTitle2").html();
+	var name = "详细信息——"+title1.slice(title1.indexOf("“")+1,title1.lastIndexOf("”"))+"_"+title2.slice(title2.indexOf("“")+1,title2.lastIndexOf("”"));
+	var filename = name;
+	exportXls(tablehtml,style,name,filename);
+}
+
 function downloadimg(i){
 	var imgData = document.getElementById(i+"canvas").toDataURL("image/png");
 	download(imgData,i+".png","image/png");
@@ -387,7 +396,7 @@ function detailSingle(quesid, optionid){
 	for(var i =0; i < answers.length; i++){
 		var option = answers[i][quesid]['option'];
 		if(option==optionid){
-			$("#detailbody").append("<tr><td>"+ i + "</td><td>" + answers[i][quesid]['words']+"</td></tr>");
+			$("#detailbody").append("<tr><td>"+ (i*1+1) + "</td><td>" + answers[i][quesid]['words']+"</td></tr>");
 		}
 	}
 	$('#modalTitle').html('题目“'+ questions[quesid]['stem'] +'”的详情统计');
@@ -403,7 +412,7 @@ function detailMultiple(quesid, optionid){
 	for(var i =0; i < answers.length; i++){
 		for(var j = 0; j < answers[i][quesid]['words'].length; j++){
 			if(optionid==answers[i][quesid]['words'][j]['optionid']){
-				$("#detailbody").append("<tr><td>"+ i + "</td><td>" + answers[i][quesid]['words'][j]['word']+"</td></tr>")
+				$("#detailbody").append("<tr><td>"+ (i*1+1) + "</td><td>" + answers[i][quesid]['words'][j]['word']+"</td></tr>")
 			}
 		}
 	}
