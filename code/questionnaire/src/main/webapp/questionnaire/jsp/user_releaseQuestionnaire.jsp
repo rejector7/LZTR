@@ -137,8 +137,8 @@ User user = (User) session.getAttribute("user");
 						<form id="form2">
 							<div class="form-group">
 								<label>是否公开</label>
-								<select class="form-control" id="selectf1" name = "ispublic">
-										<option>是</option>
+								<select class="form-control" id="selectf1" name ="ispublic">
+										<option selected>是</option>
 										<option>否</option>
 								</select>
 								</div>
