@@ -237,7 +237,6 @@ $(function() {
 		var d = new Date().toISOString().split("T")[0];
 		$("input[name='releasetime']").val(d);
 		$("input[name='endtime']").val("");
-		$("select[name='ispublic']").val("no");
 		$('#modal').modal('show');
 	});
 	
@@ -637,7 +636,10 @@ $(function() {
 							},
 							success : function(data) {
 								bootbox.alert({
-									message : '更新成功',
+									message : '更新成功并已发布<br>'+
+									'<input id="qnhref" class="form-control" value="localhost:8080/questionnaire/FillQuestionnaire?quesid='+data
+									+'"type="text"><input class="btn btn-default" type="button" onClick="copyUrl()" value="点击复制问卷链接" />'
+									+'<p id="copytip"></p>',
 								    callback : function() {
 								    	location.href = 'FrontPage';
 									}
@@ -666,7 +668,10 @@ $(function() {
 			},
 			success : function(data) {
 				bootbox.alert({
-					message : '保存成功',
+					message : '发布成功<br>'+
+					'<input id="qnhref" class="form-control" value="localhost:8080/questionnaire/FillQuestionnaire?quesid='+data
+					+'"type="text"><input class="btn btn-default" type="button" onClick="copyUrl()" value="点击复制问卷链接" />'
+					+'<p id="copytip"></p>',
 				    callback : function() {
 				    	location.href = 'FrontPage';
 					}
@@ -2650,4 +2655,12 @@ function changeReleQInQues(value){
 			}
 		}
 	}
+}
+
+function copyUrl()
+{
+var Url=document.getElementById("qnhref");
+Url.select(); // 选择对象
+document.execCommand("Copy"); // 执行浏览器复制命令
+$("#copytip").html("复制成功");
 }

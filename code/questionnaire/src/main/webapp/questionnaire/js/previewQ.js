@@ -10,6 +10,7 @@ function getQ(id){
 		dataType : "json",
 		data : {
 			id:id,
+			status:"notneed"
 		},
 		success : function(data) {
 			formQ(data);
