@@ -143,6 +143,10 @@ public class QuestionnaireAction extends BaseAction{
 	
 	public String update() throws IOException {
 		Questionnaire ques = quesService.getQuestionnaireById(id);
+		if(ques.getStatus().equals("ban")){
+			response().getWriter().print("success");
+			return null;
+		}
 		ques.setEndTime(endTime);
 		ques.setIsPublic(isPublic);
 		ques.setReleaseTime(releaseTime);
