@@ -83,9 +83,9 @@
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="<%=path %>/questionnaire/js/ie10-viewport-bug-workaround.js"></script>
-    <script src="questionnaire/js/jquery-1.11.1.min.js"></script>
-    <script src="questionnaire/js/bootstrap.min.js"></script>
-    <script src="questionnaire/js/bootbox.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/jquery-1.11.1.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/bootstrap.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/bootbox.min.js"></script>
     <script src="<%=path %>/questionnaire/js/jquery-ui.min.js"></script>
     <script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
     <script src="<%=path %>/questionnaire/js/messages_zh.js"></script>

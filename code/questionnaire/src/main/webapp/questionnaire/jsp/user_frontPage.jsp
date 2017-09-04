@@ -31,8 +31,8 @@
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     
-    <script src="questionnaire/js/jquery.min.js"></script>
-    <script src="questionnaire/js/bootstrap.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/jquery.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/bootstrap.min.js"></script>
     <style type="text/css">
         html, body {width:100%;height:100%;}
         .bg {display: table;width: 100%;height: 30%;padding: 100px 0;text-align: center;color: #fff;background: url(questionnaire/img/homepage.jpg) no-repeat bottom center;background-color: #000;background-size: cover;}
