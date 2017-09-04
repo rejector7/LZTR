@@ -159,14 +159,12 @@
 						<div class="col-lg-12">
 							<form role="form">
 								<div class="form-group">
-									<label>Status 说明：</label>
-									<p>unp ： 未发布；  pub ： 已发布</p>
-									<p>end ： 已结束；  ban ： 禁用</p>
+									<label>Status</label>
 									<select class="form-control" id="selectf" name = "status">
-										<option>unp</option>
-										<option>pub</option>
-										<option>end</option>
-										<option>ban</option>
+										<option>未发布</option>
+										<option>已发布</option>
+										<option>已结束</option>
+										<option>禁用</option>
 									</select>
 								</div>
 							</form>

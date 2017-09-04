@@ -32,6 +32,7 @@
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     	<script src="questionnaire/js/jquery.min.js"></script>
     	<script src="questionnaire/js/jquery.validate.min.js"></script>
+    	<script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
     	     <link rel="stylesheet" href="questionnaire/css/validation.css">
 	<script src="questionnaire/js/jquery.dataTables.min.js"></script>
 	<script src="questionnaire/js/dataTables.bootstrap.min.js"></script>

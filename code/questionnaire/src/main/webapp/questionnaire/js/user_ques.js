@@ -4,12 +4,47 @@ $(function() {
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
 		var isPublic = $("#selectf1").val();
-		var status = $("#selectf2").val();
+		if(isPublic == "是"){
+			isPublic = 1;
+		}
+		else{
+			isPublic = 0;
+		}
+		var status = $("#state").html();
+		if(status=="已发布"){
+			status = "pub";
+		}
+		else if(status=="未发布"){
+			status = "unp";
+		}
+		else if(status=="已结束"){
+			status = "end";
+		}
 		var title = $("input[name='title']").val();
 		var releaseTime = $("input[name='releasetime']").val();
 		var endTime = $("input[name='endtime']").val();
 		console.log(id,isPublic,status,title,endTime, releaseTime);
-
+		if(title==""){
+			$("#titlea").html("请输入标题");
+			return false;
+		}
+		else{
+			$("#titlea").html("");
+		}
+		if(releaseTime==""){
+			$("#starta").html("请选择一个日期");
+			return false;
+		}
+		else{
+			$("#starta").html("");
+		}
+		if(releaseTime>=endTime && endTime!=""){
+			$("#enda").html("结束日期必须晚于开始日期");
+			return false;
+		}
+		else{
+			$("#enda").html("");
+		}
 		jQuery.ajax({
 			url : 'updateQuestionnaire',
 			processData : true,
@@ -25,7 +60,7 @@ $(function() {
 			success : function(data) {
 				console.log(id);
 				bootbox.alert({
-					message : 'Change successfully!',
+					message : '修改成功！',
 					callback : function() {
 						location.reload();
 					}
@@ -39,13 +74,13 @@ $(function() {
 		bootbox.confirm({
 			buttons : {
 				confirm : {
-					label : 'Delete'
+					label : '确认'
 				},
 				cancel : {
-					label : 'Cancel'
+					label : '取消'
 				}
 			},
-			message : 'Sure to delete?',
+			message : '是否删除?',
 			callback : function(result) {
 				if (result) {
 
@@ -61,7 +96,7 @@ $(function() {
 						success : function(data) {
 							console.log(id);
 							bootbox.alert({
-								message : 'Delete Successfully! ',
+								message : '删除成功！',
 								callback : function() {
 									location.reload();
 								}
@@ -81,13 +116,53 @@ $(function() {
 
 		console.log(id);
 		$("input[name='title']").val(dataset.title);
-		$("input[name='endtime']").val(dataset.endtime);
-		$("input[name='releasetime']").val(dataset.releasetime);
-		$("select[name='status']").val(dataset.status);
-		$("select[name='ispublic']").val(dataset.ispublic);
+		$("input[name='endtime']").val(dataset.endtime.split(" ")[0]);
+		$("input[name='releasetime']").val(dataset.releasetime.split(" ")[0]);
+		if(dataset.status=="pub"){
+			$("#state").html("已发布");
+		}
+		else if(dataset.status=="unp"){
+			$("#state").html("未发布");
+		}
+		else if(dataset.status=="end"){
+			$("#state").html("已结束");
+		}
 		
 		$("#save").attr("data-id", dataset.id);
 		$('#modal').modal('show');
 	});
 
+	$(".link").click(function(e) {
+		bootbox.alert({
+			message : 
+			'<input id="qnhref" class="form-control" value='+e.currentTarget.value
+			+' type="text"><input class="btn btn-default" type="button" onClick="copyUrl()" value="点击复制问卷链接" />'
+			+'<p id="copytip"></p>',
+		    callback : function() {
+		    	location.href = 'FrontPage';
+			}
+		});
+	});
+	
 });
+
+function statechanger(){
+	if($("input[name='endtime']").val()!="" && $("input[name='endtime']").val()<new Date().toISOString().split("T")[0]){
+		$("#state").html("已结束");
+	}
+	else{
+	if($("input[name='releasetime']").val()>new Date().toISOString().split("T")[0]){
+		$("#state").html("未发布");
+	}
+	else if($("input[name='releasetime']").val()<=new Date().toISOString().split("T")[0]){
+		$("#state").html("已发布");
+	}}
+}
+
+function copyUrl()
+{
+var Url=document.getElementById("qnhref");
+Url.select(); // 选择对象
+document.execCommand("Copy"); // 执行浏览器复制命令
+$("#copytip").html("复制成功");
+}

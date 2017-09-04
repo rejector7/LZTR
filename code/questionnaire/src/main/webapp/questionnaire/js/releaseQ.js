@@ -593,14 +593,14 @@ $(function() {
 		var releaseTime = $("input[name='releasetime']").val();
 		var endTime = $("input[name='endtime']").val();
 		if(releaseTime==""){
-			$("#starta").html("Please choose a date");
+			$("#starta").html("请选择一个日期");
 			return false;
 		}
 		else{
 			$("#starta").html("");
 		}
 		if(releaseTime>=endTime && endTime!=""){
-			$("#enda").html("End date must be later than start");
+			$("#enda").html("结束日期必须晚于开始日期");
 			return false;
 		}
 		else{

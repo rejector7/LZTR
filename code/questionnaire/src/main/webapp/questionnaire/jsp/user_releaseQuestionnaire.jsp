@@ -31,6 +31,7 @@
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     	<script src="questionnaire/js/jquery.min.js"></script>
     	<script src="questionnaire/js/jquery.validate.min.js"></script>
+    	<script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
     	     <link rel="stylesheet" href="questionnaire/css/validation.css">
 	<script src="questionnaire/js/jquery.dataTables.min.js"></script>
 	<script src="questionnaire/js/dataTables.bootstrap.min.js"></script>
@@ -202,10 +203,7 @@ User user = (User) session.getAttribute("user");
 			</div>
 		</div>
 	</div>
-    <script src="questionnaire/js/jquery-1.11.1.min.js"></script>
     <script src="questionnaire/js/jquery-ui.min.js"></script>
-    <script src="questionnaire/js/bootstrap.min.js"></script>
-    <script src="questionnaire/js/bootbox.min.js"></script>
 	<script src="questionnaire/js/releaseQ.js"></script>
 	<script>
 	<%if(request.getAttribute("quesinfo")!=null){%>
