@@ -33,14 +33,7 @@
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    	<script src="questionnaire/js/jquery.min.js"></script>
-    	<script src="questionnaire/js/jquery.validate.min.js"></script>
-    	<script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
-    	     <link rel="stylesheet" href="questionnaire/css/validation.css">
-	<script src="questionnaire/js/jquery.dataTables.min.js"></script>
-	<script src="questionnaire/js/dataTables.bootstrap.min.js"></script>
-		<script src="questionnaire/js/bootstrap.min.js"></script>
-		<script src="questionnaire/js/bootbox.min.js"></script>
+    	
 	    <link href="questionnaire/css/font-awesome.min.css" rel="stylesheet">
 	         <link rel="stylesheet" href="questionnaire/css/validation.css">
     <style type="text/css">
@@ -135,6 +128,10 @@ User user = (User) session.getAttribute("user");
 	<script src="<%=path%>/questionnaire/js/download.js"></script>
 	<script src="<%=path%>/questionnaire/js/questionnaireExport.js"></script>
 	<script src="<%=path%>/questionnaire/js/answer_detail.js"></script>
+    	<script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
+    	<script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
+    	     <link rel="stylesheet" href="<%=path %>/questionnaire/css/validation.css">
+
 
 
 <!-- add date to table -->
@@ -149,7 +146,10 @@ User user = (User) session.getAttribute("user");
     	$("#reply").click(function(e){
     		var dataset = e.currentTarget.dataset;
     		var rid = dataset.rid;
-    		var msg = $("input[name='msg']").val();
+    		var table = "<table class='table'>"+$("div.dataTable_wrapper").html()+"</table>";
+    		var msg = "这是发送者针对您关于问卷"+$("#quesname").html().split("：")[1]+"的反馈"+"<br>";
+    		msg += "您的回答情况："+table+"<br>";
+    		msg += $("input[name='msg']").val();
 			console.log(msg);
 			jQuery.ajax({
 				url : 'send2Message',
@@ -157,7 +157,7 @@ User user = (User) session.getAttribute("user");
 				dataType : "text",
 				data : {
 					rid : rid,
-					msg : msg
+					msg : encodeURI(msg)
 				},
 				success : function(data) {
 					bootbox.alert({

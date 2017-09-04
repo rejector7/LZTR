@@ -172,7 +172,7 @@ User user = (User) session.getAttribute("user");
 											<td><%="已结束"%></td>
 											<%}else if(ques.getStatus().equals("ban")){%>
 											<td><%="禁用"%></td>
-											<%}else if(ques.getStatus().equals("pub")){%>
+											<%}else if(ques.getStatus().equals("unp")){%>
 											<td><%="未发布"%></td>
 											<%}%>
 											
