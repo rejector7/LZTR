@@ -85,6 +85,8 @@
 
         <!-- Javascript -->
         <script src="<%=path %>/questionnaire/js/jquery-1.11.1.min.js"></script>
+         <script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
         <script src="<%=path %>/questionnaire/js/bootstrap.min.js"></script>
         <script src="<%=path %>/questionnaire/js/jquery.backstretch.min.js"></script>
         <script src="<%=path %>/questionnaire/js/scripts.js"></script>

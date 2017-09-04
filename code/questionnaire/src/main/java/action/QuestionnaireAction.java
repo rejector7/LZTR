@@ -29,7 +29,7 @@ public class QuestionnaireAction extends BaseAction{
 	private String condi;
 	private String content;
 	private int allowDup;
-	private int preview;
+
 	public String getContent() {
 		return content;
 	}
@@ -90,12 +90,6 @@ public class QuestionnaireAction extends BaseAction{
 	public void setAllowDup(int allowDup) {
 		this.allowDup = allowDup;
 	}
-	public int getPreview() {
-		return preview;
-	}
-	public void setPreview(int preview) {
-		this.preview = preview;
-	}
 	public void setQuesService(QuestionnaireService quesService) {
 		this.quesService = quesService;
 	}
@@ -135,10 +129,6 @@ public class QuestionnaireAction extends BaseAction{
 			quescontent.setContent(content);
 			ques.setAllowDup(allowDup);
 			quesService.updateQuestionnaire(quescontent, ques);
-			if(preview==0){
-				response().getWriter().write("success");
-				return null;
-			}
 			response().getWriter().write(Integer.valueOf(id).toString());
 			return null;
 		}
@@ -147,10 +137,6 @@ public class QuestionnaireAction extends BaseAction{
 		Questionnaire ques = new Questionnaire(userid,status,title,isPublic,releaseTime,endTime,allowDup);
 		QuestionnaireQuestions quescontent = new QuestionnaireQuestions(content);
 		int tmpid = quesService.addQuestionnaire(quescontent, ques);
-		if(preview==0){
-			response().getWriter().write("success");
-			return null;
-		}
 		response().getWriter().write(Integer.valueOf(tmpid).toString());
 		return null;
 	}
@@ -201,10 +187,25 @@ public class QuestionnaireAction extends BaseAction{
 	 */
 	public String get() throws IOException{
 		Questionnaire ques = quesService.getQuestionnaireById(id);
+		if(ques==null){
+			JSONObject questot = new JSONObject();
+			questot.put("status", "notexist");
+			response().getWriter().print(questot);
+			return null;
+		}
+		if(status!=null&&status.equals("need")){
+			if(!ques.getStatus().equals("pub")){
+				JSONObject questot = new JSONObject();
+				questot.put("status", "notpub");
+				response().getWriter().print(questot);
+				return null;
+			}
+		}
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
 		JSONObject questot = new JSONObject(quescontent.getContent());
 		questot.put("title", ques.getTitle());
 		questot.put("allowdup", ques.getAllowDup());
+		questot.put("status", "pub");
 		response().setCharacterEncoding("utf-8");
 		response().setContentType("text/html;charset:utf-8");
 		response().getWriter().print(questot.toString());

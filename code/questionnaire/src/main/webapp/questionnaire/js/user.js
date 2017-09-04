@@ -2,27 +2,27 @@ $(function(){
 	$("#registerform").validate({
 		messages:{
 			username:{
-				required:"Username is required."
+				required:"用户名必填"
 			},
 			password:{
-				required:"Password is required."
+				required:"密码必填"
 			},
 			age:{
 				digits:"请输入整数。"
 			},
 			confirmpassword:{
-				required:"Confirm Password is required.",
-				equalTo:"Please enter the same password again."
+				required:"请再次输入密码",
+				equalTo:"请再次输入相同的密码"
 			},
 			email:{
-				required:"Email is required.",
-				email:"Please enter a valid email address."
+				required:"邮箱必填",
+				email:"请输入一个有效的邮箱"
 			},
 			mobile:{
-				required:"Cellmobile number is required."
+				required:"手机号码必填"
 			},
 			qq:{
-				digits:"Please enter a qq number."
+				digits:"请输入一个QQ账号"
 			}
 		}
 	});
@@ -73,24 +73,27 @@ $(function(){
 		if(!$("#registerform").validate({
 			messages:{
 				username:{
-					required:"Username is required."
+					required:"用户名必填"
 				},
 				password:{
-					required:"Password is required."
+					required:"密码必填"
+				},
+				age:{
+					digits:"请输入整数。"
 				},
 				confirmpassword:{
-					required:"Confirm Password is required.",
-					equalTo:"Please enter the same password again."
+					required:"请再次输入密码",
+					equalTo:"请再次输入相同的密码"
 				},
 				email:{
-					required:"Email is required.",
-					email:"Please enter a valid email address."
+					required:"邮箱必填",
+					email:"请输入一个有效的邮箱"
 				},
 				mobile:{
-					required:"Cellmobile number is required."
+					required:"手机号码必填"
 				},
 				qq:{
-					digits:"Please enter a cellmobile number."
+					digits:"请输入一个QQ账号"
 				}
 			}
 		}).form()){
@@ -115,18 +118,18 @@ $(function(){
 			success : function(data) {
 				if(data=="dupusername"){
 					document.getElementById("dupname").innerHTML=
-						"User exists";
+						"用户已存在";
 					return;
 				}
 				else if(data=="dupemail"){
 					document.getElementById("dupname").innerHTML=
-						"Email exists";
+						"邮箱已被注册";
 					return;
 				}
 				else{
 					var addr = "https://mail." + email.split("@")[1];
 					bootbox.alert({
-						message : 'We have sent an activation email to your mailbox. Please check it out. ',
+						message : '我们发了一封激活用的邮件到你的邮箱，请接收',
 					    callback : function() {
 					    	//window.location.href= addr ;
 						}
@@ -261,7 +264,7 @@ $(function(){
 				},
 				success : function(data) {
 					bootbox.alert({
-						message : 'Add Successfully! ',
+						message : '添加成功 ',
 						callback : function() {
 							location.reload();
 						}

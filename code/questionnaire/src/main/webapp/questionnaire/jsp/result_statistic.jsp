@@ -41,8 +41,8 @@
 	<div class="container">
       <div class="masthead">
       <p id="jpegtip"></p>
-      <button type='button' class='btn btn-default' onclick='downloadjpeg("<%=ques.getId() %>","<%=ques.getTitle()%>")'>下载jpeg文件</button>
-      <button type='button' class='btn btn-default' onclick='downloadxml("<%=ques.getId() %>","<%=ques.getTitle()%>")'>下载xml文件</button>
+      <button type='button' class='btn btn-default' onclick='downloadjpeg("<%=ques.getId() %>","<%=ques.getTitle()%>")'>当前页面导出为jpeg文件</button>
+      <button type='button' class='btn btn-default' onclick='downloadxml("<%=ques.getId() %>","<%=ques.getTitle()%>")'>数据导出为xml文件</button>
       
       
         <nav>
@@ -70,6 +70,7 @@
 					</button>
 					<h3 class="modal-title" id="modalTitle"></h3>
 					<h4 class="modal-title" id="modalTitle2"></h4>
+					<button type='button' class='btn btn-default' onclick='downloadDetailxml()'>数据导出为xml文件</button>
 				</div>
 				<div class="modal-body">
 							<div class="dataTable_wrapper">
