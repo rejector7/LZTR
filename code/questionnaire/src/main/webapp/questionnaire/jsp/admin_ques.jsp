@@ -56,7 +56,14 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">问卷</h1>
+					<h1 class="page-header">问卷
+					<button class="btn btn-default backup" type="button"
+												data-id="0"
+												>
+												<i class="fa fa-copy"></i>全部备份
+												</button>
+					</h1>
+					
 				</div>
 			</div>
 			<!-- /.row -->
@@ -74,14 +81,10 @@
 											<th>用户ID</th>
 											<th>标题</th>
 											<th>是否公开</th>
-											<th>发布时间</th>
-											<th>结束时间</th>
-											<th>发布状态</th>
-											<th>操作<button class="btn btn-default backup" type="button"
-												data-id="0"
-												>
-												<i class="fa fa-copy"></i>全部备份
-												</button></th>
+											<th  width="10%">发布时间</th>
+											<th width="10%">结束时间</th>
+											<th width="10%">发布状态</th>
+											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -93,16 +96,28 @@
 										    <td><%=ques.getId()%></td>
 											<td><%=ques.getUserid()%></td>
 											<td><%=ques.getTitle()%></td>
-											<td><%=ques.getIsPublic()%></td>
+											<%if(ques.getIsPublic()==1){%>
+											<td>公开</td>
+											<%}else{%>
+											<td>私密</td>
+											<%}%>
 											<td><%=ques.getReleaseTime()%></td>
 											<td><%=ques.getEndTime()%></td>
-											<td><%=ques.getStatus()%></td>
+											<%if(ques.getStatus().equals("pub")){%>
+											<td><%="已发布"%></td>
+											<%}else if(ques.getStatus().equals("end")){%>
+											<td><%="已结束"%></td>
+											<%}else if(ques.getStatus().equals("ban")){%>
+											<td><%="禁用"%></td>
+											<%}else if(ques.getStatus().equals("pub")){%>
+											<td><%="未发布"%></td>
+											<%}%>
 											
 											<td>
 												<!-- data-id what are they？ -->
 												<button class="btn btn-default delete" type="button"
 													data-id="<%=ques.getId()%>">
-													<i class="fa fa-trash"></i>
+													<i class="fa fa-trash"></i>删除
 												</button>
 												<button class="btn btn-default edit" type="button"
 													data-id="<%=ques.getId()%>"
@@ -113,7 +128,7 @@
 													data-endTime="<%=ques.getEndTime()%>"
 													data-status="<%=ques.getStatus()%>"
 													>
-													<i class="fa fa-edit"></i>
+													<i class="fa fa-edit"></i>编辑
 												</button>
 												<button class="btn btn-default backup" type="button"
 												data-id="<%=ques.getId() %>"

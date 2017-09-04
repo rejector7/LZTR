@@ -5,23 +5,76 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="model.AnswerSheet"%>
 <%@ page import="model.QuestionnaireQuestions"%>
-<!DOCTYPE html>
+<%@ page import="model.User"%>
 <%
 	String path=request.getContextPath();
 %>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="<%=path%>/questionnaire/css/bootstrap.min.css" 			rel="stylesheet">
-<link href="<%=path%>/questionnaire/css/dataTables.bootstrap.css" 	rel="stylesheet">
-<link href="<%=path%>/questionnaire/css/dataTables.responsive.css" 	rel="stylesheet">
-<link href="<%=path%>/questionnaire/css/questionnaire.css" 			rel="stylesheet">
-<link href="<%=path%>/questionnaire/css/justified-nav.css" 			rel="stylesheet">
-<link href="<%=path%>/questionnaire/css/font-awesome.min.css" 		rel="stylesheet" type="text/css">
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+	<meta charset="utf-8" />
+        <title>LZTR 问卷网</title>
 
-<title>问卷统计结果</title>
+    <!-- Bootstrap core CSS -->
+	<link href="<%=path%>/questionnaire/css/bootstrap.min.css" 			rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/dataTables.bootstrap.css" 	rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/dataTables.responsive.css" 	rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/questionnaire.css" 			rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/font-awesome.min.css" 		rel="stylesheet" type="text/css">
+    <!-- Bootstrap core CSS -->
+    <link href="<%=path %>/questionnaire/css/bootstrap3.3.7.min.css" rel="stylesheet">
+
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    	<script src="questionnaire/js/jquery.min.js"></script>
+    	<script src="questionnaire/js/jquery.validate.min.js"></script>
+    	<script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
+    	     <link rel="stylesheet" href="questionnaire/css/validation.css">
+	<script src="questionnaire/js/jquery.dataTables.min.js"></script>
+	<script src="questionnaire/js/dataTables.bootstrap.min.js"></script>
+		<script src="questionnaire/js/bootstrap.min.js"></script>
+		<script src="questionnaire/js/bootbox.min.js"></script>
+	    <link href="questionnaire/css/font-awesome.min.css" rel="stylesheet">
+	         <link rel="stylesheet" href="questionnaire/css/validation.css">
+    <style type="text/css">
+        html, body {width:100%;height:100%;}
+        .bg {display: table;width: 100%;height: 10%;padding: 20px 0;text-align: center;color: #fff;background: url(questionnaire/img/homepage.jpg) no-repeat bottom center;background-color: #000;background-size: cover;}
+        .my-navbar {padding:20px 0;transition: background 0.5s ease-in-out, padding 0.5s ease-in-out;}
+        .my-navbar a{background:transparent !important;color:#fff !important}
+        .my-navbar a:hover {color:#45bcf9 !important;background:transparent;outline:0}
+        .my-navbar a {transition: color 0.5s ease-in-out;}
+        .top-nav {padding:0;background:#000;}
+        button.navbar-toggle {background-color:#fbfbfb;}
+        button.navbar-toggle > span.icon-bar {background-color:#dedede}
+        .dropdown-nemu>li>a{color:#333!important;display:block!important;}
+        
+		.mydiv{
+		width:250px;height:auto;border:#909090 1px solid;background:#fff;color:#333;
+		filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=3);
+		-moz-box-shadow: 2px 2px 10px #909090;
+		-webkit-box-shadow: 2px 2px 10px #909090;
+		box-shadow:2px 2px 10px #909090;
+
+		}
+		input{
+			border:100px solid #000!important;
+		}
+    </style>
 </head>
-<body>	
+<body style="background:#F5F5F5" value="0">
+<% 
+User user = (User) session.getAttribute("user");
+%>
+ 
+     
+ <div class="bg jumbotron"><font size=5><strong>答卷详情</strong></font></div>
 	<!-- 跳转标签 -->
 	<div class="container">
       <div class="masthead">

@@ -23,10 +23,13 @@ function Execute(arg1, arg2, arg3, arg4, quesid)
 	var answs = arg2;
 	$("#quesid").append(quesid);
 	$("#quesname").append(arg3);
-	$("#userid").append(arg4);
 	$("#reply").attr("data-rid",arg4);
 	if(String(arg4)=="0"){
+		$("#userid").append("不存在");
 		$("#replydiv").html("");
+	}
+	else{
+		$("#userid").append(arg4);
 	}
 	
 	//开始添加
