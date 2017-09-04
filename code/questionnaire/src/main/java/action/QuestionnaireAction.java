@@ -187,6 +187,12 @@ public class QuestionnaireAction extends BaseAction{
 	 */
 	public String get() throws IOException{
 		Questionnaire ques = quesService.getQuestionnaireById(id);
+		if(ques==null){
+			JSONObject questot = new JSONObject();
+			questot.put("status", "notexist");
+			response().getWriter().print(questot);
+			return null;
+		}
 		if(status!=null&&status.equals("need")){
 			if(!ques.getStatus().equals("pub")){
 				JSONObject questot = new JSONObject();

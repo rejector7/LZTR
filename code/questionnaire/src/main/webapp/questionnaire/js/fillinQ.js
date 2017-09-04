@@ -13,6 +13,15 @@ function getQ(id){
 			status:"need"
 		},
 		success : function(data) {
+			if(data['status']=="notexist"){
+				var btn = document.getElementsByTagName("BUTTON")[0];
+				var div = btn.parentNode;
+				div.removeChild(btn);
+				var info = document.createElement("P");
+				info.innerHTML = "问卷不存在";
+				div.append(info);
+				return;
+			}
 			if(data['status']=="notpub"){
 				var btn = document.getElementsByTagName("BUTTON")[0];
 				var div = btn.parentNode;
@@ -20,8 +29,10 @@ function getQ(id){
 				var info = document.createElement("P");
 				info.innerHTML = "本问卷已结束填写或被禁止填写，请返回主页或关闭本页面";
 				div.append(info);
+				return;
 			}
 			formQ(data);
+			
 		}
 	});
 }
@@ -420,4 +431,13 @@ function releEffect(i){
 			$("#"+(notselected[j]-1)).html(content);
 		}
 	}
+}
+
+function donothing(){
+	var btn = document.getElementsByTagName("BUTTON")[0];
+	var div = btn.parentNode;
+	div.removeChild(btn);
+	var info = document.createElement("P");
+	info.innerHTML = "问卷不存在";
+	div.append(info);
 }

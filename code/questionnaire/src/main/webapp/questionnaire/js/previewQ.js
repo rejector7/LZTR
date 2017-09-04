@@ -13,6 +13,15 @@ function getQ(id){
 			status:"notneed"
 		},
 		success : function(data) {
+			if(data['status']=="notexist"){
+				var btn = document.getElementsByTagName("BUTTON")[0];
+				var div = btn.parentNode;
+				div.removeChild(btn);
+				var info = document.createElement("P");
+				info.innerHTML = "问卷不存在";
+				div.append(info);
+				return;
+			}
 			formQ(data);
 		}
 	});
@@ -381,4 +390,13 @@ function releEffect(i){
 			$("#"+(notselected[j]-1)).html(content);
 		}
 	}
+}
+
+function donothing(){
+	var btn = document.getElementsByTagName("BUTTON")[0];
+	var div = btn.parentNode;
+	div.removeChild(btn);
+	var info = document.createElement("P");
+	info.innerHTML = "问卷不存在";
+	div.append(info);
 }
