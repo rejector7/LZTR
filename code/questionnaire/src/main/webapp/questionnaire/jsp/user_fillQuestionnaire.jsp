@@ -72,7 +72,7 @@
     <script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
         <script src="<%=path %>/questionnaire/js/fillinQ.js"></script>
     	<script>
-	<%if(request.getParameter("quesid")==null){%>//alert("no questionnaire id input");
+	<%if(request.getParameter("quesid")==null){%>donothing();
 	<%}else{%>getQ(<%=request.getParameter("quesid")%>);
 	<%}%>
 	</script>

@@ -71,7 +71,7 @@
       <button style='floating:right' class="btn btn-primary" onclick="wordexport()" type="button" style="floating:right">
 			<i class="fa fa-download fa-2x">导出为.doc文件</i>
 		</button>
-</div>
+		</div>
 
       <!-- Site footer -->
       <footer class="footer">
@@ -93,7 +93,7 @@
     <script src="<%=path %>/questionnaire/js/questionnaireExport.js"></script>
     <script src="<%=path %>/questionnaire/js/download.js"></script>
     <script>
-	<%if(request.getParameter("quesid")==null){%>//alert("no questionnaire id input");
+	<%if(request.getParameter("quesid")==null){%>donothing();
 	<%}else{%>getQ(<%=request.getParameter("quesid")%>);
 	<%}%>
 	</script>
