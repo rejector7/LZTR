@@ -122,7 +122,7 @@
 												<!-- data-id what are they？ -->
 												<button class="btn btn-default delete" type="button"
 													data-id="<%=ques.getId()%>">
-													<i class="fa fa-trash"></i>
+													<i class="fa fa-trash"></i>删除
 												</button>
 												<button class="btn btn-default edit" type="button"
 													data-id="<%=ques.getId()%>"
@@ -133,14 +133,15 @@
 													data-endtime="<%=ques.getEndTime()%>"
 													data-status="<%=ques.getStatus()%>"
 													>
-													<i class="fa fa-cog"></i>
+													<i class="fa fa-cog"></i>状态设置
 												</button>
-												<a class="btn btn-default" href="getInfoQuestionnaire?id=<%=ques.getId() %>" role="button"><i class="fa fa-edit"></i></a>
+												<a class="btn btn-default" href="getInfoQuestionnaire?id=<%=ques.getId() %>" role="button"><i class="fa fa-edit"></i>修改内容</a>
+												<br>
+												<a class="btn btn-default" href="PreviewQuestionnaire?quesid=<%=ques.getId() %>" role="button"><i class="fa fa-eye"></i>预览</a>
 
-												<a class="btn btn-default" href="getAnswerByQuesid?quesid=<%=ques.getId() %>" role="button"><i class="fa fa-bar-chart"></i></a>
+												<a class="btn btn-default" href="getAnswerByQuesid?quesid=<%=ques.getId() %>" role="button"><i class="fa fa-bar-chart"></i>查看数据</a>
 
-												<a class="btn btn-default" href="PreviewQuestionnaire?quesid=<%=ques.getId() %>" role="button"><i class="fa fa-eye"></i></a>
-
+												<button class="btn btn-default link" type="button" value="localhost:8080/questionnaire/FillQuestionnaire?quesid=<%=ques.getId() %>"><i class="fa fa-copy"></i>复制链接</button>
 											</td>
 										</tr>
 										<%
@@ -173,36 +174,32 @@
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-lg-12">
-							<form role="form">
+							<form role="form" id="form"> 
 								<div class="form-group">
-									<label>Title</label>
+									<label>标题</label>
 									<input class="form-control" name="title">
 								</div>
+								<p id="titlea"></p>
 								<div class="form-group">
-									<label>IsPublic</label>
+									<label>是否公开</label>
 									<select class="form-control" id="selectf1" name = "ispublic">
-										<option>1</option>
-										<option>0</option>
+										<option selected>是</option>
+										<option>否</option>
 									</select>
 								</div>
 								<div class="form-group">
-									<label>Release Time</label>
-									<input class="form-control" name="releasetime" type="date">
+									<label>发布时间</label>
+									<input class="form-control" name="releasetime" type="date"  oninput="statechanger()" required>
+									<p id="starta"></p>
 								</div>
 								<div class="form-group">
-									<label>End Time</label>
-									<input class="form-control" name="endtime" type="date">
+									<label>结束时间（若不设定可不填写）</label>
+									<input class="form-control" name="endtime" type="date" oninput="statechanger()">
+									<p id="enda"></p>
 								</div>
 								<div class="form-group">
 									<label>Status 说明：</label>
-									<p>unp ： 未发布；  pub ： 已发布</p>
-									<p>end ： 已结束；  ban ： 禁用</p>
-									<select class="form-control" id="selectf2" name = "status">
-										<option>unp</option>
-										<option>pub</option>
-										<option>end</option>
-										<option>ban</option>
-									</select>
+									<p id="state">已发布</p>
 								</div>
 							</form>
 						</div>
@@ -223,7 +220,6 @@
 	<script src="<%=path%>/questionnaire/js/dataTables.bootstrap.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/bootbox.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/questionnaire.js"></script>
-
 	<script src="<%=path%>/questionnaire/js/user_ques.js"></script>
 	
 

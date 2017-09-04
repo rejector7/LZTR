@@ -104,6 +104,7 @@ function addSingle(question, i){
 	newDiv.id = i + "div";
 	newDiv.className = "container";
 	div.appendChild(newDiv);
+	$("#"+i + "div").append("<strong><div id='" + i + "message' class='error'></div></strong>")
 	for(var j = 0 ; j < question['options'].length; j++){
 		if(question['options'][j]["relevancy"]==undefined){
 			var rele = "";
@@ -270,8 +271,9 @@ function submit(){
 			}
 			if(Q['questions'][i]['options'][optionid*1]['hasWords']==true){
 				answer['words'] = $("input[name='" + i +"_" + optionid + "words']").val();
+				alert(answer['words']);
 				if(answer['words']==""){
-					document.getElementById(i + "message").innerText = "Please enter the message of option " + (optionid*1+1);
+					document.getElementById(i + "message").innerText = "请输入第"+(optionid*1+1)+"选项中需填写的内容 " ;
 					ids.push((i*1)+1);
 				}
 			}
@@ -291,7 +293,7 @@ function submit(){
 	    				word['word'] = $("input[name='" + i +"_" + j + "words']").val();
 	    				answer['words'].push(word);
 	    				if(word['word']==""){
-	    					document.getElementById(i + "message").innerText = "Please enter the message of option " + (j*1+1);
+	    					document.getElementById(i + "message").innerText = "请输入第"+(j*1+1)+"选项中需填写的内容 ";
 	    					ids.push((i*1+1));
 	    				}
 	    			}
@@ -299,11 +301,11 @@ function submit(){
 	    		}
 	    	}
 	    	if(count < Q['questions'][i]['min'] && count > 0){
-	    		document.getElementById(i + "message").innerText = "Please choose equal or more than " + Q['questions'][i]['min'] + " options";
+	    		document.getElementById(i + "message").innerText = "请选择不少于 " + Q['questions'][i]['min'] + "个选项";
 	    		ids.push((i*1+1));
 	    	}
 	    	if(count > Q['questions'][i]['max']){
-	    		$(i + "message").innerText = "Please choose equal or less than " + Q['questions'][i]['max'] + " options";
+	    		$(i + "message").innerText = "请选择不多于" + Q['questions'][i]['max'] + "个选项";
 	    		ids.push((i*1+1));
 	    	}
 	    	break;
@@ -347,17 +349,22 @@ function submit(){
 	jQuery.ajax({
 		url : 'addAnswer',  //get content
 		processData : true,
-		dataType : "json",
+		dataType : "text",
 		data : {
 			quesid : QUESID,
 			time : time,
 			content : encodeURI(encodeURI(JSON.stringify(result)))
 		},
 		success : function(data) { //把title，id都放在里面
-			if(data="dupIp"){
-				alert("dupip");
+			if(data=="dupIp"){
+				$("#errors").html("本问卷在本ip地址已提交过，不可重复提交");
 			}
-			alert("success");
+			else{bootbox.alert({
+				message : '提交成功',
+			    callback : function() {
+			    	location.href = 'FrontPage';
+				}
+			});}
 		}
 	});
 

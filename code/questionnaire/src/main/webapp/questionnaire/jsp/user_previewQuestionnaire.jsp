@@ -88,6 +88,7 @@
     <script src="questionnaire/js/bootbox.min.js"></script>
     <script src="<%=path %>/questionnaire/js/jquery-ui.min.js"></script>
     <script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
     <script src="<%=path %>/questionnaire/js/previewQ.js"></script>
     <script src="<%=path %>/questionnaire/js/questionnaireExport.js"></script>
     <script src="<%=path %>/questionnaire/js/download.js"></script>

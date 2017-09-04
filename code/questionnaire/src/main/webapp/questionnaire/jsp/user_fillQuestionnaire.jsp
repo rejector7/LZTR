@@ -68,7 +68,8 @@
     <script src="questionnaire/js/bootstrap.min.js"></script>
     <script src="questionnaire/js/bootbox.min.js"></script>
     <script src="<%=path %>/questionnaire/js/jquery-ui.min.js"></script>
-            <script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
         <script src="<%=path %>/questionnaire/js/fillinQ.js"></script>
     	<script>
 	<%if(request.getParameter("quesid")==null){%>//alert("no questionnaire id input");

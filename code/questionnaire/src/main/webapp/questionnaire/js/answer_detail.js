@@ -25,6 +25,10 @@ function Execute(arg1, arg2, arg3, arg4, quesid)
 	$("#quesname").append(arg3);
 	$("#userid").append(arg4);
 	$("#reply").attr("data-rid",arg4);
+	if(String(arg4)=="0"){
+		$("#replydiv").html("");
+	}
+	
 	//开始添加
 	var len = Size(quess);
 	for (var i = 0; i < len; ++i){

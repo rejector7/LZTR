@@ -67,35 +67,7 @@
         </nav>
       </div>
 
-      <!-- Jumbotron -->
-      <div class="jumbotron">
-        <h1>免费在线问卷调查</h1>
-        <p class="lead">免费，轻松的在线问卷网，欢迎您使用我们的系统来进行问卷调查，希望您能得到对于您工作或者学习有用的信息。</p>
-        <p><a class="btn btn-lg btn-success" href="#" role="button">马上发布你的问卷！</a></p>
-      </div>
-	  
-	  <div class="jumbotron">
-          <h1>时下热门</h1>
-	  </div>
-	  <!-- 此处代码需要修改，到时候项目基本完成后，需要修改为动态变化的（显示数据库中填写次数最多的前三个仍然开放的问卷） -->
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-lg-4">
-          <h2>大学生作息时间调查</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-primary" href="#" role="button">填写问卷 &raquo;</a></p>
-        </div>
-        <div class="col-lg-4">
-          <h2>编程语言使用调查</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-primary" href="#" role="button">填写问卷 &raquo;</a></p>
-       </div>
-        <div class="col-lg-4">
-          <h2>上海交大软件学院学生心理调查问卷</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
-          <p><a class="btn btn-primary" href="#" role="button">填写问卷 &raquo;</a></p>
-        </div>
-      </div>
+     
 
     <!-- Site footer -->
       <footer class="footer">

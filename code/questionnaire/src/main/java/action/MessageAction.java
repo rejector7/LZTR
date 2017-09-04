@@ -68,6 +68,7 @@ public class MessageAction extends BaseAction{
 	//发送消息，发送人一定是登录者
 	public String send1() throws Exception{
 		int userid = ((User)request().getSession().getAttribute("user")).getId();
+		if(rid==0)return "send1";
 		Message message = new Message(userid, rid, msg);
 		messageService.addMessage(message);
 		return "send1";
@@ -75,6 +76,7 @@ public class MessageAction extends BaseAction{
 	
 	public String send2() throws Exception{
 		int userid = ((User)request().getSession().getAttribute("user")).getId();
+		if(rid==0)return "send2";
 		Message message = new Message(userid, rid, msg);
 		messageService.addMessage(message);
 		return "send2";

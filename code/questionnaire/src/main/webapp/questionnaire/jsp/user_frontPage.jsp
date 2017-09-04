@@ -128,9 +128,9 @@
 	<div class="row">&nbsp</div>
  	<div class="row" style="float:left"><font size=5><strong>最新发布</strong></font></div>
  	
- 	                <button class="btn btn-default addMultiple"  type="button" align="right" style="float:right;">
-				<i class="fa fa-plus">查看更多</i>
-		</button>
+ 	<!--             <button class="btn btn-default addMultiple"  type="button" align="right" style="float:right;">
+				<i class="fa fa-plus">查看更多</i> 
+		</button>-->    
  	<hr>
 <hr style="color:black;border-top:1px solid #C0C0C0" >
 	  <!-- 此处代码需要修改，到时候项目基本完成后，需要修改为动态变化的（显示数据库中填写次数最多的前三个仍然开放的问卷） -->

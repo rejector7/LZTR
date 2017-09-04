@@ -169,15 +169,10 @@ public class UserAction extends BaseAction{
 			return null;
 		}
 		if(role==null) role = "user";
-		System.out.println("1");
 		User user = new User(username, password, age, sex, email, country,
 				city, mobile, qq, wechat, role, job, null, null, null, 0);
-		System.out.println("2");
 		user = userService.activateMail(user);
-		
-		System.out.println("3");
 		userService.addUser(user);
-		System.out.println("4");
 		response().getWriter().print("success");
 		return null;
 	}
@@ -197,9 +192,12 @@ public class UserAction extends BaseAction{
 		user.setWechat(wechat);
 		user.setJob(job);
 		userService.updateUser(user);
+		if(((User)session().getAttribute("user")).getId()==id){
 		session().removeAttribute("user");
 		session().setAttribute("user", user);
-		return "update";
+		}
+		response().getWriter().print("success");
+		return null;
 	}
 	
 	public String delete() throws Exception {

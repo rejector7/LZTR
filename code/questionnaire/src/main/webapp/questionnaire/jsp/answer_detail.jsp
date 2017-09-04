@@ -59,6 +59,7 @@
 		
 	
 	<!-- 问卷发起者添加留言反馈 -->
+	<div id="replydiv">
 	<form role="form">
     <div class="input-group">
       <input type="text" class="form-control" placeholder="留言反馈..." name="msg">
@@ -67,6 +68,7 @@
       </span>
     </div>
     </form>
+    </div>
     </div>
    
 	
