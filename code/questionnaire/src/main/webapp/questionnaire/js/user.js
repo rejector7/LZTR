@@ -222,11 +222,11 @@ $(function(){
 					id : id,
 					sex : sex,
 					mobile : mobile,
-					country : country,
-					city : city,
+					country : encodeURI(country),
+					city : encodeURI(city),
 					age : age,
-					job : job,
-					wechat : wechat,
+					job : encodeURI(job),
+					wechat : encodeURI(wechat),
 					qq : qq
 				},
 				success : function(data) {
