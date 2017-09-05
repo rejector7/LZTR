@@ -155,9 +155,10 @@
 		<!-- /#page-wrapper -->
 	</div>
 	<!-- /#wrapper -->
-	<form action="<%=path %>/backupimport" method="post" enctype="multipart/form-data">
-			<input type="file" name="file">
+	<form action="<%=path %>/backupimport" method="post" enctype="multipart/form-data" id="uploadtxt">
+			<input type="file" name="file" id="file">
 			<input type="submit" value="导入">
+			<div id="uploadalert"></div>
 	</form>
 	<div class="modal fade" id="modal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
@@ -187,8 +188,8 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="save">Save</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="save">保存</button>
 				</div>
 			</div>
 		</div>
