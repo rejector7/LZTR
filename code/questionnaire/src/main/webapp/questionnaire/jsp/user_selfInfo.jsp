@@ -152,16 +152,16 @@ User user = (User) session.getAttribute("user");
 			                        </div>
 			                        <div class="form-group">
 			                        	<label for="form-age" >年龄</label>
-			                        	<input type="number" name="age" step="1" class="form-age " id="form-age" min="0" value="<%=user.getAge() %>" digits>
+			                        	<input type="number" name="age" step="1" class="form-age " id="form-age" min="0" value="<%=user.getAge() %>" digits="true">
 			                        </div>
 
 			                        			                        <div class="form-group">
 			                        	<label  for="form-country">国家</label>
-			                        	<input type="text" name="country"  class="form-country " value="<%=user.getCountry() %>" id="form-country">
+			                        	<input type="text" name="country"  class="form-country " value="<%=user.getCountry() %>" id="form-country" maxlength="255">
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label  for="form-city">城市</label>
-			                        	<input type="text" name="city" class="form-city " value="<%=user.getCity() %>" id="form-city">
+			                        	<input type="text" name="city" class="form-city " value="<%=user.getCity() %>" id="form-city" maxlength="255">
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label  for="form-mobile">电话</label>
@@ -172,15 +172,15 @@ User user = (User) session.getAttribute("user");
 									</div>
 			                        			                        <div class="form-group">
 			                        	<label  for="form-qq">QQ&nbsp</label>
-			                        	<input type="text" name="qq"  class="form-qq" id="form-qq" value="<%=user.getQq() %>"digits>
+			                        	<input type="text" name="qq"  class="form-qq" id="form-qq" value="<%=user.getQq() %>"digits="true">
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label  for="form-wechat">微信</label>
-			                        	<input type="text" name="wechat"  class="form-wechat " value="<%=user.getWechat() %>" id="form-wechat">
+			                        	<input type="text" name="wechat"  class="form-wechat " value="<%=user.getWechat() %>" id="form-wechat" maxlength="255">
 			                        </div>
 			                        			                        			                        <div class="form-group">
 			                        	<label  for="form-job">职业</label>
-			                        	<input type="text" name="job"  class="form-job " value="<%=user.getJob() %>" id="form-job">
+			                        	<input type="text" name="job"  class="form-job " value="<%=user.getJob() %>" id="form-job" maxlength="255">
 			                        </div>
 
 									<button type="button" class="btn btn-primary" style="width:" id="save" 

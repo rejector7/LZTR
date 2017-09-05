@@ -124,8 +124,8 @@ public class QuestionnaireAction extends BaseAction{
 				ques.setIsPublic(isPublic);
 				ques.setReleaseTime(releaseTime);
 				ques.setStatus(status);
-				ques.setAllowDup(allowDup);
 			}
+			ques.setTitle(title);
 			quescontent.setContent(content);
 			ques.setAllowDup(allowDup);
 			quesService.updateQuestionnaire(quescontent, ques);

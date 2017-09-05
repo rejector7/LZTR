@@ -18,9 +18,6 @@ $(function(){
 				required:"邮箱必填",
 				email:"请输入一个有效的邮箱"
 			},
-			mobile:{
-				required:"手机号码必填"
-			},
 			qq:{
 				digits:"请输入一个QQ账号"
 			}
@@ -29,9 +26,6 @@ $(function(){
 
 	$("#infoform").validate({
 		messages:{
-			mobile:{
-				required:"请输入手机号码"
-			},
 			qq:{
 				digits:"请输入一个正确的QQ号"
 			},
@@ -89,9 +83,6 @@ $(function(){
 					required:"邮箱必填",
 					email:"请输入一个有效的邮箱"
 				},
-				mobile:{
-					required:"手机号码必填"
-				},
 				qq:{
 					digits:"请输入一个QQ账号"
 				}
@@ -103,17 +94,17 @@ $(function(){
 			url : 'signupPro',
 			dataType : "text",
 			data : {
-				username:username,
+				username:encodeURI(username),
 				password:password,
 				email:email,
 				mobile:mobile,
 				qq:qq,
-				wechat:wechat,
-				country:country,
-				city:city,
+				wechat:encodeURI(wechat),
+				country:encodeURI(country),
+				city:encodeURI(city),
 				age:age,
 				sex:sex,
-				job:job
+				job:encodeURI(job)
 			},
 			success : function(data) {
 				if(data=="dupusername"){
@@ -131,7 +122,7 @@ $(function(){
 					bootbox.alert({
 						message : '我们发了一封激活用的邮件到你的邮箱，请接收',
 					    callback : function() {
-					    	//window.location.href= addr ;
+					    	window.location.href= addr ;
 						}
 					});
 				}
@@ -208,9 +199,6 @@ $(function(){
 		var id = dataset.id;
 		if(!$("#infoform").validate({
 		messages:{
-			mobile:{
-				required:"请输入手机号码"
-			},
 			qq:{
 				digits:"请输入一个正确的QQ号"
 			},
@@ -313,11 +301,11 @@ $(function(){
 });
 function isPhoneNo(phone) { 
 	var pattern = /^1[34578]\d{9}$/; 
-	return pattern.test(phone); 
+	return pattern.test(phone)||(phone==""); 
 }
 function changephonechecker(){
 	if(!isPhoneNo($("input[name='mobile']").val())){
-		$("#phonechecker").html("<label style='color:#de615e;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;'>请输入一个正确的手机号码</label>");
+		$("#phonechecker").html("<label style='color:#de615e;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;'>请输入一个正确的11位手机号码</label>");
 	}
 	else{
 		$("#phonechecker").html("");

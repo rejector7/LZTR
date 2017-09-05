@@ -1,6 +1,7 @@
 package action;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 
@@ -160,6 +161,10 @@ public class UserAction extends BaseAction{
 	}
 	
 	public String add() throws Exception {
+		username = URLDecoder.decode(username, "UTF-8");
+		wechat = URLDecoder.decode(wechat, "UTF-8");
+		country = URLDecoder.decode(country, "UTF-8");
+		city = URLDecoder.decode(city, "UTF-8");
 		if(userService.getUserByName(username)!=null){
 			response().getWriter().print("dupusername");
 			return null;
@@ -178,11 +183,14 @@ public class UserAction extends BaseAction{
 	}
 	
 	public String update() throws Exception {
+		username = URLDecoder.decode(username, "UTF-8");
+		wechat = URLDecoder.decode(wechat, "UTF-8");
+		country = URLDecoder.decode(country, "UTF-8");
+		city = URLDecoder.decode(city, "UTF-8");
 		User user = userService.getUserById(id);
 		user.setCity(city);
 		user.setAge(age);
 		user.setCountry(country);
-		System.out.println(email+"wreergergerg");
 		if(email!=null&&email!=""){
 		user.setEmail(email);
 		}
@@ -219,6 +227,7 @@ public class UserAction extends BaseAction{
 	}
 	
 	public String activate() throws AddressException, MessagingException{
+		System.out.println("aaaaaaaaaaa");
 		String email = request().getParameter("email");
 		String token = request().getParameter("token");
 		Long time = System.currentTimeMillis();
@@ -236,6 +245,7 @@ public class UserAction extends BaseAction{
 					//在时间内
 					u.setActivateTime(Long.parseLong("1"));
 					if(u.getToken().equals(token)){
+						System.out.println("aaaaaaaaaaa");
 						//激活码通过
 						u.setStatus(1);
 						u.setCreateDate(new Date());
@@ -263,7 +273,6 @@ public class UserAction extends BaseAction{
 
 	public String updatepass() throws IOException{
 		User user = userService.getUserById(id);
-		System.out.println("id:"+id+"oldpassword:"+oldpassword+"user.getPassword():"+user.getPassword());
 		if(!user.getPassword().equals(oldpassword)){
 			response().getWriter().print("false");
 			return null;

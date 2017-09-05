@@ -75,7 +75,7 @@ User user = (User) session.getAttribute("user");
 		
 		<div class="row ">
 			 <label ><font size="5">标题</font></label>
-			 <input type="text" name="title"  class="form-control">
+			 <input type="text" name="title"  class="form-control" maxlength="255">
 		</div>
 		<div class="row">
 			 <label  ><font size="5">简介</font></label>
