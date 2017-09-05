@@ -165,6 +165,7 @@ public class UserAction extends BaseAction{
 		wechat = URLDecoder.decode(wechat, "UTF-8");
 		country = URLDecoder.decode(country, "UTF-8");
 		city = URLDecoder.decode(city, "UTF-8");
+		job = URLDecoder.decode(job, "UTF-8");
 		if(userService.getUserByName(username)!=null){
 			response().getWriter().print("dupusername");
 			return null;
@@ -183,10 +184,10 @@ public class UserAction extends BaseAction{
 	}
 	
 	public String update() throws Exception {
-		username = URLDecoder.decode(username, "UTF-8");
 		wechat = URLDecoder.decode(wechat, "UTF-8");
 		country = URLDecoder.decode(country, "UTF-8");
 		city = URLDecoder.decode(city, "UTF-8");
+		job = URLDecoder.decode(job, "UTF-8");
 		User user = userService.getUserById(id);
 		user.setCity(city);
 		user.setAge(age);
