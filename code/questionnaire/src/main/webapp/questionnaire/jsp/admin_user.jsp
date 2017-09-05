@@ -77,6 +77,7 @@
 											<th>手机号</th>
 											<th>QQ</th>
 											<th>微信</th>
+											<th>职业</th>
 											<th>身份</th>
 											<th>操作</th>
 										</tr>
@@ -97,6 +98,7 @@
 											<td><%=user.getMobile()%></td>
 											<td><%=user.getQq()%></td>
 											<td><%=user.getWechat()%></td>
+											<td><%=user.getJob()%></td>
 											<td><%if(user.getRole().equals("admin")){%>管理员<%}else if (user.getRole().equals("user")){%>用户<%} %></td>
 											
 											<td>
@@ -115,6 +117,7 @@
 													data-mobile="<%=user.getMobile() %>"
 													data-qq="<%=user.getQq() %>"
 													data-wechat="<%=user.getWechat() %>"
+													data-job="<%=user.getJob() %>"
 													data-role="<%=user.getRole() %>"
 													>
 													<i class="fa fa-edit"></i>
@@ -161,7 +164,7 @@
       </div>
       <div class="form-group">
         <label>用户名</label>
-        <input type="text" class="form-control" name="username" required>
+        <input type="text" class="form-control" name="username" required maxlength="255">
       </div>
       <div class="form-group">
         <label>年龄</label>
@@ -176,15 +179,15 @@
 			                        </div>
       <div class="form-group">
         <label>城市</label>
-        <input type="text" class="form-control"  name="city" >
+        <input type="text" class="form-control"  name="city"  maxlength="255">
       </div>
       <div class="form-group">
         <label>国家</label>
-        <input type="text" class="form-control" name="country">
+        <input type="text" class="form-control" name="country" maxlength="255">
       </div>
       <div class="form-group">
         <label>Email</label>
-        <input type="email" class="form-control" name="email" required>
+        <input type="email" class="form-control" name="email" required maxlength="255">
       </div>
       <div class="form-group">
         <label>手机号</label>
@@ -194,12 +197,16 @@
       </div>
       <div class="form-group">
         <label>QQ号</label>
-        <input type="text" class="form-control" name="qq" min="10000" digits="true">
+        <input type="text" class="form-control" name="qq" min="10000" digits="true" maxlength="255">
       </div>
       <div class="form-group">
         <label>微信</label>
-        <input type="text" class="form-control" name="wechat">
+        <input type="text" class="form-control" name="wechat" maxlength="255">
       </div>
+      <div class="form-group">
+			                        	<label  for="form-job">职业</label>
+			                        	<input type="text" name="job"  class="form-job form-control" id="form-job" maxlength="255">
+			                        </div>
       <div class="form-group">
         <label>用户身份</label>
 			<select class="form-control" id="form-role">

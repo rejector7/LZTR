@@ -37,6 +37,7 @@ $(function() {
 		var wechat = $("input[name='wechat']").val();
 		var sex = $("#form-sex").val();
 		var age = $("input[name='age']").val();
+		var job = $("input[name='job']").val();
 		var role = $("#form-role").val();
 		/*var status = $("#selectf").val();*/
 		if(role=="管理员"){role="admin";}
@@ -84,6 +85,7 @@ $(function() {
 				        mobile:mobile,
 				        qq:qq,
 				        wechat:wechat,
+				        job:job,
 				        role:role
 			},
 			success : function(data) {
@@ -149,8 +151,10 @@ $(function() {
 		$("input[name='city']").val(dataset.city);
 		$("input[name='qq']").val(dataset.qq);
 		$("input[name='wechat']").val(dataset.wechat);
+		$("input[name='job']").val(dataset.job);
 		$("#form-sex").val(dataset.sex);
-		$("input[name='age']").val(dataset.age);
+		if(dataset.age=="0")$("input[name='age']").val();
+		else $("input[name='age']").val(dataset.age);
 		if(dataset.role=="user")
 		{$("#form-role").val("用户");}
 		else if(dataset.role=="admin")
@@ -163,7 +167,7 @@ $(function() {
 });
 function isPhoneNo(phone) { 
 	var pattern = /^1[34578]\d{9}$/; 
-	return pattern.test(phone); 
+	return pattern.test(phone)||(phone==""); 
 }
 function changephonechecker(){
 	if(!isPhoneNo($("input[name='mobile']").val())){
