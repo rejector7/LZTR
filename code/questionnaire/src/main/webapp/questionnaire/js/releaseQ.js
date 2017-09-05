@@ -52,7 +52,7 @@ $(function() {
 			result['questions'][k]['id'] = k;
 			var i = childs[k].getAttribute("id").split("div")[0];
 			var stem = $("input[name=" + i + "]").val();
-			if(stem ==""){alert("第 " + i + "题题干为空");return;}
+			if(stem ==""){alert("第 " + (k*1+1) + "题题干为空");return;}
 			result['questions'][k]['stem'] = stem;
 			//get the required
 			var required = document.getElementById(i + "required");
@@ -72,7 +72,7 @@ $(function() {
 				var option_form = document.getElementById(i + "container");
 				var options = option_form.childNodes;
 				if(options.length == 1){
-					alert("第 " + (i-DELETE_NUM_QUESTION) + "题无选项");
+					alert("第 " + (k*1+1) + "题无选项");
 					return;
 				}
 				result['questions'][k]['options'] = [];
@@ -82,7 +82,7 @@ $(function() {
 					var mm = name.split("o")[0].split("_")[1];
 					var cf = document.getElementById(i+"_"+mm+"cf");
 					var rele = document.getElementById(i+"_"+mm+"optrele");
-					if(option == "") {alert("第"+ i + "题存在选项内容为空");return;}
+					if(option == "") {alert("第"+ (k*1+1) + "题存在选项内容为空");return;}
 					result['questions'][k]['options'][m-1] = {};
 					result['questions'][k]['options'][m-1]['id'] = m;
 					result['questions'][k]['options'][m-1]['option'] = option;
@@ -104,20 +104,20 @@ $(function() {
 				var option_form = document.getElementById(i + "container");
 				var options = option_form.childNodes;
 				if(options.length == 1){
-					alert("第" + (i-DELETE_NUM_QUESTION) + "题无选项");
+					alert("第" + (k*1+1) + "题无选项");
 					return;
 				}
 				//get the number of options
 				var num = (document.getElementById(i + "container")).getAttribute("value");
-				if(num == 0 ){alert("第" + i + "题至少需要有一个选项");return;}
+				if(num == 0 ){alert("第" + (k*1+1) + "题至少需要有一个选项");return;}
 				//get min & max
 				var min = $("input[name='" + i + "min']").val();
 				var max = $("input[name='" + i + "max']").val();
 				if(min==""){min=0;}
 				if(max==""){max=options.length-1;}
-				if(min > max) {alert("最小可选不得超过最大");return;}
-				if(min < 0) {alert("最小可选必须不小于0");return;}
-				if(max > num) {alert("最大选项不可超过总选项数");return;}
+				if(min > max) {alert("第"+ (k*1+1) + "题最小可选不得超过最大");return;}
+				if(min < 0) {alert("第"+ (k*1+1) + "题最小可选必须不小于0");return;}
+				if(max > num) {alert("第"+ (k*1+1) + "题最大选项不可超过总选项数");return;}
 				result['questions'][k]['min'] = min;
 				result['questions'][k]['max'] = max;
  				//get all the options
@@ -125,7 +125,7 @@ $(function() {
 				for(var m = 1; m < options.length; m++){
 					var name = options[m].getAttribute("id").split("div")[0];
 					var option = $("input[name=" + name + "]").val();
-					if(option == "") {alert("第"+ i + "题中存在选项为空");return;}
+					if(option == "") {alert("第"+ (k*1+1) + "题中存在选项为空");return;}
 					result['questions'][k]['options'][m-1] = {};
 					result['questions'][k]['options'][m-1]['id'] = m;
 					result['questions'][k]['options'][m-1]['option'] = option;
@@ -149,14 +149,14 @@ $(function() {
 				result['questions'][k]['type'] = 'Slider';
 				//get min & max
 				var min = $("input[name='" + i + "min']").val();
-				if(min==""){alert("第" + i + "题最小数值为空");return;}
+				if(min==""){alert("第" +  (k*1+1) + "题最小数值为空");return;}
 				var max = $("input[name='" + i + "max']").val();
-				if(max==""){alert("第" + i + "题最大数值为空");return;}
+				if(max==""){alert("第" +  (k*1+1) + "题最大数值为空");return;}
 				var mintext = $("input[name='" + i + "mintext']").val();
-				if(mintext==""){alert("第" + i + "题最小值标签为空");return;}
+				if(mintext==""){alert("第" +  (k*1+1) + "题最小值标签为空");return;}
 				var maxtext = $("input[name='" + i + "maxtext']").val();
-				if(maxtext==""){alert("第" + i + "题最大值标签为空");return;}
-				if(min > max) {alert("第" + i + "题最小值不得超过最大值");return;}
+				if(maxtext==""){alert("第" +  (k*1+1) + "题最大值标签为空");return;}
+				if(min > max) {alert("第" +  (k*1+1) + "题最小值不得超过最大值");return;}
 				result['questions'][k]['min'] = min;
 				result['questions'][k]['max'] = max;
 				result['questions'][k]['mintext'] = mintext;
