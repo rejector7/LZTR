@@ -131,6 +131,11 @@ User user = (User) session.getAttribute("user");
 		if (request.getAttribute("SendMessages") != null) {
 			messages = (ArrayList<Message>) request.getAttribute("SendMessages");
 		}
+		
+		ArrayList<String> names = new ArrayList<String>();
+		if (request.getAttribute("Names") != null) {
+			names = (ArrayList<String>) request.getAttribute("Names");
+		}
 	%>
 
       <!-- The justified navigation menu is meant for single line per list item.
@@ -159,12 +164,13 @@ User user = (User) session.getAttribute("user");
 <%
 for(int i = 0; i < messages.size(); ++i){
 	Message msg = messages.get(messages.size()-1-i);
+	String name = names.get(messages.size()-1-i);
 %> 				
 	<div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=i%>">
-                	To&nbsp;&nbsp;:&nbsp;&nbsp;  <%=msg.getRid() %>; &nbsp;&nbsp;&nbsp;    发送时间：<%=msg.getSenddate() %>
+                	发送至&nbsp;&nbsp;:&nbsp;&nbsp;  <%=name %>; &nbsp;&nbsp;&nbsp;    发送时间：<%=msg.getSenddate() %>
                 </a>
             </h4>
         </div>

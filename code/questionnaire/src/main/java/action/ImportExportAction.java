@@ -47,13 +47,15 @@ public class ImportExportAction extends BaseAction{
 	}
 	public String backupex() throws IOException{
 		String backup = ioService.backupExport(quesid);
-		System.out.println(backup);
+		response().setCharacterEncoding("utf-8");
+		response().setContentType("text/html;charset:utf-8");
 		response().getWriter().print(backup);
 		return null;
 	}
 	
 	public String backupim() throws JSONException, IOException, ParseException{
+		if(file==null)return null;
 		ioService.backupImport(file.getPath());
-		return null;
+		return "import";
 	}
 }

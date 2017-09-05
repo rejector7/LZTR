@@ -24,6 +24,7 @@
 
 
         <link href="<%=path %>/questionnaire/css/font-awesome.min.css" rel="stylesheet">
+		<link href="<%=path %>/questionnaire/css/validation.css" rel="stylesheet">
 
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -32,10 +33,12 @@
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     
-    <script src="questionnaire/js/jquery.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/jquery.min.js"></script>
      <script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
     <script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
-    <script src="questionnaire/js/bootstrap.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/bootstrap.min.js"></script>
+     <script src="<%=path %>/questionnaire/js/bootbox.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/user.js"></script>
     <style type="text/css">
         html, body {width:100%;height:100%;}
         .bg {display: table;width: 100%;height: 10%;padding: 20px 0;text-align: center;color: #fff;background: url(questionnaire/img/homepage.jpg) no-repeat bottom center;background-color: #000;background-size: cover;}
@@ -84,28 +87,30 @@
 
                         <div class="col-sm-6 col-sm-offset-3 form-box" style="float:none">
                             <div class="form-bottom" >
-			                    <form role="form" action="<%=path %>/signupPro" method="post" class="login-form" id="registerform">
+			                    <form role="form" class="login-form" id="registerform">
 			                    	<div class="form-group">
 			                    		<label  for="form-username">用户名<font color="red">*</font></label>
-			                        	<input type="text" name="username"  class="form-username form-control" id="form-username" required>
-			                        </div>
+			                        	<input type="text" name="username"  class="form-username form-control" id="form-username" required maxlength="255">
+			                       
+			                        <label id="dupname" style='color:#de615e;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;'></label>
+			                         </div>
 			                        <div class="form-group">
 			                        	<label for="form-password">密码<font color="red">*</font></label>
-			                        	<input type="password" name="password"  class="form-password form-control" id="form-password" required>
+			                        	<input type="password" name="password"  class="form-password form-control" id="form-password" required maxlength="255">
 			                        </div>
 			                        <div class="form-group">
 			                        	<label  >请再次输入密码<font color="red">*</font></label>
-			                        	<input type="password" name="confirmpassword"  class="form-password form-control" required equalTo="#form-password">
+			                        	<input type="password" name="confirmpassword"  class="form-password form-control" required equalTo="#form-password" maxlength="255">
 			                        </div>
 			                        <div class="form-group">
 			                        	<label for="form-email">邮箱<font color="red">*</font></label>
-			                        	<input type="email" name="email"  class="form-email form-control" id="form-email" required>
+			                        	<input type="email" name="email"  class="form-email form-control" id="form-email" required maxlength="255">
 			                        </div>
 			                        	<hr style="color:black;border-top:1px solid #C0C0C0">
 			                    	     <div align="center"> <font>以下为个性化信息</font></div>
 			                        <div class="form-group">
 			                        	<label for="form-age">年龄</label>
-			                        	<input type="number" name="age" step="1"  class="form-age form-control" id="form-age" min="0" digits>
+			                        	<input type="number" name="age" step="1"  class="form-age form-control" id="form-age" min="0" digits="true">
 			                        </div>
 			                        <div class="form-group">
 			                        	<label  for="form-sex">性别</label>
@@ -116,11 +121,11 @@
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label  for="form-country">国家</label>
-			                        	<input type="text" name="country"  class="form-country form-control" id="form-country">
+			                        	<input type="text" name="country"  class="form-country form-control" id="form-country" maxlength="255">
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label  for="form-city">城市</label>
-			                        	<input type="text" name="city" class="form-city form-control" id="form-city">
+			                        	<input type="text" name="city" class="form-city form-control" id="form-city" maxlength="255">
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label  for="form-mobile">电话</label>
@@ -131,18 +136,18 @@
 									</div>
 			                        			                        <div class="form-group">
 			                        	<label  for="form-qq">QQ</label>
-			                        	<input type="text" name="qq"  class="form-qq form-control" id="form-qq" digits>
+			                        	<input type="text" name="qq"  class="form-qq form-control" id="form-qq" digits="true">
 			                        </div>
 			                        			                        <div class="form-group">
 			                        	<label  for="form-wechat">微信</label>
-			                        	<input type="text" name="wechat"  class="form-wechat form-control" id="form-wechat">
+			                        	<input type="text" name="wechat"  class="form-wechat form-control" id="form-wechat" maxlength="255">
 			                        </div>
 			                        			                        			                        <div class="form-group">
 			                        	<label  for="form-job">职业</label>
-			                        	<input type="text" name="job"  class="form-job form-control" id="form-job">
+			                        	<input type="text" name="job"  class="form-job form-control" id="form-job" maxlength="255">
 			                        </div>
 
-												                        <button type="submit" class="btn btn-primary" style="width:100%">注册！</button>
+												                        <button type="button" id="register" class="btn btn-primary" style="width:100%">注册！</button>
 			                    </form>
 		                    </div>
                         </div>

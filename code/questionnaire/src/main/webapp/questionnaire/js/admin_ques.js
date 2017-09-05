@@ -119,4 +119,12 @@ $(function() {
 			}
 		});
 	});
+	
+	$("#uploadtxt").submit(function(){
+		var filetype=$("#file").val().slice($("#file").val().lastIndexOf(".")+1).toUpperCase();
+		if (filetype != 'TXT'){
+			$("#uploadalert").html("<font color='red'>请上传正确格式的文件</font>");
+			return false;
+		}
+	});
 });

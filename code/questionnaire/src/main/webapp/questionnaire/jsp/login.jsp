@@ -94,9 +94,9 @@
         window.onload = function(){
         <%if(request.getAttribute("flag")!=null){
         if(request.getAttribute("flag").equals(2)){%>
-			alert("Activate succfully!");
+			alert("激活成功!");
 			<%}else if(request.getAttribute("flag").equals(3)){%>
-			alert("Don not activate again!");
+			alert("不要重复激活!");
 			<%}}%>
         }
         </script>

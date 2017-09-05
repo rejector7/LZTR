@@ -56,7 +56,7 @@
 			<result name="input">/questionnaire/jsp/login.jsp</result>
 		</action>
 		<action name="logoutPro" class="action.LoginAction" method="logout">
-			<result name="success" type="chain">FrontPage</result>
+			<result name="success">FrontPage</result>
 		</action>
 		<action name="signupPro" class="action.UserAction" method="add">
 		</action>
@@ -83,6 +83,7 @@
 		
 		
 		<action name="*port" class="action.ImportExportAction" method="{1}">
+		<result name="import" type="chain">allQuestionnaire</result>
 		</action>
 		
 		<!-- 暂时性逻辑跳转 -->
@@ -92,8 +93,6 @@
 		
 		<action name="*Message" class="action.MessageAction" method="{1}">
 			<result name="allSend">/questionnaire/jsp/user_sendMessage.jsp</result>
-			<result name="send1" type="chain">allSendMessage</result>
-			<result name="send2">/questionnaire/jsp/answer_detail.jsp</result> 
 			<result name="allRece">/questionnaire/jsp/user_receMessage.jsp</result>
 			<result name="read">/questionnaire/jsp/user_receMessage.jsp</result>
 		</action>
