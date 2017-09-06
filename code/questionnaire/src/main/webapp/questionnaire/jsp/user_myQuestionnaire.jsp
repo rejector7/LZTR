@@ -266,8 +266,8 @@ User user = (User) session.getAttribute("user");
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="save">Save</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="save">保存</button>
 				</div>
 			</div>
 		</div>

@@ -181,7 +181,7 @@ for(int i = 0; i < messages.size(); ++i){
             </div>
         </div>
     
-    <form id="replyform" role="form" action="send1Message" method="POST" onsubmit="return saveReport();">
+    <form class="replyform" role="form" >
     <div class="input-group">
       <input type="text" class="form-control" placeholder="继续留言..." name="msg">
       <input type="hidden" name="rid" value=<%=msg.getRid() %>>
@@ -194,14 +194,7 @@ for(int i = 0; i < messages.size(); ++i){
     <br/>
 <%} %>
 
-<script>
-function saveReport() {  
-    $("#replyform").ajaxSubmit(function(message) {  
-       });  
-    location.reload();
-    return false;
-}  
-</script>
+
 					
 				</div>
 			</div>
@@ -213,7 +206,40 @@ function saveReport() {
 	<script src="<%=path%>/questionnaire/js/dataTables.bootstrap.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/bootbox.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/questionnaire.js"></script>
-
+<script src="<%=path%>/questionnaire/js/jquery.min.js"></script>
+	
+<script>
+$(function() { 
+	 $(".replyform").submit(function(event){
+		 event.preventDefault();
+		 var form = event.currentTarget;
+		 var rid = form.getElementsByTagName("INPUT")[1].getAttribute("value");
+	 	 var msg = form.getElementsByTagName("INPUT")[0].value;
+		 if(msg==""){
+			 bootbox.alert("请输入有效内容");
+			 return false;
+		 }
+			jQuery.ajax({
+				url : 'send1Message',
+				processData : true,
+				dataType : "text",
+				data : {
+					rid : rid,
+					msg : encodeURI(msg)
+				},
+				success : function(data) {
+					bootbox.alert({
+						message : '发送成功! ',
+						callback : function() {
+							location.reload();
+						}
+					});
+				}
+			});
+			
+	 });
+});
+</script>
     </div> <!-- /container -->
 
 

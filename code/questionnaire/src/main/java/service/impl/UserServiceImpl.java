@@ -110,8 +110,8 @@ public class UserServiceImpl implements UserService {
 		token = user.getToken();
 		user.setActivateTime(activateTime);
 		String content = "<p>Hello本次内容为学生作业。请不要草率退信，我们不会对其他人造成影响<br><br>Welcome to LZTR Questinnaire Website!<br><br>"
-				+ "Your Account need to be activated, now to activate to be a member of us!"
-				+ "<br><br>Please activate your account in 24 hours:"
+				+ "你的账号需要被激活，现在激活并成为我们的一员!"
+				+ "<br><br>请在24小时内激活你的账号:"
 				+ "<br><a href = '" + URL + "/activatemail?token=" + token
 				+ "&email=" + to + "'>"
 				+ URL + "/activatemail?token=" + token + "&email=" + to + "</a></p>";
