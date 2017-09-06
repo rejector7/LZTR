@@ -161,7 +161,7 @@ User user = (User) session.getAttribute("user");
 																				Answer answer = answers.get(i);
 										%>
 										<tr>
-										    <td><%=i%></td>
+										    <td><%=i+1%></td>
 											<td><%=answer.getTime()%></td>
 											<td><%=answer.getIp()%></td> <!-- need to be changed later -->
 											<td>

@@ -34,8 +34,8 @@
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     	
-	    <link href="questionnaire/css/font-awesome.min.css" rel="stylesheet">
-	         <link rel="stylesheet" href="questionnaire/css/validation.css">
+	    <link href="<%=path%>questionnaire/css/font-awesome.min.css" rel="stylesheet">
+	         <link rel="<%=path%>stylesheet" href="questionnaire/css/validation.css">
     <style type="text/css">
         html, body {width:100%;height:100%;}
         .bg {display: table;width: 100%;height: 10%;padding: 20px 0;text-align: center;color: #fff;background: url(questionnaire/img/homepage.jpg) no-repeat bottom center;background-color: #000;background-size: cover;}
@@ -66,7 +66,7 @@
 User user = (User) session.getAttribute("user");
 %>
  
-     
+      
  <div class="bg jumbotron"><font size=5><strong>答卷详情</strong></font></div>
 	<!-- 跳转标签 -->
 	<div class="container">
@@ -106,7 +106,7 @@ User user = (User) session.getAttribute("user");
 	
 	<!-- 问卷发起者添加留言反馈 -->
 	<div id="replydiv">
-	<form role="form">
+	<form role="form" id="replyform">
     <div class="input-group">
       <input type="text" class="form-control" placeholder="留言反馈..." name="msg">
       <span class="input-group-btn">
@@ -143,14 +143,18 @@ User user = (User) session.getAttribute("user");
 </script>
  <script>	
  $(function() { 
-    	$("#reply").click(function(e){
-    		var dataset = e.currentTarget.dataset;
-    		var rid = dataset.rid;
-    		var table = "<table class='table'>"+$("div.dataTable_wrapper").html()+"</table>";
-    		var msg = "这是发送者针对您关于问卷"+$("#quesname").html().split("：")[1]+"的反馈"+"<br>";
-    		msg += "您的回答情况："+table+"<br>";
-    		msg += $("input[name='msg']").val();
-			console.log(msg);
+	 $("#replyform").submit(function(event){
+		 event.preventDefault();
+		 if($("input[name='msg']").val()==""){
+			 bootbox.alert("请输入有效内容");
+			 return false;
+		 }
+		var dataset = document.getElementById("reply").dataset;
+ 		var rid = dataset.rid;
+ 		var table = "<table class='table'>"+$("div.dataTable_wrapper").html()+"</table>";
+ 		var msg = "这是发送者针对您关于问卷"+$("#quesname").html().split("：")[1]+"的反馈"+"<br>";
+ 		msg += "您的回答情况："+table+"<br>";
+ 		msg += $("input[name='msg']").val();
 			jQuery.ajax({
 				url : 'send2Message',
 				processData : true,
@@ -168,7 +172,38 @@ User user = (User) session.getAttribute("user");
 					});
 				}
 			});
-		});
+			
+	 });
+	 $("#reply").click(function(e){
+		 if($("input[name='msg']").val()==""){
+			 bootbox.alert("请输入有效内容");
+			 return false;
+		 }
+		var dataset = e.currentTarget.dataset;
+ 		var rid = dataset.rid;
+ 		var table = "<table class='table'>"+$("div.dataTable_wrapper").html()+"</table>";
+ 		var msg = "这是发送者针对您关于问卷"+$("#quesname").html().split("：")[1]+"的反馈"+"<br>";
+ 		msg += "您的回答情况："+table+"<br>";
+ 		msg += $("input[name='msg']").val();
+			jQuery.ajax({
+				url : 'send2Message',
+				processData : true,
+				dataType : "text",
+				data : {
+					rid : rid,
+					msg : encodeURI(msg)
+				},
+				success : function(data) {
+					bootbox.alert({
+						message : '发送成功! ',
+						callback : function() {
+							location.reload();
+						}
+					});
+				}
+			});
+			
+	 });
  });
 	</script>
 </body>

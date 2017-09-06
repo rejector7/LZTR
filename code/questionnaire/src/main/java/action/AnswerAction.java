@@ -68,7 +68,7 @@ public class AnswerAction extends BaseAction{
 		Answer ans = new Answer(quesid, time, ip);
 		int allowDup = quesService.getQuestionnaireById(quesid).getAllowDup();
 		if(allowDup==0){
-			if(ansService.getAnswersByIp(ip)!=null&&(!ansService.getAnswersByIp(ip).isEmpty())){
+			if(ansService.getAnswersByIp(ip,quesid)!=null&&(!ansService.getAnswersByIp(ip,quesid).isEmpty())){
 				response().getWriter().print("dupIp");
 				return null;
 			}

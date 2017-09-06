@@ -118,8 +118,12 @@ User user = (User) session.getAttribute("user");
  <div class="bg jumbotron">
       </div>
       <div class="container">
-       	<div class="row" style="float:left"><font size=5><strong>答卷统计数据</strong></font></div>
-       	       	  <a class="btn btn-default addMultiple"  href="getAnswerByQuesid?quesid=<%=ques.getId() %>" type="button" align="right" style="float:right;">
+       	<div class="row" style="float:left"><font size=5><strong>答卷统计数据</strong></font>
+       	 <button type='button' class='btn btn-default' onclick='downloadjpeg("<%=ques.getId() %>","<%=ques.getTitle() %>")'>导出页面为jpeg文件</button>
+       	  <button type='button' class='btn btn-default' onclick='downloadxml("<%=ques.getId() %>","<%=ques.getTitle() %>")'>导出数据为xml文件</button>
+       	<div id="jpegtip"> </div>
+       	</div>
+       	       	  <a class="btn btn-default"  href="getAnswerByQuesid?quesid=<%=ques.getId() %>" type="button" align="right" style="float:right;">
 				<i class="fa fa-bar-chart">查看答卷信息</i> 
 		</a>
 

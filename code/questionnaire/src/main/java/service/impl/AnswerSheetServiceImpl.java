@@ -81,7 +81,7 @@ public class AnswerSheetServiceImpl implements AnswerSheetService {
 	}
 	
 	@Override
-	public List<Answer> getAnswersByIp(String ip){
-		return ansDao.getAnswersByIp(ip);
+	public List<Answer> getAnswersByIp(String ip,int quesid){
+		return ansDao.getAnswersByIp(ip,quesid);
 	}
 }

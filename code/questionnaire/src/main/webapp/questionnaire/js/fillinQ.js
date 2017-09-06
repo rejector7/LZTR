@@ -282,7 +282,6 @@ function submit(){
 			}
 			if(Q['questions'][i]['options'][optionid*1]['hasWords']==true){
 				answer['words'] = $("input[name='" + i +"_" + optionid + "words']").val();
-				alert(answer['words']);
 				if(answer['words']==""){
 					document.getElementById(i + "message").innerText = "请输入第"+(optionid*1+1)+"选项中需填写的内容 " ;
 					ids.push((i*1)+1);
@@ -333,7 +332,7 @@ function submit(){
 			var labels = quess[i].getElementsByTagName("label");
 			var errors = 0;
 			for(var j=0;j<labels.length;j++){
-				if(labels[j].className=="error"){
+				if(labels[j].className=="error"&&labels[j].innerHTML!=""){
 					errors+=1;
 				}
 			}
