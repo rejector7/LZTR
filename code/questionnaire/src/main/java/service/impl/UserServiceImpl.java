@@ -1,5 +1,6 @@
 package service.impl;
 
+import java.security.Security;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -90,11 +91,12 @@ public class UserServiceImpl implements UserService {
 	
 	public static final String FROM = "nmgzhangran@163.com";
 	public static final String PWD = "327453nmg";
-	public static final String URL = "http://localhost:8080/questionnaire";
+	public static final String URL = "http://106.14.169.27:8080/questionnaire";
 	public static final int TIMELIMIT = 1000*60*60*24;
 	public static final String TITLE = "LZTR questionnaire account activation email";
 	public static final String HOST = "smtp.163.com";
 	public static final String SMTP = "smtp";
+	public static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
 			
 	
 	@Override
@@ -116,27 +118,27 @@ public class UserServiceImpl implements UserService {
 		sendMail(to, TITLE, content);
 		return user;
 	}
-	
+
+	@SuppressWarnings("restriction")
 	@Override
 	public void sendMail(String to, String title, String content) throws AddressException, MessagingException{
-		System.out.println("2-1");
+		Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
 		Properties props = new Properties();
-		System.out.println("2-1-1");
 		props.put("mail.smtp.host", HOST);
-		System.out.println("2-1-2");
 		props.put("mail.smtp.auth", "true");
-		System.out.println("2-1-3");
+        props.put("mail.smtp.socketFactory.class", SSL_FACTORY);
+        props.put("mail.smtp.socketFactory.fallback", "false");
+        props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.ssl.enable", "true");
 		Session session = Session.getInstance(props);
-		System.out.println(session);
-		System.out.println(session.toString());
 		session.setDebug(true);
-		System.out.println("2-2");
 		MimeMessage message = new MimeMessage(session);
 		message.setFrom(new InternetAddress(FROM));
 		message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 		message.addRecipient(Message.RecipientType.CC, new InternetAddress(FROM));
+		//message.addRecipient(Message.RecipientType.BCC, new InternetAddress(FROM));
 		message.setSubject(title);
-		System.out.println("2-3");
 		 message.setContent(content, "text/html;charset=gbk"); //发送HTML邮件，内容样式比较丰富  
 	       // message.setSentDate(new Date());//设置发信时间  
 	        message.saveChanges();//存储邮件信息  
