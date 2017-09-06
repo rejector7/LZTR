@@ -81,7 +81,7 @@
     
     
      <h2 color="#505050" align="center">欢迎注册LZTR问卷网！</h2>
-     <p align="right">已有账号？<a href="loginPage"><strong>登陆</strong></a></p>
+     <p align="right">已有账号？<a href="loginPage"><strong>登录</strong></a></p>
      <hr style="color:black;border-top:1px solid #C0C0C0">
 
 
