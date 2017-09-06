@@ -8,7 +8,6 @@
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
-  
       <filter>
   	<filter-name>SessionFilter</filter-name>
   	<filter-class>filter.SessionFilter</filter-class>
@@ -26,7 +25,7 @@
   	</init-param>	
   	<init-param>
   		<param-name>redirectPath</param-name>
-  		<param-value>/FrontPage</param-value>
+  		<param-value>/loginPage</param-value>
   	</init-param>
   	<init-param>
   		<param-name>diabletestfilter</param-name>

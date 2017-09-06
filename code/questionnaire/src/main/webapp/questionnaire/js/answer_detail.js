@@ -51,19 +51,29 @@ function Execute(arg1, arg2, arg3, arg4, quesid)
 		//单选题
 		else if(ques.type == "Single"){
 			if (ques.required == true){
-				if (ques.options[answ.option].hasWords == false){
-					AddText(i+1,ques.stem,'单选题','必答',ques.options[answ.option].option);
+				if(answ.option!=""){
+					if (ques.options[answ.option].hasWords == false){
+						AddText(i+1,ques.stem,'单选题','必答',ques.options[answ.option].option);
+					}
+					else{
+						AddText(i+1,ques.stem,'单选题','必答',ques.options[answ.option].option + '  ' + answ.words);
+					}
 				}
 				else{
-					AddText(i+1,ques.stem,'单选题','必答',ques.options[answ.option].option + '  ' + answ.words);
+					AddText(i+1,ques.stem,'单选题','必答',"");
 				}
 			}
 			else{
+				if(answ.option!=""){
 				if (ques.options[answ.option].hasWords == false){
 					AddText(i+1,ques.stem,'单选题','非必答',ques.options[answ.option].option);
 				}
 				else{
 					AddText(i+1,ques.stem,'单选题','非必答',ques.options[answ.option].option + '  ' + answ.words);
+				}
+				}
+				else{
+					AddText(i+1,ques.stem,'单选题','必答',"");
 				}
 			}
 		}

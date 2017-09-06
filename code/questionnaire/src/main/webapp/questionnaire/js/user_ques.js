@@ -137,10 +137,7 @@ $(function() {
 			message : 
 			'<input id="qnhref" class="form-control" value='+e.currentTarget.value
 			+' type="text"><input class="btn btn-default" type="button" onClick="copyUrl()" value="点击复制问卷链接" />'
-			+'<p id="copytip"></p>',
-		    callback : function() {
-		    	location.href = 'FrontPage';
-			}
+			+'<p id="copytip"></p>'
 		});
 	});
 	

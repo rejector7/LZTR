@@ -21,6 +21,6 @@ public interface AnswerSheetService {
 
 	void deleteAnswersByQuestionId(int quesid);
 
-	List<Answer> getAnswersByIp(String ip);
+	List<Answer> getAnswersByIp(String ip,int quesid);
 
 }

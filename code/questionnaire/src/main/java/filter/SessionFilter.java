@@ -49,12 +49,14 @@ public class SessionFilter implements Filter{
 		String[] loginList = loginStrings.split(";");
 		String[] adminList = adminStrings.split(";");
 		String from = ((HttpServletRequest) request).getServletPath();
-
+		
 		if(from.endsWith(".css")||from.endsWith(".js")||from.endsWith(".jpg")||from.endsWith(".jpeg")||from.endsWith(".map")||from.endsWith(".png")||from.endsWith(".ttf")||from.endsWith(".woff2")||from.endsWith(".woff")){
 			chain.doFilter(request, response);
 			return;
 		}
-		if(this.isContains(hrequest.getRequestURI(), loginList)){
+		System.out.println(hrequest.getRequestURI());
+		if(this.isContains(hrequest.getRequestURI(), loginList)||from.equals("/index.jsp")){
+			System.out.println(from);
 			chain.doFilter(request, response);
 			return;
 		}
