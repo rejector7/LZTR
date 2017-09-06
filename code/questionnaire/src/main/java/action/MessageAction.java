@@ -2,15 +2,18 @@ package action;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import model.Message;
 import model.User;
 import service.MessageService;
+import service.UserService;
 
 public class MessageAction extends BaseAction{
 	private MessageService messageService;
+	private UserService userService;
 	private String id;
 	private int sid;
 	private int rid;
@@ -20,8 +23,12 @@ public class MessageAction extends BaseAction{
 	
 	public void setMessageService(MessageService messageService){
 		this.messageService = messageService;
-	}
+	}	
 	
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -68,16 +75,21 @@ public class MessageAction extends BaseAction{
 	//发送消息，发送人一定是登录者
 	public String send1() throws Exception{
 		int userid = ((User)request().getSession().getAttribute("user")).getId();
+		if(rid==0)return null;
 		Message message = new Message(userid, rid, msg);
 		messageService.addMessage(message);
-		return "send1";
+		response().getWriter().print("success");
+		return null;
 	}
 	
 	public String send2() throws Exception{
+		msg = URLDecoder.decode(msg, "UTF-8");
 		int userid = ((User)request().getSession().getAttribute("user")).getId();
+		if(rid==0)return null;
 		Message message = new Message(userid, rid, msg);
 		messageService.addMessage(message);
-		return "send2";
+		response().getWriter().print("success");
+		return null;
 	}
 	
 	//将一个消息变成已读
@@ -98,6 +110,14 @@ public class MessageAction extends BaseAction{
 	public String allSend() throws Exception{
 		int userid = ((User)request().getSession().getAttribute("user")).getId();
 		List<Message> messages = messageService.getMessageBySid(userid);
+		List<String> names = new ArrayList<String>();
+		for(Message message:messages){
+			if(message.getRid()==0||userService.getUserById(message.getSid())==null){
+				names.add("不存在");
+			}
+			else names.add(userService.getUserById(message.getRid()).getUsername());
+		}
+		request().setAttribute("Names", names);
 		request().setAttribute("SendMessages", messages);
 		return "allSend";
 	}
@@ -106,6 +126,14 @@ public class MessageAction extends BaseAction{
 	public String allRece() throws Exception{
 		int userid = ((User)request().getSession().getAttribute("user")).getId();
 		List<Message> messages = messageService.getMessageByRid(userid);
+		List<String> names = new ArrayList<String>();
+		for(Message message:messages){
+			if(message.getSid()==0||userService.getUserById(message.getSid())==null){
+				names.add("用户已被删除或不存在");
+			}
+			else names.add(userService.getUserById(message.getSid()).getUsername());
+		}
+		request().setAttribute("Names", names);
 		request().setAttribute("ReceMessages", messages);
 		for(int i = 0; i < messages.size(); ++i){
 			Message message = messages.get(i);

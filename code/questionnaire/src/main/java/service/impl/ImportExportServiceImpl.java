@@ -57,23 +57,23 @@ public class ImportExportServiceImpl implements ImportExportService {
 				JSONObject backup = new JSONObject();
 				QuestionnaireQuestions ques = questionnairequestionsDao.getQuestionnaireById(id);
 				List<Answer> anss = ansDao.getAnswersByQuesId(id);
-				backup.put("questionnaireinfo", quesinfo.toString());
+				backup.put("quesinfo", quesinfo);
 				if(ques!=null){
-					backup.put("questionnairecontent", ques.getContent());
+					backup.put("ques", ques.getContent());
 				}
 				if(anss!=null&&(!anss.isEmpty())){
 					for(Answer ans:anss){
 						JSONObject ansfull = new JSONObject();
-						ansfull.put("answerinfo", ans.toString());
+						ansfull.put("ansinfo", ans);
 						AnswerSheet anst = anssheetDao.getAnswerSheetById(ans.getId());
 						if(anst!=null){
-							ansfull.put("answerer",anst.getUserid());
-							ansfull.put("answercontent", anst.getContent());
+							ansfull.put("anser",anst.getUserid());
+							ansfull.put("ans", anst.getContent());
 						}
-						backup.append("answers", ansfull);
+						backup.append("anss", ansfull);
 					}
 				}
-				else backup.append("answers", "null");
+				else backup.append("anss", "null");
 				allbackup.put(backup);
 			}
 			return allbackup.toString();
@@ -106,37 +106,97 @@ public class ImportExportServiceImpl implements ImportExportService {
 	}
 	
 	public void parseAndStore(JSONObject sbu) throws JSONException, ParseException{
-		JSONObject qninfoj = sbu.getJSONObject("quesinfo");
+		JSONObject qninfoj = new JSONObject(sbu.getString("quesinfo"));
     	String qnj = sbu.getString("ques");
-    	QuestionnaireQuestions qn = new QuestionnaireQuestions();
-    	qn.setContent(qnj);
-    	qn.setQuesid(qninfoj.getInt("id"));
-    	Questionnaire qninfo = new Questionnaire();
-    	qninfo.setId(qninfoj.getInt("id"));
-    	qninfo.setTitle(qninfoj.getString("title"));
-    	qninfo.setUserid(qninfoj.getInt("userid"));
-    	qninfo.setIsPublic(qninfoj.getInt("isPublic"));
-    	if(!qninfoj.getString("releaseTime").equals("null")){
-    		Date releaseTime = new SimpleDateFormat("yyyy-MM-dd KK:mm:ss").parse(qninfoj.getString("releaseTime"));
-    		qninfo.setReleaseTime(releaseTime);
+    	int newid = qninfoj.getInt("id");
+    	if(quesDao.getQuestionnaireById(newid)==null){
+        	Questionnaire qninfo = new Questionnaire();
+        	qninfo.setId(newid);
+        	qninfo.setTitle(qninfoj.getString("title"));
+        	qninfo.setUserid(qninfoj.getInt("userid"));
+        	qninfo.setIsPublic(qninfoj.getInt("isPublic"));
+        	if(!qninfoj.getString("releaseTime").equals("null")){
+        		Date releaseTime = new SimpleDateFormat("yyyy-MM-dd KK:mm:ss").parse(qninfoj.getString("releaseTime"));
+        		qninfo.setReleaseTime(releaseTime);
+        	}
+        	if(!qninfoj.getString("endTime").equals("null")){
+        		Date endTime = new SimpleDateFormat("yyyy-MM-dd KK:mm:ss").parse(qninfoj.getString("releaseTime"));
+        		qninfo.setEndTime(endTime);
+        	}
+        	qninfo.setStatus(qninfoj.getString("status"));
+        	newid = quesDao.addQuestionnaire(qninfo);
     	}
-    	if(!qninfoj.getString("endTime").equals("null")){
-    		Date endTime = new SimpleDateFormat("yyyy-MM-dd KK:mm:ss").parse(qninfoj.getString("releaseTime"));
-    		qninfo.setEndTime(endTime);
+    	else{
+    		Questionnaire qninfo = quesDao.getQuestionnaireById(newid);
+        	qninfo.setId(newid);
+        	qninfo.setTitle(qninfoj.getString("title"));
+        	qninfo.setUserid(qninfoj.getInt("userid"));
+        	qninfo.setIsPublic(qninfoj.getInt("isPublic"));
+        	if(!qninfoj.getString("releaseTime").equals("null")){
+        		Date releaseTime = new SimpleDateFormat("yyyy-MM-dd KK:mm:ss").parse(qninfoj.getString("releaseTime"));
+        		qninfo.setReleaseTime(releaseTime);
+        	}
+        	if(!qninfoj.getString("endTime").equals("null")){
+        		Date endTime = new SimpleDateFormat("yyyy-MM-dd KK:mm:ss").parse(qninfoj.getString("releaseTime"));
+        		qninfo.setEndTime(endTime);
+        	}
+        	qninfo.setStatus(qninfoj.getString("status"));
+        	quesDao.updateQuestionnaire(qninfo);
     	}
-    	qninfo.setStatus(qninfoj.getString("status"));
-    	quesDao.addQuestionnaire(qninfo);
-    	questionnairequestionsDao.addQuestionnaire(qn);
-    	JSONArray answers = sbu.getJSONArray("answers");
+    	if(questionnairequestionsDao.getQuestionnaireById(qninfoj.getInt("id"))==null){
+    		QuestionnaireQuestions qn = new QuestionnaireQuestions();
+        	qn.setContent(qnj);
+        	qn.setQuesid(newid);
+        	questionnairequestionsDao.addQuestionnaire(qn);
+    	}
+    	else{
+    		QuestionnaireQuestions qn = questionnairequestionsDao.getQuestionnaireById(qninfoj.getInt("id"));
+        	qn.setQuesid(newid);
+        	qn.setContent(qnj);
+        	questionnairequestionsDao.updateQuestionnaire(qn);
+    	}
+    	JSONArray answers = sbu.getJSONArray("anss");
     	if(answers.get(0).equals("null")){
     		return;
     	}
     	for(int i=0;i<answers.length();i++){
-    		
+    		JSONObject ans = answers.getJSONObject(i);
+    		JSONObject ansinfo = new JSONObject(ans.getString("ansinfo"));
+    		Answer aninfo = new Answer();
+    		AnswerSheet ansheet = new AnswerSheet();
+    		int ansnewid = ansinfo.getInt("id");
+    		if(ansDao.getAnswerById(ansinfo.getInt("id"))==null){
+    			aninfo.setIp(ansinfo.getString("ip"));
+        		aninfo.setQuesid(newid);
+        		Date time = new SimpleDateFormat("yyyy-MM-dd KK:mm:ss").parse(ansinfo.getString("time"));
+        		aninfo.setTime(time);
+        		ansnewid = ansDao.addAnswer(aninfo);
+    		}
+    		else{
+    			aninfo = ansDao.getAnswerById(ansinfo.getInt("id"));
+    			aninfo.setIp(ansinfo.getString("ip"));
+        		aninfo.setQuesid(newid);
+        		Date time = new SimpleDateFormat("yyyy-MM-dd KK:mm:ss").parse(ansinfo.getString("time"));
+        		aninfo.setTime(time);
+        		ansDao.updateAnswer(aninfo);
+    		}
+    		if(anssheetDao.getAnswerSheetById(ansinfo.getInt("id"))==null){
+    			ansheet.setAnswerid(ansnewid);
+        		ansheet.setUserid(ans.getInt("anser"));
+        		ansheet.setContent(ans.getString("ans"));
+        		anssheetDao.addAnswerSheet(ansheet);
+    		}
+    		else{
+    			ansheet.setAnswerid(ansnewid);
+        		ansheet.setUserid(ans.getInt("anser"));
+        		ansheet.setContent(ans.getString("ans"));
+        		anssheetDao.updateAnswerSheet(ansheet);
+    		}
     	}
 	}
 	
 	
+	@Override
 	public void backupImport(String url) throws IOException, JSONException, ParseException{
 		InputStream in = new FileInputStream(url); 
 		BufferedReader bf=new BufferedReader(new InputStreamReader(in,"UTF-8"));
@@ -144,10 +204,13 @@ public class ImportExportServiceImpl implements ImportExportService {
 	     String line="";  
 	     while((line=bf.readLine())!=null){  
 	         buffer.append(line);  
-	     }  
+	     }
 	    JSONArray backup = new JSONArray(buffer.toString());
 	    if(backup.getInt(0)==0){
-	    	
+	    	int len = backup.length();
+	    	for(int i=1;i<len;i++){
+	    		parseAndStore(backup.getJSONObject(i));
+	    	}
 	    }
 	    else {
 	    	JSONObject sbu = backup.getJSONObject(1);

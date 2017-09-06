@@ -2,8 +2,11 @@
     pageEncoding="utf-8"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="model.Message"%>
+<%@ page import="model.User"%>
 <!DOCTYPE html>
-
+<%
+	String path=request.getContextPath();
+%>
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8">
@@ -11,66 +14,133 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    
+	<meta charset="utf-8" />
+        <title>LZTR 问卷网</title>
 
-    <title>LZTR 问卷网</title>
-	<%
-	String path=request.getContextPath();
-	%>
-	<link href="<%=path%>/questionnaire/css/dataTables.bootstrap.css" 	rel="stylesheet">
-	<link href="<%=path%>/questionnaire/css/dataTables.responsive.css" 	rel="stylesheet">
-	<link href="<%=path%>/questionnaire/css/questionnaire.css" 			rel="stylesheet">
-	<link href="<%=path%>/questionnaire/css/font-awesome.min.css" 		rel="stylesheet" type="text/css">
     <!-- Bootstrap core CSS -->
     <link href="<%=path %>/questionnaire/css/bootstrap3.3.7.min.css" rel="stylesheet">
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="<%=path %>/questionnaire/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="<%=path %>/questionnaire/css/justified-nav.css" rel="stylesheet">
+        <link href="<%=path %>/questionnaire/css/font-awesome.min.css" rel="stylesheet">
+        	<link href="<%=path%>/questionnaire/css/dataTables.bootstrap.css" 	rel="stylesheet">
+        	
+	<link href="<%=path%>/questionnaire/css/dataTables.responsive.css" 	rel="stylesheet">
+	<link href="<%=path%>/questionnaire/css/questionnaire.css" 			rel="stylesheet">
+    <!-- Bootstrap core CSS -->
 
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="<%=path %>/questionnaire/js/ie-emulation-modes-warning.js"></script>
+
+
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
+    
+    <style type="text/css">
+        html, body {width:100%;height:100%;}
+        .bg {display: table;width: 100%;height: 10%;padding: 20px 0;text-align: center;color: #fff;background: url(questionnaire/img/homepage.jpg) no-repeat bottom center;background-color: #000;background-size: cover;}
+        .my-navbar {padding:20px 0;transition: background 0.5s ease-in-out, padding 0.5s ease-in-out;}
+        .my-navbar a{background:transparent !important;color:#fff !important}
+        .my-navbar a:hover {color:#45bcf9 !important;background:transparent;outline:0}
+        .my-navbar a {transition: color 0.5s ease-in-out;}
+        .top-nav {padding:0;background:#000;}
+        button.navbar-toggle {background-color:#fbfbfb;}
+        button.navbar-toggle > span.icon-bar {background-color:#dedede}
+        .dropdown-nemu>li>a{color:#333!important;display:block!important;}
+        
+		.mydiv{
+		width:250px;height:auto;border:#909090 1px solid;background:#fff;color:#333;
+		filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=3);
+		-moz-box-shadow: 2px 2px 10px #909090;
+		-webkit-box-shadow: 2px 2px 10px #909090;
+		box-shadow:2px 2px 10px #909090;
 
-  <body>
+		}
+    </style>
+</head>
+<body style="background:
+#F5F5F5">
+<% 
+User user = (User) session.getAttribute("user");
+%>
+    <nav class="navbar navbar-fixed-top my-navbar" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="FrontPage"><font size=5>LZTR 问卷网</font></a>
+            </div>
+            <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                <ul class="nav navbar-nav">
+				<% response.setCharacterEncoding("UTF-8"); 
+					if(session.getAttribute("user")!=null){ %>
+				
+				<% String role = user.getRole();
+				if(role.equals("admin")){ System.out.println("1111");%>
+				<li><a class="navbar-brand" href="<%=path %>/allUser"><span class="glyphicon glyphicon-wrench">系统信息管理</span></a></li>
+				<%} }%>
+                </ul>
+                
+                     <form class="navbar-form navbar-right" role="search" action="searchPro" accept-charset="UTF-8">
+              			<div class="form-group">
+                			<input type="text" class="form-control" name="key" placeholder="搜索问卷名称......">
+                			<button type="submit" class="btn btn-default-lg">搜索</button>
+                		</div>
+              		</form>
+                
+              <ul class="nav navbar-nav navbar-right">
+              <% 
+              if(user==null){ %>
+              <li data-toggle="modal" data-target="#signin-signup-tab" id="signin-button"><a href="loginPage" class="navbar-brand" >登陆</a></li>
+              <li data-toggle="modal" data-target="#signin-signup-tab" id="signup-button"><a href="signupPage" class="navbar-brand" >注册</a></li>
+              <li data-toggle="modal" data-target="#signin-signup-tab" id="signup-button"><a href="<%=path %>/HelpContact" class="navbar-brand" >帮助</a></li>
+              <%}else{ %>
+              	<li><a class="navbar-brand" href="<%=path %>/MyQuestionnaire"><span class="glyphicon glyphicon-list">我的问卷</span></a></li>
+              
+            	<li class="dropdown">
+                <a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-expanded="false">
+                    <span class="glyphicon glyphicon-user"><%=((User)session.getAttribute("user")).getUsername()%></span>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu" style="background:#333!important" role="menu" >
+                	<li><a href="<%=path %>/SelfInfo">个人信息</a></li>
+					<li><a href="<%=path %>/allSendMessage">我的消息</a></li>
+					<li role="presentation" class="divider"></li>
+					<li><a href="<%=path %>/HelpContact">帮助</a></li>
+                </ul>
+            	</li>
+            	
+               <li data-toggle="modal" data-target="#signin-signup-tab" id="signin-button"><a href="logoutPro" class="navbar-brand" >登出</a></li>
+               <%} %>
+              </ul>
+            </div>
+            
+
+        </div>
+    </nav>
+
+ <div class="bg jumbotron">
+      </div>
+      <div class="container">
+       	<div class="row" style="float:left"><font size=5><strong>我的消息</strong></font></div>
+
+ 	<hr>
+<hr style="color:black;border-top:1px solid #C0C0C0" >
   	<%
 		ArrayList<Message> messages = new ArrayList<Message>();
 		if (request.getAttribute("SendMessages") != null) {
 			messages = (ArrayList<Message>) request.getAttribute("SendMessages");
 		}
+		
+		ArrayList<String> names = new ArrayList<String>();
+		if (request.getAttribute("Names") != null) {
+			names = (ArrayList<String>) request.getAttribute("Names");
+		}
 	%>
-
-    <div class="container">
 
       <!-- The justified navigation menu is meant for single line per list item.
            Multiple lines will require custom code not provided by Bootstrap. -->
-      <div class="masthead">
-        <h1 class="text-muted">LZTR 问卷网 </h1>
-        <nav>
-          <ul class="nav nav-justified">
-            <li><a href="<%=path %>/FrontPage">首页</a></li>
-            <li><a href="<%=path %>/SelfInfo">个人信息</a></li>
-            <li><a href="<%=path %>/MyQuestionnaire">我的问卷</a></li>
-            <li><a href="<%=path %>/ReleaseQuestionnaire">问卷发布</a></li>
-            <li><a href="<%=path %>/FillQuestionnaire">填写问卷</a></li>
-            <li class="active"><a href="<%=path %>/allSendMessage">消息</a></li>
-            <li><a href="<%=path %>/HelpContact">帮助</a></li>
-            
-            <li><a href="<%=path %>/logoutPro">登出</a></li>
-            <%if(((String)session.getAttribute("role")).equals("admin")){%>
-				<li><a href="<%=path %>/allUser" ></i>系统信息管理</a></li>
-			<%}%>
-          </ul>
-        </nav>
-      </div>
+ 
 
 	  
 	 <div class="navbar-default sidebar" role="navigation">
@@ -87,19 +157,20 @@
 		<br/>
 		
 		<!-- 使用列表的形式将所有发送的消息都显示出来 -->
-		<div id="page-wrapper">
-			<div class="row">
-				<div class="col-lg-12">
+		<div id="page-wrapper" style="background:#F5F5F5">
+			<div class="row" >
+				<div class="col-lg-12" ></br>
 			
 <%
 for(int i = 0; i < messages.size(); ++i){
 	Message msg = messages.get(messages.size()-1-i);
+	String name = names.get(messages.size()-1-i);
 %> 				
 	<div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=i%>">
-                	To&nbsp;&nbsp;:&nbsp;&nbsp;  <%=msg.getRid() %>; &nbsp;&nbsp;&nbsp;    发送时间：<%=msg.getSenddate() %>
+                	发送至&nbsp;&nbsp;:&nbsp;&nbsp;  <%=name %>; &nbsp;&nbsp;&nbsp;    发送时间：<%=msg.getSenddate() %>
                 </a>
             </h4>
         </div>
@@ -148,5 +219,11 @@ function saveReport() {
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="<%=path %>/questionnaire/js/ie10-viewport-bug-workaround.js"></script>
+    		            <script>
+        $(window).scroll(function () {
+            if ($(".navbar").offset().top > 50) {$(".navbar-fixed-top").addClass("top-nav");
+            }else {$(".navbar-fixed-top").removeClass("top-nav");}
+        })
+        </script>
   </body>
 </html>

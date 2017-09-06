@@ -40,30 +40,10 @@
   <body>
 
     <div class="container">
-
-      <!-- The justified navigation menu is meant for single line per list item.
-           Multiple lines will require custom code not provided by Bootstrap. -->
-      <div class="masthead">
-        <h1 class="text-muted">LZTR 问卷网 </h1>
-        <nav>
-          <ul class="nav nav-justified">
-            <li><a href="<%=path %>/FrontPage">首页</a></li>
-            <li><a href="<%=path %>/SelfInfo">个人信息</a></li>
-            <li><a href="<%=path %>/MyQuestionnaire">我的问卷</a></li>
-            <li><a href="<%=path %>/ReleaseQuestionnaire">问卷发布</a></li>
-            <li class="active"><a href="">填写问卷</a></li>
-            <li><a href="<%=path %>/allSendMessage">消息</a></li>
-            <li><a href="<%=path %>/HelpContact">帮助</a></li>
-            <li><a href="<%=path %>/logoutPro">登出</a></li>
-            <%if(((String)session.getAttribute("role")).equals("admin")){%>
-				<li><a href="<%=path %>/allUser" ></i>系统信息管理</a></li>
-			<%}%>
-          </ul>
-        </nav>
-      </div>
       
       <div id = "questionnaire"></div>
       <form id = "form"></form>
+      <div id = "bin" hidden></div>
       <div class="row">&nbsp</div>
       <div align='center'>
       <button style='floating:right' class="btn btn-primary" onclick="submit()" type="button" style="floating:right">
@@ -71,10 +51,11 @@
 		</button>
 		<div id="errors">
 		</div>
-</div>
+	</div>
 
       <!-- Site footer -->
       <footer class="footer">
+      	<a href="<%=path %>/FrontPage">首页</a>
         <p>&copy; 2017 LZTR Group.</p>
       </footer>
 
@@ -83,14 +64,15 @@
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="<%=path %>/questionnaire/js/ie10-viewport-bug-workaround.js"></script>
-    <script src="questionnaire/js/jquery-1.11.1.min.js"></script>
-    <script src="questionnaire/js/bootstrap.min.js"></script>
-    <script src="questionnaire/js/bootbox.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/jquery-1.11.1.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/bootstrap.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/bootbox.min.js"></script>
     <script src="<%=path %>/questionnaire/js/jquery-ui.min.js"></script>
-            <script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
         <script src="<%=path %>/questionnaire/js/fillinQ.js"></script>
     	<script>
-	<%if(request.getParameter("quesid")==null){%>//alert("no questionnaire id input");
+	<%if(request.getParameter("quesid")==null){%>donothing();
 	<%}else{%>getQ(<%=request.getParameter("quesid")%>);
 	<%}%>
 	</script>

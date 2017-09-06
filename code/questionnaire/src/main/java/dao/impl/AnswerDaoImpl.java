@@ -52,4 +52,10 @@ public class AnswerDaoImpl extends HibernateDaoSupport implements AnswerDao {
 		return (List<Answer>)getHibernateTemplate()
 				.find("from Answer as a where a.quesid=?",quesid);
 	}
+	
+	@Override
+	public List<Answer> getAnswersByIp(String ip){
+		return (List<Answer>)getHibernateTemplate()
+				.find("from Answer as a where a.ip=?",ip);
+	}
 }

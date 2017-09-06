@@ -56,7 +56,14 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">问卷</h1>
+					<h1 class="page-header">问卷
+					<button class="btn btn-default backup" type="button"
+												data-id="0"
+												>
+												<i class="fa fa-copy"></i>全部备份
+												</button>
+					</h1>
+					
 				</div>
 			</div>
 			<!-- /.row -->
@@ -70,14 +77,14 @@
 									id="dataTables">
 									<thead>
 										<tr>
-										    <th>ID</th>
-											<th>User ID</th>
-											<th>Title</th>
-											<th>IsPublic</th>
-											<th>Release Time</th>
-											<th>End Time</th>
-											<th>Status</th>
-											<th>Operation</th>
+										    <th>问卷ID</th>
+											<th>用户ID</th>
+											<th>标题</th>
+											<th>是否公开</th>
+											<th  width="10%">发布时间</th>
+											<th width="10%">结束时间</th>
+											<th width="10%">发布状态</th>
+											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -89,16 +96,28 @@
 										    <td><%=ques.getId()%></td>
 											<td><%=ques.getUserid()%></td>
 											<td><%=ques.getTitle()%></td>
-											<td><%=ques.getIsPublic()%></td>
+											<%if(ques.getIsPublic()==1){%>
+											<td>公开</td>
+											<%}else{%>
+											<td>私密</td>
+											<%}%>
 											<td><%=ques.getReleaseTime()%></td>
 											<td><%=ques.getEndTime()%></td>
-											<td><%=ques.getStatus()%></td>
+											<%if(ques.getStatus().equals("pub")){%>
+											<td><%="已发布"%></td>
+											<%}else if(ques.getStatus().equals("end")){%>
+											<td><%="已结束"%></td>
+											<%}else if(ques.getStatus().equals("ban")){%>
+											<td><%="禁用"%></td>
+											<%}else if(ques.getStatus().equals("unp")){%>
+											<td><%="未发布"%></td>
+											<%}%>
 											
 											<td>
 												<!-- data-id what are they？ -->
 												<button class="btn btn-default delete" type="button"
 													data-id="<%=ques.getId()%>">
-													<i class="fa fa-trash"></i>
+													<i class="fa fa-trash"></i>删除
 												</button>
 												<button class="btn btn-default edit" type="button"
 													data-id="<%=ques.getId()%>"
@@ -109,12 +128,12 @@
 													data-endTime="<%=ques.getEndTime()%>"
 													data-status="<%=ques.getStatus()%>"
 													>
-													<i class="fa fa-edit"></i>
+													<i class="fa fa-edit"></i>编辑
 												</button>
 												<button class="btn btn-default backup" type="button"
 												data-id="<%=ques.getId() %>"
 												>
-												<i class="fa fa-copy"></i>backup
+												<i class="fa fa-copy"></i>备份
 												</button>
 											</td>
 										</tr>
@@ -136,7 +155,11 @@
 		<!-- /#page-wrapper -->
 	</div>
 	<!-- /#wrapper -->
-
+	<form action="<%=path %>/backupimport" method="post" enctype="multipart/form-data" id="uploadtxt">
+			<input type="file" name="file" id="file">
+			<input type="submit" value="导入">
+			<div id="uploadalert"></div>
+	</form>
 	<div class="modal fade" id="modal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -152,14 +175,12 @@
 						<div class="col-lg-12">
 							<form role="form">
 								<div class="form-group">
-									<label>Status 说明：</label>
-									<p>unp ： 未发布；  pub ： 已发布</p>
-									<p>end ： 已结束；  ban ： 禁用</p>
+									<label>Status</label>
 									<select class="form-control" id="selectf" name = "status">
-										<option>unp</option>
-										<option>pub</option>
-										<option>end</option>
-										<option>ban</option>
+										<option>未发布</option>
+										<option>已发布</option>
+										<option>已结束</option>
+										<option>禁用</option>
 									</select>
 								</div>
 							</form>
@@ -167,8 +188,8 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="save">Save</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="save">保存</button>
 				</div>
 			</div>
 		</div>

@@ -23,7 +23,15 @@ function Execute(arg1, arg2, arg3, arg4, quesid)
 	var answs = arg2;
 	$("#quesid").append(quesid);
 	$("#quesname").append(arg3);
-	$("#userid").append(arg4);
+	$("#reply").attr("data-rid",arg4);
+	if(String(arg4)=="0"){
+		$("#userid").append("不存在");
+		$("#replydiv").html("");
+	}
+	else{
+		$("#userid").append(arg4);
+	}
+	
 	//开始添加
 	var len = Size(quess);
 	for (var i = 0; i < len; ++i){
@@ -125,15 +133,17 @@ function Execute(arg1, arg2, arg3, arg4, quesid)
 	}
 }
 
-function downloadthis(){
+function downloadAnswerWord(){
 	var content="";
 	var headers = document.getElementsByTagName("p");
 	content += "<p>"+headers[0].innerHTML+"</p>";
 	content += "<p>"+headers[1].innerHTML+"</p>";
 	content += "<p>"+headers[2].innerHTML+"</p>";
+	var style = "table {border-collapse: collapse;}table, td, th {border: thin solid black;}";
 	var table = $("div.dataTable_wrapper").html();
 	content += table;
-	exportDoc(content,headers[1].getElementsByTagName("strong")[0].innerHTML.split("：")[1]);
+	var name = headers[1].getElementsByTagName("strong")[0].innerHTML.split("：")[1];
+	exportDoc(content,style,name);
 }
 
 function getcontent(ansid, quesid){
@@ -146,7 +156,7 @@ function getcontent(ansid, quesid){
 			quesid : quesid
 		},
 		success : function(data) { //把title，id都放在里面
-			Execute(data["Qques"],data["anst"],data["name"],data["userid"].quesid);
+			Execute(data["Qques"],data["anst"],data["name"],data["userid"],quesid);
 		}
 	});
 }

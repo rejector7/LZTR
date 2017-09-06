@@ -50,7 +50,7 @@ public class SessionFilter implements Filter{
 		String[] adminList = adminStrings.split(";");
 		String from = ((HttpServletRequest) request).getServletPath();
 
-		if(from.endsWith(".css")||from.endsWith(".js")||from.endsWith(".jpg")||from.endsWith(".jpeg")||from.endsWith(".png")||from.endsWith(".ttf")||from.endsWith(".woff2")||from.endsWith(".woff")){
+		if(from.endsWith(".css")||from.endsWith(".js")||from.endsWith(".jpg")||from.endsWith(".jpeg")||from.endsWith(".map")||from.endsWith(".png")||from.endsWith(".ttf")||from.endsWith(".woff2")||from.endsWith(".woff")){
 			chain.doFilter(request, response);
 			return;
 		}

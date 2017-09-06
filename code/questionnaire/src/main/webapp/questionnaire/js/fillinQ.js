@@ -1,5 +1,6 @@
 var Q = {};
 var QUESID = 0;
+var initrelelist = [];
 
 function getQ(id){
 	QUESID = id;
@@ -9,9 +10,29 @@ function getQ(id){
 		dataType : "json",
 		data : {
 			id:id,
+			status:"need"
 		},
 		success : function(data) {
+			if(data['status']=="notexist"){
+				var btn = document.getElementsByTagName("BUTTON")[0];
+				var div = btn.parentNode;
+				div.removeChild(btn);
+				var info = document.createElement("P");
+				info.innerHTML = "问卷不存在";
+				div.append(info);
+				return;
+			}
+			if(data['status']=="notpub"){
+				var btn = document.getElementsByTagName("BUTTON")[0];
+				var div = btn.parentNode;
+				div.removeChild(btn);
+				var info = document.createElement("P");
+				info.innerHTML = "本问卷已结束填写或被禁止填写，请返回主页或关闭本页面";
+				div.append(info);
+				return;
+			}
 			formQ(data);
+			
 		}
 	});
 }
@@ -38,6 +59,17 @@ function formQ(data){
 		else if(type=="Slider") result[i] = addSlider(question, i);
 	}
 	//alert(result);
+	var len = initrelelist.length;
+	var bin = document.getElementById("bin");
+	var form = document.getElementById("form");
+	for(j=0;j<len;j++){
+		var ques = document.getElementById(initrelelist[j]-1);
+		var substitute = document.createElement("div");
+		substitute.id = ques.id+"_tmp";
+		substitute.setAttribute("value", "5")
+		form.replaceChild(substitute,ques);
+		bin.appendChild(ques);
+	}
 }
 
 function addStem(question, i){
@@ -48,13 +80,13 @@ function addStem(question, i){
 	div.className = "container";
 	form.appendChild(div);
 	if(question['type']=="Multiple"&&question['min']!=undefined&&question['min']!=null&&question['min']!=""){
-		$("#"+i).html("<br><font size='4'>" + (i+1)  + " "+ question['stem'] + "("+question['min']+"~"+question['max']+"项)</font>");
+		$("#"+i).html("<p2><font size='4'>" + (i+1)  + " "+ question['stem'] + "("+question['min']+"~"+question['max']+"项)</font>");
 	}
-	else $("#"+i).html("<br><font size='4'>" + (i+1)  + " "+ question['stem'] + "</font>");
+	else $("#"+i).html("<p2><font size='4'>" + (i+1)  + " "+ question['stem'] + "</font>");
 	if(question['required']==true){
 		$("#"+i).append("<font color='red' size='4'>&nbsp*</font>");
 	}
-	$("#"+i).append("</br>");
+	$("#"+i).append("</p2>");
 }
 
 function addSubjective(question, i){
@@ -77,6 +109,7 @@ function addSubjective(question, i){
 
 function addSingle(question, i){
 	var div = document.getElementById(i);
+	var thisrele = [];
 	div.setAttribute("value", 1);
 	var newDiv = document.createElement("div");
 	newDiv.id = i + "div";
@@ -84,34 +117,52 @@ function addSingle(question, i){
 	div.appendChild(newDiv);
 	$("#"+i + "div").append("<strong><div id='" + i + "message' class='error'></div></strong>")
 	for(var j = 0 ; j < question['options'].length; j++){
+		if(question['options'][j]["relevancy"]==undefined){
+			var rele = "";
+		}
+		else{
+			var rele = question['options'][j]["relevancy"];
+			for(var p=0;p<rele.length;p++){
+				if(initrelelist.indexOf(rele[p])==-1){
+					initrelelist.push(rele[p]);
+				}
+			}
+			for(var p=0;p<rele.length;p++){
+				if(thisrele.indexOf(rele[p])==-1){
+					thisrele.push(rele[p]);
+				}
+			}
+		}
 		if(question['options'][j]['hasWords']==true){
 			if(question['required']==false){
-	$("#"+i + "div").append("<p><div class='radio' ><label  style='float:left'><input type='radio' value=" + j +" name=" + i + ">" +
+	$("#"+i + "div").append("<p><div class='radio' ><label  style='float:left'><input type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
 			"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
 		$("#"+i + "div").append("<div><input  name='" + i + "_" + j + "words'></div>");
 	}else{
-		$("#"+i + "div").append("<p><div class='radio' ><label  style='float:left'><input required type='radio' value=" + j +" name=" + i + ">" +
+		$("#"+i + "div").append("<p><div class='radio' ><label  style='float:left'><input required type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
 				"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
 			$("#"+i + "div").append("<div><input  name='" + i + "_" + j + "words'></div>");
 	}
 			}
 		else{
 			if(question['required']==false){
-			$("#"+i + "div").append("<p><div class='radio' ><label><input type='radio' value=" + j +" name=" + i + ">" +
+			$("#"+i + "div").append("<p><div class='radio' ><label><input type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
 					"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
 			}
 			else{
-				$("#"+i + "div").append("<p><div class='radio' ><label><input required type='radio' value=" + j +" name=" + i + ">" +
+				$("#"+i + "div").append("<p><div class='radio' ><label><input required type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
 						"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
 			}
 		}
 	$("#"+i + "div").append("</div></p>");
 	}
+	div.setAttribute("allrele", thisrele);
 	return;
 }
 
 function addMultiple(question, i){
 	var div = document.getElementById(i);
+	var thisrele = [];
 	div.setAttribute("value", 2);
 	var newDiv = document.createElement("div");
 	newDiv.id = i + "div";
@@ -119,16 +170,32 @@ function addMultiple(question, i){
 	div.appendChild(newDiv);
 	$("#"+i + "div").append("<strong><div id='" + i + "message' class='error'></div></strong>")
 	for(var j = 0 ; j < question['options'].length; j++){
+		if(question['options'][j]["relevancy"]==undefined){
+			var rele = "";
+		}
+		else{
+			var rele = question['options'][j]["relevancy"];
+			for(var p=0;p<rele.length;p++){
+				if(initrelelist.indexOf(rele[p])==-1){
+					initrelelist.push(rele[p]);
+				}
+			}
+			for(var p=0;p<rele.length;p++){
+				if(thisrele.indexOf(rele[p])==-1){
+					thisrele.push(rele[p]);
+				}
+			}
+		}
 		if(question['options'][j]['hasWords']==true){
 			if(question['required']==false){
 			$("#"+i + "div").append("<p><label  style='float:left'><input type='checkbox' value=" + j +" name=" + i + 
-					 ">" +
+					 " rele='"+rele+"' onclick='releEffect("+i+")'>" +
 					"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
 				$("#"+i + "div").append("<div><input  name='" + i + "_" + j + "words'>");
 			}
 			else{
 				$("#"+i + "div").append("<p><label  style='float:left'><input required type='checkbox' value=" + j +" name=" + i +
-						">" +
+						" rele='"+rele+"' onclick='releEffect("+i+")'>" +
 						"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
 					$("#"+i + "div").append("<div><input  name='" + i + "_" + j + "words'>");
 			}
@@ -136,17 +203,18 @@ function addMultiple(question, i){
 				else{
 					if(question['required']==false){
 					$("#"+i + "div").append("<p><label><input type='checkbox' value=" + j +" name=" + i +
-							">" +
+							" rele='"+rele+"' onclick='releEffect("+i+")'>" +
 							"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
 					}
 					else{
 						$("#"+i + "div").append("<p><label><input required type='checkbox' value=" + j +" name=" + i + 
-								">" +
+								" rele='"+rele+"' onclick='releEffect("+i+")'>" +
 								"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
 					}
 				}
 			$("#"+i + "div").append("</p>");
 			}
+	div.setAttribute("allrele", thisrele);
 	return;
 }
 
@@ -192,6 +260,7 @@ function addSlider(question, i){
 function submit(){
 	var form = document.getElementById("form");
 	var questions = form.childNodes;
+	var hidequestions = document.getElementById("bin").childNodes;
 	var length = questions.length;
 	var result=[];
 	var report = "<p>本次提交中，以下题号的问题回答有缺漏或回答格式不正确，请查看修改并重新提交：</p><p>";
@@ -213,8 +282,9 @@ function submit(){
 			}
 			if(Q['questions'][i]['options'][optionid*1]['hasWords']==true){
 				answer['words'] = $("input[name='" + i +"_" + optionid + "words']").val();
+				alert(answer['words']);
 				if(answer['words']==""){
-					document.getElementById(i + "message").innerText = "Please enter the message of option " + (optionid*1+1);
+					document.getElementById(i + "message").innerText = "请输入第"+(optionid*1+1)+"选项中需填写的内容 " ;
 					ids.push((i*1)+1);
 				}
 			}
@@ -234,7 +304,7 @@ function submit(){
 	    				word['word'] = $("input[name='" + i +"_" + j + "words']").val();
 	    				answer['words'].push(word);
 	    				if(word['word']==""){
-	    					document.getElementById(i + "message").innerText = "Please enter the message of option " + (j*1+1);
+	    					document.getElementById(i + "message").innerText = "请输入第"+(j*1+1)+"选项中需填写的内容 ";
 	    					ids.push((i*1+1));
 	    				}
 	    			}
@@ -242,11 +312,11 @@ function submit(){
 	    		}
 	    	}
 	    	if(count < Q['questions'][i]['min'] && count > 0){
-	    		document.getElementById(i + "message").innerText = "Please choose equal or more than " + Q['questions'][i]['min'] + " options";
+	    		document.getElementById(i + "message").innerText = "请选择不少于 " + Q['questions'][i]['min'] + "个选项";
 	    		ids.push((i*1+1));
 	    	}
 	    	if(count > Q['questions'][i]['max']){
-	    		$(i + "message").innerText = "Please choose equal or less than " + Q['questions'][i]['max'] + " options";
+	    		$(i + "message").innerText = "请选择不多于" + Q['questions'][i]['max'] + "个选项";
 	    		ids.push((i*1+1));
 	    	}
 	    	break;
@@ -290,16 +360,84 @@ function submit(){
 	jQuery.ajax({
 		url : 'addAnswer',  //get content
 		processData : true,
-		dataType : "json",
+		dataType : "text",
 		data : {
 			quesid : QUESID,
 			time : time,
 			content : encodeURI(encodeURI(JSON.stringify(result)))
 		},
 		success : function(data) { //把title，id都放在里面
-			alert("success")
+			if(data=="dupIp"){
+				$("#errors").html("本问卷在本ip地址已提交过，不可重复提交");
+			}
+			else{bootbox.alert({
+				message : '提交成功',
+			    callback : function() {
+			    	location.href = 'FrontPage';
+				}
+			});}
 		}
 	});
 
 
+}
+
+function releEffect(i){
+	var ques = document.getElementById(i);
+	var selected = [];
+	var notselected = [];
+	var opts = document.getElementsByName(i);
+	var reletext = ques.attributes.getNamedItem("allrele").textContent;
+	if(reletext==""){
+		var allrele = [];
+	}
+	else var allrele = reletext.split(",");
+	for(var j=0;j<opts.length;j++){
+		var rele = opts[j].attributes.getNamedItem("rele").textContent;
+		if(rele!=""){
+			rele = rele.split(",");
+			if(opts[j].checked==true){
+				for(var k=0;k<rele.length;k++){
+					if(selected.indexOf(rele[k])==-1){
+						selected.push(rele[k]);
+					}
+				}
+			}
+		}
+	}
+	for(var j=0;j<selected.length;j++){
+		allrele.splice(allrele.indexOf(selected[j]),1);
+	}
+	notselected = allrele;
+	var bin = document.getElementById("bin");
+	var form = document.getElementById("form");
+	var quess = form.childNodes;
+	for(var j=0;j<selected.length;j++){
+		if(quess[selected[j]-1].getAttribute("value")=='5'){
+			var tmp = quess[selected[j]-1];
+			var ques = document.getElementById(selected[j]-1);
+			form.replaceChild(ques,tmp);
+			bin.appendChild(tmp);
+		}
+	}
+	
+	for(var j=0;j<notselected.length;j++){
+		if(quess[notselected[j]-1].getAttribute("value")!='5'){
+			var ques = quess[notselected[j]-1];
+			var tmp = document.getElementById(notselected[j]-1+"_tmp");
+			var content = $("#"+(notselected[j]-1)).html();
+			form.replaceChild(tmp,ques);
+			bin.appendChild(ques);
+			$("#"+(notselected[j]-1)).html(content);
+		}
+	}
+}
+
+function donothing(){
+	var btn = document.getElementsByTagName("BUTTON")[0];
+	var div = btn.parentNode;
+	div.removeChild(btn);
+	var info = document.createElement("P");
+	info.innerHTML = "问卷不存在";
+	div.append(info);
 }

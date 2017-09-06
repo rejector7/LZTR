@@ -25,10 +25,11 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 	 * @see service.impl.QuestionnaireService#addQuestionnaire(model.QuestionnaireQuestions, model.Questionnaire)
 	 */
 	@Override
-	public void addQuestionnaire(QuestionnaireQuestions questions,Questionnaire ques){
+	public int addQuestionnaire(QuestionnaireQuestions questions,Questionnaire ques){
 		int id = quesDao.addQuestionnaire(ques);
 		questions.setQuesid(id);
 		questionnairequestionsDao.addQuestionnaire(questions);
+		return id;
 	}
 	
 
@@ -92,5 +93,10 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 	@Override
 	public void updateQuestionnaire(Questionnaire ques) {
 		quesDao.updateQuestionnaire(ques);
+	}
+	
+	@Override
+	public List<Questionnaire> getPublicQuestionnaires(){
+		return quesDao.getPublicQuestionnaires();
 	}
 }

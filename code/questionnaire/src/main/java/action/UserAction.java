@@ -1,6 +1,7 @@
 package action;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 
@@ -160,6 +161,11 @@ public class UserAction extends BaseAction{
 	}
 	
 	public String add() throws Exception {
+		username = URLDecoder.decode(username, "UTF-8");
+		wechat = URLDecoder.decode(wechat, "UTF-8");
+		country = URLDecoder.decode(country, "UTF-8");
+		city = URLDecoder.decode(city, "UTF-8");
+		job = URLDecoder.decode(job, "UTF-8");
 		if(userService.getUserByName(username)!=null){
 			response().getWriter().print("dupusername");
 			return null;
@@ -169,25 +175,24 @@ public class UserAction extends BaseAction{
 			return null;
 		}
 		if(role==null) role = "user";
-		System.out.println("1");
 		User user = new User(username, password, age, sex, email, country,
 				city, mobile, qq, wechat, role, job, null, null, null, 0);
-		System.out.println("2");
 		user = userService.activateMail(user);
-		
-		System.out.println("3");
 		userService.addUser(user);
-		System.out.println("4");
 		response().getWriter().print("success");
 		return null;
 	}
 	
 	public String update() throws Exception {
+		wechat = URLDecoder.decode(wechat, "UTF-8");
+		country = URLDecoder.decode(country, "UTF-8");
+		city = URLDecoder.decode(city, "UTF-8");
+		job = URLDecoder.decode(job, "UTF-8");
 		User user = userService.getUserById(id);
 		user.setCity(city);
 		user.setAge(age);
 		user.setCountry(country);
-		if(email!=null||email!=""){
+		if(email!=null&&email!=""){
 		user.setEmail(email);
 		}
 		user.setMobile(mobile);
@@ -196,9 +201,12 @@ public class UserAction extends BaseAction{
 		user.setWechat(wechat);
 		user.setJob(job);
 		userService.updateUser(user);
+		if(((User)session().getAttribute("user")).getId()==id){
 		session().removeAttribute("user");
 		session().setAttribute("user", user);
-		return "update";
+		}
+		response().getWriter().print("success");
+		return null;
 	}
 	
 	public String delete() throws Exception {
@@ -220,6 +228,7 @@ public class UserAction extends BaseAction{
 	}
 	
 	public String activate() throws AddressException, MessagingException{
+		System.out.println("aaaaaaaaaaa");
 		String email = request().getParameter("email");
 		String token = request().getParameter("token");
 		Long time = System.currentTimeMillis();
@@ -237,6 +246,7 @@ public class UserAction extends BaseAction{
 					//在时间内
 					u.setActivateTime(Long.parseLong("1"));
 					if(u.getToken().equals(token)){
+						System.out.println("aaaaaaaaaaa");
 						//激活码通过
 						u.setStatus(1);
 						u.setCreateDate(new Date());
@@ -264,7 +274,6 @@ public class UserAction extends BaseAction{
 
 	public String updatepass() throws IOException{
 		User user = userService.getUserById(id);
-		System.out.println("id:"+id+"oldpassword:"+oldpassword+"user.getPassword():"+user.getPassword());
 		if(!user.getPassword().equals(oldpassword)){
 			response().getWriter().print("false");
 			return null;

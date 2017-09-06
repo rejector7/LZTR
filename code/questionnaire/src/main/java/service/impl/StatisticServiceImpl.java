@@ -43,12 +43,14 @@ public class StatisticServiceImpl implements StatisticService {
 	 * @see service.impl.StatisticService#getAnssheetsByQuesid(int)
 	 */
 	@Override
-	public JSONArray getAnssheetsByQuesid(int quesid){
+	public JSONObject getAnssheetsByQuesid(int quesid){
 		JSONArray ansts = new JSONArray();
 		List<Answer> anss = ansDao.getAnswersByQuesId(quesid);
 		for(Answer ans : anss){
 			ansts.put(new JSONArray(anssheetDao.getAnswerSheetById(ans.getId()).getContent()));
 		}
-		return ansts;
+		JSONObject result = new JSONObject();
+		result.put("contents",ansts);
+		return result;
 	}
 }

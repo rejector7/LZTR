@@ -2,36 +2,30 @@ $(function(){
 	$("#registerform").validate({
 		messages:{
 			username:{
-				required:"Username is required."
+				required:"用户名必填"
 			},
 			password:{
-				required:"Password is required."
+				required:"密码必填"
 			},
 			age:{
 				digits:"请输入整数。"
 			},
 			confirmpassword:{
-				required:"Confirm Password is required.",
-				equalTo:"Please enter the same password again."
+				required:"请再次输入密码",
+				equalTo:"请再次输入相同的密码"
 			},
 			email:{
-				required:"Email is required.",
-				email:"Please enter a valid email address."
-			},
-			mobile:{
-				required:"Cellmobile number is required."
+				required:"邮箱必填",
+				email:"请输入一个有效的邮箱"
 			},
 			qq:{
-				digits:"Please enter a qq number."
+				digits:"请输入一个QQ账号"
 			}
 		}
 	});
 
 	$("#infoform").validate({
 		messages:{
-			mobile:{
-				required:"请输入手机号码"
-			},
 			qq:{
 				digits:"请输入一个正确的QQ号"
 			},
@@ -73,24 +67,24 @@ $(function(){
 		if(!$("#registerform").validate({
 			messages:{
 				username:{
-					required:"Username is required."
+					required:"用户名必填"
 				},
 				password:{
-					required:"Password is required."
+					required:"密码必填"
+				},
+				age:{
+					digits:"请输入整数。"
 				},
 				confirmpassword:{
-					required:"Confirm Password is required.",
-					equalTo:"Please enter the same password again."
+					required:"请再次输入密码",
+					equalTo:"请再次输入相同的密码"
 				},
 				email:{
-					required:"Email is required.",
-					email:"Please enter a valid email address."
-				},
-				mobile:{
-					required:"Cellmobile number is required."
+					required:"邮箱必填",
+					email:"请输入一个有效的邮箱"
 				},
 				qq:{
-					digits:"Please enter a cellmobile number."
+					digits:"请输入一个QQ账号"
 				}
 			}
 		}).form()){
@@ -100,35 +94,35 @@ $(function(){
 			url : 'signupPro',
 			dataType : "text",
 			data : {
-				username:username,
+				username:encodeURI(username),
 				password:password,
 				email:email,
 				mobile:mobile,
 				qq:qq,
-				wechat:wechat,
-				country:country,
-				city:city,
+				wechat:encodeURI(wechat),
+				country:encodeURI(country),
+				city:encodeURI(city),
 				age:age,
 				sex:sex,
-				job:job
+				job:encodeURI(job)
 			},
 			success : function(data) {
 				if(data=="dupusername"){
 					document.getElementById("dupname").innerHTML=
-						"User exists";
+						"用户已存在";
 					return;
 				}
 				else if(data=="dupemail"){
 					document.getElementById("dupname").innerHTML=
-						"Email exists";
+						"邮箱已被注册";
 					return;
 				}
 				else{
 					var addr = "https://mail." + email.split("@")[1];
 					bootbox.alert({
-						message : 'We have sent an activation email to your mailbox. Please check it out. ',
+						message : '我们发了一封激活用的邮件到你的邮箱，请接收',
 					    callback : function() {
-					    	//window.location.href= addr ;
+					    	window.location.href= addr ;
 						}
 					});
 				}
@@ -174,12 +168,12 @@ $(function(){
 				console.log(id);
 				if(data=="false"){
 					bootbox.alert({
-						message : 'old password is wrong',
+						message : '原密码输入错误',
 					});
 				}
 				else{
 				bootbox.alert({
-					message : 'Modify Successfully! ',
+					message : '修改成功！ ',
 					callback : function() {
 						location.href='loginPage';
 					}
@@ -205,9 +199,6 @@ $(function(){
 		var id = dataset.id;
 		if(!$("#infoform").validate({
 		messages:{
-			mobile:{
-				required:"请输入手机号码"
-			},
 			qq:{
 				digits:"请输入一个正确的QQ号"
 			},
@@ -219,7 +210,7 @@ $(function(){
 		}).form()){
 			return false;
 		}
-		if(!isPhoneNo(mobile)){
+		if(mobile!="" && !isPhoneNo(mobile)){
 			return false;
 		}
 		if (id != "") { // Edit
@@ -231,17 +222,17 @@ $(function(){
 					id : id,
 					sex : sex,
 					mobile : mobile,
-					country : country,
-					city : city,
+					country : encodeURI(country),
+					city : encodeURI(city),
 					age : age,
-					job : job,
-					wechat : wechat,
+					job : encodeURI(job),
+					wechat : encodeURI(wechat),
 					qq : qq
 				},
 				success : function(data) {
 					console.log(id);
 					bootbox.alert({
-						message : 'Modify Successfully! ',
+						message : '修改成功！ ',
 						callback : function() {
 							location.reload();
 						}
@@ -261,7 +252,7 @@ $(function(){
 				},
 				success : function(data) {
 					bootbox.alert({
-						message : 'Add Successfully! ',
+						message : '添加成功 ',
 						callback : function() {
 							location.reload();
 						}
@@ -295,7 +286,7 @@ $(function(){
 
 	
 	$(".modifypw").click(function(e){
-		$('#modalTitle2').html("modify password");
+		$('#modalTitle2').html("修改密码");
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
 		console.log(id);
@@ -310,11 +301,11 @@ $(function(){
 });
 function isPhoneNo(phone) { 
 	var pattern = /^1[34578]\d{9}$/; 
-	return pattern.test(phone); 
+	return pattern.test(phone)||(phone==""); 
 }
 function changephonechecker(){
 	if(!isPhoneNo($("input[name='mobile']").val())){
-		$("#phonechecker").html("<label style='color:#de615e;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;'>请输入一个正确的手机号码</label>");
+		$("#phonechecker").html("<label style='color:#de615e;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;'>请输入一个正确的11位手机号码</label>");
 	}
 	else{
 		$("#phonechecker").html("");

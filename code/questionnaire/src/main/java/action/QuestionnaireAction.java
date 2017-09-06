@@ -28,7 +28,8 @@ public class QuestionnaireAction extends BaseAction{
 	private Date endTime;
 	private String condi;
 	private String content;
-	
+	private int allowDup;
+
 	public String getContent() {
 		return content;
 	}
@@ -83,6 +84,12 @@ public class QuestionnaireAction extends BaseAction{
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
+	public int getAllowDup() {
+		return allowDup;
+	}
+	public void setAllowDup(int allowDup) {
+		this.allowDup = allowDup;
+	}
 	public void setQuesService(QuestionnaireService quesService) {
 		this.quesService = quesService;
 	}
@@ -118,26 +125,33 @@ public class QuestionnaireAction extends BaseAction{
 				ques.setReleaseTime(releaseTime);
 				ques.setStatus(status);
 			}
+			ques.setTitle(title);
 			quescontent.setContent(content);
+			ques.setAllowDup(allowDup);
 			quesService.updateQuestionnaire(quescontent, ques);
-			response().getWriter().write("success");
+			response().getWriter().write(Integer.valueOf(id).toString());
 			return null;
 		}
 		if(status==null) status = "unp";
 		int userid = ((User)request().getSession().getAttribute("user")).getId();
-		Questionnaire ques = new Questionnaire(userid,status,title,isPublic,releaseTime,endTime);
+		Questionnaire ques = new Questionnaire(userid,status,title,isPublic,releaseTime,endTime,allowDup);
 		QuestionnaireQuestions quescontent = new QuestionnaireQuestions(content);
-		quesService.addQuestionnaire(quescontent, ques);
-		response().getWriter().write("success");
+		int tmpid = quesService.addQuestionnaire(quescontent, ques);
+		response().getWriter().write(Integer.valueOf(tmpid).toString());
 		return null;
 	}
 	
 	public String update() throws IOException {
 		Questionnaire ques = quesService.getQuestionnaireById(id);
+		if(ques.getStatus().equals("ban")){
+			response().getWriter().print("success");
+			return null;
+		}
 		ques.setEndTime(endTime);
 		ques.setIsPublic(isPublic);
 		ques.setReleaseTime(releaseTime);
 		ques.setStatus(status);
+		ques.setAllowDup(allowDup);
 		quesService.updateQuestionnaire(ques);
 		response().getWriter().print("success");
 		return null;
@@ -155,6 +169,7 @@ public class QuestionnaireAction extends BaseAction{
 	 * @return
 	 */
 	public String delete1(){
+		ansService.deleteAnswersByQuestionId(id);
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
 		quesService.deleteQuestionnaire(quescontent, ques);
@@ -162,6 +177,7 @@ public class QuestionnaireAction extends BaseAction{
 	}
 	
 	public String delete2(){
+		ansService.deleteAnswersByQuestionId(id);
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
 		quesService.deleteQuestionnaire(quescontent, ques);
@@ -175,9 +191,25 @@ public class QuestionnaireAction extends BaseAction{
 	 */
 	public String get() throws IOException{
 		Questionnaire ques = quesService.getQuestionnaireById(id);
+		if(ques==null){
+			JSONObject questot = new JSONObject();
+			questot.put("status", "notexist");
+			response().getWriter().print(questot);
+			return null;
+		}
+		if(status!=null&&status.equals("need")){
+			if(!ques.getStatus().equals("pub")){
+				JSONObject questot = new JSONObject();
+				questot.put("status", "notpub");
+				response().getWriter().print(questot);
+				return null;
+			}
+		}
 		QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(id);
 		JSONObject questot = new JSONObject(quescontent.getContent());
 		questot.put("title", ques.getTitle());
+		questot.put("allowdup", ques.getAllowDup());
+		questot.put("status", "pub");
 		response().setCharacterEncoding("utf-8");
 		response().setContentType("text/html;charset:utf-8");
 		response().getWriter().print(questot.toString());
@@ -212,6 +244,28 @@ public class QuestionnaireAction extends BaseAction{
 		List<Questionnaire> Questionnaires = quesService.getQuestionnaireByUserId(userid);
 		request().setAttribute("MyQuess", Questionnaires);
 		return "My";
+	}
+	
+	public String propel(){
+		List<Questionnaire> questionnaires = quesService.getPublicQuestionnaires();
+		if(questionnaires.size()>=6){
+		for(int i=0;i<6;i++){
+			QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(questionnaires.get(i).getId());
+			JSONObject questot = new JSONObject(quescontent.getContent());
+			String intro = questot.getString("introduction");
+			request().setAttribute(i + "intro", intro);
+		}
+		}
+		else {
+			for(int i=0;i<questionnaires.size();i++){
+				QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(questionnaires.get(i).getId());
+				JSONObject questot = new JSONObject(quescontent.getContent());
+				String intro = questot.getString("introduction");
+				request().setAttribute(i + "intro", intro);
+			}
+		}
+		request().setAttribute("quesByTime", questionnaires);
+		return SUCCESS;
 	}
 }
 

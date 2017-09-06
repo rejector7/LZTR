@@ -65,12 +65,13 @@
       
       <div id = "questionnaire"></div>
       <form id = "form"></form>
+      <div id = "bin" hidden></div>
       <div class="row">&nbsp</div>
       <div align='center'>
       <button style='floating:right' class="btn btn-primary" onclick="wordexport()" type="button" style="floating:right">
 			<i class="fa fa-download fa-2x">导出为.doc文件</i>
 		</button>
-</div>
+		</div>
 
       <!-- Site footer -->
       <footer class="footer">
@@ -82,16 +83,17 @@
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="<%=path %>/questionnaire/js/ie10-viewport-bug-workaround.js"></script>
-    <script src="questionnaire/js/jquery-1.11.1.min.js"></script>
-    <script src="questionnaire/js/bootstrap.min.js"></script>
-    <script src="questionnaire/js/bootbox.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/jquery-1.11.1.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/bootstrap.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/bootbox.min.js"></script>
     <script src="<%=path %>/questionnaire/js/jquery-ui.min.js"></script>
     <script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
+    <script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
     <script src="<%=path %>/questionnaire/js/previewQ.js"></script>
     <script src="<%=path %>/questionnaire/js/questionnaireExport.js"></script>
     <script src="<%=path %>/questionnaire/js/download.js"></script>
     <script>
-	<%if(request.getParameter("quesid")==null){%>//alert("no questionnaire id input");
+	<%if(request.getParameter("quesid")==null){%>donothing();
 	<%}else{%>getQ(<%=request.getParameter("quesid")%>);
 	<%}%>
 	</script>

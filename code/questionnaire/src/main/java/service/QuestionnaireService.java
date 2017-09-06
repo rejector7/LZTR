@@ -11,7 +11,7 @@ public interface QuestionnaireService {
 	 * @param questions
 	 * @param ques
 	 */
-	void addQuestionnaire(QuestionnaireQuestions questions, Questionnaire ques);
+	int addQuestionnaire(QuestionnaireQuestions questions, Questionnaire ques);
 
 	/**
 	 * Update a questionnaire,including its basic information and content
@@ -62,6 +62,8 @@ public interface QuestionnaireService {
 	 * @return
 	 */
 	List<Questionnaire> findQuestionnaires(String condi);
+	
+	List<Questionnaire> getPublicQuestionnaires();
 
 }
 
