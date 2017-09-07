@@ -9,7 +9,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>登陆</title>
+        <title>登录</title>
 
         <!-- CSS -->
         <link rel="stylesheet" href="<%=path %>/questionnaire/css/css.css">
@@ -45,7 +45,7 @@
                     <div class="row" >   
                           <div class="col-sm-8">
                           <br><br>
-                                    <h1><font color="white">现在登陆</font></h1>
+                                    <h1><font color="white">现在登录</font></h1>
                                     <h1><font color="white">LZTR在线问卷网站！</font></h1>
                             		<p><font color="white">输入您的账户名与密码</font></p>
                             		<p><font color="white">没有账号？</font><a href="signupPage"><strong>注册</strong></a></p>
@@ -72,7 +72,7 @@
 			                        	<label  for="form-password">密码</label>
 			                        	<input type="password" name="password"  class="form-password form-control" id="form-password">
 			                        </div>
-			                        <button type="submit" class="btn btn-success">登陆！</button>
+			                        <button type="submit" class="btn btn-success">登录！</button>
 			                    </form>
 		                    </div>
                         </div>

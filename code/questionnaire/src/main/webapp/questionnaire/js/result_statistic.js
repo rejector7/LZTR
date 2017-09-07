@@ -83,13 +83,6 @@ function formStatistic(data){
 				$("#" + i+ "_" + j+ "tr").append('<td>' + result[j] + "</td>");
 				$("#" + i+ "body").append('</tr>');
 			}
-			/*draw(label, result, i);
-			var button = document.createElement("button");
-			button.className="btn btn-default";
-			//alert(canvas.id);
-			button.onclick=function(){downloadimg(canvas.id)};
-			button.innerText="下载图片";
-			div.appendChild(button);*/
 			drawButton(i, label, result);
 		}
 		else if(type=="Multiple"){
@@ -319,9 +312,13 @@ function downloadjpeg(id,title){
 	$("#jpegtip").html("生成jpeg中");
 	var div = document.getElementById("container");
 	var btns = div.getElementsByTagName("BUTTON");
+	var as = div.getElementsByTagName("A");
 	for(var i=0;i<btns.length;i++){
 		btns[i].removeAttribute("class");
 		btns[i].setAttribute("hidden",true);
+	}
+	for(var i=0;i<as.length;i++){
+		as[i].setAttribute("hidden",true);
 	}
 	html2canvas(div, {
         onrendered:function(canvas) {
@@ -334,6 +331,9 @@ function downloadjpeg(id,title){
 	for(var i=0;i<btns.length;i++){
 		btns[i].removeAttribute("hidden");
 		btns[i].setAttribute("class","btn btn-default");
+	}
+	for(var i=0;i<as.length;i++){
+		as[i].removeAttribute("hidden");
 	}
 }
 
