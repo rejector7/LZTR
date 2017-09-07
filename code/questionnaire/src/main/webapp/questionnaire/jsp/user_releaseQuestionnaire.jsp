@@ -41,7 +41,7 @@
 	         <link rel="stylesheet" href="questionnaire/css/validation.css">
     <style type="text/css">
         html, body {width:100%;height:100%;}
-        .bg {display: table;width: 100%;height: 10%;padding: 20px 0;text-align: center;color: #fff;background: url(questionnaire/img/homepage.jpg) no-repeat bottom center;background-color: #000;background-size: cover;}
+        .bg {display: table;width: 100%;height: 10%;padding: 40px 0;text-align: center;color: #fff;background: url(questionnaire/img/homepage.jpg) no-repeat bottom center;background-color: #000;background-size: cover;}
         .my-navbar {padding:20px 0;transition: background 0.5s ease-in-out, padding 0.5s ease-in-out;}
         .my-navbar a{background:transparent !important;color:#fff !important}
         .my-navbar a:hover {color:#45bcf9 !important;background:transparent;outline:0}
@@ -69,21 +69,10 @@
 User user = (User) session.getAttribute("user");
 %>
  
-     
- <div class="bg jumbotron"><font size=5><strong>编辑问卷</strong></font></div>
-    <div class="container" ><br>
-		
-		<div class="row ">
-			 <label ><font size="5">标题</font></label>
-			 <input type="text" name="title"  class="form-control" maxlength="255">
-		</div>
-		<div class="row">
-			 <label  ><font size="5">简介</font></label>
-			 <input type="text" name="introduction"  class="form-control">
-		</div><br>
-		<div class="row">
-			 <input type="checkbox" id="allowDup" checked>
-			 <label ><font size="5">是否允许同一IP重复作答?</font></label>
+    <nav class="navbar navbar-fixed-top my-navbar" role="navigation">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                <form class="navbar-form navbar-left" role="search" action="searchPro" accept-charset="UTF-8">
 			      		<button class="btn btn-default submit" type="button" style="float:right">
 				<i class="fa fa-save" >保存</i>
 		</button>
@@ -100,25 +89,54 @@ User user = (User) session.getAttribute("user");
 				<%} else{%>
 				发布<%} %></i>
 		</button>
+                </form>
+                
+                     <form class="navbar-form navbar-right" role="search" action="searchPro" accept-charset="UTF-8">
+		<button class="btn btn-default addBlank" type="button" style="float:right;">
+				<i class="fa fa-plus  ">填空题</i>
+		</button>
+		<button class="btn btn-default addSingle"  type="button" style="float:right;">
+				<i class="fa fa-plus  ">单选题</i>
+		</button>
+		<button class="btn btn-default addMultiple"  type="button" style="float:right;">
+				<i class="fa fa-plus  ">多选题</i>
+		</button>
+		<button class="btn btn-default addSlider"  type="button" style="float:right;">
+				<i class="fa fa-plus ">滑块题</i>
+		</button>
+              		</form>
+                
+
+            </div>
+            
+
+        </div>
+    </nav>
+     
+  <div class="bg jumbotron">
+        <p><font size='10'>编辑问卷</font></p>
+      </div>
+    <div class="container" ><br>
+		
+		<div class="row ">
+			 <label ><font size="5">标题</font></label>
+			 <input type="text" name="title"  class="form-control" maxlength="255">
+		</div>
+		<div class="row">
+			 <label  ><font size="5">简介</font></label>
+			 <input type="text" name="introduction"  class="form-control">
+		</div><br>
+		<div class="row">
+			 <input type="checkbox" id="allowDup" checked>
+			 <label ><font size="5">是否允许同一IP重复作答?</font></label>
+
 		</div>
 		
 		
 		<hr style="color:black;border-top:1px solid #C0C0C0">
 		 	<div class="row"  style="float:left"><font size=5><strong>添加题目</strong></font></div>
 		      
-      
-		<button class="btn btn-default addBlank" type="button" style="float:right">
-				<i class="fa fa-plus  ">填空题</i>
-		</button>
-		<button class="btn btn-default addSingle"  type="button" style="float:right">
-				<i class="fa fa-plus  ">单选题</i>
-		</button>
-		<button class="btn btn-default addMultiple"  type="button" style="float:right">
-				<i class="fa fa-plus  ">多选题</i>
-		</button>
-		<button class="btn btn-default addSlider"  type="button" style="float:right">
-				<i class="fa fa-plus ">滑块题</i>
-		</button>
+
 		<br><hr>
 
     </div > <!-- /container -->
@@ -210,6 +228,11 @@ User user = (User) session.getAttribute("user");
 	update(<%=((Questionnaire)request.getAttribute("quesinfo")).getId() %>);
 	<%}%>
 	</script>
-
+        <script>
+        $(window).scroll(function () {
+            if ($(".navbar").offset().top > 50) {$(".navbar-fixed-top").addClass("top-nav");
+            }else {$(".navbar-fixed-top").removeClass("top-nav");}
+        })
+        </script>
   </body>
 </html>

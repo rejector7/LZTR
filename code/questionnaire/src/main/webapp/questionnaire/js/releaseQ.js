@@ -178,6 +178,7 @@ $(function() {
 				callback : function(test) {
 					if (test) {
 						jQuery.ajax({
+							type: "post",
 							url : 'addQuestionnaire',
 							processData : true,
 							dataType : "text",
@@ -203,6 +204,7 @@ $(function() {
 			return;
 		}
 		jQuery.ajax({
+			type: "post",
 			url : 'addQuestionnaire',
 			processData : true,
 			dataType : "text",
@@ -394,6 +396,7 @@ $(function() {
 				callback : function(test) {
 					if (test) {
 						jQuery.ajax({
+							 type: "post",
 							url : 'addQuestionnaire',
 							processData : true,
 							dataType : "text",
@@ -414,6 +417,7 @@ $(function() {
 			return;
 		}
 		jQuery.ajax({
+			 type: "post",
 			url : 'addQuestionnaire',
 			processData : true,
 			dataType : "text",
@@ -618,6 +622,7 @@ $(function() {
 				callback : function(test) {
 					if (test) {
 						jQuery.ajax({
+							 type: "post",
 							url : 'addQuestionnaire',
 							processData : true,
 							dataType : "text",
@@ -650,6 +655,7 @@ $(function() {
 			return;
 		}
 		jQuery.ajax({
+			 type: "post",
 			url : 'addQuestionnaire',
 			processData : true,
 			dataType : "text",
@@ -1435,7 +1441,7 @@ function addBlank() {
 			"<div class='col-lg-3' id='" + value + "button'></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
-			"<input class='form-control' name='" + value +"' onchange='changeReleQInQues("+value+")'></div>" +
+			"<input class='form-control' name='" + value +"' ></div>" +
 			"<div class='col-lg-2'>" +
 			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</font></label></div>"+
 			"</div>" +
