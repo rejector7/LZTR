@@ -81,12 +81,7 @@ User user = (User) session.getAttribute("user");
 				<%} }%>
                 </ul>
                 
-                     <form class="navbar-form navbar-right" role="search" action="searchPro" accept-charset="UTF-8">
-              			<div class="form-group">
-                			<input type="text" class="form-control" name="key" placeholder="搜索问卷名称......">
-                			<button type="submit" class="btn btn-default-lg">搜索</button>
-                		</div>
-              		</form>
+
                 
               <ul class="nav navbar-nav navbar-right">
               <% 
@@ -221,6 +216,7 @@ $(function() {
 			 return false;
 		 }
 			jQuery.ajax({
+				type: "post",
 				url : 'send1Message',
 				processData : true,
 				dataType : "text",

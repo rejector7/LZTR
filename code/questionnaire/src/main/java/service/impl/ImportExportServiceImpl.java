@@ -143,7 +143,7 @@ public class ImportExportServiceImpl implements ImportExportService {
         	qninfo.setStatus(qninfoj.getString("status"));
         	quesDao.updateQuestionnaire(qninfo);
     	}
-    	if(questionnairequestionsDao.getQuestionnaireById(qninfoj.getInt("id"))==null){
+    	if(questionnairequestionsDao.getQuestionnaireById(newid)==null){
     		QuestionnaireQuestions qn = new QuestionnaireQuestions();
         	qn.setContent(qnj);
         	qn.setQuesid(newid);

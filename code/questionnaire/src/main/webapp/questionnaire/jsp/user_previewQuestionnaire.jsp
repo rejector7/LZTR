@@ -41,27 +41,9 @@
 
     <div class="container">
 
-      <!-- The justified navigation menu is meant for single line per list item.
-           Multiple lines will require custom code not provided by Bootstrap. -->
-      <div class="masthead">
-        <h1 class="text-muted">LZTR 问卷网 </h1>
-        <nav>
-          <ul class="nav nav-justified">
-            <li><a href="<%=path %>/FrontPage">首页</a></li>
-            <li><a href="<%=path %>/SelfInfo">个人信息</a></li>
-            <li><a href="<%=path %>/MyQuestionnaire">我的问卷</a></li>
-            <li><a href="<%=path %>/ReleaseQuestionnaire">问卷发布</a></li>
-            <li class="active"><a href="">填写问卷</a></li>
-            <li><a href="<%=path %>/allSendMessage">消息</a></li>
-            <li><a href="<%=path %>/HelpContact">帮助</a></li>
-            
-            <li><a href="<%=path %>/logoutPro">登出</a></li>
-            <%if(((String)session.getAttribute("role")).equals("admin")){%>
-				<li><a href="<%=path %>/allUser" ></i>系统信息管理</a></li>
-			<%}%>
-          </ul>
-        </nav>
-      </div>
+		      <a style='floating:right' class="btn btn-default" href="MyQuestionnaire" type="button" style="floating:right">
+			<i class="fa fa-mail-reply fa-2x">返回我的问卷</i>
+		</a>
       
       <div id = "questionnaire"></div>
       <form id = "form"></form>
@@ -71,6 +53,7 @@
       <button style='floating:right' class="btn btn-primary" onclick="wordexport()" type="button" style="floating:right">
 			<i class="fa fa-download fa-2x">导出为.doc文件</i>
 		</button>
+
 		</div>
 
       <!-- Site footer -->
