@@ -357,6 +357,7 @@ function submit(){
 	var time = t.getFullYear()+"-"+(t.getMonth()+1)+"-"+t.getDate()
 						+" "+t.getHours()+":"+t.getMinutes()+":"+t.getSeconds();     
 	jQuery.ajax({
+		 type: "post",
 		url : 'addAnswer',  //get content
 		processData : true,
 		dataType : "text",
