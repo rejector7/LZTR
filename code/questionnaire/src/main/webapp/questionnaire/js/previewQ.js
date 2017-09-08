@@ -1,7 +1,6 @@
 var Q = {};
 var QUESID = 0;
 var initrelelist = [];
-
 function getQ(id){
 	QUESID = id;
 	jQuery.ajax({
@@ -26,7 +25,6 @@ function getQ(id){
 		}
 	});
 }
-
 function formQ(data){
 	Q = data;
 	var title = data['title'];
@@ -48,7 +46,6 @@ function formQ(data){
 		else if(type=="Multiple") result[i] = addMultiple(question, i);
 		else if(type=="Slider") result[i] = addSlider(question, i);
 	}
-	//alert(result);
 	var len = initrelelist.length;
 	var bin = document.getElementById("bin");
 	var form = document.getElementById("form");
@@ -61,7 +58,6 @@ function formQ(data){
 		bin.appendChild(ques);
 	}
 }
-
 function addStem(question, i){
 	var form = document.getElementById("form");
 	//create stem
@@ -78,7 +74,6 @@ function addStem(question, i){
 	}
 	$("#"+i).append("</p2>");
 }
-
 function addSubjective(question, i){
 	var div = document.getElementById(i);
 	div.setAttribute("value", 0);
@@ -96,7 +91,6 @@ function addSubjective(question, i){
 	}
 	return;
 }
-
 function addSingle(question, i){
 	var div = document.getElementById(i);
 	var thisrele = [];
@@ -148,7 +142,6 @@ function addSingle(question, i){
 	div.setAttribute("allrele", thisrele);
 	return;
 }
-
 function addMultiple(question, i){
 	var div = document.getElementById(i);
 	var thisrele = [];
@@ -206,7 +199,6 @@ function addMultiple(question, i){
 	div.setAttribute("allrele", thisrele);
 	return;
 }
-
 function addSlider(question, i){
 	var div = document.getElementById(i);
 	div.setAttribute("value", 3);
@@ -245,7 +237,6 @@ function addSlider(question, i){
       });
 	return;
 }
-
 function wordexport(){
 	var content = $("#questionnaire").html();
 	var fc = "";
@@ -340,7 +331,6 @@ function wordexport(){
 	var filename = header.getElementsByTagName("h1")[0].getElementsByTagName("font")[0].innerHTML;
 	exportDoc(content,filename)
 }
-
 function releEffect(i){
 	var ques = document.getElementById(i);
 	var selected = [];
@@ -379,7 +369,6 @@ function releEffect(i){
 			bin.appendChild(tmp);
 		}
 	}
-	
 	for(var j=0;j<notselected.length;j++){
 		if(quess[notselected[j]-1].getAttribute("value")!='5'){
 			var ques = quess[notselected[j]-1];
@@ -391,7 +380,6 @@ function releEffect(i){
 		}
 	}
 }
-
 function donothing(){
 	var btn = document.getElementsByTagName("BUTTON")[0];
 	var div = btn.parentNode;

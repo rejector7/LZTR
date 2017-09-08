@@ -1,21 +1,16 @@
 package service.impl;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import dao.AnswerDao;
 import dao.AnswerSheetDao;
 import dao.QuestionnaireDao;
@@ -25,7 +20,6 @@ import model.AnswerSheet;
 import model.Questionnaire;
 import model.QuestionnaireQuestions;
 import service.ImportExportService;
-
 public class ImportExportServiceImpl implements ImportExportService {
 	private QuestionnaireQuestionsDao questionnairequestionsDao;
 	private QuestionnaireDao quesDao;
@@ -104,7 +98,6 @@ public class ImportExportServiceImpl implements ImportExportService {
 		allbackup.put(backup);
 		return allbackup.toString();
 	}
-	
 	public void parseAndStore(JSONObject sbu) throws JSONException, ParseException{
 		JSONObject qninfoj = new JSONObject(sbu.getString("quesinfo"));
     	String qnj = sbu.getString("ques");
@@ -194,8 +187,6 @@ public class ImportExportServiceImpl implements ImportExportService {
     		}
     	}
 	}
-	
-	
 	@Override
 	public void backupImport(String url) throws IOException, JSONException, ParseException{
 		InputStream in = new FileInputStream(url); 
@@ -216,5 +207,6 @@ public class ImportExportServiceImpl implements ImportExportService {
 	    	JSONObject sbu = backup.getJSONObject(1);
 	    	parseAndStore(sbu);
 	    }
+	    bf.close();
 	}
 }

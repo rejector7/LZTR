@@ -1,24 +1,10 @@
 package action;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.List;
-
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import model.Answer;
-import model.AnswerSheet;
-import model.Questionnaire;
-import model.QuestionnaireQuestions;
-import service.AnswerSheetService;
 import service.ImportExportService;
-import service.QuestionnaireService;
-
 public class ImportExportAction extends BaseAction{
-
 	private static final long serialVersionUID = 1L;
 	private int ansid;
 	private int quesid;
@@ -52,7 +38,6 @@ public class ImportExportAction extends BaseAction{
 		response().getWriter().print(backup);
 		return null;
 	}
-	
 	public String backupim() throws JSONException, IOException, ParseException{
 		if(file==null)return null;
 		ioService.backupImport(file.getPath());

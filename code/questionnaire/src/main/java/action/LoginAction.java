@@ -1,8 +1,6 @@
 package action;
-
 import model.User;
 import service.LoginService;
-
 public class LoginAction extends BaseAction{
 	/**
 	 * 
@@ -42,11 +40,9 @@ public class LoginAction extends BaseAction{
 			return INPUT;
 		}
 	}
-	
 	public String logout(){
 		session().removeAttribute("user");
 		session().removeAttribute("role");
 		return SUCCESS;
 	}
-	
 }

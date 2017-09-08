@@ -1,5 +1,4 @@
 package model;
-
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
 @Document(collection="Message")
@@ -13,7 +12,6 @@ public class Message {
 	public Message() {
 		super();
 	}
-	
 	public Message(int sid, int rid, String msg) {
 		super();
 		this.sid = sid;
@@ -28,7 +26,6 @@ public class Message {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
 	public int getSid() {
 		return sid;
 	}
@@ -42,14 +39,12 @@ public class Message {
 	public void setRid(int rid) {
 		this.rid = rid;
 	}
-	
 	public int getIsread() {
 		return isread;
 	}
 	public void setIsread(int isread) {
 		this.isread = isread;
 	}
-	
 	public String getMsg() {
 		return msg;
 	}

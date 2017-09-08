@@ -1,8 +1,4 @@
-/**
- * 
- */
 $(function() {
-
 	$("#save").click(function(e) {
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
@@ -19,7 +15,6 @@ $(function() {
 		else if(status=="禁用"){
 			status="ban";
 		}
-		console.log(id,status);
 		jQuery.ajax({
 			url : 'updateStatusQuestionnaire',
 			processData : true,
@@ -29,7 +24,6 @@ $(function() {
 				     status : status,
 			},
 			success : function(data) {
-				console.log(id);
 				bootbox.alert({
 					message : '修改成功！',
 					callback : function() {
@@ -40,7 +34,6 @@ $(function() {
 		});
 		$('#modal').modal('hide');
 	});
-
 	$(".delete").click(function(e) {
 		bootbox.confirm({
 			buttons : {
@@ -54,7 +47,6 @@ $(function() {
 			message : '是否删除?',
 			callback : function(result) {
 				if (result) {
-
 					var dataset = e.currentTarget.dataset;
 					var id = dataset.id;
 					jQuery.ajax({
@@ -65,7 +57,6 @@ $(function() {
 							id : id
 						},
 						success : function(data) {
-							console.log(id);
 							bootbox.alert({
 								message : '删除成功！',
 								callback : function() {
@@ -74,18 +65,14 @@ $(function() {
 							});
 						}
 					});
-
 				}
 			}
 		});
 	});
-
 	$(".edit").click(function(e) {
 		$('#modalTitle').html("修改问卷状态");
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
-		console.log(id);
-
 		if(dataset.status=="pub"){
 			$("select[name='status']").val("已发布");
 		}
@@ -98,12 +85,9 @@ $(function() {
 		else if(dataset.status=="ban"){
 			$("select[name='status']").val("禁用");
 		}
-		
-
 		$("#save").attr("data-id", dataset.id);
 		$('#modal').modal('show');
 	});
-
 	$(".backup").click(function(e) {
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
@@ -119,7 +103,6 @@ $(function() {
 			}
 		});
 	});
-	
 	$("#uploadtxt").submit(function(){
 		var filetype=$("#file").val().slice($("#file").val().lastIndexOf(".")+1).toUpperCase();
 		if (filetype != 'TXT'){

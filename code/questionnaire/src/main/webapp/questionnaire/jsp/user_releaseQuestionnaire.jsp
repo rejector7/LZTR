@@ -13,10 +13,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    
 	<meta charset="utf-8" />
         <title>LZTR 问卷网</title>
-
     <!-- Bootstrap core CSS -->
 	<link href="<%=path%>/questionnaire/css/bootstrap.min.css" 			rel="stylesheet">
 	<link href="<%=path%>/questionnaire/css/dataTables.bootstrap.css" 	rel="stylesheet">
@@ -25,8 +23,6 @@
 	<link href="<%=path%>/questionnaire/css/font-awesome.min.css" 		rel="stylesheet" type="text/css">
     <!-- Bootstrap core CSS -->
     <link href="<%=path %>/questionnaire/css/bootstrap3.3.7.min.css" rel="stylesheet">
-
-
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     	<script src="questionnaire/js/jquery.min.js"></script>
@@ -50,14 +46,12 @@
         button.navbar-toggle {background-color:#fbfbfb;}
         button.navbar-toggle > span.icon-bar {background-color:#dedede}
         .dropdown-nemu>li>a{color:#333!important;display:block!important;}
-        
 		.mydiv{
 		width:250px;height:auto;border:#909090 1px solid;background:#fff;color:#333;
 		filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=3);
 		-moz-box-shadow: 2px 2px 10px #909090;
 		-webkit-box-shadow: 2px 2px 10px #909090;
 		box-shadow:2px 2px 10px #909090;
-
 		}
 		input{
 			border:100px solid #000!important;
@@ -68,7 +62,6 @@
 <% 
 User user = (User) session.getAttribute("user");
 %>
- 
     <nav class="navbar navbar-fixed-top my-navbar" role="navigation">
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="example-navbar-collapse">
@@ -90,7 +83,6 @@ User user = (User) session.getAttribute("user");
 				发布<%} %></i>
 		</button>
                 </form>
-                
                      <form class="navbar-form navbar-right" role="search" action="searchPro" accept-charset="UTF-8">
 		<button class="btn btn-default addBlank" type="button" style="float:right;">
 				<i class="fa fa-plus  ">填空题</i>
@@ -104,20 +96,14 @@ User user = (User) session.getAttribute("user");
 		<button class="btn btn-default addSlider"  type="button" style="float:right;">
 				<i class="fa fa-plus ">滑块题</i>
 		</button>
-              		</form>
-                
-
+              		</form> 
             </div>
-            
-
         </div>
     </nav>
-     
   <div class="bg jumbotron">
         <p><font size='10'>编辑问卷</font></p>
       </div>
     <div class="container" ><br>
-		
 		<div class="row ">
 			 <label ><font size="5">标题</font></label>
 			 <input type="text" name="title"  class="form-control" maxlength="255">
@@ -129,16 +115,10 @@ User user = (User) session.getAttribute("user");
 		<div class="row">
 			 <input type="checkbox" id="allowDup" checked>
 			 <label ><font size="5">是否允许同一IP重复作答?</font></label>
-
 		</div>
-		
-		
 		<hr style="color:black;border-top:1px solid #C0C0C0">
 		 	<div class="row"  style="float:left"><font size=5><strong>添加题目</strong></font></div>
-		      
-
 		<br><hr>
-
     </div > <!-- /container -->
     <div class="modal fade" id="modal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
@@ -201,17 +181,14 @@ User user = (User) session.getAttribute("user");
 							<div class="form-group">
 								<label>选择想要关联的问题</label>
 								<select class="form-control" id="formerques" onchange="releopts()">
-										
 								</select>
 							</div>
 							<label>当以下选项被选中时</label>
 							<div class="form-group" id="specoptiondiv">
-								
 							</div>
 							<label>本问题会出现</label>
 							<label>将本关联复制到后续问题</label>
 							<div class="form-group" id="laterques">
-								
 							</div>
 						</form>
 						</div></div></div>
