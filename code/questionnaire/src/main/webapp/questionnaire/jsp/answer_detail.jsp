@@ -156,6 +156,7 @@ User user = (User) session.getAttribute("user");
  		msg += "您的回答情况："+table+"<br>";
  		msg += $("input[name='msg']").val();
 			jQuery.ajax({
+				type: "post",
 				url : 'send2Message',
 				processData : true,
 				dataType : "text",

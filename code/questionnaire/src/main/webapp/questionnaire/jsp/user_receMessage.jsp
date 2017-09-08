@@ -221,6 +221,7 @@ $(function() {
 			 return false;
 		 }
 			jQuery.ajax({
+				type: "post",
 				url : 'send1Message',
 				processData : true,
 				dataType : "text",
