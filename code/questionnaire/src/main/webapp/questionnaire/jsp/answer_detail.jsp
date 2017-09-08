@@ -16,11 +16,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="">
-    
+    <meta name="author" content="">  
 	<meta charset="utf-8" />
         <title>LZTR 问卷网</title>
-
     <!-- Bootstrap core CSS -->
 	<link href="<%=path%>/questionnaire/css/bootstrap.min.css" 			rel="stylesheet">
 	<link href="<%=path%>/questionnaire/css/dataTables.bootstrap.css" 	rel="stylesheet">
@@ -29,11 +27,8 @@
 	<link href="<%=path%>/questionnaire/css/font-awesome.min.css" 		rel="stylesheet" type="text/css">
     <!-- Bootstrap core CSS -->
     <link href="<%=path %>/questionnaire/css/bootstrap3.3.7.min.css" rel="stylesheet">
-
-
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    	
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->	
 	    <link href="<%=path%>questionnaire/css/font-awesome.min.css" rel="stylesheet">
 	         <link rel="<%=path%>stylesheet" href="questionnaire/css/validation.css">
     <style type="text/css">
@@ -46,15 +41,13 @@
         .top-nav {padding:0;background:#000;}
         button.navbar-toggle {background-color:#fbfbfb;}
         button.navbar-toggle > span.icon-bar {background-color:#dedede}
-        .dropdown-nemu>li>a{color:#333!important;display:block!important;}
-        
+        .dropdown-nemu>li>a{color:#333!important;display:block!important;}       
 		.mydiv{
 		width:250px;height:auto;border:#909090 1px solid;background:#fff;color:#333;
 		filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=3);
 		-moz-box-shadow: 2px 2px 10px #909090;
 		-webkit-box-shadow: 2px 2px 10px #909090;
 		box-shadow:2px 2px 10px #909090;
-
 		}
 		input{
 			border:100px solid #000!important;
@@ -64,9 +57,7 @@
 <body style="background:#F5F5F5" value="0">
 <% 
 User user = (User) session.getAttribute("user");
-%>
- 
-      
+%>   
  <div class="bg jumbotron"><font size=5><strong>答卷详情</strong></font></div>
 	<!-- 跳转标签 -->
 	<div class="container">
@@ -77,7 +68,6 @@ User user = (User) session.getAttribute("user");
       <button type='button' class='btn btn-default' onclick='downloadAnswerWord()'>导出为Word</button>
       </div>
     </div>
-	
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -102,9 +92,7 @@ User user = (User) session.getAttribute("user");
 					</div>
 				</div>
 			</div>
-		
-	
-	<!-- 问卷发起者添加留言反馈 -->
+<!-- 问卷发起者添加留言反馈 -->
 	<div id="replydiv">
 	<form role="form" id="replyform">
     <div class="input-group">
@@ -116,8 +104,6 @@ User user = (User) session.getAttribute("user");
     </form>
     </div>
     </div>
-   
-	
 	<!-- js file -->
 	<script src="<%=path%>/questionnaire/js/jquery.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/bootstrap.min.js"></script>
@@ -131,14 +117,10 @@ User user = (User) session.getAttribute("user");
     	<script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
     	<script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
     	     <link rel="stylesheet" href="<%=path %>/questionnaire/css/validation.css">
-
-
-
 <!-- add date to table -->
 <script>
 	<%if(request.getParameter("ansid")!=null){%>
 	getcontent(<%=request.getParameter("ansid")%>,<%=request.getParameter("quesid")%>);
-	
 	<%}%>
 </script>
  <script>	
@@ -172,8 +154,7 @@ User user = (User) session.getAttribute("user");
 						}
 					});
 				}
-			});
-			
+			});	
 	 });
 	 $("#reply").click(function(e){
 		 if($("input[name='msg']").val()==""){
@@ -202,8 +183,7 @@ User user = (User) session.getAttribute("user");
 						}
 					});
 				}
-			});
-			
+			});	
 	 });
  });
 	</script>

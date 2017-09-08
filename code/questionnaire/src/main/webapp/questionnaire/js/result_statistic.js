@@ -8,8 +8,6 @@ var colors = [
 	];
 var answers = [];
 var questions = [];
-
-
 function getStatistic(quesid){
 	jQuery.ajax({
 		url : 'getStatistic',
@@ -23,7 +21,6 @@ function getStatistic(quesid){
 		}
 	});
 }
-
 function formStatistic(data){
 	questions=	data['question']['questions'];
 	answers = data['answers'];
@@ -32,7 +29,6 @@ function formStatistic(data){
 		$("#container").append("<p><font size='4'>" + (i+1) + " : " + ques['stem'] + "</font></p>" +
 				"<div class='container' id =" + i + "></div>");
 		var type = ques['type'];
-		
 		$("#" + i).append('<div class="container"> ' +
 				'<!-- /.row -->' +
 				'<div class="row">' +
@@ -149,8 +145,6 @@ function formStatistic(data){
 	}
 	return;
 }
-
-
 function drawPie(label, result, i){
 	var canvas = document.getElementById(i + "canvas");
 	if(canvas!=null){
@@ -163,16 +157,12 @@ function drawPie(label, result, i){
 			"</button>"+
 					"<canvas id='"+i+"canvas'" +
 					"</div></div>");
-	canvas = document.getElementById(i + "canvas");
-	
-	
+	canvas = document.getElementById(i + "canvas");	
 	label = label.split(",");
 	result = result.split(",");
 	for(var i = 7 ; i < result.size; i++){
 		colors[i] =  'rgba(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) +', 0.2'+ ')';
 	}
-	
-	
 	var myChart = new Chart(canvas, {
 	    type: "pie",
 	    data: {
@@ -186,7 +176,6 @@ function drawPie(label, result, i){
 	    }
 	});
 }
-
 function drawBar(label, result, i){
 	var canvas = document.getElementById(i + "canvas");
 	if(canvas!=null){
@@ -200,15 +189,11 @@ function drawBar(label, result, i){
 					"<canvas id='"+i+"canvas'" +
 					"</div></div>");
 	canvas = document.getElementById(i + "canvas");
-	
 	label = label.split(",");
 	result = result.split(",");
-
 	for(var i = 7 ; i < result.size; i++){
 		colors[i] =  'rgba(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) +', 0.2'+ ')';
 	}
-	
-	
 	var myChart = new Chart(canvas, {
 	    type: "bar",
 	    data: {
@@ -231,7 +216,6 @@ function drawBar(label, result, i){
 	    }
 	});
 }
-
 function drawDoughnut(label, result, i){
 	var canvas = document.getElementById(i + "canvas");
 	if(canvas!=null){
@@ -252,7 +236,6 @@ function drawDoughnut(label, result, i){
 	for(var i = 7 ; i < result.size; i++){
 		colors[i] =  'rgba(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) +', 0.2'+ ')';
 	}
-	
 	var myChart = new Chart(canvas, {
 	    type: 'doughnut',
 	    data: {
@@ -266,7 +249,6 @@ function drawDoughnut(label, result, i){
 	    }
 	});
 }
-
 function drawLine(label, result, i){
 	var canvas = document.getElementById(i + "canvas");
 	if(canvas!=null){
@@ -280,10 +262,8 @@ function drawLine(label, result, i){
 					"<canvas id='"+i+"canvas'" +
 					"</div></div>");
 	canvas = document.getElementById(i + "canvas");
-	
 	label = label.split(",");
 	result = result.split(",");
-	
 	var myChart = new Chart(canvas, {
 	    type: 'line',
 	    data: {
@@ -307,7 +287,6 @@ function drawLine(label, result, i){
 	    }
 	});
 }
-
 function downloadjpeg(id,title){	
 	$("#jpegtip").html("生成jpeg中");
 	var div = document.getElementById("container");
@@ -336,7 +315,6 @@ function downloadjpeg(id,title){
 		as[i].removeAttribute("hidden");
 	}
 }
-
 function downloadxml(id,title){	
 	var tablehtml = "";
 	var children = document.getElementById("container").childNodes;
@@ -355,7 +333,6 @@ function downloadxml(id,title){
 	var filename = id+"_name";
 	exportXls(tablehtml,style,name,filename);
 }
-
 function downloadDetailxml(){
 	var tablehtml = document.getElementById("modal").getElementsByTagName("TABLE")[0].innerHTML;
 	var style = "table {border-collapse: collapse;}table, td, th {border: thin solid black;}";
@@ -365,12 +342,10 @@ function downloadDetailxml(){
 	var filename = name;
 	exportXls(tablehtml,style,name,filename);
 }
-
 function downloadimg(i){
 	var imgData = document.getElementById(i+"canvas").toDataURL("image/png");
 	download(imgData,i+".png","image/png");
 }
-
 function drawButton(i, label, result){
 	$("#" + i).append("<div class='container row' align='right'>" +
 			"<button class='btn btn-default' type='button' >" +
@@ -387,12 +362,10 @@ function drawButton(i, label, result){
 			"</button>" +
 			"</div>");
 }
-
 function detailSingle(quesid, optionid){
 	$("#detailbody").html("");
 	var ids = [];
 	var details = [];
-	
 	for(var i =0; i < answers.length; i++){
 		var option = answers[i][quesid]['option'];
 		if(option==optionid){
@@ -403,12 +376,10 @@ function detailSingle(quesid, optionid){
 	$('#modalTitle2').html('选项“'+ questions[quesid]['options'][optionid]['option'] +'”');
 	$('#modal').modal('show');
 }
-
 function detailMultiple(quesid, optionid){
 	$("#detailbody").html("");
 	var ids = [];
 	var details = [];
-	
 	for(var i =0; i < answers.length; i++){
 		for(var j = 0; j < answers[i][quesid]['words'].length; j++){
 			if(optionid==answers[i][quesid]['words'][j]['optionid']){
@@ -419,5 +390,4 @@ function detailMultiple(quesid, optionid){
 	$('#modalTitle').html('题目“'+ questions[quesid]['stem'] +'”的详情统计');
 	$('#modalTitle2').html('选项“'+ questions[quesid]['options'][optionid]['option'] +'”');
 	$('#modal').modal('show');
-	
 }

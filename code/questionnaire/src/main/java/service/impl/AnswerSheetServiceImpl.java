@@ -1,13 +1,10 @@
 package service.impl;
-
 import java.util.List;
-
 import dao.AnswerDao;
 import dao.AnswerSheetDao;
 import model.Answer;
 import model.AnswerSheet;
 import service.AnswerSheetService;
-
 public class AnswerSheetServiceImpl implements AnswerSheetService {
 	private AnswerDao ansDao;
 	private AnswerSheetDao anssheetDao;
@@ -26,7 +23,6 @@ public class AnswerSheetServiceImpl implements AnswerSheetService {
 		anst.setAnswerid(id);
 		anssheetDao.addAnswerSheet(anst);
 	}
-	
 	/* (non-Javadoc)
 	 * @see service.impl.AnswerSheetService#updateAnswer(model.Answer, model.AnswerSheet)
 	 */
@@ -35,7 +31,6 @@ public class AnswerSheetServiceImpl implements AnswerSheetService {
 		ansDao.updateAnswer(ans);
 		anssheetDao.updateAnswerSheet(anst);
 	}
-	
 	/* (non-Javadoc)
 	 * @see service.impl.AnswerSheetService#deleteAnswer(model.Answer, model.AnswerSheet)
 	 */
@@ -44,7 +39,6 @@ public class AnswerSheetServiceImpl implements AnswerSheetService {
 		ansDao.deleteAnswer(ans);
 		anssheetDao.deleteAnswerSheet(anst);
 	}
-	
 	/* (non-Javadoc)
 	 * @see service.impl.AnswerSheetService#getAnswerById(int)
 	 */
@@ -52,7 +46,6 @@ public class AnswerSheetServiceImpl implements AnswerSheetService {
 	public Answer getAnswerById(int id){
 		return ansDao.getAnswerById(id);
 	}
-	
 	/* (non-Javadoc)
 	 * @see service.impl.AnswerSheetService#getAnswerSheetById(int)
 	 */
@@ -60,7 +53,6 @@ public class AnswerSheetServiceImpl implements AnswerSheetService {
 	public AnswerSheet getAnswerSheetById(int id){
 		return anssheetDao.getAnswerSheetById(id);
 	}
-	
 	/* (non-Javadoc)
 	 * @see service.impl.AnswerSheetService#getAnswerByQuestion(int)
 	 */
@@ -68,18 +60,15 @@ public class AnswerSheetServiceImpl implements AnswerSheetService {
 	public List<Answer> getAnswerByQuestion(int quesid){
 		return ansDao.getAnswersByQuesId(quesid);
 	}
-	
 	@Override
 	public void deleteAnswersByQuestionId(int quesid){
 		List<Answer> anss= ansDao.getAnswersByQuesId(quesid);
 		if(anss==null||anss.size()==0)return;
 		for(Answer ans:anss){
-			AnswerSheet anst = anssheetDao.getAnswerSheetById(ans.getId());
-			System.out.println(anst.getId());		
+			AnswerSheet anst = anssheetDao.getAnswerSheetById(ans.getId());	
 			deleteAnswer(ans, anst);
 		}
 	}
-	
 	@Override
 	public List<Answer> getAnswersByIp(String ip,int quesid){
 		return ansDao.getAnswersByIp(ip,quesid);

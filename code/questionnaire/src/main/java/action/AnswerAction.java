@@ -1,28 +1,21 @@
 package action;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import model.Answer;
 import model.AnswerSheet;
 import model.Questionnaire;
 import model.User;
 import service.AnswerSheetService;
 import service.QuestionnaireService;
-
 public class AnswerAction extends BaseAction{
 	private AnswerSheetService ansService;
 	private int id;
 	private int quesid;
 	private Date time;
 	private String content;
-	private String ip;
 	private QuestionnaireService quesService;
 	public int getId() {
 		return id;
@@ -51,11 +44,9 @@ public class AnswerAction extends BaseAction{
 	public void setAnsService(AnswerSheetService ansService) {
 		this.ansService = ansService;
 	}
-	
 	public void setQuesService(QuestionnaireService quesService) {
 		this.quesService = quesService;
 	}
-	
 	/**
 	 * Create a new answer sheet
 	 * @return
@@ -82,7 +73,6 @@ public class AnswerAction extends BaseAction{
 		response().getWriter().print("success");
 		return null;
 	}
-	
 	/**
 	 * Update an answer sheet, requiring user logged
 	 * @return
@@ -100,7 +90,6 @@ public class AnswerAction extends BaseAction{
 		ansService.updateAnswer(ans, anst);
 		return null;
 	}
-	
 	/**
 	 * Delete an answer with its id
 	 * @return
@@ -111,7 +100,6 @@ public class AnswerAction extends BaseAction{
 		ansService.deleteAnswer(ans, anst);
 		return "delete";
 	}
-	
 	/**
 	 * Get all answers' information of a specific questionnaire
 	 * @return
