@@ -186,8 +186,8 @@ User user = (User) session.getAttribute("user");
 							<label>当以下选项被选中时</label>
 							<div class="form-group" id="specoptiondiv">
 							</div>
-							<label>本问题会出现</label>
-							<label>将本关联复制到后续问题</label>
+							<label>本问题会出现。</label><br>
+							<label>将本关联复制到后续问题: </label>
 							<div class="form-group" id="laterques">
 							</div>
 						</form>

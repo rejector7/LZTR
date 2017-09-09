@@ -140,6 +140,11 @@
 						<!-- /.panel-body -->
 					</div>
 					<!-- /.panel -->
+					<form action="<%=path %>/backupimport" method="post" enctype="multipart/form-data" id="uploadtxt">
+			<input type="file" name="file" id="file">
+			<input type="submit" value="导入备份文件">
+			<div id="uploadalert"></div>
+	</form>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
@@ -148,11 +153,7 @@
 		<!-- /#page-wrapper -->
 	</div>
 	<!-- /#wrapper -->
-	<form action="<%=path %>/backupimport" method="post" enctype="multipart/form-data" id="uploadtxt">
-			<input type="file" name="file" id="file">
-			<input type="submit" value="导入">
-			<div id="uploadalert"></div>
-	</form>
+	
 	<div class="modal fade" id="modal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">

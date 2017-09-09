@@ -73,7 +73,6 @@
 			                    	<div class="form-group">
 			                    		<label  for="form-username">用户名<font color="red">*</font></label>
 			                        	<input type="text" name="username"  class="form-username form-control" id="form-username" required maxlength="255">
-			                       
 			                        <label id="dupname" style='color:#de615e;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;'></label>
 			                         </div>
 			                        <div class="form-group">
