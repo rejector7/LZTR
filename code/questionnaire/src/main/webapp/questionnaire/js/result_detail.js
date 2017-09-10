@@ -1,5 +1,4 @@
 $(function() {
-	
 	//delete	
 	$(".delete").click(function(e) {
 		bootbox.confirm({
@@ -14,7 +13,6 @@ $(function() {
 			message : 'Sure to delete?',
 			callback : function(result) {
 				if (result) {
-
 					var dataset = e.currentTarget.dataset;
 					var id = dataset.id;
 					jQuery.ajax({
@@ -34,7 +32,6 @@ $(function() {
 							});
 						}
 					});
-
 				}
 			}
 		});

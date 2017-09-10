@@ -6,7 +6,6 @@
 <html lang="en">
 <head>
 <title>LZTR 问卷平台后台管理</title>
-
 <%
 	String path = request.getContextPath();
 %>
@@ -16,7 +15,6 @@
 <link href="<%=path%>/questionnaire/css/questionnaire.css" 			rel="stylesheet">
 <link href="<%=path%>/questionnaire/css/font-awesome.min.css" 		rel="stylesheet" type="text/css">
 </head>
-
 <body>
 	<%
 		ArrayList<Questionnaire> quesList = new ArrayList<Questionnaire>();
@@ -29,11 +27,9 @@
 		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
-			
 		<div class="navbar-header">
 			<a class="navbar-brand" href="#">问卷系统后台</a>
 		</div>
-
 		<div class="navbar-default sidebar" role="navigation">
 			<div class="sidebar-nav navbar-collapse">
 				<ul class="nav" id="side-menu">
@@ -52,7 +48,6 @@
 		</div>
 		<!-- /.navbar-static-side -->
 		</nav>
-
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
@@ -63,7 +58,6 @@
 												<i class="fa fa-copy"></i>全部备份
 												</button>
 					</h1>
-					
 				</div>
 			</div>
 			<!-- /.row -->
@@ -112,7 +106,6 @@
 											<%}else if(ques.getStatus().equals("unp")){%>
 											<td><%="未发布"%></td>
 											<%}%>
-											
 											<td>
 												<!-- data-id what are they？ -->
 												<button class="btn btn-default delete" type="button"
@@ -147,6 +140,11 @@
 						<!-- /.panel-body -->
 					</div>
 					<!-- /.panel -->
+					<form action="<%=path %>/backupimport" method="post" enctype="multipart/form-data" id="uploadtxt">
+			<input type="file" name="file" id="file">
+			<input type="submit" value="导入备份文件">
+			<div id="uploadalert"></div>
+	</form>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
@@ -155,11 +153,7 @@
 		<!-- /#page-wrapper -->
 	</div>
 	<!-- /#wrapper -->
-	<form action="<%=path %>/backupimport" method="post" enctype="multipart/form-data" id="uploadtxt">
-			<input type="file" name="file" id="file">
-			<input type="submit" value="导入">
-			<div id="uploadalert"></div>
-	</form>
+	
 	<div class="modal fade" id="modal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -194,7 +188,6 @@
 			</div>
 		</div>
 	</div>
-
 	<script src="<%=path%>/questionnaire/js/jquery.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/bootstrap.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/jquery.dataTables.min.js"></script>
@@ -205,7 +198,6 @@
 	<script src="<%=path%>/questionnaire/js/questionnaireExport.js"></script>
 	<script src="<%=path%>/questionnaire/js/admin_ques.js"></script>
 	<script src="<%=path%>/questionnaire/js/questionnaireExport.js"></script>
-
 	<script>
 		$(document).ready(function() {
 			$('#dataTables').DataTable({
@@ -213,7 +205,5 @@
 			});
 		});
 	</script>
-
 </body>
-
 </html>

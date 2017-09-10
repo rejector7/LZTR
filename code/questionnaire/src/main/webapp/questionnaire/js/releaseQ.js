@@ -1,10 +1,6 @@
 var DELETE_NUM_QUESTION = -1;
 var QUES_ID = 0;
 var FLAG = 0;
-/*array.splice(index,howmany,item1,,,,itemx
- * {"opt(id)":[
- * quesid1,quesid2,,,,,quesidx
- * ]}*/
 $(function() {	
 	$(".cancel").click(function(e){
 		bootbox.confirm({
@@ -22,8 +18,7 @@ $(function() {
 				location.href = 'FrontPage';}
 			}
 		});
-	});
-	
+	});	
 	$(".submit").click(function(e) {
 		var form = document.getElementById("form");
 		if(form == null){
@@ -142,8 +137,7 @@ $(function() {
 						result['questions'][k]['options'][m-1]['relevancy'] = [];
 						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
 					}
-				}
-				
+				}				
 				break;
 			case '3':
 				result['questions'][k]['type'] = 'Slider';
@@ -198,8 +192,7 @@ $(function() {
 								});
 							}
 						});
-					}
-					
+					}				
 					}});
 			return;
 		}
@@ -225,23 +218,16 @@ $(function() {
 			}
 		});
 	});
-	
-	
 	$(".addBlank").click(function(e){addBlank()});
-	
 	$(".addSingle").click(function(e){addSingle()});
-	
 	$(".addMultiple").click(function(e) {addMultiple()});
-	
 	$(".addSlider").click(function(e) {addSlider()});
-	
 	$(".publish").click(function(e) {
 		var d = new Date().toISOString().split("T")[0];
 		$("input[name='releasetime']").val(d);
 		$("input[name='endtime']").val("");
 		$('#modal').modal('show');
 	});
-	
 	$(".preview").click(function(e) {
 		var form = document.getElementById("form");
 		if(form == null){
@@ -432,9 +418,7 @@ $(function() {
 				location.href = 'PreviewQuestionnaire?quesid='+data;
 			}
 		});
-	});
-	
-	
+	});	
 	$("#publishconfirm").click(function(e) {
 		var form = document.getElementById("form");
 		if(form == null){
@@ -682,14 +666,12 @@ $(function() {
 				});
 			}
 		});
-	});
-	
+	});	
 	$('#modal2').on('hide.bs.modal', function () {
 		if(document.getElementById("relacloser").dataset.id!=""){
 			document.getElementById(document.getElementById("relacloser").dataset.id+"relevancy").checked=false;
 		}
-	});
-	
+	});	
 	$("#relatconfirm").click(function(e) {
 		var opts = document.getElementById("specoptiondiv").getElementsByTagName("INPUT");
 		var optlabels = document.getElementById("specoptiondiv").getElementsByTagName("LABEL");
@@ -753,8 +735,7 @@ $(function() {
 				var j = queslabels[i].innerHTML.split(".")[0];
 				quesids += j+" ";
 			}
-		}
-		
+		}		
 		for(var i=0;i<optidarray.length-1;i++){
 			if($("#"+relequesid+"_"+optidarray[i]+"optrele").html()==""){
 			$("#"+relequesid+"_"+optidarray[i]+"optrele").html(
@@ -776,7 +757,6 @@ $(function() {
 		$('#modal2').modal('hide');
 	});
 });
-
 function seekQuesByQuesNo(quesid){
 	var quess = document.getElementById("form").childNodes;
 	for(var i=0;i<quess.length;i++){
@@ -787,7 +767,6 @@ function seekQuesByQuesNo(quesid){
     }
 	return quesid;
 }
-
 function addOption(value){
 	var div = document.getElementById(value + "container");
 	var num = div.getAttribute("value");
@@ -807,37 +786,32 @@ function addOption(value){
 			"</div>" +
 			"<div class='col-lg-12' id='" + value + "_" + num + "optrele'></div>"+
 			"</div>");
-	div.setAttribute("value",  num * 1 + 1);
-	
+	div.setAttribute("value",  num * 1 + 1);	
 	//create button to delete an question
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){deleteOption(value, num)};
-	document.getElementById(value +"_" + num +"button").appendChild(button);
-	
+	document.getElementById(value +"_" + num +"button").appendChild(button);	
 	var upbutton = document.createElement("button");
 	upbutton.className = "btn btn-default";
 	upbutton.type = "button";
 	upbutton.style="floating:left";
 	upbutton.onclick = function(){upOption(value, num)};
-	document.getElementById(value +"_" + num +"button").appendChild(upbutton);
-	
+	document.getElementById(value +"_" + num +"button").appendChild(upbutton);	
 	var downbutton = document.createElement("button");
 	downbutton.className = "btn btn-default";
 	downbutton.type = "button";
 	downbutton.style="floating:left";
 	downbutton.onclick = function(){downOption(value, num)};
-	document.getElementById(value +"_" + num +"button").appendChild(downbutton);
-	
+	document.getElementById(value +"_" + num +"button").appendChild(downbutton);	
 	var appendbutton = document.createElement("button");
 	appendbutton.className = "btn btn-default";
 	appendbutton.type = "button";
 	appendbutton.style="floating:left";
 	appendbutton.onclick = function(){appendOption(value, num)};
-	document.getElementById(value +"_" + num +"button").appendChild(appendbutton);
-	
+	document.getElementById(value +"_" + num +"button").appendChild(appendbutton);	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	button.appendChild(i);
@@ -851,14 +825,12 @@ function addOption(value){
 	iappend.className = "fa fa-plus";
 	appendbutton.appendChild(iappend);
 }
-
 function getRelesFromOpt(optrele){
 	if(optrele.innerHTML==""){
 		return null;
 	}
 	return optrele.getElementsByTagName("SPAN")[0].innerHTML.split(" ");
 }
-
 function deleteRelevancyByQuestion(value){
 	if(document.getElementById(value+"showrelevancy").innerHTML==""){
 		return false;
@@ -894,7 +866,6 @@ function deleteRelevancyByQuestion(value){
 	}
 	$("#"+value+"showrelevancy").html("");
 }
-
 function deleteRelevancyByOption(id){
 	var quesrelearray = getRelesFromOpt(document.getElementById(id+"optrele"));
 	var optvalue = $("#"+id+"option").val();
@@ -920,7 +891,6 @@ function deleteRelevancyByOption(id){
 		}
 	}
 }
-
 function deleteQuestion(value){
 	var victim = document.getElementById(value +"div");
 	deleteRelevancyByQuestion(value);
@@ -940,9 +910,7 @@ function deleteQuestion(value){
 		var id = next.getAttribute("id");
 		var font = document.getElementById(id +"font");
 		var nextno = font.innerText;
-		font.innerText = font.innerText * 1 - 1;
-		
-		
+		font.innerText = font.innerText * 1 - 1;		
 		var rele = document.getElementById(next.getAttribute("id").split("d")[0]+"showrelevancy");
 		if(rele.innerHTML!=""){
 			var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
@@ -1000,16 +968,13 @@ function deleteQuestion(value){
 				}
 				}
 			}
-		}
-		
+		}		
 		next = next.nextSibling;
 	}
 	var form = document.getElementById("form");
 	form.removeChild(victim);
 	DELETE_NUM_QUESTION += 1;
 }
-
-
 function deleteOption(value, num){
 	var container = document.getElementById(value +"container");
 	var victim = document.getElementById(value +"_" + num+"optiondiv");
@@ -1018,7 +983,6 @@ function deleteOption(value, num){
 	}
 	container.removeChild(victim);
 }
-
 function upOption(value, num){
 	var option_form = document.getElementById(value +"container");
 	var options = option_form.childNodes;
@@ -1047,10 +1011,8 @@ function upOption(value, num){
 	var releques1 = $("#"+id1+"optrele").html();
 	var releques2 = $("#"+id2+"optrele").html();
 	$("#"+id1+"optrele").html(releques2);
-	$("#"+id2+"optrele").html(releques1);
-	
+	$("#"+id2+"optrele").html(releques1);	
 }
-
 function downOption(value, num){
 	var option_form = document.getElementById(value +"container");
 	var options = option_form.childNodes;
@@ -1079,10 +1041,8 @@ function downOption(value, num){
 	var releques1 = $("#"+id1+"optrele").html();
 	var releques2 = $("#"+id2+"optrele").html();
 	$("#"+id1+"optrele").html(releques2);
-	$("#"+id2+"optrele").html(releques1);
-	
+	$("#"+id2+"optrele").html(releques1);	
 }
-
 function appendOption(value, oldnum){
 	var div = document.getElementById(value + "container");
 	var num = div.getAttribute("value");
@@ -1108,37 +1068,32 @@ function appendOption(value, oldnum){
 			"</div>"+
 			"<div class='col-lg-12' id='" + value + "_" + num + "optrele'></div>"+
 			"</div>");
-	div.setAttribute("value",  num * 1 + 1);
-	
+	div.setAttribute("value",  num * 1 + 1);	
 	//create button to delete an question
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){deleteOption(value, num)};
-	document.getElementById(value +"_" + num +"button").appendChild(button);
-	
+	document.getElementById(value +"_" + num +"button").appendChild(button);	
 	var upbutton = document.createElement("button");
 	upbutton.className = "btn btn-default";
 	upbutton.type = "button";
 	upbutton.style="floating:left";
 	upbutton.onclick = function(){upOption(value, num)};
-	document.getElementById(value +"_" + num +"button").appendChild(upbutton);
-	
+	document.getElementById(value +"_" + num +"button").appendChild(upbutton);	
 	var downbutton = document.createElement("button");
 	downbutton.className = "btn btn-default";
 	downbutton.type = "button";
 	downbutton.style="floating:left";
 	downbutton.onclick = function(){downOption(value, num)};
-	document.getElementById(value +"_" + num +"button").appendChild(downbutton);
-	
+	document.getElementById(value +"_" + num +"button").appendChild(downbutton);	
 	var appendbutton = document.createElement("button");
 	appendbutton.className = "btn btn-default";
 	appendbutton.type = "button";
 	appendbutton.style="floating:left";
 	appendbutton.onclick = function(){appendOption(value, num)};
-	document.getElementById(value +"_" + num +"button").appendChild(appendbutton);
-	
+	document.getElementById(value +"_" + num +"button").appendChild(appendbutton);	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	button.appendChild(i);
@@ -1152,7 +1107,6 @@ function appendOption(value, oldnum){
 	iappend.className = "fa fa-plus";
 	appendbutton.appendChild(iappend);
 }
-
 function addBlank() {
 	var body = document.body;
 	var value = body.getAttribute("value");
@@ -1178,8 +1132,7 @@ function addBlank() {
 			for(var i=0;i<children.length;i++){
 				var id = children[i].getAttribute("id");
 				$("#"+id+"font").html(i+1);
-			}
-			
+			}			
 			var thisno = $("#"+thisid+"divfont").html();
 			if(rele.innerHTML!=""){
 				var quesid = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
@@ -1207,8 +1160,7 @@ function addBlank() {
 								return;
 							}
 						}
-					}
-					
+					}					
 				}
 			}
 			if(oldno>thisno){
@@ -1218,11 +1170,9 @@ function addBlank() {
 					var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 					var subopts = document.getElementById(quesid+"container").childNodes;
 					for(var m=1;m<=optsnum;m++){
-						var i = subopts[m].id.split("_")[1].split("o")[0];
-						
+						var i = subopts[m].id.split("_")[1].split("o")[0];						
 						var input = $("input[name='"+quesid+"_"+i+"option'").val();
-						for(var j=0;j<optcontents.length-1;j++){
-							
+						for(var j=0;j<optcontents.length-1;j++){							
 							if(optcontents[j]==input){
 								if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
 								var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -1238,13 +1188,11 @@ function addBlank() {
 						}
 					}
 					}
-				}
-				
+				}				
 				for(var i=thisno-1;i<children.length;i++){
 					var rele = document.getElementById(children[i].getAttribute("id").split("d")[0]+"showrelevancy");
 					if(rele.innerHTML!=""){
-						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
-						
+						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];						
 						var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
 						if(releno==oldno){
 							rele.getElementsByTagName("SPAN")[0].innerHTML = thisno+"."+relecontent;
@@ -1282,8 +1230,7 @@ function addBlank() {
 								}
 						}
 						}
-						else if(releno<thisno){
-							
+						else if(releno<thisno){							
 								var quesid = seekQuesByQuesNo(releno*1);
 								if(document.getElementById(quesid+"div").getAttribute("value")=="1"||document.getElementById(quesid+"div").getAttribute("value")=="2"){
 								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
@@ -1292,12 +1239,10 @@ function addBlank() {
 								for(var m=1;m<=optsnum;m++){
 									var n = subopts[m].id.split("_")[1].split("o")[0];
 									var input = $("input[name='"+quesid+"_"+n+"option'").val();
-									for(var j=0;j<optcontents.length-1;j++){
-										
+									for(var j=0;j<optcontents.length-1;j++){										
 										if(optcontents[j]==input){
 											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
-											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
-											
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");											
 											if(idarray.indexOf(String(i))!=-1){
 												idarray.splice(idarray.indexOf(String(i)),1,(i*1+1));
 											}
@@ -1311,8 +1256,7 @@ function addBlank() {
 								}
 								}
 						}
-						}
-						
+						}						
 					}
 				}
 			}
@@ -1363,11 +1307,9 @@ function addBlank() {
 								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 								var subopts = document.getElementById(quesid+"container").childNodes;
 								for(var m=1;m<=optsnum;m++){
-									var n = subopts[m].id.split("_")[1].split("o")[0];
-									
+									var n = subopts[m].id.split("_")[1].split("o")[0];									
 									var input = $("input[name='"+quesid+"_"+n+"option'").val();
-									for(var j=0;j<optcontents.length-1;j++){
-										
+									for(var j=0;j<optcontents.length-1;j++){										
 										if(optcontents[j]==input){
 											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
 											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -1385,8 +1327,7 @@ function addBlank() {
 								}
 						}
 						}
-						else if(releno<oldno){
-							
+						else if(releno<oldno){							
 							var quesid = seekQuesByQuesNo(releno*1);
 							if(document.getElementById(quesid+"div").getAttribute("value")=="1"||document.getElementById(quesid+"div").getAttribute("value")=="2"){
 							var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
@@ -1395,12 +1336,10 @@ function addBlank() {
 							for(var m=1;m<=optsnum;m++){
 								var n = subopts[m].id.split("_")[1].split("o")[0];
 								var input = $("input[name='"+quesid+"_"+n+"option'").val();
-								for(var j=0;j<optcontents.length-1;j++){
-									
+								for(var j=0;j<optcontents.length-1;j++){									
 									if(optcontents[j]==input){
 										if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
-										var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
-										
+										var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");										
 										if(idarray.indexOf(String(i+2))!=-1){
 											idarray.splice(idarray.indexOf(String(i+2)),1,(i*1+1));
 										}
@@ -1417,15 +1356,13 @@ function addBlank() {
 					}
 					}
 				}
-			}
-			
+			}			
 		}
 	});
 	}
 	else{
 		var form = document.getElementById("form");
-	}
-	
+	}	
 	//create div
 	var div = document.createElement("div");
 	div.id = value + "div";
@@ -1447,24 +1384,20 @@ function addBlank() {
 			"</div>" +
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
 			"<\label>" +
-			"</div></div>");
-	
+			"</div></div>");	
 	//create button to delete an question
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){deleteQuestion(value)};
-	document.getElementById(value + "button").appendChild(button);
-	
+	document.getElementById(value + "button").appendChild(button);	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	i.innerText = "删除本题";
-	button.appendChild(i);
-	
+	button.appendChild(i);	
 	body.setAttribute("value", value * 1 + 1);
 };
-
 function addSingle() {
 	var body = document.body;
 	var value = body.getAttribute("value");
@@ -1490,8 +1423,7 @@ function addSingle() {
 			for(var i=0;i<children.length;i++){
 				var id = children[i].getAttribute("id");
 				$("#"+id+"font").html(i+1);
-			}
-			
+			}			
 			var thisno = $("#"+thisid+"divfont").html();
 			if(rele.innerHTML!=""){
 				var quesid = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
@@ -1519,8 +1451,7 @@ function addSingle() {
 								return;
 							}
 						}
-					}
-					
+					}					
 				}
 			}
 			if(oldno>thisno){
@@ -1530,11 +1461,9 @@ function addSingle() {
 					var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 					var subopts = document.getElementById(quesid+"container").childNodes;
 					for(var m=1;m<=optsnum;m++){
-						var i = subopts[m].id.split("_")[1].split("o")[0];
-						
+						var i = subopts[m].id.split("_")[1].split("o")[0];						
 						var input = $("input[name='"+quesid+"_"+i+"option'").val();
-						for(var j=0;j<optcontents.length-1;j++){
-							
+						for(var j=0;j<optcontents.length-1;j++){							
 							if(optcontents[j]==input){
 								if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
 								var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -1554,8 +1483,7 @@ function addSingle() {
 				for(var i=thisno-1;i<children.length;i++){
 					var rele = document.getElementById(children[i].getAttribute("id").split("d")[0]+"showrelevancy");
 					if(rele.innerHTML!=""){
-						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
-						
+						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];						
 						var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
 						if(releno==oldno){
 							rele.getElementsByTagName("SPAN")[0].innerHTML = thisno+"."+relecontent;
@@ -1589,25 +1517,20 @@ function addSingle() {
 										}
 									}
 								}
-								}
-							
+								}							
 						}
-						else if(releno<thisno){
-							
-								var quesid = seekQuesByQuesNo(releno*1);
-							
+						else if(releno<thisno){							
+								var quesid = seekQuesByQuesNo(releno*1);							
 								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 								var subopts = document.getElementById(quesid+"container").childNodes;
 								for(var m=1;m<=optsnum;m++){
 									var n = subopts[m].id.split("_")[1].split("o")[0];
 									var input = $("input[name='"+quesid+"_"+n+"option'").val();
-									for(var j=0;j<optcontents.length-1;j++){
-										
+									for(var j=0;j<optcontents.length-1;j++){										
 										if(optcontents[j]==input){
 											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
-											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
-											
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");											
 											if(idarray.indexOf(String(i))!=-1){
 												idarray.splice(idarray.indexOf(String(i)),1,(i*1+1));
 											}
@@ -1620,8 +1543,7 @@ function addSingle() {
 									}
 								}
 								}
-						}
-						
+						}						
 					}
 				}
 			}
@@ -1666,17 +1588,14 @@ function addSingle() {
 							else{
 								var quesid = seekQuesByQuesNo(releno*1);
 							}
-							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1-1)+"."+relecontent;
-							
+							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1-1)+"."+relecontent;						
 								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 								var subopts = document.getElementById(quesid+"container").childNodes;
 								for(var m=1;m<=optsnum;m++){
-									var n = subopts[m].id.split("_")[1].split("o")[0];
-									
+									var n = subopts[m].id.split("_")[1].split("o")[0];									
 									var input = $("input[name='"+quesid+"_"+n+"option'").val();
-									for(var j=0;j<optcontents.length-1;j++){
-										
+									for(var j=0;j<optcontents.length-1;j++){										
 										if(optcontents[j]==input){
 											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
 											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -1691,21 +1610,17 @@ function addSingle() {
 										}
 									}
 								}
-								}
-							
+								}							
 						}
-						else if(releno<oldno){
-							
-							var quesid = seekQuesByQuesNo(releno*1);
-						
+						else if(releno<oldno){							
+							var quesid = seekQuesByQuesNo(releno*1);						
 							var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 							var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 							var subopts = document.getElementById(quesid+"container").childNodes;
 							for(var m=1;m<=optsnum;m++){
 								var n = subopts[m].id.split("_")[1].split("o")[0];
 								var input = $("input[name='"+quesid+"_"+n+"option'").val();
-								for(var j=0;j<optcontents.length-1;j++){
-									
+								for(var j=0;j<optcontents.length-1;j++){									
 									if(optcontents[j]==input){
 										if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
 										var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -1725,15 +1640,13 @@ function addSingle() {
 					}
 					}
 				}
-			}
-			
+			}			
 		}
 	});
 	}
 	else{
 		var form = document.getElementById("form");
-	}
-	
+	}	
 	var div = document.createElement("div");
 	div.id = (value+"div");
 	div.setAttribute("value", "1");
@@ -1756,38 +1669,31 @@ function addSingle() {
 			"<div class='container' id='" + value + "container' value='0'>" +
 			"<label><font size='3'>添加并填写选项</font></label></div>" +
 			"<\label>" +
-			"</div></div>");
-	
-	
+			"</div></div>");	
 	//create button to add an option
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){addOption(value)};
-	document.getElementById(value + "button").appendChild(button);
-	
+	document.getElementById(value + "button").appendChild(button);	
 	var i = document.createElement("i");
 	i.className = "fa fa-plus";
 	i.innerText = "添加选项"
-	button.appendChild(i);
-	
+	button.appendChild(i);	
 	//create button to delete an question
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){deleteQuestion(value)};
-	document.getElementById(value + "button").appendChild(button);
-	
+	document.getElementById(value + "button").appendChild(button);	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	i.innerText = "删除本题";
-	button.appendChild(i);
-	
+	button.appendChild(i);	
 	body.setAttribute("value", value * 1 + 1);
 };
-
 function addMultiple() {
 	var body = document.body;
 	var value = body.getAttribute("value");
@@ -1813,8 +1719,7 @@ function addMultiple() {
 			for(var i=0;i<children.length;i++){
 				var id = children[i].getAttribute("id");
 				$("#"+id+"font").html(i+1);
-			}
-			
+			}			
 			var thisno = $("#"+thisid+"divfont").html();
 			if(rele.innerHTML!=""){
 				var quesid = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
@@ -1842,8 +1747,7 @@ function addMultiple() {
 								return;
 							}
 						}
-					}
-					
+					}					
 				}
 			}
 			if(oldno>thisno){
@@ -1853,11 +1757,9 @@ function addMultiple() {
 					var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 					var subopts = document.getElementById(quesid+"container").childNodes;
 					for(var m=1;m<=optsnum;m++){
-						var i = subopts[m].id.split("_")[1].split("o")[0];
-						
+						var i = subopts[m].id.split("_")[1].split("o")[0];						
 						var input = $("input[name='"+quesid+"_"+i+"option'").val();
-						for(var j=0;j<optcontents.length-1;j++){
-							
+						for(var j=0;j<optcontents.length-1;j++){							
 							if(optcontents[j]==input){
 								if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
 								var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -1877,8 +1779,7 @@ function addMultiple() {
 				for(var i=thisno-1;i<children.length;i++){
 					var rele = document.getElementById(children[i].getAttribute("id").split("d")[0]+"showrelevancy");
 					if(rele.innerHTML!=""){
-						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
-						
+						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];						
 						var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
 						if(releno==oldno){
 							rele.getElementsByTagName("SPAN")[0].innerHTML = thisno+"."+relecontent;
@@ -1912,25 +1813,20 @@ function addMultiple() {
 										}
 									}
 								}
-								}
-							
+								}							
 						}
-						else if(releno<thisno){
-							
-								var quesid = seekQuesByQuesNo(releno*1);
-							
+						else if(releno<thisno){							
+								var quesid = seekQuesByQuesNo(releno*1);							
 								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 								var subopts = document.getElementById(quesid+"container").childNodes;
 								for(var m=1;m<=optsnum;m++){
 									var n = subopts[m].id.split("_")[1].split("o")[0];
 									var input = $("input[name='"+quesid+"_"+n+"option'").val();
-									for(var j=0;j<optcontents.length-1;j++){
-										
+									for(var j=0;j<optcontents.length-1;j++){										
 										if(optcontents[j]==input){
 											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
-											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
-											
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");											
 											if(idarray.indexOf(String(i))!=-1){
 												idarray.splice(idarray.indexOf(String(i)),1,(i*1+1));
 											}
@@ -1943,8 +1839,7 @@ function addMultiple() {
 									}
 								}
 								}
-						}
-						
+						}						
 					}
 				}
 			}
@@ -1989,17 +1884,14 @@ function addMultiple() {
 							else{
 								var quesid = seekQuesByQuesNo(releno*1);
 							}
-							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1-1)+"."+relecontent;
-							
+							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1-1)+"."+relecontent;		
 								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 								var subopts = document.getElementById(quesid+"container").childNodes;
 								for(var m=1;m<=optsnum;m++){
-									var n = subopts[m].id.split("_")[1].split("o")[0];
-									
+									var n = subopts[m].id.split("_")[1].split("o")[0];									
 									var input = $("input[name='"+quesid+"_"+n+"option'").val();
-									for(var j=0;j<optcontents.length-1;j++){
-										
+									for(var j=0;j<optcontents.length-1;j++){										
 										if(optcontents[j]==input){
 											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
 											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -2014,21 +1906,17 @@ function addMultiple() {
 										}
 									}
 								}
-								}
-							
+								}							
 						}
-						else if(releno<oldno){
-							
-							var quesid = seekQuesByQuesNo(releno*1);
-						
+						else if(releno<oldno){							
+							var quesid = seekQuesByQuesNo(releno*1);					
 							var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 							var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 							var subopts = document.getElementById(quesid+"container").childNodes;
 							for(var m=1;m<=optsnum;m++){
 								var n = subopts[m].id.split("_")[1].split("o")[0];
 								var input = $("input[name='"+quesid+"_"+n+"option'").val();
-								for(var j=0;j<optcontents.length-1;j++){
-									
+								for(var j=0;j<optcontents.length-1;j++){									
 									if(optcontents[j]==input){
 										if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
 										var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -2048,8 +1936,7 @@ function addMultiple() {
 					}
 					}
 				}
-			}
-			
+			}		
 		}
 	});
 	}
@@ -2083,36 +1970,31 @@ function addMultiple() {
 			"<div class='container' id='" + value + "container' value='0'>" +
 			"<label><font size='3'>添加并填写选项</font></label></div>" +
 			"<\label>" +
-			"</div></div></div>");
-	
+			"</div></div></div>");	
 	//create button to add an option
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){addOption(value)};
-	document.getElementById(value + "button").appendChild(button);
-	
+	document.getElementById(value + "button").appendChild(button);	
 	var i = document.createElement("i");
 	i.className = "fa fa-plus";
 	i.innerText = "添加选项";
 	button.appendChild(i);
-	body.setAttribute("value", value * 1 + 1);
-	
+	body.setAttribute("value", value * 1 + 1);	
 	//create button to delete an question
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){deleteQuestion(value)};
-	document.getElementById(value + "button").appendChild(button);
-	
+	document.getElementById(value + "button").appendChild(button);	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	i.innerText = "删除本题";
 	button.appendChild(i);
 };
-
 function addSlider() {
 	var body = document.body;
 	var value = body.getAttribute("value");
@@ -2138,8 +2020,7 @@ function addSlider() {
 			for(var i=0;i<children.length;i++){
 				var id = children[i].getAttribute("id");
 				$("#"+id+"font").html(i+1);
-			}
-			
+			}			
 			var thisno = $("#"+thisid+"divfont").html();
 			if(rele.innerHTML!=""){
 				var quesid = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
@@ -2178,11 +2059,9 @@ function addSlider() {
 					var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 					var subopts = document.getElementById(quesid+"container").childNodes;
 					for(var m=1;m<=optsnum;m++){
-						var i = subopts[m].id.split("_")[1].split("o")[0];
-						
+						var i = subopts[m].id.split("_")[1].split("o")[0];						
 						var input = $("input[name='"+quesid+"_"+i+"option'").val();
-						for(var j=0;j<optcontents.length-1;j++){
-							
+						for(var j=0;j<optcontents.length-1;j++){							
 							if(optcontents[j]==input){
 								if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
 								var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -2202,8 +2081,7 @@ function addSlider() {
 				for(var i=thisno-1;i<children.length;i++){
 					var rele = document.getElementById(children[i].getAttribute("id").split("d")[0]+"showrelevancy");
 					if(rele.innerHTML!=""){
-						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
-						
+						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];						
 						var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
 						if(releno==oldno){
 							rele.getElementsByTagName("SPAN")[0].innerHTML = thisno+"."+relecontent;
@@ -2237,21 +2115,17 @@ function addSlider() {
 										}
 									}
 								}
-								}
-							
+								}							
 						}
-						else if(releno<thisno){
-							
-								var quesid = seekQuesByQuesNo(releno*1);
-							
+						else if(releno<thisno){							
+								var quesid = seekQuesByQuesNo(releno*1);						
 								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 								var subopts = document.getElementById(quesid+"container").childNodes;
 								for(var m=1;m<=optsnum;m++){
 									var n = subopts[m].id.split("_")[1].split("o")[0];
 									var input = $("input[name='"+quesid+"_"+n+"option'").val();
-									for(var j=0;j<optcontents.length-1;j++){
-										
+									for(var j=0;j<optcontents.length-1;j++){										
 										if(optcontents[j]==input){
 											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
 											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -2268,8 +2142,7 @@ function addSlider() {
 									}
 								}
 								}
-						}
-						
+						}						
 					}
 				}
 			}
@@ -2314,17 +2187,14 @@ function addSlider() {
 							else{
 								var quesid = seekQuesByQuesNo(releno*1);
 							}
-							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1-1)+"."+relecontent;
-							
+							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1-1)+"."+relecontent;							
 								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 								var subopts = document.getElementById(quesid+"container").childNodes;
 								for(var m=1;m<=optsnum;m++){
-									var n = subopts[m].id.split("_")[1].split("o")[0];
-									
+									var n = subopts[m].id.split("_")[1].split("o")[0];					
 									var input = $("input[name='"+quesid+"_"+n+"option'").val();
-									for(var j=0;j<optcontents.length-1;j++){
-										
+									for(var j=0;j<optcontents.length-1;j++){							
 										if(optcontents[j]==input){
 											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
 											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -2339,13 +2209,10 @@ function addSlider() {
 										}
 									}
 								}
-								}
-							
+								}					
 						}
-						else if(releno<oldno){
-							
+						else if(releno<oldno){						
 							var quesid = seekQuesByQuesNo(releno*1);
-						
 							var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 							var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 							var subopts = document.getElementById(quesid+"container").childNodes;
@@ -2411,8 +2278,6 @@ function addSlider() {
 			"<div class='col-lg-2'><label><font size='3'>最小值标签</font></label></div>" +
 			"<div class='col-lg-5'><input class='form-control' type='text' name='" + value +"mintext'></div></div>" +
 			"</div><br></div></div>");
-	
-	
 	//create button to delete an question
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
@@ -2420,15 +2285,12 @@ function addSlider() {
 	button.style="floating:left";
 	button.onclick = function(){deleteQuestion(value)};
 	document.getElementById(value + "button").appendChild(button);
-	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	i.innerText = "删除本题";
 	button.appendChild(i);
-	
 	body.setAttribute("value", value * 1 + 1);
 };
-
 function modify(result, id){
 	$("input[name='title']").val(result['title']);
 	$("input[name='introduction']").val(result['introduction']);
@@ -2437,7 +2299,6 @@ function modify(result, id){
 	}
 	var releqlist = {};
 	var releolist = {};
-	//alert(result[0]['stem']);
 	for(var i = 0; i < result['questions'].length; i++){
 		var type = result['questions'][i]['type'];
 		if(type=="Subjective"){
@@ -2531,7 +2392,6 @@ function modify(result, id){
 	}
 };
 
-
 function update(quesid){
 	FLAG=1;
 	QUES_ID = quesid;
@@ -2547,7 +2407,6 @@ function update(quesid){
 		}
 	});
 }
-
 function statechanger(){
 	if($("input[name='endtime']").val()!="" && $("input[name='endtime']").val()<new Date().toISOString().split("T")[0]){
 		$("#state").html("已结束");
@@ -2560,7 +2419,6 @@ function statechanger(){
 		$("#state").html("已发布");
 	}}
 }
-
 function relevancy(value){
 	if(document.getElementById(value+"relevancy").checked==true){
 		var num = $("#"+value+"divfont").html();
@@ -2625,7 +2483,6 @@ function relevancy(value){
 		deleteRelevancyByQuestion(value);
 	}
 }
-
 function releopts(){
 	var index=document.getElementById("formerques").selectedIndex;
     var quesid=document.getElementById("formerques").options[index].innerHTML.split(".")[0];
@@ -2647,7 +2504,6 @@ function releopts(){
 	}
 	$("#specoptiondiv").html(opts2);
 }
-
 function onchangingReleInQues(num, value){
 	var quesarray = getRelesFromOpt(document.getElementById(num+"_"+value+"optrele"));
 	var opt = $("input[name='" + num+"_"+value+"option']").val();
@@ -2669,7 +2525,6 @@ function onchangingReleInQues(num, value){
 		}
 	}
 }
-
 function changeReleInQues(num, value){
 	var quesarray = getRelesFromOpt(document.getElementById(num+"_"+value+"optrele"));
 	var opt = $("input[name='" + num+"_"+value+"option']").val();
@@ -2680,7 +2535,6 @@ function changeReleInQues(num, value){
 		}
 	}
 }
-
 function changeReleQInQues(value){
 	var opts = document.getElementById(value+"container").childNodes;
 	for(var i=1;i<opts.length;i++){
@@ -2693,7 +2547,6 @@ function changeReleQInQues(value){
 		}
 	}
 }
-
 function copyUrl()
 {
 var Url=document.getElementById("qnhref");

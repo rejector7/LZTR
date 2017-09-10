@@ -8,7 +8,6 @@ function exportXls(table,style,name,filename){
 			var ctx = { worksheet: name || 'Worksheet', table: table ,style : style};
 		    download((uri + base64(format(template, ctx))), (filename+".xls"), "text/plain");
 };
-
 function exportDoc(content,style,filename){
 	var uri = 'data:application/vnd.ms-word;base64,',
 		
@@ -20,7 +19,6 @@ function exportDoc(content,style,filename){
 	var ctx = { content:content , style:style};
 	download((uri + base64(format(template, ctx))), (filename+".doc"),"text/plain");
 };
-
 function exportBackup(content,id){
 	var d = new Date();
 	if(id==0){

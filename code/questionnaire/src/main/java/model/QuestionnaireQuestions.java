@@ -1,8 +1,6 @@
 package model;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 /**
@@ -16,7 +14,6 @@ public class QuestionnaireQuestions {
 	private String id;
 	private int quesid;
 	private String content;
-	
 	public QuestionnaireQuestions() {
 		super();
 	}
@@ -47,5 +44,4 @@ public class QuestionnaireQuestions {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
 }

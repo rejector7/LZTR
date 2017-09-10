@@ -1,21 +1,14 @@
 package action;
-
 import service.AnswerSheetService;
 import service.QuestionnaireService;
-
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Date;
-import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONObject;
-import org.json.JSONArray;
-
 import model.User;
 import model.Questionnaire;
 import model.QuestionnaireQuestions;
-
-
 public class QuestionnaireAction extends BaseAction{
 	private AnswerSheetService ansService;
 	private QuestionnaireService quesService;
@@ -29,7 +22,6 @@ public class QuestionnaireAction extends BaseAction{
 	private String condi;
 	private String content;
 	private int allowDup;
-
 	public String getContent() {
 		return content;
 	}
@@ -93,18 +85,11 @@ public class QuestionnaireAction extends BaseAction{
 	public void setQuesService(QuestionnaireService quesService) {
 		this.quesService = quesService;
 	}
-	
-	/**
-	 * Parse the questions with the string type into a list of questions
-	 * @param questions
-	 * @return
-	 */
-	
 	public void setAnsService(AnswerSheetService ansService) {
 		this.ansService = ansService;
 	}
 	/**
-	 * Use appService to add a questionnaire,including its basic information and content
+	 * Use Service to add a questionnaire,including its basic information and content
 	 * @return
 	 * @throws IOException 
 	 */
@@ -140,7 +125,6 @@ public class QuestionnaireAction extends BaseAction{
 		response().getWriter().write(Integer.valueOf(tmpid).toString());
 		return null;
 	}
-	
 	public String update() throws IOException {
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		if(ques.getStatus().equals("ban")){
@@ -156,16 +140,14 @@ public class QuestionnaireAction extends BaseAction{
 		response().getWriter().print("success");
 		return null;
 	}
-	
 	public String updateStatus() throws Exception {
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		ques.setStatus(status);
 		quesService.updateQuestionnaire(ques);
 		return "updateStatus";
 	}
-	
 	/**
-	 * Use appService to delete a questionnaire,including its basic information and content
+	 * Use Service to delete a questionnaire,including its basic information and content
 	 * @return
 	 */
 	public String delete1(){
@@ -175,7 +157,6 @@ public class QuestionnaireAction extends BaseAction{
 		quesService.deleteQuestionnaire(quescontent, ques);
 		return "delete1";
 	}
-	
 	public String delete2(){
 		ansService.deleteAnswersByQuestionId(id);
 		Questionnaire ques = quesService.getQuestionnaireById(id);
@@ -183,9 +164,8 @@ public class QuestionnaireAction extends BaseAction{
 		quesService.deleteQuestionnaire(quescontent, ques);
 		return "delete2";
 	}
-	
 	/**
-	 * Use appService to get a questionnaire,including its basic information and content
+	 * Use Service to get a questionnaire,including its basic information and content
 	 * @return
 	 * @throws IOException 
 	 */
@@ -215,15 +195,13 @@ public class QuestionnaireAction extends BaseAction{
 		response().getWriter().print(questot.toString());
 		return null;
 	}
-	
 	public String getInfo() throws IOException{
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		request().setAttribute("quesinfo", ques);
 		return "getInfo";
 	}
-	
 	/**
-	 * Use appService to get basic information of all questionnaires
+	 * Use Service to get basic information of all questionnaires
 	 * @return
 	 */
 	public String all(){
@@ -231,13 +209,11 @@ public class QuestionnaireAction extends BaseAction{
 		request().setAttribute("Questionnaires", questionnaires);
 		return "all";
 	}
-	
 	public String search() throws Exception{
 		List<Questionnaire> Questionnaires = quesService.findQuestionnaires(condi);
 		request().setAttribute("ResultList", Questionnaires);
 		return "search";
 	}
-	
 	public String My() throws Exception{
 		User user = (User)session().getAttribute("user");
 		int userid = user.getId();
@@ -245,7 +221,6 @@ public class QuestionnaireAction extends BaseAction{
 		request().setAttribute("MyQuess", Questionnaires);
 		return "My";
 	}
-	
 	public String propel(){
 		List<Questionnaire> questionnaires = quesService.getPublicQuestionnaires();
 		if(questionnaires.size()>=6){
@@ -268,5 +243,3 @@ public class QuestionnaireAction extends BaseAction{
 		return SUCCESS;
 	}
 }
-
-

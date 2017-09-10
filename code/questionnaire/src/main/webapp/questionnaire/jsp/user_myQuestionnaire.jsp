@@ -14,23 +14,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    
 	<meta charset="utf-8" />
         <title>LZTR 问卷网</title>
-
     <!-- Bootstrap core CSS -->
     <link href="<%=path %>/questionnaire/css/bootstrap3.3.7.min.css" rel="stylesheet">
-
-
         <link href="<%=path %>/questionnaire/css/font-awesome.min.css" rel="stylesheet">
-
-
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
     <style type="text/css">
         html, body {width:100%;height:100%;}
         .bg {display: table;width: 100%;height: 10%;padding: 20px 0;text-align: center;color: #fff;background: url(questionnaire/img/homepage.jpg) no-repeat bottom center;background-color: #000;background-size: cover;}
@@ -42,19 +35,16 @@
         button.navbar-toggle {background-color:#fbfbfb;}
         button.navbar-toggle > span.icon-bar {background-color:#dedede}
         .dropdown-nemu>li>a{color:#333!important;display:block!important;}
-        
 		.mydiv{
 		width:250px;height:auto;border:#909090 1px solid;background:#fff;color:#333;
 		filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=3);
 		-moz-box-shadow: 2px 2px 10px #909090;
 		-webkit-box-shadow: 2px 2px 10px #909090;
 		box-shadow:2px 2px 10px #909090;
-
 		}
     </style>
 </head>
-<body style="background:
-#F5F5F5">
+<body style="background:#F5F5F5">
 <% 
 User user = (User) session.getAttribute("user");
 %>
@@ -67,15 +57,11 @@ User user = (User) session.getAttribute("user");
                 <ul class="nav navbar-nav">
 				<% response.setCharacterEncoding("UTF-8"); 
 					if(session.getAttribute("user")!=null){ %>
-				
 				<% String role = user.getRole();
-				if(role.equals("admin")){ System.out.println("1111");%>
+				if(role.equals("admin")){ %>
 				<li><a class="navbar-brand" href="<%=path %>/allUser"><span class="glyphicon glyphicon-wrench">系统信息管理</span></a></li>
 				<%} }%>
-                </ul>
-                
-
-                
+                </ul>  
               <ul class="nav navbar-nav navbar-right">
               <% 
               if(user==null){ %>
@@ -84,7 +70,6 @@ User user = (User) session.getAttribute("user");
               <li data-toggle="modal" data-target="#signin-signup-tab" id="signup-button"><a href="<%=path %>/HelpContact" class="navbar-brand" >帮助</a></li>
               <%}else{ %>
               	<li><a class="navbar-brand" href="<%=path %>/MyQuestionnaire"><span class="glyphicon glyphicon-list">我的问卷</span></a></li>
-              
             	<li class="dropdown">
                 <a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-expanded="false">
                     <span class="glyphicon glyphicon-user"><%=((User)session.getAttribute("user")).getUsername()%></span>
@@ -97,16 +82,12 @@ User user = (User) session.getAttribute("user");
 					<li><a href="<%=path %>/HelpContact">帮助</a></li>
                 </ul>
             	</li>
-            	
                <li data-toggle="modal" data-target="#signin-signup-tab" id="signin-button"><a href="logoutPro" class="navbar-brand" >登出</a></li>
                <%} %>
               </ul>
-            </div>
-            
-
+            </div> 
         </div>
     </nav>
-
  <div class="bg jumbotron">
       </div>
       <div class="container">
@@ -116,16 +97,13 @@ User user = (User) session.getAttribute("user");
 		</a>
  	<hr>
 <hr style="color:black;border-top:1px solid #C0C0C0" >
-
       <%
 		ArrayList<Questionnaire> myQuesList = new ArrayList<Questionnaire>();
 			if (request.getAttribute("MyQuess") != null) {
 		myQuesList = (ArrayList<Questionnaire>) request.getAttribute("MyQuess");
 			}
 	  %>
-	  
-	  
-	  <div id="page-wrapper page-left">
+ <div id="page-wrapper page-left">
 			<!-- /.row -->
 			<div class="row">
 				<div class="col-lg-12">
@@ -170,7 +148,6 @@ User user = (User) session.getAttribute("user");
 											<%}else if(ques.getStatus().equals("unp")){%>
 											<td><%="未发布"%></td>
 											<%}%>
-											
 											<td>
 												<!-- data-id what are they？ -->
 												<button class="btn btn-default delete" type="button"
@@ -192,9 +169,7 @@ User user = (User) session.getAttribute("user");
 												<a class="btn btn-default" href="getInfoQuestionnaire?id=<%=ques.getId() %>" role="button"><i class="fa fa-edit"></i>修改内容</a>
 												<br>
 												<a class="btn btn-default" href="PreviewQuestionnaire?quesid=<%=ques.getId() %>" role="button"><i class="fa fa-eye"></i>预览</a>
-
 												<a class="btn btn-default" href="getAnswerByQuesid?quesid=<%=ques.getId() %>" role="button"><i class="fa fa-bar-chart"></i>查看数据</a>
-
 												<button class="btn btn-default link" type="button" value="localhost:8080/questionnaire/FillQuestionnaire?quesid=<%=ques.getId() %>"><i class="fa fa-copy"></i>复制链接</button>
 											</td>
 										</tr>
@@ -214,8 +189,6 @@ User user = (User) session.getAttribute("user");
 			<!-- /.row -->
 		</div>
 		<!-- /#page-wrapper -->
-		
-
 	<div class="modal fade" id="modal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -267,8 +240,6 @@ User user = (User) session.getAttribute("user");
 			</div>
 		</div>
 	</div>
-	
-	
 	<script src="<%=path%>/questionnaire/js/jquery.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/bootstrap.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/jquery.dataTables.min.js"></script>
@@ -276,8 +247,6 @@ User user = (User) session.getAttribute("user");
 	<script src="<%=path%>/questionnaire/js/bootbox.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/questionnaire.js"></script>
 	<script src="<%=path%>/questionnaire/js/user_ques.js"></script>
-	
-
 	<script>
 		$(document).ready(function() {
 			$('#dataTables').DataTable({
@@ -285,19 +254,12 @@ User user = (User) session.getAttribute("user");
 			});
 		});
 	</script>
-    
-	  
-	  
-	  
 <hr style="color:black;border-top:1px solid #C0C0C0">
       <!-- Site footer -->
       <footer class="footer">
         <p>&copy; 2017 LZTR Group.</p>
       </footer>
-
     </div> <!-- /container -->
-
-
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="<%=path %>/questionnaire/js/ie10-viewport-bug-workaround.js"></script>
             <script>

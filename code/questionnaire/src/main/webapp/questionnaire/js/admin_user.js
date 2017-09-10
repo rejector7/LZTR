@@ -1,7 +1,3 @@
-/**
-
- * 
- */
 $(function() {
 	$("#form").validate({
 		messages:{
@@ -39,10 +35,8 @@ $(function() {
 		var age = $("input[name='age']").val();
 		var job = $("input[name='job']").val();
 		var role = $("#form-role").val();
-		/*var status = $("#selectf").val();*/
 		if(role=="管理员"){role="admin";}
 		else if(role=="用户"){role="user";}
-		console.log(id,username,age,sex,city,country,email,qq,wechat,role);
 		if(!$("#form").validate({
 			messages:{
 				username:{
@@ -89,7 +83,6 @@ $(function() {
 				        role:role
 			},
 			success : function(data) {
-				console.log(id);
 				bootbox.alert({
 					message : '修改成功!',
 					callback : function() {
@@ -100,7 +93,6 @@ $(function() {
 		});
 		$('#modal').modal('hide');
 	});
-
 	$(".delete").click(function(e) {
 		bootbox.confirm({
 			buttons : {
@@ -125,7 +117,6 @@ $(function() {
 							id : id
 						},
 						success : function(data) {
-							console.log(id);
 							bootbox.alert({
 								message : '删除成功! ',
 								callback : function() {
@@ -134,12 +125,10 @@ $(function() {
 							});
 						}
 					});
-
 				}
 			}
 		});
 	});
-
 	$(".edit").click(function(e) {
 		$('#modalTitle').html("修改用户信息");
 		var dataset = e.currentTarget.dataset;
@@ -159,11 +148,9 @@ $(function() {
 		{$("#form-role").val("用户");}
 		else if(dataset.role=="admin")
 		{$("#form-role").val("管理员");}
-
 		$("#save").attr("data-id", dataset.id);
 		$('#modal').modal('show');
 	});
-
 });
 function isPhoneNo(phone) { 
 	var pattern = /^1[34578]\d{9}$/; 

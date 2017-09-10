@@ -1,8 +1,6 @@
 package filter;
-
 import java.io.IOException;
 import java.util.List;
-
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -12,17 +10,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-
 import model.User;
-
 public class SessionFilter implements Filter{
-	
 	public FilterConfig config;
-	
 	public void destroy(){
 		this.config = null;
 	}
-	
 	public static boolean isContains(String container, String[] regx){
 		boolean result = false;
 		
@@ -33,7 +26,6 @@ public class SessionFilter implements Filter{
 		}
 		return result;
 	}
-	
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
 		ServletException{
 		HttpServletRequest hrequest = (HttpServletRequest)request;
@@ -49,14 +41,11 @@ public class SessionFilter implements Filter{
 		String[] loginList = loginStrings.split(";");
 		String[] adminList = adminStrings.split(";");
 		String from = ((HttpServletRequest) request).getServletPath();
-		
 		if(from.endsWith(".css")||from.endsWith(".js")||from.endsWith(".jpg")||from.endsWith(".jpeg")||from.endsWith(".map")||from.endsWith(".png")||from.endsWith(".ttf")||from.endsWith(".woff2")||from.endsWith(".woff")){
 			chain.doFilter(request, response);
 			return;
 		}
-		System.out.println(hrequest.getRequestURI());
 		if(this.isContains(hrequest.getRequestURI(), loginList)||from.equals("/index.jsp")){
-			System.out.println(from);
 			chain.doFilter(request, response);
 			return;
 		}
@@ -74,27 +63,7 @@ public class SessionFilter implements Filter{
 			return;
 		}
 	}
-	
 	public void init(FilterConfig filterConfig) throws ServletException{
 		config = filterConfig;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
