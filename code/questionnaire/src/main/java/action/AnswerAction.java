@@ -53,7 +53,7 @@ public class AnswerAction extends BaseAction{
 	 * @throws IOException 
 	 */
 	public String add() throws IOException{
-		if(content==null)return null;
+		if(content==""){response().getWriter().print("success");return null;}
 		content =  URLDecoder.decode(content, "UTF-8");
 		content =  URLDecoder.decode(content, "UTF-8");
 		String ip = request().getRemoteAddr();
