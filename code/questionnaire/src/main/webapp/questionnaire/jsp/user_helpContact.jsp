@@ -618,13 +618,13 @@ User user = (User) session.getAttribute("user");
 		<p>上方是某次回答的详细信息的界面，可通过导出为word按钮导出含有回答信息的word文档。
 		<br>若填写人在登录状态下填写问卷，问卷发起人可以通过下面的留言框来进行进一步的调查，发起人发送的留言会发送到填写人的消息页面中。
 		<strong>统计数据页面：</strong>
-		<br>在答卷详细信息界面，点击右上方的“查看统计数据”链接之后，可以进入统计数据页面，查看问卷结果的统计数据和图形分析。统计信息可通过最上方的导出按钮，选择导出当前页面为jpeg格式文件，或导出统计数据为xml格式文件。</p>
+		<br>在答卷详细信息界面，点击右上方的“查看统计数据”链接之后，可以进入统计数据页面，查看问卷结果的统计数据和图形分析。统计信息可通过最上方的导出按钮，选择导出当前页面为jpeg格式文件，或导出统计数据为xls格式文件。</p>
  		<div>
  		<div class="container" style="background-color:white">
       <div class="container">
        	<div class="row" style="float:left"><font size=5><strong>答卷统计数据</strong></font>
        	 <button type='button' class='btn btn-default'>导出页面为jpeg文件</button>
-       	  <button type='button' class='btn btn-default'>导出数据为xml文件</button>
+       	  <button type='button' class='btn btn-default'>导出数据为xls文件</button>
        	</div>
        	       	  <a class="btn btn-default"  href="getAnswerByQuesid?quesid=26" type="button" align="right" style="float:right;">
 				<i class="fa fa-bar-chart">查看答卷信息</i> 
@@ -648,7 +648,7 @@ User user = (User) session.getAttribute("user");
 					</button>
 					<h3 class="modal-title" >题目“必答单选”的详情统计</h3>
 					<h4 class="modal-title">选项“要填写文本的”</h4>
-					<button type="button" class="btn btn-default" >数据导出为xml文件</button>
+					<button type="button" class="btn btn-default" >数据导出为xls文件</button>
 				</div>
 				<div class="modal-body">
 							<div class="dataTable_wrapper">
@@ -667,7 +667,31 @@ User user = (User) session.getAttribute("user");
 					<button type="button" class="btn btn-default" >关闭</button>
 				</div>
 			</div>
-		<p><br>可通过数据导出为xml文件，将本选项回答详情导出为xml格式文件</p></div></div>
+		<p><br>可通过数据导出为xls文件，将本选项回答详情导出为xls格式文件</p>
+		</div>
+		<p>交叉分析：<br>
+		页面最下方有交叉分析，可分析任意两道选择题交叉分析的结果，并可导出结果为xls格式文件。</p>
+		<div class="container" style="background-color:white">
+		<div class="row" ><font size=5><strong>交叉分析</strong></font></div>
+	<hr style="color:black;border-top:1px solid #C0C0C0">
+	<div class="container">
+	<label>自变量</label>
+	<select >
+	<option>未选择</option>
+	<option>2 : 单选择</option><option selected>4 : 多选</option></select>
+	<label>因变量</label>
+	<select >
+	<option>未选择</option><option selected>2 : 单选择</option><option>4 : 多选</option>
+	</select>
+	<button type="button" class="btn btn-default">
+	生成交叉分析
+	</button>
+	<button type="button" class="btn btn-default">
+	导出交叉分析数据为xls文件
+	</button>
+	<div ><table class="table"><tbody><tr><th>X\Y</th><th>选项</th><th>2项</th><th>小计</th></tr><tr><th>1项</th><td>10</td><td>2</td><td>12</td></tr><tr><th>2项</th><td>9</td><td>1</td><td>10</td></tr><tr><th>3项</th><td>4</td><td>1</td><td>5</td></tr><tr><th>4项</th><td>0</td><td>0</td><td>0</td></tr></tbody></table></div>
+		</div>
+		</div>
 		<h4 id="H6">6.	我的消息</h4><a class="btn btn-default" id="a6" data-toggle="collapse"  
 				   href="#p6" onclick="changea(6)">收起本节</a><br>
         <div id="p6" class="in">
