@@ -96,7 +96,7 @@ User user = (User) session.getAttribute("user");
       <div class="container">
        	<div class="row" style="float:left"><font size=5><strong>答卷统计数据</strong></font>
        	 <button type='button' class='btn btn-default' onclick='downloadjpeg("<%=ques.getId() %>","<%=ques.getTitle() %>")'>导出页面为jpeg文件</button>
-       	  <button type='button' class='btn btn-default' onclick='downloadxml("<%=ques.getId() %>","<%=ques.getTitle() %>")'>导出数据为xml文件</button>
+       	  <button type='button' class='btn btn-default' onclick='downloadxml("<%=ques.getId() %>","<%=ques.getTitle() %>")'>导出数据为xls文件</button>
        	<div id="jpegtip"> </div>
        	</div>
        	       	  <a class="btn btn-default"  href="getAnswerByQuesid?quesid=<%=ques.getId() %>" type="button" align="right" style="float:right;">
@@ -118,7 +118,7 @@ User user = (User) session.getAttribute("user");
 					</button>
 					<h3 class="modal-title" id="modalTitle"></h3>
 					<h4 class="modal-title" id="modalTitle2"></h4>
-					<button type='button' class='btn btn-default' onclick='downloadDetailxml()'>数据导出为xml文件</button>
+					<button type='button' class='btn btn-default' onclick='downloadDetailxml()'>数据导出为xls文件</button>
 				</div>
 				<div class="modal-body">
 							<div class="dataTable_wrapper">
@@ -141,6 +141,27 @@ User user = (User) session.getAttribute("user");
 			</div>
 		</div>
 	</div>
+	<div class="row" ><font size=5><strong>交叉分析</strong></font></div>
+	<hr style="color:black;border-top:1px solid #C0C0C0">
+	<div class="container">
+	<label>自变量</label>
+	<select id="firstques">
+	<option>未选择</option>
+	</select>
+	<label>因变量</label>
+	<select id="secondques">
+	<option>未选择</option>
+	</select>
+	<button type="button" class="btn btn-default" onclick="crossAna()">
+	生成交叉分析
+	</button>
+	<button type="button" class="btn btn-default" onclick="downloadXlsCross()">
+	导出交叉分析数据为xls文件
+	</button>
+	<div id="crossAnaTable">
+	</div>
+	</div>
+	<hr>
 	<hr style="color:black;border-top:1px solid #C0C0C0">
       <!-- Site footer -->
       <footer class="footer">
