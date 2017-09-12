@@ -27,7 +27,7 @@ $(function() {
 				bootbox.alert({
 					message : '修改成功！',
 					callback : function() {
-						location.reload();
+						location.href= "allQuestionnaire";
 					}
 				});
 			}
@@ -60,7 +60,7 @@ $(function() {
 							bootbox.alert({
 								message : '删除成功！',
 								callback : function() {
-									location.reload();
+									location.href= "allQuestionnaire";
 								}
 							});
 						}

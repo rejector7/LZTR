@@ -155,6 +155,9 @@ public class UserAction extends BaseAction{
 		if(email!=null&&email!=""){
 		user.setEmail(email);
 		}
+		if(password!=null&&password!=""){
+		user.setPassword(password);
+		}
 		user.setMobile(mobile);
 		user.setQq(qq);
 		user.setSex(sex);

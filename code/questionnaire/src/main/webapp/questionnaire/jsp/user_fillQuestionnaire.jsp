@@ -37,8 +37,11 @@
       <div id = "bin" hidden></div>
       <div class="row">&nbsp</div>
       <div align='center'>
-      <button style='floating:right' class="btn btn-primary" onclick="submit()" type="button" style="floating:right">
+      <button class="btn btn-primary" onclick="submit()" type="button" style="floating:right">
 			<i class="fa fa-check fa-2x">提交</i>
+		</button>
+		<button class="btn btn-primary" onclick="tmpsave()" type="button" >
+			<i class="fa fa-2x">暂存</i>
 		</button>
 		<div id="errors">
 		</div>
