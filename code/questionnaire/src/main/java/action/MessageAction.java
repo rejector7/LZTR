@@ -61,6 +61,7 @@ public class MessageAction extends BaseAction{
 	//functions
 	//发送消息，发送人一定是登录者
 	public String send1() throws Exception{
+		msg = URLDecoder.decode(msg, "UTF-8");
 		int userid = ((User)request().getSession().getAttribute("user")).getId();
 		if(rid==0)return null;
 		Message message = new Message(userid, rid, msg);
