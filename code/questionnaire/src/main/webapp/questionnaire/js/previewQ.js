@@ -329,7 +329,7 @@ function wordexport(){
 	content+=fc;
 	var header = document.getElementById("questionnaire");
 	var filename = header.getElementsByTagName("h1")[0].getElementsByTagName("font")[0].innerHTML;
-	exportDoc(content,filename)
+	exportDocx(content,filename);
 }
 function releEffect(i){
 	var ques = document.getElementById(i);

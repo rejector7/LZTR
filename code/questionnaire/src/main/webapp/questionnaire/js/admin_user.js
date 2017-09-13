@@ -25,6 +25,7 @@ $(function() {
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
 		var username = $("input[name='username']").val();
+		var password = $("input[name='password']").val();
 		var email = $("input[name='email']").val();
 		var mobile = $("input[name='mobile']").val();
 		var country = $("input[name='country']").val();
@@ -70,23 +71,24 @@ $(function() {
 			dataType : "text",
 			data : {
 				        id 	: id,
-				        username : username,
+				        username : encodeURI(username),
+				        password:password,
 				        age:age,
 				        sex:sex,
-				        city:city,
-				        country:country,
+				        city:encodeURI(city),
+				        country:encodeURI(country),
 				        email:email,
 				        mobile:mobile,
 				        qq:qq,
-				        wechat:wechat,
-				        job:job,
+				        wechat:encodeURI(wechat),
+				        job:encodeURI(job),
 				        role:role
 			},
 			success : function(data) {
 				bootbox.alert({
 					message : '修改成功!',
 					callback : function() {
-						location.reload();
+						location.href="allUser";
 					}
 				});
 			}
@@ -134,6 +136,7 @@ $(function() {
 		var dataset = e.currentTarget.dataset;
 		$("#form-id").html(dataset.id);
 		$("input[name='username']").val(dataset.username);
+		$("input[name='password']").val(dataset.password);
 		$("input[name='email']").val(dataset.email);
 		$("input[name='mobile']").val(dataset.mobile);
 		$("input[name='country']").val(dataset.country);

@@ -55,7 +55,73 @@ function formQ(data){
 		else if(type=="Multiple") result[i] = addMultiple(question, i);
 		else if(type=="Slider") result[i] = addSlider(question, i);
 	}
+	var content = getCookie("quesid"+QUESID);
+	var sublist = [];
+	if(content!=""){
+		content = JSON.parse(content);
+		var length = document.getElementById("form").childNodes.length;
+		for(var i = 0; i < length; i++){
+			var answer = content[i];
+			var type = document.getElementById(i).getAttribute("value");
+			switch(type){
+			case'0':
+				$("input[name='" + i +"'").val(answer['words']);
+				break;
+			case'1':
+				if(answer['option'] == ""){
+				break;
+				}
+				var optionid = answer['option'];
+				var opt = document.getElementsByName(i)[optionid];
+				opt.checked=true;
+				if(Q['questions'][i]['options'][optionid*1]['hasWords']==true){
+					$("input[name='" + i +"_" + optionid + "words']").val(answer['words']);
+				}
+				var rele = opt.getAttribute("rele").split(",");
+				if(opt.getAttribute("rele")!=""){
+					for(var m=0;m<rele.length;m++){
+					var index = initrelelist.indexOf(rele[m]);
+					if(index!=-1)
+					sublist.push(initrelelist[index]);
+					initrelelist.splice(index,1);
+					}
+				}
+				break;
+			case'2':
+		    	var a = document.getElementsByName(i);
+		    	var opts = answer['option'].split(",");
+		    	var words = answer['words'];
+		    	var count = 0;
+		    	for(var j=0; j<opts.length-1; j++){
+		    		a[opts[j]].checked = true;
+		    		if(Q['questions'][i]['options'][opts[j]*1]['hasWords']==true){
+		    			for(var p=0;p<words.length;p++){
+		    				if(words[p]['optionid']==opts[j]){
+		    					$("input[name='" + i +"_" + opts[j] + "words']").val(words[p]['word']);
+		    				}
+		    			}
+	    			}
+		    		var rele = a[opts[j]].getAttribute("rele").split(",");
+					if(a[opts[j]].getAttribute("rele")!=""){
+						for(var m=0;m<rele.length;m++){
+						var index = initrelelist.indexOf(rele[m]);
+						if(index>=0){
+							sublist.push(initrelelist[index]);
+							initrelelist.splice(index,1);
+						}
+					}
+		    	}
+		    	}
+		    	break;
+			case'3':
+				$("input[name='" + i +"'").val(answer['number']);
+				$( "#"+i+"slider" ).slider("value",answer['number']);
+			}
+			result.push(answer);
+		}
+	}
 	var len = initrelelist.length;
+	var len2 = sublist.length;
 	var bin = document.getElementById("bin");
 	var form = document.getElementById("form");
 	for(j=0;j<len;j++){
@@ -65,6 +131,13 @@ function formQ(data){
 		substitute.setAttribute("value", "5")
 		form.replaceChild(substitute,ques);
 		bin.appendChild(ques);
+	}
+	for(j=0;j<len2;j++){
+		var ques = document.getElementById(sublist[j]-1);
+		var substitute = document.createElement("div");
+		substitute.id = ques.id+"_tmp";
+		substitute.setAttribute("value", "5")
+		bin.appendChild(substitute);
 	}
 }
 function addStem(question, i){
@@ -358,8 +431,15 @@ function submit(){
 		success : function(data) { //把title，id都放在里面
 			if(data=="dupIp"){
 				$("#errors").html("本问卷在本ip地址已提交过，不可重复提交");
+				if(getCookie("quesid"+QUESID)!=""){
+					document.cookie = "quesid"+QUESID+"=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+				}
 			}
-			else{bootbox.alert({
+			else{
+				if(getCookie("quesid"+QUESID)!=""){
+					document.cookie = "quesid"+QUESID+"=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+				}
+				bootbox.alert({
 				message : '提交成功',
 			    callback : function() {
 			    	location.href = 'FrontPage';
@@ -424,4 +504,73 @@ function donothing(){
 	var info = document.createElement("P");
 	info.innerHTML = "问卷不存在";
 	div.append(info);
+}
+function getCookie(cname)
+{
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0; i<ca.length; i++) 
+  {
+    var c = ca[i].trim();
+    if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+  }
+  return "";
+}
+function setCookie(cname,cvalue,exdays){
+	var d = new Date();
+	d.setTime(d.getTime()+(exdays*24*60*60*1000));
+	var expires = "expires="+d.toGMTString();
+	document.cookie = cname+"="+cvalue+"; "+expires;
+}
+function tmpsave(){
+	var length = document.getElementById("form").childNodes.length;
+	var key = "quesid" + QUESID;
+	var result=[];
+	if(getCookie(key)!=""){
+		document.cookie = "quesid"+QUESID+"=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+	}
+	for(var i = 0; i < length; i++){
+		var answer = {};
+		var type = document.getElementById(i).getAttribute("value");
+		switch(type){
+		case'0':
+			answer['words'] = $("input[name='" + i +"'").val();
+			break;
+		case'1':
+			var optionid = $("input[name='" + i +"']:checked").val();
+			answer['option'] = optionid;
+			if(optionid == null) {
+				answer['option'] = "";
+				break;
+			}
+			if(Q['questions'][i]['options'][optionid*1]['hasWords']==true){
+				answer['words'] = $("input[name='" + i +"_" + optionid + "words']").val();
+			}
+			break;
+		case'2':
+	    	var a = document.getElementsByName(i);
+	    	answer['option']="";
+	    	answer['words']=[];
+	    	var count = 0;
+	    	for(var j=0; j<a.length; j++){
+	    		if(a[j].checked){
+	    			answer['option'] += j +",";
+	    			if(Q['questions'][i]['options'][j*1]['hasWords']==true){
+	    				var word = {};
+	    				word['optionid'] = j;
+	    				word['word'] = $("input[name='" + i +"_" + j + "words']").val();
+	    				answer['words'].push(word);
+	    			}
+	    			count += 1;
+	    		}
+	    	}
+	    	break;
+		case'3':
+			var num = $("input[name='" + i +"'").val();
+			answer['number'] = num;
+		}
+		result.push(answer);
+	}
+	setCookie(key,JSON.stringify(result),1);
+	bootbox.alert("本地暂存成功，可关闭当前窗口。退出浏览器或一天后数据清除");
 }
