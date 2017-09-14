@@ -516,6 +516,7 @@ User user = (User) session.getAttribute("user");
 		<br>直接填写。
 		<br>填写完成之后，点击页底的“提交”按钮，就能够提交本次填写。
 		<br>若无法正常提交，在问卷底部会集中显示错误的题号或其他错误原因。
+		<br>暂存：可使用暂存按钮在本地暂存填写信息，浏览器退出或一天后失效。
 		</p></div>
 		<h4 id="H5">5.	问卷的管理和结果的查看</h4><a class="btn btn-default" id="a5" data-toggle="collapse"  
 				   href="#p5" onclick="changea(5)">收起本节</a><br>

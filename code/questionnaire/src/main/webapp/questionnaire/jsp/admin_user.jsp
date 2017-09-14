@@ -2,8 +2,8 @@
 <%@ page import="model.User"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
+<!DOCTYPE html>
+<html >
 <head>
 <title>LZTR 问卷平台后台管理</title>
 <%
@@ -64,6 +64,7 @@
 										<tr>
 										    <th>ID</th>
 											<th>用户名</th>
+											<th>密码</th>
 											<th>年龄</th>
 											<th>性别</th>
 											<th>城市</th>
@@ -85,6 +86,7 @@
 										<tr>
 										    <td><%=user.getId()%></td>
 											<td><%=user.getUsername()%></td>
+											<td><%=user.getPassword() %></td>
 											<td><%=user.getAge()%></td>
 											<td><%if(user.getSex().equals("male")){%>男<%}else if (user.getSex().equals("female")){%>女<%} %></td>
 											<td><%=user.getCity()%></td>
@@ -103,6 +105,7 @@
 												<button class="btn btn-default edit" type="button"
 													data-id="<%=user.getId()%>"
 													data-username="<%=user.getUsername()%>"
+													data-password="<%=user.getPassword() %>"
 													data-age="<%=user.getAge()%>"
 													data-sex="<%=user.getSex()%>"
 													data-city="<%=user.getCity()%>"
@@ -158,6 +161,10 @@
       <div class="form-group">
         <label>用户名</label>
         <input type="text" class="form-control" name="username" required maxlength="255">
+      </div>
+      <div class="form-group">
+      <label>密码</label>
+      <input type="text" class="form-control" name="password" required maxlength="255">
       </div>
       <div class="form-group">
         <label>年龄</label>
