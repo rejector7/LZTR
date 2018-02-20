@@ -77,7 +77,8 @@ public class UserServiceImpl implements UserService {
 	}
 	public static final String FROM = "nmgzhangran@163.com";
 	public static final String PWD = "327453nmg";
-	public static final String URL = "http://106.14.169.27:8080/questionnaire";
+	//public static final String URL = "http://106.14.169.27:8080/questionnaire";
+	public static final String URL = "http://127.0.0.1:8080/questionnaire";
 	public static final int TIMELIMIT = 1000*60*60*24;
 	public static final String TITLE = "LZTR questionnaire account activation email";
 	public static final String HOST = "smtp.163.com";

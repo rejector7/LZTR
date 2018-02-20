@@ -155,6 +155,17 @@ function addStem(question, i){
 		$("#"+i).append("<font color='red' size='4'>&nbsp*</font>");
 	}
 	$("#"+i).append("</p2>");
+	if(question['img']){
+		$("#"+i).append("<br><img src='"+decodeURIComponent(question['img'])+"'>")
+	}
+	if(question['video']){
+		$("#"+i).append("<br>");
+		$("#"+i).append(question['video']);
+	}
+	if(question['audio']){
+		$("#"+i).append("<br>");
+		$("#"+i).append(question['audio']);
+	}
 }
 function addSubjective(question, i){
 	var div = document.getElementById(i);

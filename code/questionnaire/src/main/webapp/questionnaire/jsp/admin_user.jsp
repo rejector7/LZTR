@@ -234,6 +234,7 @@
 	<script src="<%=path%>/questionnaire/js/questionnaire.js"></script>
 	<script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
     <script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
+    <script src="<%=path %>/questionnaire/js/md5.js"></script>
 	<script src="<%=path%>/questionnaire/js/admin_user.js"></script>
 	<script>
 		$(document).ready(function() {

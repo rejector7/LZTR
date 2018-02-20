@@ -54,7 +54,7 @@
                           </div>
                         <div class="col-sm-4 form-box" >
                             <div class="form-bottom" >
-			                    <form role="form" action="<%=path %>/loginPro" method="post" class="login-form">
+			                    <form role="form" action="<%=path %>/loginPro" method="post" class="login-form" onsubmit="md5pass()">
 			                    	<div class="form-group">
 			                    		<label for="form-username">账户名</label>
 			                        	<input type="text" name="username"  class="form-username form-control" id="form-username">
@@ -78,6 +78,8 @@
         <script src="<%=path %>/questionnaire/js/bootstrap.min.js"></script>
         <script src="<%=path %>/questionnaire/js/jquery.backstretch.min.js"></script>
         <script src="<%=path %>/questionnaire/js/scripts.js"></script>
+        <script src="<%=path %>/questionnaire/js/md5.js"></script>
+        <script src="<%=path %>/questionnaire/js/user.js"></script>
         <script>
         window.onload = function(){
         <%if(request.getAttribute("flag")!=null){

@@ -25,7 +25,7 @@ public class LoginAction extends BaseAction{
 		this.password = password;
 	}
 	public String login(){
-		User user = loginService.login(username,  password);
+		User user = loginService.login(username, password);
 		if(user != null) {
 			if(user.getStatus()==0){
 				request().setAttribute("flag", "1");
