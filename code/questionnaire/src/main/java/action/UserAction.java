@@ -7,6 +7,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import model.User;
 import service.UserService;
+import assist.BCrypt;
 public class UserAction extends BaseAction{
 	/**
 	 * 
@@ -136,7 +137,7 @@ public class UserAction extends BaseAction{
 			return null;
 		}
 		if(role==null) role = "user";
-		User user = new User(username, password, age, sex, email, country,
+		User user = new User(username, BCrypt.hashpw(password, BCrypt.gensalt()), age, sex, email, country,
 				city, mobile, qq, wechat, role, job, null, null, null, 0);
 		user = userService.activateMail(user);
 		userService.addUser(user);
@@ -156,7 +157,7 @@ public class UserAction extends BaseAction{
 		user.setEmail(email);
 		}
 		if(password!=null&&password!=""){
-		user.setPassword(password);
+		user.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
 		}
 		user.setMobile(mobile);
 		user.setQq(qq);
@@ -228,11 +229,11 @@ public class UserAction extends BaseAction{
 	}
 	public String updatepass() throws IOException{
 		User user = userService.getUserById(id);
-		if(!user.getPassword().equals(oldpassword)){
+		if(!BCrypt.checkpw(oldpassword, user.getPassword())){
 			response().getWriter().print("false");
 			return null;
 		}
-		user.setPassword(password);
+		user.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
 		userService.updateUser(user);
 		session().removeAttribute("user");
 		session().removeAttribute("role");

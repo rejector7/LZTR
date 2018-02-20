@@ -31,6 +31,7 @@
     <script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
     <script src="<%=path %>/questionnaire/js/bootstrap.min.js"></script>
      <script src="<%=path %>/questionnaire/js/bootbox.min.js"></script>
+     <script src="<%=path %>/questionnaire/js/md5.js"></script>
     <script src="<%=path %>/questionnaire/js/user.js"></script>
     <style type="text/css">
         html, body {width:100%;height:100%;}

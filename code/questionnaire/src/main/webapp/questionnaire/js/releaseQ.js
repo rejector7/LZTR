@@ -55,6 +55,11 @@ $(function() {
 				result['questions'][k]['required'] = true;
 			}
 			else result['questions'][k]['required'] = false;
+			var imgpreview = document.getElementById(i+"imgpreview").src;
+			imgpreview = encodeURIComponent(imgpreview);
+			result['questions'][k]['img'] = imgpreview;
+			result['questions'][k]['video'] = $("#"+i+"video").val();
+			result['questions'][k]['audio'] = $("#"+i+"audio").val();
 			//get the question type
 			var type = (document.getElementById(i + "div")).getAttribute("value");
 			switch(type){
@@ -91,7 +96,8 @@ $(function() {
 						result['questions'][k]['options'][m-1]['relevancy'] = [];
 						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
 					}
-					
+					var imgsrc = document.getElementById(i+"_"+mm+"imgpreview").src
+					result['questions'][k]['options'][m-1]['img'] = encodeURIComponent(imgsrc);
 				}
 				break;
 			case '2':
@@ -137,6 +143,8 @@ $(function() {
 						result['questions'][k]['options'][m-1]['relevancy'] = [];
 						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
 					}
+					var imgsrc = document.getElementById(i+"_"+mm+"imgpreview").src
+					result['questions'][k]['options'][m-1]['img'] = encodeURIComponent(imgsrc);
 				}				
 				break;
 			case '3':
@@ -264,6 +272,11 @@ $(function() {
 				result['questions'][k]['required'] = true;
 			}
 			else result['questions'][k]['required'] = false;
+			var imgpreview = document.getElementById(i+"imgpreview").src;
+			imgpreview = encodeURIComponent(imgpreview);
+			result['questions'][k]['img'] = imgpreview;
+			result['questions'][k]['video'] = $("#"+i+"video").val();
+			result['questions'][k]['audio'] = $("#"+i+"audio").val();
 			//get the question type
 			var type = (document.getElementById(i + "div")).getAttribute("value");
 			switch(type){
@@ -300,7 +313,8 @@ $(function() {
 						result['questions'][k]['options'][m-1]['relevancy'] = [];
 						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
 					}
-					
+					var imgsrc = document.getElementById(i+"_"+mm+"imgpreview").src
+					result['questions'][k]['options'][m-1]['img'] = encodeURIComponent(imgsrc);
 				}
 				break;
 			case '2':
@@ -346,6 +360,8 @@ $(function() {
 						result['questions'][k]['options'][m-1]['relevancy'] = [];
 						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
 					}
+					var imgsrc = document.getElementById(i+"_"+mm+"imgpreview").src
+					result['questions'][k]['options'][m-1]['img'] = encodeURIComponent(imgsrc);
 				}
 				
 				break;
@@ -455,6 +471,11 @@ $(function() {
 				result['questions'][k]['required'] = true;
 			}
 			else result['questions'][k]['required'] = false;
+			var imgpreview = document.getElementById(i+"imgpreview").src;
+			imgpreview = encodeURIComponent(imgpreview);
+			result['questions'][k]['img'] = imgpreview;
+			result['questions'][k]['video'] = $("#"+i+"video").val();
+			result['questions'][k]['audio'] = $("#"+i+"audio").val();
 			//get the question type
 			var type = (document.getElementById(i + "div")).getAttribute("value");
 			switch(type){
@@ -491,7 +512,8 @@ $(function() {
 						result['questions'][k]['options'][m-1]['relevancy'] = [];
 						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
 					}
-					
+					var imgsrc = document.getElementById(i+"_"+mm+"imgpreview").src
+					result['questions'][k]['options'][m-1]['img'] = encodeURIComponent(imgsrc);
 				}
 				break;
 			case '2':
@@ -537,6 +559,8 @@ $(function() {
 						result['questions'][k]['options'][m-1]['relevancy'] = [];
 						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
 					}
+					var imgsrc = document.getElementById(i+"_"+mm+"imgpreview").src
+					result['questions'][k]['options'][m-1]['img'] = encodeURIComponent(imgsrc);
 				}
 				
 				break;
@@ -785,6 +809,7 @@ function addOption(value){
 			"<input type='checkbox' id='" + value + "_" + num + "cf'>" +
 			"</div>" +
 			"<div class='col-lg-12' id='" + value + "_" + num + "optrele'></div>"+
+			"<div class='row container'><div class='col-lg-12'><input type='file' id='" + value + "_" + num + "img' onchange='readLocalFile(\"" + value + "_" + num + "\")' accept='.jpg,.jpeg,.bmp,.png'><img id='" + value + "_" + num + "imgpreview'><button type='button' id='"+ value + "_" + num +"imgcancel' onclick='cancelFile(\""+ value + "_" + num +"\")'>取消</button></div></div>" +
 			"</div>");
 	div.setAttribute("value",  num * 1 + 1);	
 	//create button to delete an question
@@ -998,16 +1023,32 @@ function upOption(value, num){
 	var name1 = options[num*1+1].getAttribute("id").split("div")[0];
 	var option1 = $("input[name=" + name1 + "]").val();
 	var id1 = name1.split("option")[0];
+	var img1 = document.getElementById(id1+"imgpreview").src;
 	var cf1 = document.getElementById(id1+"cf");
 	var name2 = options[num*1].getAttribute("id").split("div")[0];
 	var option2 = $("input[name=" + name2 + "]").val();
 	var id2 = name2.split("option")[0];
 	var cf2 = document.getElementById(id2+"cf");
+	var img2 = document.getElementById(id2+"imgpreview").src;
 	$("input[name=" + name1 + "]").val(option2);
 	$("input[name=" + name2 + "]").val(option1);
 	var tmp = cf1.checked;
 	cf1.checked = cf2.checked;
 	cf2.checked = tmp;
+	if(img2){
+		document.getElementById(id1+"imgpreview").src = img2;
+	}
+	else{
+		document.getElementById(id1+"imgpreview").removeAttribute("src");
+	}
+	if(img1){
+		document.getElementById(id2+"imgpreview").src = img1;
+	}
+	else{
+		document.getElementById(id2+"imgpreview").removeAttribute("src");
+	}
+	$("#"+id1+"img").val("");
+	$("#"+id2+"img").val("");
 	var releques1 = $("#"+id1+"optrele").html();
 	var releques2 = $("#"+id2+"optrele").html();
 	$("#"+id1+"optrele").html(releques2);
@@ -1029,10 +1070,12 @@ function downOption(value, num){
 	var option1 = $("input[name=" + name1 + "]").val();
 	var id1 = name1.split("option")[0];
 	var cf1 = document.getElementById(id1+"cf");
+	var img1 = document.getElementById(id1+"imgpreview").src;
 	var name2 = options[num*1+2].getAttribute("id").split("div")[0];
 	var option2 = $("input[name=" + name2 + "]").val();
 	var id2 = name2.split("option")[0];
 	var cf2 = document.getElementById(id2+"cf");
+	var img2 = document.getElementById(id2+"imgpreview").src;
 	$("input[name=" + name1 + "]").val(option2);
 	$("input[name=" + name2 + "]").val(option1);
 	var tmp = cf1.checked;
@@ -1040,6 +1083,20 @@ function downOption(value, num){
 	cf2.checked = tmp;
 	var releques1 = $("#"+id1+"optrele").html();
 	var releques2 = $("#"+id2+"optrele").html();
+	if(img2){
+		document.getElementById(id1+"imgpreview").src = img2;
+	}
+	else{
+		document.getElementById(id1+"imgpreview").removeAttribute("src");
+	}
+	if(img1){
+		document.getElementById(id2+"imgpreview").src = img1;
+	}
+	else{
+		document.getElementById(id2+"imgpreview").removeAttribute("src");
+	}
+	$("#"+id1+"img").val("");
+	$("#"+id2+"img").val("");
 	$("#"+id1+"optrele").html(releques2);
 	$("#"+id2+"optrele").html(releques1);	
 }
@@ -1067,6 +1124,7 @@ function appendOption(value, oldnum){
 			"<input type='checkbox' id='" + value + "_" + num + "cf'>" +
 			"</div>"+
 			"<div class='col-lg-12' id='" + value + "_" + num + "optrele'></div>"+
+			"<div class='row container'><div class='col-lg-12'><input type='file' id='" + value + "_" + num + "img' onchange='readLocalFile(\"" + value + "_" + num + "\")' accept='.jpg,.jpeg,.bmp,.png'><img id='" + value + "_" + num + "imgpreview'><button type='button' id='"+ value + "_" + num +"imgcancel' onclick='cancelFile(\""+ value + "_" + num +"\")'>取消</button></div></div>" +
 			"</div>");
 	div.setAttribute("value",  num * 1 + 1);	
 	//create button to delete an question
@@ -1382,8 +1440,10 @@ function addBlank() {
 			"<div class='col-lg-2'>" +
 			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</font></label></div>"+
 			"</div>" +
+			"<div class='row container'><div class='col-lg-12'><input type='file' id='"+value+"img' onchange='readLocalFile("+value+")' accept='.jpg,.jpeg,.bmp,.png'><img id='"+value+"imgpreview'><button type='button' id='"+value+"imgcancel' onclick='cancelFile("+value+")'>取消</button></div></div>"+
+			'<div class="row container"><div class="col-lg-4">添加视频路径（通用地址代码）</div><div class="col-lg-10"><input class="form-control" id="'+value+'video"></div></div>'+
+			'<div class="row container"><div class="col-lg-4">添加音频路径（通用地址代码）</div><div class="col-lg-10"><input class="form-control" id="'+value+'audio"></div></div>'+
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
-			"<\label>" +
 			"</div></div>");	
 	//create button to delete an question
 	var button = document.createElement("button");
@@ -1665,6 +1725,9 @@ function addSingle() {
 			"<div class='col-lg-2'>" +
 			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</font></label></div>"+
 			"</div>" +
+			"<div class='row container'><div class='col-lg-12'><input type='file' id='"+value+"img' onchange='readLocalFile("+value+")' accept='.jpg,.jpeg,.bmp,.png'><img id='"+value+"imgpreview'><button type='button' id='"+value+"imgcancel' onclick='cancelFile("+value+")'>取消</button></div></div>"+
+			'<div class="row container"><div class="col-lg-4">添加视频路径（通用地址代码）</div><div class="col-lg-10"><input class="form-control" id="'+value+'video"></div></div>'+
+			'<div class="row container"><div class="col-lg-4">添加音频路径（通用地址代码）</div><div class="col-lg-10"><input class="form-control" id="'+value+'audio"></div></div>'+
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
 			"<div class='container' id='" + value + "container' value='0'>" +
 			"<label><font size='3'>添加并填写选项</font></label></div>" +
@@ -1966,6 +2029,9 @@ function addMultiple() {
 			"<div class='col-lg-2'>" +
 			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</label></div>"+
 			"</div>" +
+			"<div class='row container'><div class='col-lg-12'><input type='file' id='"+value+"img' onchange='readLocalFile("+value+")' accept='.jpg,.jpeg,.bmp,.png'><img id='"+value+"imgpreview'><button type='button' id='"+value+"imgcancel' onclick='cancelFile("+value+")'>取消</button></div></div>"+
+			'<div class="row container"><div class="col-lg-4">添加视频路径（通用地址代码）</div><div class="col-lg-10"><input class="form-control" id="'+value+'video"></div></div>'+
+			'<div class="row container"><div class="col-lg-4">添加音频路径（通用地址代码）</div><div class="col-lg-10"><input class="form-control" id="'+value+'audio"></div></div>'+
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
 			"<div class='container' id='" + value + "container' value='0'>" +
 			"<label><font size='3'>添加并填写选项</font></label></div>" +
@@ -2266,6 +2332,9 @@ function addSlider() {
 			"<div class='col-lg-2'>" +
 			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</font></label></div>"+
 			"</div>" +
+			"<div class='row container'><div class='col-lg-12'><input type='file' id='"+value+"img' onchange='readLocalFile("+value+")' accept='.jpg,.jpeg,.bmp,.png'><img id='"+value+"imgpreview'><button type='button' id='"+value+"imgcancel' onclick='cancelFile("+value+")'>取消</button></div></div>"+
+			'<div class="row container"><div class="col-lg-4">添加视频路径（通用地址代码）</div><div class="col-lg-10"><input class="form-control" id="'+value+'video"></div></div>'+
+			'<div class="row container"><div class="col-lg-4">添加音频路径（通用地址代码）</div><div class="col-lg-10"><input class="form-control" id="'+value+'audio"></div></div>'+
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
 			"<div class='container'><div class='row'>" +
 			"<div class='col-lg-1'><label><font size='3'>最大值</font></label></div>" +
@@ -2308,10 +2377,20 @@ function modify(result, id){
 				var required = document.getElementById(i+"required");
 				required.checked=true;
 			}
+			$("#"+i+"video").val(result['questions'][i]['video']);
+			$("#"+i+"audio").val(result['questions'][i]['audio']);
+			if(result['questions'][i]['img']){
+				document.getElementById(i+"imgpreview").src = decodeURIComponent(result['questions'][i]['img']);
+			}
 		}
 		else if(type=="Single"){
 			addSingle();
 			$("input[name="+i+"]").val(result['questions'][i]['stem']);
+			$("#"+i+"video").val(result['questions'][i]['video']);
+			$("#"+i+"audio").val(result['questions'][i]['audio']);
+			if(result['questions'][i]['img']){
+				document.getElementById(i+"imgpreview").src = decodeURIComponent(result['questions'][i]['img']);
+			}
 			if(result['questions'][i]['required']==true){
 				var required = document.getElementById(i+"required");
 				required.checked=true;
@@ -2321,6 +2400,9 @@ function modify(result, id){
 				$("input[name="+i+"_"+j+"option]").val(result['questions'][i]['options'][j]['option']);
 				var cf = document.getElementById(i+"_"+j+"cf");
 				cf.checked=result['questions'][i]['options'][j]['hasWords'];
+				if(result['questions'][i]['options'][j]['img']){
+					document.getElementById(i+"_"+j+"imgpreview").src = decodeURIComponent(result['questions'][i]['options'][j]['img']);
+				}
 				if(result['questions'][i]['options'][j]['relevancy']!=undefined){
 					var relearray = result['questions'][i]['options'][j]['relevancy'];
 					var tmp = "本选项与以下题号所代表的题目关联: <span>";
@@ -2342,6 +2424,11 @@ function modify(result, id){
 		else if(type=="Multiple"){
 			addMultiple();
 			$("input[name="+i+"]").val(result['questions'][i]['stem']);
+			$("#"+i+"video").val(result['questions'][i]['video']);
+			$("#"+i+"audio").val(result['questions'][i]['audio']);
+			if(result['questions'][i]['img']){
+				document.getElementById(i+"imgpreview").src = decodeURIComponent(result['questions'][i]['img']);
+			}
 			if(result['questions'][i]['required']==true){
 				var required = document.getElementById(i+"required");
 				required.checked=true;
@@ -2353,6 +2440,9 @@ function modify(result, id){
 				$("input[name="+i+"_"+j+"option]").val(result['questions'][i]['options'][j]['option']);
 				var cf = document.getElementById(i+"_"+j+"cf");
 				cf.checked=result['questions'][i]['options'][j]['hasWords'];
+				if(result['questions'][i]['options'][j]['img']){
+					document.getElementById(i+"_"+j+"imgpreview").src = decodeURIComponent(result['questions'][i]['options'][j]['img']);
+				}
 				if(result['questions'][i]['options'][j]['relevancy']!=undefined){
 					var relearray = result['questions'][i]['options'][j]['relevancy'];
 					var tmp = "本选项与以下题号所代表的题目关联: <span>";
@@ -2374,6 +2464,11 @@ function modify(result, id){
 		else if(type=="Slider"){
 			addSlider();
 			$("input[name="+i+"]").val(result['questions'][i]['stem']);
+			$("#"+i+"video").val(result['questions'][i]['video']);
+			$("#"+i+"audio").val(result['questions'][i]['audio']);
+			if(result['questions'][i]['img']){
+				document.getElementById(i+"imgpreview").src = decodeURIComponent(result['questions'][i]['img']);
+			}
 			if(result['questions'][i]['required']==true){
 				var required = document.getElementById(i+"required");
 				required.checked=true;
@@ -2553,4 +2648,24 @@ var Url=document.getElementById("qnhref");
 Url.select(); // 选择对象
 document.execCommand("Copy"); // 执行浏览器复制命令
 $("#copytip").html("复制成功");
+}
+function readLocalFile(i) {
+    var localFile = document.getElementById(i+"img").files[0];
+    var reader = new FileReader();
+    var content;
+    reader.onload = function(event) {
+        content = event.target.result;
+        document.getElementById(i+"imgpreview").src = content;
+    }
+    if(localFile){
+    	content = reader.readAsDataURL(localFile,"UTF-8");
+    }
+    else {
+    	document.getElementById(i+"imgpreview").removeAttribute("src");
+    }
+    //
+}
+function cancelFile(i) {
+	document.getElementById(i+"imgpreview").removeAttribute("src");
+	document.getElementById(i+"img").value="";
 }

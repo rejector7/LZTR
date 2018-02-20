@@ -25,7 +25,7 @@ $(function() {
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
 		var username = $("input[name='username']").val();
-		var password = $("input[name='password']").val();
+		var password = md5($("input[name='password']").val());
 		var email = $("input[name='email']").val();
 		var mobile = $("input[name='mobile']").val();
 		var country = $("input[name='country']").val();
@@ -136,7 +136,7 @@ $(function() {
 		var dataset = e.currentTarget.dataset;
 		$("#form-id").html(dataset.id);
 		$("input[name='username']").val(dataset.username);
-		$("input[name='password']").val(dataset.password);
+		$("input[name='password']").val("");
 		$("input[name='email']").val(dataset.email);
 		$("input[name='mobile']").val(dataset.mobile);
 		$("input[name='country']").val(dataset.country);

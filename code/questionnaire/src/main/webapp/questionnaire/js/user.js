@@ -50,7 +50,7 @@ $(function(){
 	});
 	$("#register").click(function(){
 		var username = $("input[name='username']").val();
-		var password = $("input[name='password']").val();
+		var password = md5($("input[name='password']").val());
 		var email = $("input[name='email']").val();
 		var mobile = $("input[name='mobile']").val();
 		var country = $("input[name='country']").val();
@@ -127,8 +127,8 @@ $(function(){
 		});
 	});
 	$('#modify').click(function(e){
-		var oldpassword = $("input[name='oldpassword']").val();
-		var newpassword = $("input[name='newpassword']").val();
+		var oldpassword = md5($("input[name='oldpassword']").val());
+		var newpassword = md5($("input[name='newpassword']").val());
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
 		if(!$("#passwordform").validate({
@@ -148,7 +148,6 @@ $(function(){
 		}).form()){
 			return false;
 		}
-		
 		jQuery.ajax({
 			url : 'updatePasswordPro',
 			processData : true,
@@ -236,7 +235,7 @@ $(function(){
 				dataType : "text",
 				data : {
 					username : username,
-					password : password,
+					password : md5(password),
 					role : role
 				},
 				success : function(data) {
@@ -277,6 +276,19 @@ $(function(){
 		$("#modify").attr("data-id", dataset.id);
 		$('#modal2').modal('show');
 	});
+	$("#loginbtn").click(function(e){
+		var username = $("input[name='username']").val();
+		var password = md5($("input[name='password']").val());
+		jQuery.ajax({
+			url : 'loginPro',
+			processData : true,
+			dataType : "text",
+			data : {
+				username : username,
+				password : md5(password)
+			}
+		})
+	});
 });
 function isPhoneNo(phone) { 
 	var pattern = /^1[34578]\d{9}$/; 
@@ -289,4 +301,7 @@ function changephonechecker(){
 	else{
 		$("#phonechecker").html("");
 	}
+}
+function md5pass(){
+	$("input[name='password']").val(md5($("input[name='password']").val()));
 }

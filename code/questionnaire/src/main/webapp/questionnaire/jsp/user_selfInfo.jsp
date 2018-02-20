@@ -25,6 +25,7 @@
     <link href="<%=path %>/questionnaire/css/bootstrap3.3.7.min.css" rel="stylesheet">
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="<%=path %>/questionnaire/js/md5.js"></script>
     	<script src="<%=path %>/questionnaire/js/jquery.min.js"></script>
     	<script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
     	<script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
@@ -113,7 +114,7 @@ User user = (User) session.getAttribute("user");
      <hr style="color:black;border-top:1px solid #C0C0C0">
                         <div class="col-sm-6  form-box" style="float:none">
                             <div class="form-bottom" >
-			                    <form oninput="buttonable()"  role="form" action="<%=path %>/signupPro" method="post" class="login-form" id="infoform">
+			                    <form oninput="buttonable()"  role="form" class="login-form" id="infoform">
 			                        			                        <div class="form-group">
 			                        	<label  for="form-sex">性别</label>
 			                        	<select  id="form-sex" name="sex" class="form-sex" value="<%=user.getSex() %>">
