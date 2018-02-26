@@ -52,7 +52,7 @@
 			<result>/questionnaire/jsp/signup.jsp</result>
 		</action>
 		<action name="loginPro" class="action.LoginAction" method="login">
-			<result name="success" type="chain">FrontPage</result>
+			<result name="success" type="chain">MyQuestionnaire</result>
 			<result name="input">/questionnaire/jsp/login.jsp</result>
 		</action>
 		<action name="logoutPro" class="action.LoginAction" method="logout">

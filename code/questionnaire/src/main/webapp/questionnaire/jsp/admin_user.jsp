@@ -86,7 +86,7 @@
 										<tr>
 										    <td><%=user.getId()%></td>
 											<td><%=user.getUsername()%></td>
-											<td><%=user.getPassword() %></td>
+											<td style="word-wrap:break-word;word-break:break-all" width="100px"><%=user.getPassword() %></td>
 											<td><%=user.getAge()%></td>
 											<td><%if(user.getSex().equals("male")){%>男<%}else if (user.getSex().equals("female")){%>女<%} %></td>
 											<td><%=user.getCity()%></td>
