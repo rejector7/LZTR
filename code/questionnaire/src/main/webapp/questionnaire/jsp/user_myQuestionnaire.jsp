@@ -138,7 +138,13 @@ User user = (User) session.getAttribute("user");
 											<td>私密</td>
 											<%}%>
 											<td><%=ques.getReleaseTime()%></td>
+											<%if(ques.getEndTime() == null) {%>
+											<td>未设置</td>
+											<%}else{ %>
 											<td><%=ques.getEndTime()%></td>
+											<%} %>
+											
+
 											<%if(ques.getStatus().equals("pub")){%>
 											<td><%="已发布"%></td>
 											<%}else if(ques.getStatus().equals("end")){%>

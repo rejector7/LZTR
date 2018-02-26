@@ -114,7 +114,7 @@ User user = (User) session.getAttribute("user");
 		</div><br>
 		<div class="row">
 			 <input type="checkbox" id="allowDup" checked>
-			 <label ><font size="5">是否允许同一IP重复作答?</font></label>
+			 <label ><font size="5">允许同一IP重复作答?</font></label>
 		</div>
 		<hr style="color:black;border-top:1px solid #C0C0C0">
 		 	<div class="row"  style="float:left"><font size=5><strong>添加题目</strong></font></div>
