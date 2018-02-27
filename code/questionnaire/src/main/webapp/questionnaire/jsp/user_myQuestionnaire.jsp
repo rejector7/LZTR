@@ -117,7 +117,8 @@ User user = (User) session.getAttribute("user");
 										<tr>
 										    <th width="6%">序号</th>
 											<th>题目</th>
-											<th>是否公开</th>
+											<th>是否公开问卷</th>
+											<th>是否公开数据</th>
 											<th>发布时间</th>
 											<th>截止时间</th>
 											<th width="8%">状态</th>
@@ -133,6 +134,11 @@ User user = (User) session.getAttribute("user");
 										    <td><%=ques.getId()%></td>
 											<td><%=ques.getTitle()%></td>
 											<%if(ques.getIsPublic()==1){%>
+											<td>公开</td>
+											<%}else{%>
+											<td>私密</td>
+											<%}%>
+											<%if(ques.getResult().equals("public")){%>
 											<td>公开</td>
 											<%}else{%>
 											<td>私密</td>
@@ -215,8 +221,15 @@ User user = (User) session.getAttribute("user");
 								</div>
 								<p id="titlea"></p>
 								<div class="form-group">
-									<label>是否公开</label>
+									<label>是否公开问卷</label>
 									<select class="form-control" id="selectf1" name = "ispublic">
+										<option selected>是</option>
+										<option>否</option>
+									</select>
+								</div>
+																<div class="form-group">
+									<label>是否公开数据</label>
+									<select class="form-control" id="selectf2" name = "showresult">
 										<option selected>是</option>
 										<option>否</option>
 									</select>

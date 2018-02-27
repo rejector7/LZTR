@@ -70,4 +70,11 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 				.find("from Questionnaire as q where q.isPublic=1 and status='pub' order by releaseTime desc");
 		return quess;
 	}
+	@Override
+	public List<Questionnaire> getPublicResults(){
+		@SuppressWarnings("unchecked")
+		List<Questionnaire> quess  = (List<Questionnaire>) getHibernateTemplate()
+				.find("from Questionnaire as q where q.result='public' and status='pub' order by releaseTime desc");
+		return quess;
+	}
 }

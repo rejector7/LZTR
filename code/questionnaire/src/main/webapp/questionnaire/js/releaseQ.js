@@ -37,6 +37,12 @@ $(function() {
 		else{
 			var allowDup=0;
 		}
+		if(document.getElementById("resultPublished").checked==true){
+			var resultPublished="public";
+		}
+		else{
+			var resultPublished="private";
+		}
 		var title = $("input[name='title']").val();
 		if(title=="") {alert("标题不可为空");return;}
 		var intro = $("input[name='introduction']").val();
@@ -189,7 +195,8 @@ $(function() {
 								id:QUES_ID,
 								preview:0,
 								content : encodeURI(encodeURI(JSON.stringify(result))),
-								allowDup : allowDup
+								allowDup : allowDup,
+								result : resultPublished
 							},
 							success : function(data) {
 								bootbox.alert({
@@ -214,13 +221,14 @@ $(function() {
 				id:QUES_ID,
 				preview:0,
 				content : encodeURI(encodeURI(JSON.stringify(result))),
-				allowDup : allowDup
+				allowDup : allowDup,
+				result : resultPublished
 			},
 			success : function(data) {
 				bootbox.alert({
 					message : '保存成功',
 				    callback : function() {
-				    	location.href = 'FrontPage';
+				    	//location.href = 'FrontPage';
 					}
 				});
 			}
@@ -253,6 +261,12 @@ $(function() {
 		}
 		else{
 			var allowDup=0;
+		}
+		if(document.getElementById("resultPublished").checked==true){
+			var resultPublished="public";
+		}
+		else{
+			var resultPublished="private";
 		}
 		var title = $("input[name='title']").val();
 		if(title=="") {alert("标题不可为空");return;}
@@ -407,7 +421,8 @@ $(function() {
 								id:QUES_ID,
 								preview:1,
 								content : encodeURI(encodeURI(JSON.stringify(result))),
-								allowDup : allowDup
+								allowDup : allowDup,
+								result : resultPublished
 							},
 							success : function(data) {
 								location.href = 'PreviewQuestionnaire?quesid='+data;
@@ -418,6 +433,7 @@ $(function() {
 					}});
 			return;
 		}
+		alert(resultPublished);
 		jQuery.ajax({
 			 type: "post",
 			url : 'addQuestionnaire',
@@ -428,7 +444,8 @@ $(function() {
 				id:QUES_ID,
 				preview:1,
 				content : encodeURI(encodeURI(JSON.stringify(result))),
-				allowDup : allowDup
+				allowDup : allowDup,
+				result : resultPublished
 			},
 			success : function(data) {
 				location.href = 'PreviewQuestionnaire?quesid='+data;
@@ -452,6 +469,12 @@ $(function() {
 		}
 		else{
 			var allowDup=0;
+		}
+		if(document.getElementById("resultPublished").checked==true){
+			var resultPublished="public";
+		}
+		else{
+			var resultPublished="private";
 		}
 		var title = $("input[name='title']").val();
 		if(title=="") {alert("标题不可为空");return;}
@@ -643,6 +666,7 @@ $(function() {
 							    endTime : endTime,
 							    releaseTime : releaseTime,
 							    allowDup : allowDup,
+							    result : resultPublished,
 							    preview:0
 							},
 							success : function(data) {
@@ -676,6 +700,7 @@ $(function() {
 			    endTime : endTime,
 			    releaseTime : releaseTime,
 			    allowDup : allowDup,
+			    result : resultPublished,
 			    preview:0
 			},
 			success : function(data) {
@@ -2397,6 +2422,9 @@ function modify(result, id){
 	$("input[name='introduction']").val(result['introduction']);
 	if(result['allowdup']=='0'){
 		document.getElementById("allowDup").checked=false;
+	}
+	if(result['resultPublished']=='private'){
+		document.getElementById("resultPublished").checked=false;
 	}
 	var releqlist = {};
 	var releolist = {};
