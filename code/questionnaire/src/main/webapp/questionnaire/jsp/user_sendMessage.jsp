@@ -14,30 +14,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    
 	<meta charset="utf-8" />
         <title>LZTR 问卷网</title>
-
     <!-- Bootstrap core CSS -->
     <link href="<%=path %>/questionnaire/css/bootstrap3.3.7.min.css" rel="stylesheet">
-
-
         <link href="<%=path %>/questionnaire/css/font-awesome.min.css" rel="stylesheet">
         	<link href="<%=path%>/questionnaire/css/dataTables.bootstrap.css" 	rel="stylesheet">
-        	
 	<link href="<%=path%>/questionnaire/css/dataTables.responsive.css" 	rel="stylesheet">
 	<link href="<%=path%>/questionnaire/css/questionnaire.css" 			rel="stylesheet">
     <!-- Bootstrap core CSS -->
-
-
-
-
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
     <style type="text/css">
         html, body {width:100%;height:100%;}
         .bg {display: table;width: 100%;height: 10%;padding: 20px 0;text-align: center;color: #fff;background: url(questionnaire/img/homepage.jpg) no-repeat bottom center;background-color: #000;background-size: cover;}
@@ -49,19 +39,16 @@
         button.navbar-toggle {background-color:#fbfbfb;}
         button.navbar-toggle > span.icon-bar {background-color:#dedede}
         .dropdown-nemu>li>a{color:#333!important;display:block!important;}
-        
 		.mydiv{
 		width:250px;height:auto;border:#909090 1px solid;background:#fff;color:#333;
 		filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=3);
 		-moz-box-shadow: 2px 2px 10px #909090;
 		-webkit-box-shadow: 2px 2px 10px #909090;
 		box-shadow:2px 2px 10px #909090;
-
 		}
     </style>
 </head>
-<body style="background:
-#F5F5F5">
+<body style="background:#F5F5F5">
 <% 
 User user = (User) session.getAttribute("user");
 %>
@@ -74,20 +61,11 @@ User user = (User) session.getAttribute("user");
                 <ul class="nav navbar-nav">
 				<% response.setCharacterEncoding("UTF-8"); 
 					if(session.getAttribute("user")!=null){ %>
-				
 				<% String role = user.getRole();
-				if(role.equals("admin")){ System.out.println("1111");%>
+				if(role.equals("admin")){ %>
 				<li><a class="navbar-brand" href="<%=path %>/allUser"><span class="glyphicon glyphicon-wrench">系统信息管理</span></a></li>
 				<%} }%>
                 </ul>
-                
-                     <form class="navbar-form navbar-right" role="search" action="searchPro" accept-charset="UTF-8">
-              			<div class="form-group">
-                			<input type="text" class="form-control" name="key" placeholder="搜索问卷名称......">
-                			<button type="submit" class="btn btn-default-lg">搜索</button>
-                		</div>
-              		</form>
-                
               <ul class="nav navbar-nav navbar-right">
               <% 
               if(user==null){ %>
@@ -96,7 +74,6 @@ User user = (User) session.getAttribute("user");
               <li data-toggle="modal" data-target="#signin-signup-tab" id="signup-button"><a href="<%=path %>/HelpContact" class="navbar-brand" >帮助</a></li>
               <%}else{ %>
               	<li><a class="navbar-brand" href="<%=path %>/MyQuestionnaire"><span class="glyphicon glyphicon-list">我的问卷</span></a></li>
-              
             	<li class="dropdown">
                 <a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-expanded="false">
                     <span class="glyphicon glyphicon-user"><%=((User)session.getAttribute("user")).getUsername()%></span>
@@ -109,21 +86,16 @@ User user = (User) session.getAttribute("user");
 					<li><a href="<%=path %>/HelpContact">帮助</a></li>
                 </ul>
             	</li>
-            	
                <li data-toggle="modal" data-target="#signin-signup-tab" id="signin-button"><a href="logoutPro" class="navbar-brand" >登出</a></li>
                <%} %>
               </ul>
-            </div>
-            
-
+            </div> 
         </div>
     </nav>
-
  <div class="bg jumbotron">
       </div>
       <div class="container">
        	<div class="row" style="float:left"><font size=5><strong>我的消息</strong></font></div>
-
  	<hr>
 <hr style="color:black;border-top:1px solid #C0C0C0" >
   	<%
@@ -131,18 +103,13 @@ User user = (User) session.getAttribute("user");
 		if (request.getAttribute("SendMessages") != null) {
 			messages = (ArrayList<Message>) request.getAttribute("SendMessages");
 		}
-		
 		ArrayList<String> names = new ArrayList<String>();
 		if (request.getAttribute("Names") != null) {
 			names = (ArrayList<String>) request.getAttribute("Names");
 		}
 	%>
-
       <!-- The justified navigation menu is meant for single line per list item.
            Multiple lines will require custom code not provided by Bootstrap. -->
- 
-
-	  
 	 <div class="navbar-default sidebar" role="navigation">
 			<div class="sidebar-nav navbar-collapse">
 				<ul class="nav" id="side-menu">
@@ -155,7 +122,6 @@ User user = (User) session.getAttribute("user");
 			<!-- /.sidebar-collapse -->
 		</div>	
 		<br/>
-		
 		<!-- 使用列表的形式将所有发送的消息都显示出来 -->
 		<div id="page-wrapper" style="background:#F5F5F5">
 			<div class="row" >
@@ -180,7 +146,6 @@ for(int i = 0; i < messages.size(); ++i){
          <%=msg.getMsg()%>
             </div>
         </div>
-    
     <form class="replyform" role="form" >
     <div class="input-group">
       <input type="text" class="form-control" placeholder="继续留言..." name="msg">
@@ -192,14 +157,10 @@ for(int i = 0; i < messages.size(); ++i){
     </form>
     </div>
     <br/>
-<%} %>
-
-
-					
+<%} %>			
 				</div>
 			</div>
 		</div>
-	
 	<script src="<%=path%>/questionnaire/js/jquery.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/bootstrap.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/jquery.dataTables.min.js"></script>
@@ -207,7 +168,6 @@ for(int i = 0; i < messages.size(); ++i){
 	<script src="<%=path%>/questionnaire/js/bootbox.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/questionnaire.js"></script>
 <script src="<%=path%>/questionnaire/js/jquery.min.js"></script>
-	
 <script>
 $(function() { 
 	 $(".replyform").submit(function(event){
@@ -220,6 +180,7 @@ $(function() {
 			 return false;
 		 }
 			jQuery.ajax({
+				type: "post",
 				url : 'send1Message',
 				processData : true,
 				dataType : "text",
@@ -236,13 +197,10 @@ $(function() {
 					});
 				}
 			});
-			
 	 });
 });
 </script>
     </div> <!-- /container -->
-
-
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="<%=path %>/questionnaire/js/ie10-viewport-bug-workaround.js"></script>
     		            <script>

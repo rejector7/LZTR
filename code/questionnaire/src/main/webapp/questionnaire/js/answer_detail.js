@@ -1,11 +1,9 @@
-
 function AddText(str0,str1,str2,str3,str4)
 {
 	var asheet = document.getElementById("ASheet");
 	var line = "<tr><td>"+str0+"</td><td>"+str1+"</td><td>"+str2+"</td><td>"+str3+"</td><td>"+str4+"</tr>";
 	asheet.innerHTML += line;
 };
-
 function Size(json)
 {
 	var len = 0;
@@ -14,7 +12,6 @@ function Size(json)
 	}
 	return len;
 }
-
 function Execute(arg1, arg2, arg3, arg4, quesid)
 {
 	var Tques = arg1;
@@ -31,14 +28,11 @@ function Execute(arg1, arg2, arg3, arg4, quesid)
 	else{
 		$("#userid").append(arg4);
 	}
-	
 	//开始添加
 	var len = Size(quess);
 	for (var i = 0; i < len; ++i){
-		
 		var ques = quess[i];
 		var answ = answs[i];
-	
 		//主观题
 		if (ques.type == "Subjective"){
 			if (ques.required == true){
@@ -142,7 +136,6 @@ function Execute(arg1, arg2, arg3, arg4, quesid)
 		}	
 	}
 }
-
 function downloadAnswerWord(){
 	var content="";
 	var headers = document.getElementsByTagName("p");
@@ -155,7 +148,6 @@ function downloadAnswerWord(){
 	var name = headers[1].getElementsByTagName("strong")[0].innerHTML.split("：")[1];
 	exportDoc(content,style,name);
 }
-
 function getcontent(ansid, quesid){
 	jQuery.ajax({
 		url : 'getQuesAndAnsStatistic',  //get content

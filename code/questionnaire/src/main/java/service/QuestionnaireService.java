@@ -64,6 +64,8 @@ public interface QuestionnaireService {
 	List<Questionnaire> findQuestionnaires(String condi);
 	
 	List<Questionnaire> getPublicQuestionnaires();
+	
+	List<Questionnaire> getPublicResults();
 
 }
 

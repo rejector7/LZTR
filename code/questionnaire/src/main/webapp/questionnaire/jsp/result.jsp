@@ -13,7 +13,6 @@
 <link href="<%=path%>/questionnaire/css/questionnaire.css" 			rel="stylesheet">
 <link href="<%=path%>/questionnaire/css/justified-nav.css" 		rel="stylesheet">
 <link href="<%=path%>/questionnaire/css/font-awesome.min.css" 		rel="stylesheet" type="text/css">
-
 <title>问卷统计结果</title>
 </head>
 <body>
@@ -25,7 +24,6 @@
 		</a>
 	</div>
 	</br>
-
 	<div class="container">
       <div class="masthead">
       <p><strong>问卷序号： </strong></p>
@@ -39,6 +37,5 @@
         </nav>
       </div>
     </div>
-
 </body>
 </html>

@@ -1,17 +1,14 @@
 body {
 	background-color: #f8f8f8;
 }
-
 #wrapper {
 	width: 100%;
 }
-
 #page-wrapper {
 	padding: 0 15px;
 	min-height: 568px;
 	background-color: #fff;
 }
-
 @media ( min-width :768px) {
 	#page-wrapper {
 		position: inherit;
@@ -20,20 +17,16 @@ body {
 		border-left: 1px solid #e7e7e7;
 	}
 }
-
 .sidebar .sidebar-nav.navbar-collapse {
 	padding-right: 0;
 	padding-left: 0;
 }
-
 .sidebar ul li {
 	border-bottom: 1px solid #e7e7e7;
 }
-
 .sidebar ul li a.active {
 	background-color: #eee;
 }
-
 @media ( min-width :768px) {
 	.sidebar {
 		z-index: 1;
@@ -42,11 +35,9 @@ body {
 		margin-top: 51px;
 	}
 }
-
 .btn-primary.btn-outline {
 	color: #428bca;
 }
-
 .panel {
 	margin-right: 5px;
 }

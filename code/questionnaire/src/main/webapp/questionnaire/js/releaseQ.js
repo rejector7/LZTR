@@ -1,10 +1,6 @@
 var DELETE_NUM_QUESTION = -1;
 var QUES_ID = 0;
 var FLAG = 0;
-/*array.splice(index,howmany,item1,,,,itemx
- * {"opt(id)":[
- * quesid1,quesid2,,,,,quesidx
- * ]}*/
 $(function() {	
 	$(".cancel").click(function(e){
 		bootbox.confirm({
@@ -22,8 +18,7 @@ $(function() {
 				location.href = 'FrontPage';}
 			}
 		});
-	});
-	
+	});	
 	$(".submit").click(function(e) {
 		var form = document.getElementById("form");
 		if(form == null){
@@ -42,6 +37,12 @@ $(function() {
 		else{
 			var allowDup=0;
 		}
+		if(document.getElementById("resultPublished").checked==true){
+			var resultPublished="public";
+		}
+		else{
+			var resultPublished="private";
+		}
 		var title = $("input[name='title']").val();
 		if(title=="") {alert("标题不可为空");return;}
 		var intro = $("input[name='introduction']").val();
@@ -60,6 +61,11 @@ $(function() {
 				result['questions'][k]['required'] = true;
 			}
 			else result['questions'][k]['required'] = false;
+			var imgpreview = document.getElementById(i+"imgpreview").src;
+			imgpreview = encodeURIComponent(imgpreview);
+			result['questions'][k]['img'] = imgpreview;
+			result['questions'][k]['video'] = $("#"+i+"video").val();
+			result['questions'][k]['audio'] = $("#"+i+"audio").val();
 			//get the question type
 			var type = (document.getElementById(i + "div")).getAttribute("value");
 			switch(type){
@@ -96,7 +102,8 @@ $(function() {
 						result['questions'][k]['options'][m-1]['relevancy'] = [];
 						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
 					}
-					
+					var imgsrc = document.getElementById(i+"_"+mm+"imgpreview").src
+					result['questions'][k]['options'][m-1]['img'] = encodeURIComponent(imgsrc);
 				}
 				break;
 			case '2':
@@ -142,8 +149,9 @@ $(function() {
 						result['questions'][k]['options'][m-1]['relevancy'] = [];
 						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
 					}
-				}
-				
+					var imgsrc = document.getElementById(i+"_"+mm+"imgpreview").src
+					result['questions'][k]['options'][m-1]['img'] = encodeURIComponent(imgsrc);
+				}				
 				break;
 			case '3':
 				result['questions'][k]['type'] = 'Slider';
@@ -178,6 +186,7 @@ $(function() {
 				callback : function(test) {
 					if (test) {
 						jQuery.ajax({
+							type: "post",
 							url : 'addQuestionnaire',
 							processData : true,
 							dataType : "text",
@@ -186,7 +195,8 @@ $(function() {
 								id:QUES_ID,
 								preview:0,
 								content : encodeURI(encodeURI(JSON.stringify(result))),
-								allowDup : allowDup
+								allowDup : allowDup,
+								result : resultPublished
 							},
 							success : function(data) {
 								bootbox.alert({
@@ -197,12 +207,12 @@ $(function() {
 								});
 							}
 						});
-					}
-					
+					}				
 					}});
 			return;
 		}
 		jQuery.ajax({
+			type: "post",
 			url : 'addQuestionnaire',
 			processData : true,
 			dataType : "text",
@@ -211,35 +221,29 @@ $(function() {
 				id:QUES_ID,
 				preview:0,
 				content : encodeURI(encodeURI(JSON.stringify(result))),
-				allowDup : allowDup
+				allowDup : allowDup,
+				result : resultPublished
 			},
 			success : function(data) {
 				bootbox.alert({
 					message : '保存成功',
 				    callback : function() {
-				    	location.href = 'FrontPage';
+				    	//location.href = 'FrontPage';
 					}
 				});
 			}
 		});
 	});
-	
-	
 	$(".addBlank").click(function(e){addBlank()});
-	
 	$(".addSingle").click(function(e){addSingle()});
-	
 	$(".addMultiple").click(function(e) {addMultiple()});
-	
 	$(".addSlider").click(function(e) {addSlider()});
-	
 	$(".publish").click(function(e) {
 		var d = new Date().toISOString().split("T")[0];
 		$("input[name='releasetime']").val(d);
 		$("input[name='endtime']").val("");
 		$('#modal').modal('show');
 	});
-	
 	$(".preview").click(function(e) {
 		var form = document.getElementById("form");
 		if(form == null){
@@ -258,6 +262,12 @@ $(function() {
 		else{
 			var allowDup=0;
 		}
+		if(document.getElementById("resultPublished").checked==true){
+			var resultPublished="public";
+		}
+		else{
+			var resultPublished="private";
+		}
 		var title = $("input[name='title']").val();
 		if(title=="") {alert("标题不可为空");return;}
 		var intro = $("input[name='introduction']").val();
@@ -276,6 +286,11 @@ $(function() {
 				result['questions'][k]['required'] = true;
 			}
 			else result['questions'][k]['required'] = false;
+			var imgpreview = document.getElementById(i+"imgpreview").src;
+			imgpreview = encodeURIComponent(imgpreview);
+			result['questions'][k]['img'] = imgpreview;
+			result['questions'][k]['video'] = $("#"+i+"video").val();
+			result['questions'][k]['audio'] = $("#"+i+"audio").val();
 			//get the question type
 			var type = (document.getElementById(i + "div")).getAttribute("value");
 			switch(type){
@@ -312,7 +327,8 @@ $(function() {
 						result['questions'][k]['options'][m-1]['relevancy'] = [];
 						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
 					}
-					
+					var imgsrc = document.getElementById(i+"_"+mm+"imgpreview").src
+					result['questions'][k]['options'][m-1]['img'] = encodeURIComponent(imgsrc);
 				}
 				break;
 			case '2':
@@ -358,6 +374,8 @@ $(function() {
 						result['questions'][k]['options'][m-1]['relevancy'] = [];
 						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
 					}
+					var imgsrc = document.getElementById(i+"_"+mm+"imgpreview").src
+					result['questions'][k]['options'][m-1]['img'] = encodeURIComponent(imgsrc);
 				}
 				
 				break;
@@ -394,6 +412,7 @@ $(function() {
 				callback : function(test) {
 					if (test) {
 						jQuery.ajax({
+							 type: "post",
 							url : 'addQuestionnaire',
 							processData : true,
 							dataType : "text",
@@ -402,7 +421,8 @@ $(function() {
 								id:QUES_ID,
 								preview:1,
 								content : encodeURI(encodeURI(JSON.stringify(result))),
-								allowDup : allowDup
+								allowDup : allowDup,
+								result : resultPublished
 							},
 							success : function(data) {
 								location.href = 'PreviewQuestionnaire?quesid='+data;
@@ -413,7 +433,9 @@ $(function() {
 					}});
 			return;
 		}
+		alert(resultPublished);
 		jQuery.ajax({
+			 type: "post",
 			url : 'addQuestionnaire',
 			processData : true,
 			dataType : "text",
@@ -422,15 +444,14 @@ $(function() {
 				id:QUES_ID,
 				preview:1,
 				content : encodeURI(encodeURI(JSON.stringify(result))),
-				allowDup : allowDup
+				allowDup : allowDup,
+				result : resultPublished
 			},
 			success : function(data) {
 				location.href = 'PreviewQuestionnaire?quesid='+data;
 			}
 		});
-	});
-	
-	
+	});	
 	$("#publishconfirm").click(function(e) {
 		var form = document.getElementById("form");
 		if(form == null){
@@ -448,6 +469,12 @@ $(function() {
 		}
 		else{
 			var allowDup=0;
+		}
+		if(document.getElementById("resultPublished").checked==true){
+			var resultPublished="public";
+		}
+		else{
+			var resultPublished="private";
 		}
 		var title = $("input[name='title']").val();
 		if(title=="") {alert("标题不可为空");return;}
@@ -467,6 +494,11 @@ $(function() {
 				result['questions'][k]['required'] = true;
 			}
 			else result['questions'][k]['required'] = false;
+			var imgpreview = document.getElementById(i+"imgpreview").src;
+			imgpreview = encodeURIComponent(imgpreview);
+			result['questions'][k]['img'] = imgpreview;
+			result['questions'][k]['video'] = $("#"+i+"video").val();
+			result['questions'][k]['audio'] = $("#"+i+"audio").val();
 			//get the question type
 			var type = (document.getElementById(i + "div")).getAttribute("value");
 			switch(type){
@@ -503,7 +535,8 @@ $(function() {
 						result['questions'][k]['options'][m-1]['relevancy'] = [];
 						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
 					}
-					
+					var imgsrc = document.getElementById(i+"_"+mm+"imgpreview").src
+					result['questions'][k]['options'][m-1]['img'] = encodeURIComponent(imgsrc);
 				}
 				break;
 			case '2':
@@ -549,6 +582,8 @@ $(function() {
 						result['questions'][k]['options'][m-1]['relevancy'] = [];
 						result['questions'][k]['options'][m-1]['relevancy'] = relearray;
 					}
+					var imgsrc = document.getElementById(i+"_"+mm+"imgpreview").src
+					result['questions'][k]['options'][m-1]['img'] = encodeURIComponent(imgsrc);
 				}
 				
 				break;
@@ -618,6 +653,7 @@ $(function() {
 				callback : function(test) {
 					if (test) {
 						jQuery.ajax({
+							 type: "post",
 							url : 'addQuestionnaire',
 							processData : true,
 							dataType : "text",
@@ -630,6 +666,7 @@ $(function() {
 							    endTime : endTime,
 							    releaseTime : releaseTime,
 							    allowDup : allowDup,
+							    result : resultPublished,
 							    preview:0
 							},
 							success : function(data) {
@@ -650,6 +687,7 @@ $(function() {
 			return;
 		}
 		jQuery.ajax({
+			 type: "post",
 			url : 'addQuestionnaire',
 			processData : true,
 			dataType : "text",
@@ -662,6 +700,7 @@ $(function() {
 			    endTime : endTime,
 			    releaseTime : releaseTime,
 			    allowDup : allowDup,
+			    result : resultPublished,
 			    preview:0
 			},
 			success : function(data) {
@@ -676,14 +715,12 @@ $(function() {
 				});
 			}
 		});
-	});
-	
+	});	
 	$('#modal2').on('hide.bs.modal', function () {
 		if(document.getElementById("relacloser").dataset.id!=""){
 			document.getElementById(document.getElementById("relacloser").dataset.id+"relevancy").checked=false;
 		}
-	});
-	
+	});	
 	$("#relatconfirm").click(function(e) {
 		var opts = document.getElementById("specoptiondiv").getElementsByTagName("INPUT");
 		var optlabels = document.getElementById("specoptiondiv").getElementsByTagName("LABEL");
@@ -747,8 +784,7 @@ $(function() {
 				var j = queslabels[i].innerHTML.split(".")[0];
 				quesids += j+" ";
 			}
-		}
-		
+		}		
 		for(var i=0;i<optidarray.length-1;i++){
 			if($("#"+relequesid+"_"+optidarray[i]+"optrele").html()==""){
 			$("#"+relequesid+"_"+optidarray[i]+"optrele").html(
@@ -770,7 +806,6 @@ $(function() {
 		$('#modal2').modal('hide');
 	});
 });
-
 function seekQuesByQuesNo(quesid){
 	var quess = document.getElementById("form").childNodes;
 	for(var i=0;i<quess.length;i++){
@@ -781,8 +816,11 @@ function seekQuesByQuesNo(quesid){
     }
 	return quesid;
 }
+function addOption(value, isMultiple = false){
+	if(isMultiple) 	$("input[name='"+value+"max'").val($("input[name='"+value+"max'").val() * 1 + 1 * 1) ;
+	
 
-function addOption(value){
+	
 	var div = document.getElementById(value + "container");
 	var num = div.getAttribute("value");
 	var newdiv = document.createElement("div");
@@ -796,42 +834,41 @@ function addOption(value){
 			"<div class='col-lg-2'><div id='" + value +"_" + num +"button'>" +
 			"</div></div>" +
 			"<div class='col-lg-2'>" +
-			"<label>是否需要填写文本</label>" +
+			"<label>需要填写文本</label>" +
 			"<input type='checkbox' id='" + value + "_" + num + "cf'>" +
 			"</div>" +
 			"<div class='col-lg-12' id='" + value + "_" + num + "optrele'></div>"+
+			"<div class='row' style='height:5px'></div>" +
+			"<div class='row container'><div class='col-lg-4'><input class='btn btn-default'  type='file' id='" + value + "_" + num + "img' onchange='readLocalFile(\"" + value + "_" + num + "\")' accept='.jpg,.jpeg,.bmp,.png'><img id='" + value + "_" + num + "imgpreview'></div>" +
+			"<div class='col-lg-2'><button class='btn btn-default' type='button' id='"+ value + "_" + num +"imgcancel' onclick='cancelFile(\""+ value + "_" + num +"\")'><i class='fa fa-times'>取消</i></button></div></div>" +
 			"</div>");
-	div.setAttribute("value",  num * 1 + 1);
-	
+
+	div.setAttribute("value",  num * 1 + 1);	
 	//create button to delete an question
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){deleteOption(value, num)};
-	document.getElementById(value +"_" + num +"button").appendChild(button);
-	
+	document.getElementById(value +"_" + num +"button").appendChild(button);	
 	var upbutton = document.createElement("button");
 	upbutton.className = "btn btn-default";
 	upbutton.type = "button";
 	upbutton.style="floating:left";
 	upbutton.onclick = function(){upOption(value, num)};
-	document.getElementById(value +"_" + num +"button").appendChild(upbutton);
-	
+	document.getElementById(value +"_" + num +"button").appendChild(upbutton);	
 	var downbutton = document.createElement("button");
 	downbutton.className = "btn btn-default";
 	downbutton.type = "button";
 	downbutton.style="floating:left";
 	downbutton.onclick = function(){downOption(value, num)};
-	document.getElementById(value +"_" + num +"button").appendChild(downbutton);
-	
+	document.getElementById(value +"_" + num +"button").appendChild(downbutton);	
 	var appendbutton = document.createElement("button");
 	appendbutton.className = "btn btn-default";
 	appendbutton.type = "button";
 	appendbutton.style="floating:left";
 	appendbutton.onclick = function(){appendOption(value, num)};
-	document.getElementById(value +"_" + num +"button").appendChild(appendbutton);
-	
+	document.getElementById(value +"_" + num +"button").appendChild(appendbutton);	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	button.appendChild(i);
@@ -844,15 +881,15 @@ function addOption(value){
 	var iappend = document.createElement("i");
 	iappend.className = "fa fa-plus";
 	appendbutton.appendChild(iappend);
+	
+	//document.getElementById(value+"_"+num+"optiondiv").scrollIntoView();
 }
-
 function getRelesFromOpt(optrele){
 	if(optrele.innerHTML==""){
 		return null;
 	}
 	return optrele.getElementsByTagName("SPAN")[0].innerHTML.split(" ");
 }
-
 function deleteRelevancyByQuestion(value){
 	if(document.getElementById(value+"showrelevancy").innerHTML==""){
 		return false;
@@ -888,7 +925,6 @@ function deleteRelevancyByQuestion(value){
 	}
 	$("#"+value+"showrelevancy").html("");
 }
-
 function deleteRelevancyByOption(id){
 	var quesrelearray = getRelesFromOpt(document.getElementById(id+"optrele"));
 	var optvalue = $("#"+id+"option").val();
@@ -914,7 +950,6 @@ function deleteRelevancyByOption(id){
 		}
 	}
 }
-
 function deleteQuestion(value){
 	var victim = document.getElementById(value +"div");
 	deleteRelevancyByQuestion(value);
@@ -934,9 +969,7 @@ function deleteQuestion(value){
 		var id = next.getAttribute("id");
 		var font = document.getElementById(id +"font");
 		var nextno = font.innerText;
-		font.innerText = font.innerText * 1 - 1;
-		
-		
+		font.innerText = font.innerText * 1 - 1;		
 		var rele = document.getElementById(next.getAttribute("id").split("d")[0]+"showrelevancy");
 		if(rele.innerHTML!=""){
 			var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
@@ -994,17 +1027,15 @@ function deleteQuestion(value){
 				}
 				}
 			}
-		}
-		
+		}		
 		next = next.nextSibling;
 	}
 	var form = document.getElementById("form");
 	form.removeChild(victim);
 	DELETE_NUM_QUESTION += 1;
 }
-
-
 function deleteOption(value, num){
+	if($("input[name='"+value+"max'").val()) 	$("input[name='"+value+"max'").val($("input[name='"+value+"max'").val() - 1 * 1) ;
 	var container = document.getElementById(value +"container");
 	var victim = document.getElementById(value +"_" + num+"optiondiv");
 	if($("#"+value+"_"+num+"optrele").html()!=""){
@@ -1012,7 +1043,6 @@ function deleteOption(value, num){
 	}
 	container.removeChild(victim);
 }
-
 function upOption(value, num){
 	var option_form = document.getElementById(value +"container");
 	var options = option_form.childNodes;
@@ -1028,23 +1058,37 @@ function upOption(value, num){
 	var name1 = options[num*1+1].getAttribute("id").split("div")[0];
 	var option1 = $("input[name=" + name1 + "]").val();
 	var id1 = name1.split("option")[0];
+	var img1 = document.getElementById(id1+"imgpreview").src;
 	var cf1 = document.getElementById(id1+"cf");
 	var name2 = options[num*1].getAttribute("id").split("div")[0];
 	var option2 = $("input[name=" + name2 + "]").val();
 	var id2 = name2.split("option")[0];
 	var cf2 = document.getElementById(id2+"cf");
+	var img2 = document.getElementById(id2+"imgpreview").src;
 	$("input[name=" + name1 + "]").val(option2);
 	$("input[name=" + name2 + "]").val(option1);
 	var tmp = cf1.checked;
 	cf1.checked = cf2.checked;
 	cf2.checked = tmp;
+	if(img2){
+		document.getElementById(id1+"imgpreview").src = img2;
+	}
+	else{
+		document.getElementById(id1+"imgpreview").removeAttribute("src");
+	}
+	if(img1){
+		document.getElementById(id2+"imgpreview").src = img1;
+	}
+	else{
+		document.getElementById(id2+"imgpreview").removeAttribute("src");
+	}
+	$("#"+id1+"img").val("");
+	$("#"+id2+"img").val("");
 	var releques1 = $("#"+id1+"optrele").html();
 	var releques2 = $("#"+id2+"optrele").html();
 	$("#"+id1+"optrele").html(releques2);
-	$("#"+id2+"optrele").html(releques1);
-	
+	$("#"+id2+"optrele").html(releques1);	
 }
-
 function downOption(value, num){
 	var option_form = document.getElementById(value +"container");
 	var options = option_form.childNodes;
@@ -1061,10 +1105,12 @@ function downOption(value, num){
 	var option1 = $("input[name=" + name1 + "]").val();
 	var id1 = name1.split("option")[0];
 	var cf1 = document.getElementById(id1+"cf");
+	var img1 = document.getElementById(id1+"imgpreview").src;
 	var name2 = options[num*1+2].getAttribute("id").split("div")[0];
 	var option2 = $("input[name=" + name2 + "]").val();
 	var id2 = name2.split("option")[0];
 	var cf2 = document.getElementById(id2+"cf");
+	var img2 = document.getElementById(id2+"imgpreview").src;
 	$("input[name=" + name1 + "]").val(option2);
 	$("input[name=" + name2 + "]").val(option1);
 	var tmp = cf1.checked;
@@ -1072,11 +1118,23 @@ function downOption(value, num){
 	cf2.checked = tmp;
 	var releques1 = $("#"+id1+"optrele").html();
 	var releques2 = $("#"+id2+"optrele").html();
+	if(img2){
+		document.getElementById(id1+"imgpreview").src = img2;
+	}
+	else{
+		document.getElementById(id1+"imgpreview").removeAttribute("src");
+	}
+	if(img1){
+		document.getElementById(id2+"imgpreview").src = img1;
+	}
+	else{
+		document.getElementById(id2+"imgpreview").removeAttribute("src");
+	}
+	$("#"+id1+"img").val("");
+	$("#"+id2+"img").val("");
 	$("#"+id1+"optrele").html(releques2);
-	$("#"+id2+"optrele").html(releques1);
-	
+	$("#"+id2+"optrele").html(releques1);	
 }
-
 function appendOption(value, oldnum){
 	var div = document.getElementById(value + "container");
 	var num = div.getAttribute("value");
@@ -1101,38 +1159,34 @@ function appendOption(value, oldnum){
 			"<input type='checkbox' id='" + value + "_" + num + "cf'>" +
 			"</div>"+
 			"<div class='col-lg-12' id='" + value + "_" + num + "optrele'></div>"+
+			"<div class='row container'><div class='col-lg-12'><input type='file' id='" + value + "_" + num + "img' onchange='readLocalFile(\"" + value + "_" + num + "\")' accept='.jpg,.jpeg,.bmp,.png'><img id='" + value + "_" + num + "imgpreview'><button type='button' id='"+ value + "_" + num +"imgcancel' onclick='cancelFile(\""+ value + "_" + num +"\")'>取消</button></div></div>" +
 			"</div>");
-	div.setAttribute("value",  num * 1 + 1);
-	
+	div.setAttribute("value",  num * 1 + 1);	
 	//create button to delete an question
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){deleteOption(value, num)};
-	document.getElementById(value +"_" + num +"button").appendChild(button);
-	
+	document.getElementById(value +"_" + num +"button").appendChild(button);	
 	var upbutton = document.createElement("button");
 	upbutton.className = "btn btn-default";
 	upbutton.type = "button";
 	upbutton.style="floating:left";
 	upbutton.onclick = function(){upOption(value, num)};
-	document.getElementById(value +"_" + num +"button").appendChild(upbutton);
-	
+	document.getElementById(value +"_" + num +"button").appendChild(upbutton);	
 	var downbutton = document.createElement("button");
 	downbutton.className = "btn btn-default";
 	downbutton.type = "button";
 	downbutton.style="floating:left";
 	downbutton.onclick = function(){downOption(value, num)};
-	document.getElementById(value +"_" + num +"button").appendChild(downbutton);
-	
+	document.getElementById(value +"_" + num +"button").appendChild(downbutton);	
 	var appendbutton = document.createElement("button");
 	appendbutton.className = "btn btn-default";
 	appendbutton.type = "button";
 	appendbutton.style="floating:left";
 	appendbutton.onclick = function(){appendOption(value, num)};
-	document.getElementById(value +"_" + num +"button").appendChild(appendbutton);
-	
+	document.getElementById(value +"_" + num +"button").appendChild(appendbutton);	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	button.appendChild(i);
@@ -1146,7 +1200,6 @@ function appendOption(value, oldnum){
 	iappend.className = "fa fa-plus";
 	appendbutton.appendChild(iappend);
 }
-
 function addBlank() {
 	var body = document.body;
 	var value = body.getAttribute("value");
@@ -1172,8 +1225,7 @@ function addBlank() {
 			for(var i=0;i<children.length;i++){
 				var id = children[i].getAttribute("id");
 				$("#"+id+"font").html(i+1);
-			}
-			
+			}			
 			var thisno = $("#"+thisid+"divfont").html();
 			if(rele.innerHTML!=""){
 				var quesid = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
@@ -1201,8 +1253,7 @@ function addBlank() {
 								return;
 							}
 						}
-					}
-					
+					}					
 				}
 			}
 			if(oldno>thisno){
@@ -1212,11 +1263,9 @@ function addBlank() {
 					var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 					var subopts = document.getElementById(quesid+"container").childNodes;
 					for(var m=1;m<=optsnum;m++){
-						var i = subopts[m].id.split("_")[1].split("o")[0];
-						
+						var i = subopts[m].id.split("_")[1].split("o")[0];						
 						var input = $("input[name='"+quesid+"_"+i+"option'").val();
-						for(var j=0;j<optcontents.length-1;j++){
-							
+						for(var j=0;j<optcontents.length-1;j++){							
 							if(optcontents[j]==input){
 								if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
 								var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -1232,13 +1281,11 @@ function addBlank() {
 						}
 					}
 					}
-				}
-				
+				}				
 				for(var i=thisno-1;i<children.length;i++){
 					var rele = document.getElementById(children[i].getAttribute("id").split("d")[0]+"showrelevancy");
 					if(rele.innerHTML!=""){
-						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
-						
+						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];						
 						var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
 						if(releno==oldno){
 							rele.getElementsByTagName("SPAN")[0].innerHTML = thisno+"."+relecontent;
@@ -1276,8 +1323,7 @@ function addBlank() {
 								}
 						}
 						}
-						else if(releno<thisno){
-							
+						else if(releno<thisno){							
 								var quesid = seekQuesByQuesNo(releno*1);
 								if(document.getElementById(quesid+"div").getAttribute("value")=="1"||document.getElementById(quesid+"div").getAttribute("value")=="2"){
 								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
@@ -1286,12 +1332,10 @@ function addBlank() {
 								for(var m=1;m<=optsnum;m++){
 									var n = subopts[m].id.split("_")[1].split("o")[0];
 									var input = $("input[name='"+quesid+"_"+n+"option'").val();
-									for(var j=0;j<optcontents.length-1;j++){
-										
+									for(var j=0;j<optcontents.length-1;j++){										
 										if(optcontents[j]==input){
 											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
-											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
-											
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");											
 											if(idarray.indexOf(String(i))!=-1){
 												idarray.splice(idarray.indexOf(String(i)),1,(i*1+1));
 											}
@@ -1305,8 +1349,7 @@ function addBlank() {
 								}
 								}
 						}
-						}
-						
+						}						
 					}
 				}
 			}
@@ -1357,11 +1400,9 @@ function addBlank() {
 								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 								var subopts = document.getElementById(quesid+"container").childNodes;
 								for(var m=1;m<=optsnum;m++){
-									var n = subopts[m].id.split("_")[1].split("o")[0];
-									
+									var n = subopts[m].id.split("_")[1].split("o")[0];									
 									var input = $("input[name='"+quesid+"_"+n+"option'").val();
-									for(var j=0;j<optcontents.length-1;j++){
-										
+									for(var j=0;j<optcontents.length-1;j++){										
 										if(optcontents[j]==input){
 											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
 											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -1379,8 +1420,7 @@ function addBlank() {
 								}
 						}
 						}
-						else if(releno<oldno){
-							
+						else if(releno<oldno){							
 							var quesid = seekQuesByQuesNo(releno*1);
 							if(document.getElementById(quesid+"div").getAttribute("value")=="1"||document.getElementById(quesid+"div").getAttribute("value")=="2"){
 							var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
@@ -1389,12 +1429,10 @@ function addBlank() {
 							for(var m=1;m<=optsnum;m++){
 								var n = subopts[m].id.split("_")[1].split("o")[0];
 								var input = $("input[name='"+quesid+"_"+n+"option'").val();
-								for(var j=0;j<optcontents.length-1;j++){
-									
+								for(var j=0;j<optcontents.length-1;j++){									
 									if(optcontents[j]==input){
 										if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
-										var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
-										
+										var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");										
 										if(idarray.indexOf(String(i+2))!=-1){
 											idarray.splice(idarray.indexOf(String(i+2)),1,(i*1+1));
 										}
@@ -1411,15 +1449,13 @@ function addBlank() {
 					}
 					}
 				}
-			}
-			
+			}			
 		}
 	});
 	}
 	else{
 		var form = document.getElementById("form");
-	}
-	
+	}	
 	//create div
 	var div = document.createElement("div");
 	div.id = value + "div";
@@ -1428,37 +1464,40 @@ function addBlank() {
 	$("#"+value+"div").html("" +
 			"<div class='form-group container' style='background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
 			"<div class='col-lg-8'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font><font size='3'>" + "  填空题  点击输入框编辑题目" + "</label></div>" +
-			"<div class='col-lg-1' >" +
+			"<div class='col-lg-2' >" +
 			"<label><font size='3'>必答</font></label>" +
-			"<input type='checkbox' id='" + value + "required'>" +
+			"<input type='checkbox' id='" + value + "required' checked='true'>" +
 			"</div>" +
-			"<div class='col-lg-3' id='" + value + "button'></div></div>" +
+			"<div class='col-lg-2' id='" + value + "button'></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
-			"<input class='form-control' name='" + value +"' onchange='changeReleQInQues("+value+")'></div>" +
+			"<input class='form-control' name='" + value +"' ></div>" +
 			"<div class='col-lg-2'>" +
 			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</font></label></div>"+
 			"</div>" +
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
-			"<\label>" +
-			"</div></div>");
-	
+			"<div class='row' style='height:5px'></div>" +
+			"<div class='row container'><div class='col-lg-4'><input class='btn btn-default' type='file' id='"+value+"img' onchange='readLocalFile("+value+")' accept='.jpg,.jpeg,.bmp,.png'><img id='"+value+"imgpreview'></div>" +
+			"<div class='col-lg-2'><button class='btn btn-default' type='button' id='"+value+"imgcancel' onclick='cancelFile("+value+")'><i class='fa fa-times'>取消</i></button></div></div>"+
+			'<div class="row container"><div class="col-lg-4"><label><font size="3">添加视频路径（通用地址代码）<\label></div><div class="col-lg-12"><input class="form-control" id="'+value+'video"></div></div>'+
+			'<div class="row container"><div class="col-lg-4"><label><font size="3">添加音频路径（通用地址代码）<\label></div><div class="col-lg-12"><input class="form-control" id="'+value+'audio"></div></div>'+
+			"<div class='row' style='height:5px'></div>" +
+			"<div  id='" + value + "container' value='0'>" +
+			"</div></div>");	
 	//create button to delete an question
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){deleteQuestion(value)};
-	document.getElementById(value + "button").appendChild(button);
-	
+	document.getElementById(value + "button").appendChild(button);	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	i.innerText = "删除本题";
-	button.appendChild(i);
-	
+	button.appendChild(i);	
 	body.setAttribute("value", value * 1 + 1);
+	document.getElementById(value+"div").scrollIntoView();
 };
-
 function addSingle() {
 	var body = document.body;
 	var value = body.getAttribute("value");
@@ -1484,8 +1523,7 @@ function addSingle() {
 			for(var i=0;i<children.length;i++){
 				var id = children[i].getAttribute("id");
 				$("#"+id+"font").html(i+1);
-			}
-			
+			}			
 			var thisno = $("#"+thisid+"divfont").html();
 			if(rele.innerHTML!=""){
 				var quesid = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
@@ -1513,8 +1551,7 @@ function addSingle() {
 								return;
 							}
 						}
-					}
-					
+					}					
 				}
 			}
 			if(oldno>thisno){
@@ -1524,11 +1561,9 @@ function addSingle() {
 					var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 					var subopts = document.getElementById(quesid+"container").childNodes;
 					for(var m=1;m<=optsnum;m++){
-						var i = subopts[m].id.split("_")[1].split("o")[0];
-						
+						var i = subopts[m].id.split("_")[1].split("o")[0];						
 						var input = $("input[name='"+quesid+"_"+i+"option'").val();
-						for(var j=0;j<optcontents.length-1;j++){
-							
+						for(var j=0;j<optcontents.length-1;j++){							
 							if(optcontents[j]==input){
 								if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
 								var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -1548,8 +1583,7 @@ function addSingle() {
 				for(var i=thisno-1;i<children.length;i++){
 					var rele = document.getElementById(children[i].getAttribute("id").split("d")[0]+"showrelevancy");
 					if(rele.innerHTML!=""){
-						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
-						
+						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];						
 						var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
 						if(releno==oldno){
 							rele.getElementsByTagName("SPAN")[0].innerHTML = thisno+"."+relecontent;
@@ -1583,25 +1617,20 @@ function addSingle() {
 										}
 									}
 								}
-								}
-							
+								}							
 						}
-						else if(releno<thisno){
-							
-								var quesid = seekQuesByQuesNo(releno*1);
-							
+						else if(releno<thisno){							
+								var quesid = seekQuesByQuesNo(releno*1);							
 								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 								var subopts = document.getElementById(quesid+"container").childNodes;
 								for(var m=1;m<=optsnum;m++){
 									var n = subopts[m].id.split("_")[1].split("o")[0];
 									var input = $("input[name='"+quesid+"_"+n+"option'").val();
-									for(var j=0;j<optcontents.length-1;j++){
-										
+									for(var j=0;j<optcontents.length-1;j++){										
 										if(optcontents[j]==input){
 											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
-											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
-											
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");											
 											if(idarray.indexOf(String(i))!=-1){
 												idarray.splice(idarray.indexOf(String(i)),1,(i*1+1));
 											}
@@ -1614,8 +1643,7 @@ function addSingle() {
 									}
 								}
 								}
-						}
-						
+						}						
 					}
 				}
 			}
@@ -1660,17 +1688,14 @@ function addSingle() {
 							else{
 								var quesid = seekQuesByQuesNo(releno*1);
 							}
-							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1-1)+"."+relecontent;
-							
+							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1-1)+"."+relecontent;						
 								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 								var subopts = document.getElementById(quesid+"container").childNodes;
 								for(var m=1;m<=optsnum;m++){
-									var n = subopts[m].id.split("_")[1].split("o")[0];
-									
+									var n = subopts[m].id.split("_")[1].split("o")[0];									
 									var input = $("input[name='"+quesid+"_"+n+"option'").val();
-									for(var j=0;j<optcontents.length-1;j++){
-										
+									for(var j=0;j<optcontents.length-1;j++){										
 										if(optcontents[j]==input){
 											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
 											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -1685,21 +1710,17 @@ function addSingle() {
 										}
 									}
 								}
-								}
-							
+								}							
 						}
-						else if(releno<oldno){
-							
-							var quesid = seekQuesByQuesNo(releno*1);
-						
+						else if(releno<oldno){							
+							var quesid = seekQuesByQuesNo(releno*1);						
 							var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 							var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 							var subopts = document.getElementById(quesid+"container").childNodes;
 							for(var m=1;m<=optsnum;m++){
 								var n = subopts[m].id.split("_")[1].split("o")[0];
 								var input = $("input[name='"+quesid+"_"+n+"option'").val();
-								for(var j=0;j<optcontents.length-1;j++){
-									
+								for(var j=0;j<optcontents.length-1;j++){									
 									if(optcontents[j]==input){
 										if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
 										var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -1719,27 +1740,25 @@ function addSingle() {
 					}
 					}
 				}
-			}
-			
+			}			
 		}
 	});
 	}
 	else{
 		var form = document.getElementById("form");
-	}
-	
+	}	
 	var div = document.createElement("div");
 	div.id = (value+"div");
 	div.setAttribute("value", "1");
 	form.appendChild(div);
 	$("#"+value+"div").html("" +
-			"<div class='form-group container' style='background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
+			"<div class='form-group container' style='padding-bottom:5px;background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
 			"<div class='col-lg-8'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font><font size='3'>" + "  单选题  点击输入框编辑题目" + "</label></div>" +
-			"<div class='col-lg-1' >" +
+			"<div class='col-lg-2' >" +
 			"<label><font size='3'>必答</font></label>" +
-			"<input type='checkbox' id='" + value + "required'>" +
+			"<input type='checkbox' id='" + value + "required' checked='true'>" +
 			"</div>" +
-			"<div class='col-lg-3' id='" + value + "button'></div></div>" +
+			"<div class='col-lg-2' id='" + value + "deleteQuesButton'></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
 			"<input class='form-control' name='" + value +"' onchange='changeReleQInQues("+value+")'></div>" +
@@ -1747,41 +1766,43 @@ function addSingle() {
 			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</font></label></div>"+
 			"</div>" +
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
-			"<div class='container' id='" + value + "container' value='0'>" +
-			"<label><font size='3'>添加并填写选项</font></label></div>" +
-			"<\label>" +
-			"</div></div>");
-	
-	
+			"<div class='row' style='height:5px'></div>" +
+			"<div class='row container'><div class='col-lg-4'><input class='btn btn-default' type='file' id='"+value+"img' onchange='readLocalFile("+value+")' accept='.jpg,.jpeg,.bmp,.png'><img id='"+value+"imgpreview'></div>" +
+			"<div class='col-lg-2'><button class='btn btn-default' type='button' id='"+value+"imgcancel' onclick='cancelFile("+value+")'><i class='fa fa-times'>取消</i></button></div></div>"+
+			'<div class="row container"><div class="col-lg-4"><label><font size="3">添加视频路径（通用地址代码）<\label></div><div class="col-lg-12"><input class="form-control" id="'+value+'video"></div></div>'+
+			'<div class="row container"><div class="col-lg-4"><label><font size="3">添加音频路径（通用地址代码）<\label></div><div class="col-lg-12"><input class="form-control" id="'+value+'audio"></div></div>'+
+			"<div class='row' style='height:5px'></div>" +
+			"<div  id='" + value + "container' value='0'>" +
+			"<div class='col-lg-10'><label><font size='3'>添加并填写选项</font></label></div></div><div class='col-lg-2' id='" + value + "button'></div>" +
+			
+	"</div></div>");	
 	//create button to add an option
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){addOption(value)};
-	document.getElementById(value + "button").appendChild(button);
-	
+	document.getElementById(value + "button").appendChild(button);	
 	var i = document.createElement("i");
 	i.className = "fa fa-plus";
 	i.innerText = "添加选项"
-	button.appendChild(i);
-	
+	button.appendChild(i);	
 	//create button to delete an question
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){deleteQuestion(value)};
-	document.getElementById(value + "button").appendChild(button);
-	
+	document.getElementById(value + "deleteQuesButton").appendChild(button);	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	i.innerText = "删除本题";
-	button.appendChild(i);
-	
+	button.appendChild(i);	
 	body.setAttribute("value", value * 1 + 1);
+	
+	//$("#"+value+"div").scrollIntoView(true);
+	document.getElementById(value+"div").scrollIntoView();
 };
-
 function addMultiple() {
 	var body = document.body;
 	var value = body.getAttribute("value");
@@ -1807,8 +1828,7 @@ function addMultiple() {
 			for(var i=0;i<children.length;i++){
 				var id = children[i].getAttribute("id");
 				$("#"+id+"font").html(i+1);
-			}
-			
+			}			
 			var thisno = $("#"+thisid+"divfont").html();
 			if(rele.innerHTML!=""){
 				var quesid = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
@@ -1836,8 +1856,7 @@ function addMultiple() {
 								return;
 							}
 						}
-					}
-					
+					}					
 				}
 			}
 			if(oldno>thisno){
@@ -1847,11 +1866,9 @@ function addMultiple() {
 					var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 					var subopts = document.getElementById(quesid+"container").childNodes;
 					for(var m=1;m<=optsnum;m++){
-						var i = subopts[m].id.split("_")[1].split("o")[0];
-						
+						var i = subopts[m].id.split("_")[1].split("o")[0];						
 						var input = $("input[name='"+quesid+"_"+i+"option'").val();
-						for(var j=0;j<optcontents.length-1;j++){
-							
+						for(var j=0;j<optcontents.length-1;j++){							
 							if(optcontents[j]==input){
 								if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
 								var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -1871,8 +1888,7 @@ function addMultiple() {
 				for(var i=thisno-1;i<children.length;i++){
 					var rele = document.getElementById(children[i].getAttribute("id").split("d")[0]+"showrelevancy");
 					if(rele.innerHTML!=""){
-						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
-						
+						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];						
 						var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
 						if(releno==oldno){
 							rele.getElementsByTagName("SPAN")[0].innerHTML = thisno+"."+relecontent;
@@ -1906,25 +1922,20 @@ function addMultiple() {
 										}
 									}
 								}
-								}
-							
+								}							
 						}
-						else if(releno<thisno){
-							
-								var quesid = seekQuesByQuesNo(releno*1);
-							
+						else if(releno<thisno){							
+								var quesid = seekQuesByQuesNo(releno*1);							
 								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 								var subopts = document.getElementById(quesid+"container").childNodes;
 								for(var m=1;m<=optsnum;m++){
 									var n = subopts[m].id.split("_")[1].split("o")[0];
 									var input = $("input[name='"+quesid+"_"+n+"option'").val();
-									for(var j=0;j<optcontents.length-1;j++){
-										
+									for(var j=0;j<optcontents.length-1;j++){										
 										if(optcontents[j]==input){
 											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
-											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
-											
+											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");											
 											if(idarray.indexOf(String(i))!=-1){
 												idarray.splice(idarray.indexOf(String(i)),1,(i*1+1));
 											}
@@ -1937,8 +1948,7 @@ function addMultiple() {
 									}
 								}
 								}
-						}
-						
+						}						
 					}
 				}
 			}
@@ -1983,17 +1993,14 @@ function addMultiple() {
 							else{
 								var quesid = seekQuesByQuesNo(releno*1);
 							}
-							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1-1)+"."+relecontent;
-							
+							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1-1)+"."+relecontent;		
 								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 								var subopts = document.getElementById(quesid+"container").childNodes;
 								for(var m=1;m<=optsnum;m++){
-									var n = subopts[m].id.split("_")[1].split("o")[0];
-									
+									var n = subopts[m].id.split("_")[1].split("o")[0];									
 									var input = $("input[name='"+quesid+"_"+n+"option'").val();
-									for(var j=0;j<optcontents.length-1;j++){
-										
+									for(var j=0;j<optcontents.length-1;j++){										
 										if(optcontents[j]==input){
 											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
 											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -2008,21 +2015,17 @@ function addMultiple() {
 										}
 									}
 								}
-								}
-							
+								}							
 						}
-						else if(releno<oldno){
-							
-							var quesid = seekQuesByQuesNo(releno*1);
-						
+						else if(releno<oldno){							
+							var quesid = seekQuesByQuesNo(releno*1);					
 							var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 							var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 							var subopts = document.getElementById(quesid+"container").childNodes;
 							for(var m=1;m<=optsnum;m++){
 								var n = subopts[m].id.split("_")[1].split("o")[0];
 								var input = $("input[name='"+quesid+"_"+n+"option'").val();
-								for(var j=0;j<optcontents.length-1;j++){
-									
+								for(var j=0;j<optcontents.length-1;j++){									
 									if(optcontents[j]==input){
 										if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
 										var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -2042,8 +2045,7 @@ function addMultiple() {
 					}
 					}
 				}
-			}
-			
+			}		
 		}
 	});
 	}
@@ -2055,18 +2057,18 @@ function addMultiple() {
 	div.id = (value+"div");
 	form.appendChild(div);
 	$("#"+value+"div").html("" +
-			"<div class='form-group container' style='background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
+			"<div class='form-group container' style='padding-bottom:5px;background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
 			"<div class='col-lg-3'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font><font size='3'>"+"  多选题  点击输入框编辑题目" + "</font></label></div>" +
 			"<div class='col-lg-1'><label><font size='3'>最大可选</font></label></div>" +
-			"<div class='col-lg-1'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
+			"<div class='col-lg-1'><input class='form-control' type='number' step='1' name='" + value +"max' value=0></div>" +
 			"<div class='col-lg-1'><label><font size='3'>最小可选</font></label></div>" +
-			"<div class='col-lg-1'><input class='form-control' type='number' step='1' name='" + value +"min'></div>" +
+			"<div class='col-lg-1'><input class='form-control' type='number' step='1' name='" + value +"min'  value=1></div>" +
 					"<div class='col-lg-1'></div>" +
-			"<div class='col-lg-1'>" +
+			"<div class='col-lg-2'>" +
 			"<label><font size='3'>必答</font></label>" +
-			"<input type='checkbox' id='" + value + "required'>" +
+			"<input type='checkbox' id='" + value + "required' checked='true'>" +
 			"</div>" +
-			"<div class='col-lg-3'><div id='" + value + "button'></div></div></div>" +
+			"<div class='col-lg-2'><div id='" + value + "button'></div></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
 			"<input class='form-control' name=" + value + " onchange='changeReleQInQues("+value+")'></div>" +
@@ -2074,39 +2076,40 @@ function addMultiple() {
 			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</label></div>"+
 			"</div>" +
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
-			"<div class='container' id='" + value + "container' value='0'>" +
-			"<label><font size='3'>添加并填写选项</font></label></div>" +
-			"<\label>" +
-			"</div></div></div>");
-	
+			"<div class='row' style='height:5px'></div>" +
+			"<div class='row container'><div class='col-lg-4'><input class='btn btn-default' type='file' id='"+value+"img' onchange='readLocalFile("+value+")' accept='.jpg,.jpeg,.bmp,.png'><img id='"+value+"imgpreview'></div>" +
+			"<div class='col-lg-2'><button class='btn btn-default' type='button' id='"+value+"imgcancel' onclick='cancelFile("+value+")'><i class='fa fa-times'>取消</i></button></div></div>"+
+			'<div class="row container"><div class="col-lg-4"><label><font size="3">添加视频路径（通用地址代码）<\label></div><div class="col-lg-12"><input class="form-control" id="'+value+'video"></div></div>'+
+			'<div class="row container"><div class="col-lg-4"><label><font size="3">添加音频路径（通用地址代码）<\label></div><div class="col-lg-12"><input class="form-control" id="'+value+'audio"></div></div>'+
+			"<div class='row' style='height:5px'></div>" +
+			"<div  id='" + value + "container' value='0'>" +
+			"<div class='col-lg-10'><label><font size='3'>添加并填写选项</font></label></div></div><div class='col-lg-2' id='" + value + "addChoiceButton'></div>" +
+			"</div></div>");	
 	//create button to add an option
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
-	button.onclick = function(){addOption(value)};
-	document.getElementById(value + "button").appendChild(button);
-	
+	button.onclick = function(){addOption(value, true)};
+	document.getElementById(value + "addChoiceButton").appendChild(button);	
 	var i = document.createElement("i");
 	i.className = "fa fa-plus";
 	i.innerText = "添加选项";
 	button.appendChild(i);
-	body.setAttribute("value", value * 1 + 1);
-	
+	body.setAttribute("value", value * 1 + 1);	
 	//create button to delete an question
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){deleteQuestion(value)};
-	document.getElementById(value + "button").appendChild(button);
-	
+	document.getElementById(value + "button").appendChild(button);	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	i.innerText = "删除本题";
 	button.appendChild(i);
+	document.getElementById(value+"div").scrollIntoView();
 };
-
 function addSlider() {
 	var body = document.body;
 	var value = body.getAttribute("value");
@@ -2132,8 +2135,7 @@ function addSlider() {
 			for(var i=0;i<children.length;i++){
 				var id = children[i].getAttribute("id");
 				$("#"+id+"font").html(i+1);
-			}
-			
+			}			
 			var thisno = $("#"+thisid+"divfont").html();
 			if(rele.innerHTML!=""){
 				var quesid = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
@@ -2172,11 +2174,9 @@ function addSlider() {
 					var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 					var subopts = document.getElementById(quesid+"container").childNodes;
 					for(var m=1;m<=optsnum;m++){
-						var i = subopts[m].id.split("_")[1].split("o")[0];
-						
+						var i = subopts[m].id.split("_")[1].split("o")[0];						
 						var input = $("input[name='"+quesid+"_"+i+"option'").val();
-						for(var j=0;j<optcontents.length-1;j++){
-							
+						for(var j=0;j<optcontents.length-1;j++){							
 							if(optcontents[j]==input){
 								if(document.getElementById(quesid+"_"+i+"optrele").innerHTML!=""){
 								var idarray = document.getElementById(quesid+"_"+i+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -2196,8 +2196,7 @@ function addSlider() {
 				for(var i=thisno-1;i<children.length;i++){
 					var rele = document.getElementById(children[i].getAttribute("id").split("d")[0]+"showrelevancy");
 					if(rele.innerHTML!=""){
-						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];
-						
+						var releno = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[0];						
 						var relecontent = rele.getElementsByTagName("SPAN")[0].innerHTML.split(".")[1];
 						if(releno==oldno){
 							rele.getElementsByTagName("SPAN")[0].innerHTML = thisno+"."+relecontent;
@@ -2231,21 +2230,17 @@ function addSlider() {
 										}
 									}
 								}
-								}
-							
+								}							
 						}
-						else if(releno<thisno){
-							
-								var quesid = seekQuesByQuesNo(releno*1);
-							
+						else if(releno<thisno){							
+								var quesid = seekQuesByQuesNo(releno*1);						
 								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 								var subopts = document.getElementById(quesid+"container").childNodes;
 								for(var m=1;m<=optsnum;m++){
 									var n = subopts[m].id.split("_")[1].split("o")[0];
 									var input = $("input[name='"+quesid+"_"+n+"option'").val();
-									for(var j=0;j<optcontents.length-1;j++){
-										
+									for(var j=0;j<optcontents.length-1;j++){										
 										if(optcontents[j]==input){
 											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
 											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -2262,8 +2257,7 @@ function addSlider() {
 									}
 								}
 								}
-						}
-						
+						}						
 					}
 				}
 			}
@@ -2308,17 +2302,14 @@ function addSlider() {
 							else{
 								var quesid = seekQuesByQuesNo(releno*1);
 							}
-							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1-1)+"."+relecontent;
-							
+							rele.getElementsByTagName("SPAN")[0].innerHTML = (releno*1-1)+"."+relecontent;							
 								var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 								var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 								var subopts = document.getElementById(quesid+"container").childNodes;
 								for(var m=1;m<=optsnum;m++){
-									var n = subopts[m].id.split("_")[1].split("o")[0];
-									
+									var n = subopts[m].id.split("_")[1].split("o")[0];					
 									var input = $("input[name='"+quesid+"_"+n+"option'").val();
-									for(var j=0;j<optcontents.length-1;j++){
-										
+									for(var j=0;j<optcontents.length-1;j++){							
 										if(optcontents[j]==input){
 											if(document.getElementById(quesid+"_"+n+"optrele").innerHTML!=""){
 											var idarray = document.getElementById(quesid+"_"+n+"optrele").getElementsByTagName("SPAN")[0].innerHTML.split(" ");
@@ -2333,13 +2324,10 @@ function addSlider() {
 										}
 									}
 								}
-								}
-							
+								}					
 						}
-						else if(releno<oldno){
-							
+						else if(releno<oldno){						
 							var quesid = seekQuesByQuesNo(releno*1);
-						
 							var optcontents = rele.getElementsByTagName("SPAN")[1].innerHTML.split(" ");
 							var optsnum = document.getElementById(quesid+"container").childNodes.length-1;
 							var subopts = document.getElementById(quesid+"container").childNodes;
@@ -2380,13 +2368,13 @@ function addSlider() {
 	div.id = (value+"div");
 	form.appendChild(div);
 	$("#"+value+"div").html("" +
-			"<div class='form-group container' style='background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
+			"<div class='form-group container' style='padding-bottom:5px;background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
 			"<div class='col-lg-8'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font><font size='3'>" + "  滑块题  点击输入框编辑题目" + "</label></div>" +
-			"<div class='col-lg-1' >" +
+			"<div class='col-lg-2' >" +
 			"<label>必答</label>" +
-			"<input type='checkbox' id='" + value + "required'>" +
+			"<input type='checkbox' id='" + value + "required' checked='true'>" +
 			"</div>" +
-			"<div class='col-lg-2'><div id='" + value + "button'></div></div></div>" +
+			"<div class='col-lg-2'><div id='" + value + "deleteQuesButton'></div></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
 			"<input class='form-control' name=" + value + "></div>" +
@@ -2394,44 +2382,52 @@ function addSlider() {
 			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</font></label></div>"+
 			"</div>" +
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
+			"<div class='row' style='height:5px'></div>" +
 			"<div class='container'><div class='row'>" +
 			"<div class='col-lg-1'><label><font size='3'>最大值</font></label></div>" +
 			"<div class='col-lg-3'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
 			"<div class='col-lg-2'><label><font size='3'>最大值标签</font></label></div>" +
 			"<div class='col-lg-5'><input class='form-control' type='text' name='" + value +"maxtext'></div></div>" +
+			"<div class='row' style='height:5px'></div>" +
 			"<div class='row'>" +
 			"<div class='col-lg-1'><label><font size='3'>最小值</font></label></div>" +
 			"<div class='col-lg-3'><input class='form-control' type='number' step='1' name='" + value +"min'></div>" +
 			"<div class='col-lg-2'><label><font size='3'>最小值标签</font></label></div>" +
 			"<div class='col-lg-5'><input class='form-control' type='text' name='" + value +"mintext'></div></div>" +
-			"</div><br></div></div>");
-	
-	
+			
+			"</div><div class='row' style='height:5px'></div>" +
+			"<div class='row container'><div class='col-lg-4'><input class='btn btn-default' type='file' id='"+value+"img' onchange='readLocalFile("+value+")' accept='.jpg,.jpeg,.bmp,.png'><img id='"+value+"imgpreview'></div>" +
+			"<div class='col-lg-2'><button class='btn btn-default' type='button' id='"+value+"imgcancel' onclick='cancelFile("+value+")'><i class='fa fa-times'>取消</i></button></div></div>"+
+			'<div class="row container"><div class="col-lg-4"><label><font size="3">添加视频路径（通用地址代码）<\label></div><div class="col-lg-12"><input class="form-control" id="'+value+'video"></div></div>'+
+			'<div class="row container"><div class="col-lg-4"><label><font size="3">添加音频路径（通用地址代码）<\label></div><div class="col-lg-12"><input class="form-control" id="'+value+'audio"></div></div>'+
+			"<div class='row' style='height:5px'></div>" +
+			"<div  id='" + value + "container' value='0'>" +
+			"</div>");
 	//create button to delete an question
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){deleteQuestion(value)};
-	document.getElementById(value + "button").appendChild(button);
-	
+	document.getElementById(value + "deleteQuesButton").appendChild(button);
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	i.innerText = "删除本题";
 	button.appendChild(i);
-	
 	body.setAttribute("value", value * 1 + 1);
+	document.getElementById(value+"div").scrollIntoView();
 };
-
 function modify(result, id){
 	$("input[name='title']").val(result['title']);
 	$("input[name='introduction']").val(result['introduction']);
 	if(result['allowdup']=='0'){
 		document.getElementById("allowDup").checked=false;
 	}
+	if(result['resultPublished']=='private'){
+		document.getElementById("resultPublished").checked=false;
+	}
 	var releqlist = {};
 	var releolist = {};
-	//alert(result[0]['stem']);
 	for(var i = 0; i < result['questions'].length; i++){
 		var type = result['questions'][i]['type'];
 		if(type=="Subjective"){
@@ -2441,10 +2437,20 @@ function modify(result, id){
 				var required = document.getElementById(i+"required");
 				required.checked=true;
 			}
+			$("#"+i+"video").val(result['questions'][i]['video']);
+			$("#"+i+"audio").val(result['questions'][i]['audio']);
+			if(result['questions'][i]['img']){
+				document.getElementById(i+"imgpreview").src = decodeURIComponent(result['questions'][i]['img']);
+			}
 		}
 		else if(type=="Single"){
 			addSingle();
 			$("input[name="+i+"]").val(result['questions'][i]['stem']);
+			$("#"+i+"video").val(result['questions'][i]['video']);
+			$("#"+i+"audio").val(result['questions'][i]['audio']);
+			if(result['questions'][i]['img']){
+				document.getElementById(i+"imgpreview").src = decodeURIComponent(result['questions'][i]['img']);
+			}
 			if(result['questions'][i]['required']==true){
 				var required = document.getElementById(i+"required");
 				required.checked=true;
@@ -2454,6 +2460,9 @@ function modify(result, id){
 				$("input[name="+i+"_"+j+"option]").val(result['questions'][i]['options'][j]['option']);
 				var cf = document.getElementById(i+"_"+j+"cf");
 				cf.checked=result['questions'][i]['options'][j]['hasWords'];
+				if(result['questions'][i]['options'][j]['img']){
+					document.getElementById(i+"_"+j+"imgpreview").src = decodeURIComponent(result['questions'][i]['options'][j]['img']);
+				}
 				if(result['questions'][i]['options'][j]['relevancy']!=undefined){
 					var relearray = result['questions'][i]['options'][j]['relevancy'];
 					var tmp = "本选项与以下题号所代表的题目关联: <span>";
@@ -2475,6 +2484,11 @@ function modify(result, id){
 		else if(type=="Multiple"){
 			addMultiple();
 			$("input[name="+i+"]").val(result['questions'][i]['stem']);
+			$("#"+i+"video").val(result['questions'][i]['video']);
+			$("#"+i+"audio").val(result['questions'][i]['audio']);
+			if(result['questions'][i]['img']){
+				document.getElementById(i+"imgpreview").src = decodeURIComponent(result['questions'][i]['img']);
+			}
 			if(result['questions'][i]['required']==true){
 				var required = document.getElementById(i+"required");
 				required.checked=true;
@@ -2486,6 +2500,9 @@ function modify(result, id){
 				$("input[name="+i+"_"+j+"option]").val(result['questions'][i]['options'][j]['option']);
 				var cf = document.getElementById(i+"_"+j+"cf");
 				cf.checked=result['questions'][i]['options'][j]['hasWords'];
+				if(result['questions'][i]['options'][j]['img']){
+					document.getElementById(i+"_"+j+"imgpreview").src = decodeURIComponent(result['questions'][i]['options'][j]['img']);
+				}
 				if(result['questions'][i]['options'][j]['relevancy']!=undefined){
 					var relearray = result['questions'][i]['options'][j]['relevancy'];
 					var tmp = "本选项与以下题号所代表的题目关联: <span>";
@@ -2507,6 +2524,11 @@ function modify(result, id){
 		else if(type=="Slider"){
 			addSlider();
 			$("input[name="+i+"]").val(result['questions'][i]['stem']);
+			$("#"+i+"video").val(result['questions'][i]['video']);
+			$("#"+i+"audio").val(result['questions'][i]['audio']);
+			if(result['questions'][i]['img']){
+				document.getElementById(i+"imgpreview").src = decodeURIComponent(result['questions'][i]['img']);
+			}
 			if(result['questions'][i]['required']==true){
 				var required = document.getElementById(i+"required");
 				required.checked=true;
@@ -2525,7 +2547,6 @@ function modify(result, id){
 	}
 };
 
-
 function update(quesid){
 	FLAG=1;
 	QUES_ID = quesid;
@@ -2541,7 +2562,6 @@ function update(quesid){
 		}
 	});
 }
-
 function statechanger(){
 	if($("input[name='endtime']").val()!="" && $("input[name='endtime']").val()<new Date().toISOString().split("T")[0]){
 		$("#state").html("已结束");
@@ -2554,7 +2574,6 @@ function statechanger(){
 		$("#state").html("已发布");
 	}}
 }
-
 function relevancy(value){
 	if(document.getElementById(value+"relevancy").checked==true){
 		var num = $("#"+value+"divfont").html();
@@ -2619,7 +2638,6 @@ function relevancy(value){
 		deleteRelevancyByQuestion(value);
 	}
 }
-
 function releopts(){
 	var index=document.getElementById("formerques").selectedIndex;
     var quesid=document.getElementById("formerques").options[index].innerHTML.split(".")[0];
@@ -2641,7 +2659,6 @@ function releopts(){
 	}
 	$("#specoptiondiv").html(opts2);
 }
-
 function onchangingReleInQues(num, value){
 	var quesarray = getRelesFromOpt(document.getElementById(num+"_"+value+"optrele"));
 	var opt = $("input[name='" + num+"_"+value+"option']").val();
@@ -2663,7 +2680,6 @@ function onchangingReleInQues(num, value){
 		}
 	}
 }
-
 function changeReleInQues(num, value){
 	var quesarray = getRelesFromOpt(document.getElementById(num+"_"+value+"optrele"));
 	var opt = $("input[name='" + num+"_"+value+"option']").val();
@@ -2674,7 +2690,6 @@ function changeReleInQues(num, value){
 		}
 	}
 }
-
 function changeReleQInQues(value){
 	var opts = document.getElementById(value+"container").childNodes;
 	for(var i=1;i<opts.length;i++){
@@ -2687,11 +2702,30 @@ function changeReleQInQues(value){
 		}
 	}
 }
-
 function copyUrl()
 {
 var Url=document.getElementById("qnhref");
 Url.select(); // 选择对象
 document.execCommand("Copy"); // 执行浏览器复制命令
 $("#copytip").html("复制成功");
+}
+function readLocalFile(i) {
+    var localFile = document.getElementById(i+"img").files[0];
+    var reader = new FileReader();
+    var content;
+    reader.onload = function(event) {
+        content = event.target.result;
+        document.getElementById(i+"imgpreview").src = content;
+    }
+    if(localFile){
+    	content = reader.readAsDataURL(localFile,"UTF-8");
+    }
+    else {
+    	document.getElementById(i+"imgpreview").removeAttribute("src");
+    }
+    //
+}
+function cancelFile(i) {
+	document.getElementById(i+"imgpreview").removeAttribute("src");
+	document.getElementById(i+"img").value="";
 }

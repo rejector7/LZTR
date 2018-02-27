@@ -1,17 +1,9 @@
 package dao.impl;
-
 import java.util.List;
-
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
 import dao.QuestionnaireDao;
 import model.Questionnaire;
-
-
 public class QuestionnaireDaoImpl extends HibernateDaoSupport implements QuestionnaireDao{
-
-
-
 	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#addQuestionnaire(model.Questionnaire)
 	 */
@@ -19,7 +11,6 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 	public Integer addQuestionnaire(Questionnaire ques) {
 		return (Integer)getHibernateTemplate().save(ques);
 	}
-
 	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#deleteQuestionnaire(model.Questionnaire)
 	 */
@@ -27,7 +18,6 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 	public void deleteQuestionnaire(Questionnaire ques) {
 		getHibernateTemplate().delete(ques);
 	}
-
 	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#updateQuestionnaire(model.Questionnaire)
 	 */
@@ -35,7 +25,6 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 	public void updateQuestionnaire(Questionnaire ques) {
 		getHibernateTemplate().merge(ques);
 	}
-
 	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#getQuestionnaireById(int)
 	 */
@@ -47,7 +36,6 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 		Questionnaire ques = quess.size() > 0 ? quess.get(0) : null;
 		return ques;
 	}
-
 	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#getAllQuestionnaires()
 	 */
@@ -58,7 +46,6 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 				.find("from Questionnaire");
 		return quess;
 	}
-
 	@Override
 	public List<Questionnaire> getQuestionnairesByUserid(int userid) {
 		@SuppressWarnings("unchecked")
@@ -66,20 +53,16 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 				.find("from Questionnaire as q where q.userid=?", userid);
 		return quess;
 	}
-
-	
 	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#findQuestionnaires(String condi)
 	 */
 	@Override
-
 	public List<Questionnaire> findQuestionnaires(String condi){
 		@SuppressWarnings("unchecked")
 		List<Questionnaire> quess  = (List<Questionnaire>) getHibernateTemplate()
 				.find("from Questionnaire as q where q.title LIKE ?",'%'+condi+'%');
 		return quess;
 	}
-	
 	@Override
 	public List<Questionnaire> getPublicQuestionnaires(){
 		@SuppressWarnings("unchecked")
@@ -87,5 +70,11 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 				.find("from Questionnaire as q where q.isPublic=1 and status='pub' order by releaseTime desc");
 		return quess;
 	}
-
+	@Override
+	public List<Questionnaire> getPublicResults(){
+		@SuppressWarnings("unchecked")
+		List<Questionnaire> quess  = (List<Questionnaire>) getHibernateTemplate()
+				.find("from Questionnaire as q where q.result='public' and status='pub' order by releaseTime desc");
+		return quess;
+	}
 }

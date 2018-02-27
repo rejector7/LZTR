@@ -8,8 +8,6 @@ var colors = [
 	];
 var answers = [];
 var questions = [];
-
-
 function getStatistic(quesid){
 	jQuery.ajax({
 		url : 'getStatistic',
@@ -23,7 +21,6 @@ function getStatistic(quesid){
 		}
 	});
 }
-
 function formStatistic(data){
 	questions=	data['question']['questions'];
 	answers = data['answers'];
@@ -32,7 +29,6 @@ function formStatistic(data){
 		$("#container").append("<p><font size='4'>" + (i+1) + " : " + ques['stem'] + "</font></p>" +
 				"<div class='container' id =" + i + "></div>");
 		var type = ques['type'];
-		
 		$("#" + i).append('<div class="container"> ' +
 				'<!-- /.row -->' +
 				'<div class="row">' +
@@ -59,6 +55,8 @@ function formStatistic(data){
 			}
 		}
 		else if(type=="Single"){
+			$("#firstques").append("<option>" +(i+1) + " : " + ques['stem']+"</option>");
+			$("#secondques").append("<option>" +(i+1) + " : " + ques['stem']+"</option>");
 			$("#"+i+"head").append('<tr><th width="40%">选项号</th>' +
 					'							<th width="60%">选择数</th>' +
 					'						</tr>');
@@ -86,6 +84,8 @@ function formStatistic(data){
 			drawButton(i, label, result);
 		}
 		else if(type=="Multiple"){
+			$("#firstques").append("<option>" +(i+1) + " : " + ques['stem']+"</option>");
+			$("#secondques").append("<option>" +(i+1) + " : " + ques['stem']+"</option>");
 			$("#"+i+"head").append('<tr><th width="40%">选项号</th>' +
 					'							<th width="60%">选择数</th>' +
 					'						</tr>');
@@ -149,12 +149,11 @@ function formStatistic(data){
 	}
 	return;
 }
-
-
 function drawPie(label, result, i){
 	var canvas = document.getElementById(i + "canvas");
 	if(canvas!=null){
 		document.getElementById(i+"beforecanvas").remove();
+		return;
 	}
 	$("#" + i).append("<div id='" + i + "beforecanvas'><div class='col-lg-4'></div>" +
 			"<div class='col-lg-4'>" +
@@ -163,16 +162,12 @@ function drawPie(label, result, i){
 			"</button>"+
 					"<canvas id='"+i+"canvas'" +
 					"</div></div>");
-	canvas = document.getElementById(i + "canvas");
-	
-	
+	canvas = document.getElementById(i + "canvas");	
 	label = label.split(",");
 	result = result.split(",");
-	for(var i = 7 ; i < result.size; i++){
+	for(var i = 6 ; i < result.length; i++){
 		colors[i] =  'rgba(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) +', 0.2'+ ')';
 	}
-	
-	
 	var myChart = new Chart(canvas, {
 	    type: "pie",
 	    data: {
@@ -186,11 +181,11 @@ function drawPie(label, result, i){
 	    }
 	});
 }
-
 function drawBar(label, result, i){
 	var canvas = document.getElementById(i + "canvas");
 	if(canvas!=null){
 		document.getElementById(i+"beforecanvas").remove();
+		return;
 	}
 	$("#" + i).append("<div id='" + i + "beforecanvas'><div class='col-lg-3'></div>" +
 			"<div class='col-lg-6'>" +
@@ -200,15 +195,11 @@ function drawBar(label, result, i){
 					"<canvas id='"+i+"canvas'" +
 					"</div></div>");
 	canvas = document.getElementById(i + "canvas");
-	
 	label = label.split(",");
 	result = result.split(",");
-
-	for(var i = 7 ; i < result.size; i++){
+	for(var i = 6 ; i < result.length; i++){
 		colors[i] =  'rgba(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) +', 0.2'+ ')';
 	}
-	
-	
 	var myChart = new Chart(canvas, {
 	    type: "bar",
 	    data: {
@@ -231,11 +222,11 @@ function drawBar(label, result, i){
 	    }
 	});
 }
-
 function drawDoughnut(label, result, i){
 	var canvas = document.getElementById(i + "canvas");
 	if(canvas!=null){
 		document.getElementById(i+"beforecanvas").remove();
+		return;
 	}
 	$("#" + i).append("<div id='" + i + "beforecanvas'><div class='col-lg-4'></div>" +
 			"<div class='col-lg-4'>" +
@@ -249,10 +240,9 @@ function drawDoughnut(label, result, i){
 	label = label.split(",");
 	result = result.split(",");
 	
-	for(var i = 7 ; i < result.size; i++){
+	for(var i = 6 ; i < result.length; i++){
 		colors[i] =  'rgba(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) +', 0.2'+ ')';
 	}
-	
 	var myChart = new Chart(canvas, {
 	    type: 'doughnut',
 	    data: {
@@ -266,11 +256,11 @@ function drawDoughnut(label, result, i){
 	    }
 	});
 }
-
 function drawLine(label, result, i){
 	var canvas = document.getElementById(i + "canvas");
 	if(canvas!=null){
 		document.getElementById(i+"beforecanvas").remove();
+		return;
 	}
 	$("#" + i).append("<div id='" + i + "beforecanvas'><div class='col-lg-3'></div>" +
 			"<div class='col-lg-6'>" +
@@ -280,10 +270,8 @@ function drawLine(label, result, i){
 					"<canvas id='"+i+"canvas'" +
 					"</div></div>");
 	canvas = document.getElementById(i + "canvas");
-	
 	label = label.split(",");
 	result = result.split(",");
-	
 	var myChart = new Chart(canvas, {
 	    type: 'line',
 	    data: {
@@ -307,7 +295,6 @@ function drawLine(label, result, i){
 	    }
 	});
 }
-
 function downloadjpeg(id,title){	
 	$("#jpegtip").html("生成jpeg中");
 	var div = document.getElementById("container");
@@ -336,7 +323,6 @@ function downloadjpeg(id,title){
 		as[i].removeAttribute("hidden");
 	}
 }
-
 function downloadxml(id,title){	
 	var tablehtml = "";
 	var children = document.getElementById("container").childNodes;
@@ -344,7 +330,12 @@ function downloadxml(id,title){
 	for(var i=0;i<=len;i++){
 		var stem = document.getElementById(i).previousSibling.innerHTML;
 		var thead = document.getElementById(i+"head").innerHTML;
-		var tbody = document.getElementById(i+"body").innerHTML;
+		var tbodynode = document.getElementById(i+"body").cloneNode(true);
+		var as = tbodynode.getElementsByTagName("A");
+		for(var j=0;j<as.length;j++){
+			as[j].parentNode.removeChild(as[j]);
+		}
+		var tbody = tbodynode.innerHTML;
 		tablehtml += "" +
 				"<thead><tr><th colspan='2'>"+stem+"</th></tr>" +
 				thead+"</thead>"+
@@ -355,7 +346,6 @@ function downloadxml(id,title){
 	var filename = id+"_name";
 	exportXls(tablehtml,style,name,filename);
 }
-
 function downloadDetailxml(){
 	var tablehtml = document.getElementById("modal").getElementsByTagName("TABLE")[0].innerHTML;
 	var style = "table {border-collapse: collapse;}table, td, th {border: thin solid black;}";
@@ -365,12 +355,10 @@ function downloadDetailxml(){
 	var filename = name;
 	exportXls(tablehtml,style,name,filename);
 }
-
 function downloadimg(i){
 	var imgData = document.getElementById(i+"canvas").toDataURL("image/png");
 	download(imgData,i+".png","image/png");
 }
-
 function drawButton(i, label, result){
 	$("#" + i).append("<div class='container row' align='right'>" +
 			"<button class='btn btn-default' type='button' >" +
@@ -387,12 +375,10 @@ function drawButton(i, label, result){
 			"</button>" +
 			"</div>");
 }
-
 function detailSingle(quesid, optionid){
 	$("#detailbody").html("");
 	var ids = [];
 	var details = [];
-	
 	for(var i =0; i < answers.length; i++){
 		var option = answers[i][quesid]['option'];
 		if(option==optionid){
@@ -403,12 +389,10 @@ function detailSingle(quesid, optionid){
 	$('#modalTitle2').html('选项“'+ questions[quesid]['options'][optionid]['option'] +'”');
 	$('#modal').modal('show');
 }
-
 function detailMultiple(quesid, optionid){
 	$("#detailbody").html("");
 	var ids = [];
 	var details = [];
-	
 	for(var i =0; i < answers.length; i++){
 		for(var j = 0; j < answers[i][quesid]['words'].length; j++){
 			if(optionid==answers[i][quesid]['words'][j]['optionid']){
@@ -419,5 +403,98 @@ function detailMultiple(quesid, optionid){
 	$('#modalTitle').html('题目“'+ questions[quesid]['stem'] +'”的详情统计');
 	$('#modalTitle2').html('选项“'+ questions[quesid]['options'][optionid]['option'] +'”');
 	$('#modal').modal('show');
+}
+function crossAna(){
+	if(($("#firstques").val()=="未选择")||($("#secondques").val()=="未选择")){
+		return false;
+	}
+	var id1 = $("#firstques").val().split(" ")[0]-1;
+	var id2 = $("#secondques").val().split(" ")[0]-1;
+	var q1 = questions[($("#firstques").val().split(" ")[0]-1)];
+	var q2 = questions[($("#secondques").val().split(" ")[0]-1)];
+	var l1 = q1['options'].length;
+	var l2 = q2['options'].length;
+	var tArray = new Array();  
+	for(var k=0;k<l1;k++){         
+	 tArray[k]=new Array();
+	 for(var p=0;p<l2;p++){
+		 tArray[k][p]=0;
+	 }
+	}
+	var type1 = q1['type'];
+	var type2 = q2['type'];
+	for(var j = 0 ; j < answers.length; j++){
+		if(type1=="Single"){
+			var option = answers[j][id1]['option'];
+			if(option!=""){
+				var ids1 = new Array();
+				ids1.push(option);
+				ids1.push("");
+			}
+			else var ids1 = null;
+		}
+		else{
+			var option = answers[j][id1]['option'];
+			if(option!=""){
+				var ids1 = option.split(",");
+			}
+			else var ids1 = null;
+		}
+		if(type2=="Single"){
+			var option = answers[j][id2]['option'];
+			if(option!=""){
+				var ids2 = new Array();
+				ids2.push(option);
+				ids2.push("");
+			}
+			else var ids2 = null;
+		}
+		else{
+			var option = answers[j][id2]['option'];
+			if(option!=""){
+				var ids2 = option.split(",");
+			}
+			else var ids2 = null;
+		}
+		if(ids1!=null&&ids2!=null){
+			for(var k = 0; k < ids1.length-1; k++){
+				for(var p=0;p<ids2.length-1;p++){
+					tArray[ids1[k]][ids2[p]]+=1;
+				}
+			}
+		}
+	}
+	var table = "<table class='table'>";
+	table+="<tr><th>X\\Y</th>";
+	for(var j = 0 ; j < l2; j++){
+		table += "<th>"+q2['options'][j]['option']+"</th>";
+	}
+	table+="<th>小计</th></tr>";
+	for(var j=0;j<l1;j++){
+		table += "<tr><th>"+q1['options'][j]['option']+"</th>";
+		var sum = 0
+		for(var k = 0 ; k < l2; k++){
+			table+="<td>"+tArray[j][k]+"</td>";
+			sum += tArray[j][k];
+		}
+		table+="<td>"+sum+"</td></tr>";
+	}
 	
+	table+="</table>";
+	$("#crossAnaTable").html(table);
+	
+}
+function downloadXlsCross(){
+	if(document.getElementById("crossAnaTable").getElementsByTagName("TABLE").length==0){
+		alert("无可导出项目数据");
+	}
+	else{
+		var tablehtml = document.getElementById("crossAnaTable").getElementsByTagName("TABLE")[0].innerHTML;
+		var style = "table {border-collapse: collapse;}table, td, th {border: thin solid black;}";
+		var title1 = $("#firstques").val();
+		var title2 = $("#secondques").val();
+		var name = "交叉分析——"+title1+"与"+title2;
+		var filename = name;
+		exportXls(tablehtml,style,name,filename);
+	}
 }

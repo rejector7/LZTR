@@ -1,13 +1,7 @@
 package action;
-
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import model.Answer;
 import model.AnswerSheet;
 import model.Questionnaire;
 import model.QuestionnaireQuestions;
@@ -20,14 +14,12 @@ import service.StatisticService;
  *
  */
 public class StatisticAction extends BaseAction{
-	
 	private static final long serialVersionUID = 1L;
 	private int quesid;
 	private int id;
 	private StatisticService statisticService;
 	private AnswerSheetService ansService;
 	private QuestionnaireService quesService;
-	
 	public int getQuesid() {
 		return quesid;
 	}
@@ -69,7 +61,6 @@ public class StatisticAction extends BaseAction{
 		response().getWriter().print(result.toString());
 		return null;
 	}
-	
 	/**
 	 * Get all answers of a specific questionnaire
 	 * @return

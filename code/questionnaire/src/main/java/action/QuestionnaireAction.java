@@ -1,21 +1,14 @@
 package action;
-
 import service.AnswerSheetService;
 import service.QuestionnaireService;
-
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Date;
-import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONObject;
-import org.json.JSONArray;
-
 import model.User;
 import model.Questionnaire;
 import model.QuestionnaireQuestions;
-
-
 public class QuestionnaireAction extends BaseAction{
 	private AnswerSheetService ansService;
 	private QuestionnaireService quesService;
@@ -29,7 +22,7 @@ public class QuestionnaireAction extends BaseAction{
 	private String condi;
 	private String content;
 	private int allowDup;
-
+	private String result;
 	public String getContent() {
 		return content;
 	}
@@ -93,18 +86,11 @@ public class QuestionnaireAction extends BaseAction{
 	public void setQuesService(QuestionnaireService quesService) {
 		this.quesService = quesService;
 	}
-	
-	/**
-	 * Parse the questions with the string type into a list of questions
-	 * @param questions
-	 * @return
-	 */
-	
 	public void setAnsService(AnswerSheetService ansService) {
 		this.ansService = ansService;
 	}
 	/**
-	 * Use appService to add a questionnaire,including its basic information and content
+	 * Use Service to add a questionnaire,including its basic information and content
 	 * @return
 	 * @throws IOException 
 	 */
@@ -128,19 +114,20 @@ public class QuestionnaireAction extends BaseAction{
 			ques.setTitle(title);
 			quescontent.setContent(content);
 			ques.setAllowDup(allowDup);
+			ques.setResult(result);
 			quesService.updateQuestionnaire(quescontent, ques);
 			response().getWriter().write(Integer.valueOf(id).toString());
 			return null;
 		}
 		if(status==null) status = "unp";
 		int userid = ((User)request().getSession().getAttribute("user")).getId();
-		Questionnaire ques = new Questionnaire(userid,status,title,isPublic,releaseTime,endTime,allowDup);
+		Questionnaire ques = new Questionnaire(userid,status,title,isPublic,result,releaseTime,endTime,allowDup);
+		
 		QuestionnaireQuestions quescontent = new QuestionnaireQuestions(content);
 		int tmpid = quesService.addQuestionnaire(quescontent, ques);
 		response().getWriter().write(Integer.valueOf(tmpid).toString());
 		return null;
 	}
-	
 	public String update() throws IOException {
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		if(ques.getStatus().equals("ban")){
@@ -152,20 +139,20 @@ public class QuestionnaireAction extends BaseAction{
 		ques.setReleaseTime(releaseTime);
 		ques.setStatus(status);
 		ques.setAllowDup(allowDup);
+		System.out.println(result + "wefwef");
+		ques.setResult(result);
 		quesService.updateQuestionnaire(ques);
 		response().getWriter().print("success");
 		return null;
 	}
-	
 	public String updateStatus() throws Exception {
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		ques.setStatus(status);
 		quesService.updateQuestionnaire(ques);
 		return "updateStatus";
 	}
-	
 	/**
-	 * Use appService to delete a questionnaire,including its basic information and content
+	 * Use Service to delete a questionnaire,including its basic information and content
 	 * @return
 	 */
 	public String delete1(){
@@ -175,7 +162,6 @@ public class QuestionnaireAction extends BaseAction{
 		quesService.deleteQuestionnaire(quescontent, ques);
 		return "delete1";
 	}
-	
 	public String delete2(){
 		ansService.deleteAnswersByQuestionId(id);
 		Questionnaire ques = quesService.getQuestionnaireById(id);
@@ -183,9 +169,8 @@ public class QuestionnaireAction extends BaseAction{
 		quesService.deleteQuestionnaire(quescontent, ques);
 		return "delete2";
 	}
-	
 	/**
-	 * Use appService to get a questionnaire,including its basic information and content
+	 * Use Service to get a questionnaire,including its basic information and content
 	 * @return
 	 * @throws IOException 
 	 */
@@ -210,20 +195,19 @@ public class QuestionnaireAction extends BaseAction{
 		questot.put("title", ques.getTitle());
 		questot.put("allowdup", ques.getAllowDup());
 		questot.put("status", "pub");
+		questot.put("result", ques.getResult());
 		response().setCharacterEncoding("utf-8");
 		response().setContentType("text/html;charset:utf-8");
 		response().getWriter().print(questot.toString());
 		return null;
 	}
-	
 	public String getInfo() throws IOException{
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		request().setAttribute("quesinfo", ques);
 		return "getInfo";
 	}
-	
 	/**
-	 * Use appService to get basic information of all questionnaires
+	 * Use Service to get basic information of all questionnaires
 	 * @return
 	 */
 	public String all(){
@@ -231,13 +215,11 @@ public class QuestionnaireAction extends BaseAction{
 		request().setAttribute("Questionnaires", questionnaires);
 		return "all";
 	}
-	
 	public String search() throws Exception{
 		List<Questionnaire> Questionnaires = quesService.findQuestionnaires(condi);
 		request().setAttribute("ResultList", Questionnaires);
 		return "search";
 	}
-	
 	public String My() throws Exception{
 		User user = (User)session().getAttribute("user");
 		int userid = user.getId();
@@ -245,7 +227,6 @@ public class QuestionnaireAction extends BaseAction{
 		request().setAttribute("MyQuess", Questionnaires);
 		return "My";
 	}
-	
 	public String propel(){
 		List<Questionnaire> questionnaires = quesService.getPublicQuestionnaires();
 		if(questionnaires.size()>=6){
@@ -265,8 +246,32 @@ public class QuestionnaireAction extends BaseAction{
 			}
 		}
 		request().setAttribute("quesByTime", questionnaires);
+		
+		List<Questionnaire> results = quesService.getPublicResults();
+		if(results.size()>=6){
+		for(int i=0;i<6;i++){
+			QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(results.get(i).getId());
+			JSONObject questot = new JSONObject(quescontent.getContent());
+			String intro = questot.getString("introduction");
+			request().setAttribute(i + "intro", intro);
+		}
+		}
+		else {
+			for(int i=0;i<results.size();i++){
+				QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(results.get(i).getId());
+				JSONObject questot = new JSONObject(quescontent.getContent());
+				String intro = questot.getString("introduction");
+				request().setAttribute(i + "intro", intro);
+			}
+		}
+		request().setAttribute("resultByTime", results);
+		
 		return SUCCESS;
 	}
+	public String getResult() {
+		return result;
+	}
+	public void setResult(String result) {
+		this.result = result;
+	}
 }
-
-

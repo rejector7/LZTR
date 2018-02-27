@@ -1,26 +1,19 @@
 package service.impl;
-
 import java.util.List;
-
 import dao.QuestionnaireDao;
 import dao.QuestionnaireQuestionsDao;
 import model.Questionnaire;
 import model.QuestionnaireQuestions;
 import service.QuestionnaireService;
-
 public class QuestionnaireServiceImpl implements QuestionnaireService{
 	private QuestionnaireQuestionsDao questionnairequestionsDao;
 	private QuestionnaireDao quesDao;
-
 	public void setQuestionnairequestionsDao(QuestionnaireQuestionsDao questionnairequestionsDao) {
 		this.questionnairequestionsDao = questionnairequestionsDao;
 	}
-	
 	public void setQuesDao(QuestionnaireDao quesDao) {
 		this.quesDao = quesDao;
 	}
-
-
 	/* (non-Javadoc)
 	 * @see service.impl.QuestionnaireService#addQuestionnaire(model.QuestionnaireQuestions, model.Questionnaire)
 	 */
@@ -31,8 +24,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 		questionnairequestionsDao.addQuestionnaire(questions);
 		return id;
 	}
-	
-
 	/* (non-Javadoc)
 	 * @see service.impl.QuestionnaireService#updateQuestionnaire(model.QuestionnaireQuestions, model.Questionnaire)
 	 */
@@ -41,8 +32,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 		questionnairequestionsDao.updateQuestionnaire(questions);
 		quesDao.updateQuestionnaire(ques);
 	}
-	
-
 	/* (non-Javadoc)
 	 * @see service.impl.QuestionnaireService#deleteQuestionnaire(model.QuestionnaireQuestions, model.Questionnaire)
 	 */
@@ -51,8 +40,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 		questionnairequestionsDao.deleteQuestionnaire(questions);
 		quesDao.deleteQuestionnaire(ques);
 	}
-	
-
 	/* (non-Javadoc)
 	 * @see service.impl.QuestionnaireService#getQuestionnaireQuestionsById(int)
 	 */
@@ -60,7 +47,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 	public QuestionnaireQuestions getQuestionnaireQuestionsById(int id){		
 		return questionnairequestionsDao.getQuestionnaireById(id);
 	}
-	
 	/* (non-Javadoc)
 	 * @see service.impl.QuestionnaireService#getQuestionnaireById(int)
 	 */
@@ -68,7 +54,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 	public Questionnaire getQuestionnaireById(int id) {
 		return quesDao.getQuestionnaireById(id);
 	}
-
 	/* (non-Javadoc)
 	 * @see service.impl.QuestionnaireService#getAllQuestionnaires()
 	 */
@@ -76,7 +61,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 	public List<Questionnaire> getAllQuestionnaires(){
 		return quesDao.getAllQuestionnaires();
 	}
-
 	/* (non-Javadoc)
 	 * @see service.impl.QuestionnaireService#getQuestionnairesByUserid(int)
 	 */
@@ -84,19 +68,21 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 	public List<Questionnaire> getQuestionnaireByUserId(int userid){
 		return quesDao.getQuestionnairesByUserid(userid);
 	}
-	
 	@Override
 	public List<Questionnaire> findQuestionnaires(String condi){
 		return quesDao.findQuestionnaires(condi);
 	}
-	
 	@Override
 	public void updateQuestionnaire(Questionnaire ques) {
 		quesDao.updateQuestionnaire(ques);
 	}
-	
 	@Override
 	public List<Questionnaire> getPublicQuestionnaires(){
 		return quesDao.getPublicQuestionnaires();
+	}
+	
+	@Override
+	public List<Questionnaire> getPublicResults(){
+		return quesDao.getPublicResults();
 	}
 }

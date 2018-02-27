@@ -2,11 +2,10 @@
 <%@ page import="model.User"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
+<!DOCTYPE html>
+<html >
 <head>
 <title>LZTR 问卷平台后台管理</title>
-
 <%
 	String path = request.getContextPath();
 %>
@@ -16,7 +15,6 @@
 <link href="<%=path%>/questionnaire/css/questionnaire.css" 			rel="stylesheet">
 <link href="<%=path%>/questionnaire/css/font-awesome.min.css" 		rel="stylesheet" type="text/css">
 </head>
-
 <body>
 	<%
 		ArrayList<User> userList = new ArrayList<User>();
@@ -28,11 +26,9 @@
 		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
-			
 		<div class="navbar-header">
 			<a class="navbar-brand" href="#">问卷系统后台</a>
 		</div>
-
 		<div class="navbar-default sidebar" role="navigation">
 			<div class="sidebar-nav navbar-collapse">
 				<ul class="nav" id="side-menu">
@@ -49,7 +45,6 @@
 			<!-- /.sidebar-collapse -->
 		</div>
 		<!-- /.navbar-static-side --> </nav>
-
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
@@ -69,6 +64,7 @@
 										<tr>
 										    <th>ID</th>
 											<th>用户名</th>
+											<th>密码</th>
 											<th>年龄</th>
 											<th>性别</th>
 											<th>城市</th>
@@ -90,6 +86,7 @@
 										<tr>
 										    <td><%=user.getId()%></td>
 											<td><%=user.getUsername()%></td>
+											<td style="word-wrap:break-word;word-break:break-all" width="100px"><%=user.getPassword() %></td>
 											<td><%=user.getAge()%></td>
 											<td><%if(user.getSex().equals("male")){%>男<%}else if (user.getSex().equals("female")){%>女<%} %></td>
 											<td><%=user.getCity()%></td>
@@ -100,7 +97,6 @@
 											<td><%=user.getWechat()%></td>
 											<td><%=user.getJob()%></td>
 											<td><%if(user.getRole().equals("admin")){%>管理员<%}else if (user.getRole().equals("user")){%>用户<%} %></td>
-											
 											<td>
 												<button class="btn btn-default delete" type="button"
 													data-id="<%=user.getId()%>">
@@ -109,6 +105,7 @@
 												<button class="btn btn-default edit" type="button"
 													data-id="<%=user.getId()%>"
 													data-username="<%=user.getUsername()%>"
+													data-password="<%=user.getPassword() %>"
 													data-age="<%=user.getAge()%>"
 													data-sex="<%=user.getSex()%>"
 													data-city="<%=user.getCity()%>"
@@ -142,7 +139,6 @@
 		<!-- /#page-wrapper -->
 	</div>
 	<!-- /#wrapper -->
-
 	<div class="modal fade" id="modal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -165,6 +161,10 @@
       <div class="form-group">
         <label>用户名</label>
         <input type="text" class="form-control" name="username" required maxlength="255">
+      </div>
+      <div class="form-group">
+      <label>密码</label>
+      <input type="text" class="form-control" name="password" required maxlength="255">
       </div>
       <div class="form-group">
         <label>年龄</label>
@@ -214,10 +214,6 @@
 				<option>用户</option>
 			</select>
       </div>
-      
-      
-
-      
 								</div>
 							</form>
 						</div>
@@ -230,7 +226,6 @@
 			</div>
 		</div>
 	</div>
-
 	<script src="<%=path%>/questionnaire/js/jquery.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/bootstrap.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/jquery.dataTables.min.js"></script>
@@ -239,8 +234,8 @@
 	<script src="<%=path%>/questionnaire/js/questionnaire.js"></script>
 	<script src="<%=path %>/questionnaire/js/jquery.validate.min.js"></script>
     <script src="<%=path %>/questionnaire/js/messages_zh.js"></script>
+    <script src="<%=path %>/questionnaire/js/md5.js"></script>
 	<script src="<%=path%>/questionnaire/js/admin_user.js"></script>
-
 	<script>
 		$(document).ready(function() {
 			$('#dataTables').DataTable({
@@ -248,8 +243,5 @@
 			});
 		});
 	</script>
-
 </body>
-
 </html>
-

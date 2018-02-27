@@ -1,5 +1,4 @@
 $(function() {
-
 	$("#save").click(function(e) {
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
@@ -9,6 +8,14 @@ $(function() {
 		}
 		else{
 			isPublic = 0;
+		}
+		var showResult = $("#selectf2").val();
+		//alert(showResult); return;
+		if(showResult == "是"){
+			showResult = "public";
+		}
+		else{
+			showResult = "private";
 		}
 		var status = $("#state").html();
 		if(status=="已发布"){
@@ -23,7 +30,6 @@ $(function() {
 		var title = $("input[name='title']").val();
 		var releaseTime = $("input[name='releasetime']").val();
 		var endTime = $("input[name='endtime']").val();
-		console.log(id,isPublic,status,title,endTime, releaseTime);
 		if(title==""){
 			$("#titlea").html("请输入标题");
 			return false;
@@ -52,13 +58,13 @@ $(function() {
 			data : {
 					id 	: id,
 					isPublic : isPublic,
+					result : showResult,
 				    status : status,
 				    endTime : endTime,
 				    releaseTime : releaseTime,
 				    title : title,
 			},
 			success : function(data) {
-				console.log(id);
 				bootbox.alert({
 					message : '修改成功！',
 					callback : function() {
@@ -69,7 +75,6 @@ $(function() {
 		});
 		$('#modal').modal('hide');
 	});
-
 	$(".delete").click(function(e) {
 		bootbox.confirm({
 			buttons : {
@@ -83,7 +88,6 @@ $(function() {
 			message : '是否删除?',
 			callback : function(result) {
 				if (result) {
-
 					var dataset = e.currentTarget.dataset;
 					var id = dataset.id;
 					jQuery.ajax({
@@ -94,7 +98,6 @@ $(function() {
 							id : id
 						},
 						success : function(data) {
-							console.log(id);
 							bootbox.alert({
 								message : '删除成功！',
 								callback : function() {
@@ -103,18 +106,14 @@ $(function() {
 							});
 						}
 					});
-
 				}
 			}
 		});
 	});
-
 	$(".edit").click(function(e) {
 		$('#modalTitle').html("修改问卷信息");
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
-
-		console.log(id);
 		$("input[name='title']").val(dataset.title);
 		$("input[name='endtime']").val(dataset.endtime.split(" ")[0]);
 		$("input[name='releasetime']").val(dataset.releasetime.split(" ")[0]);
@@ -131,7 +130,6 @@ $(function() {
 		$("#save").attr("data-id", dataset.id);
 		$('#modal').modal('show');
 	});
-
 	$(".link").click(function(e) {
 		bootbox.alert({
 			message : 
@@ -142,7 +140,6 @@ $(function() {
 	});
 	
 });
-
 function statechanger(){
 	if($("input[name='endtime']").val()!="" && $("input[name='endtime']").val()<new Date().toISOString().split("T")[0]){
 		$("#state").html("已结束");
@@ -155,7 +152,6 @@ function statechanger(){
 		$("#state").html("已发布");
 	}}
 }
-
 function copyUrl()
 {
 var Url=document.getElementById("qnhref");

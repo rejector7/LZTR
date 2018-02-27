@@ -1,7 +1,5 @@
 package model;
-
 import java.util.Date;
-
 public class Answer {
 	private int id;
 	private int quesid;
@@ -45,5 +43,4 @@ public class Answer {
 		return "{\"id\":\"" + id + "\", \"quesid\":\"" + quesid + "\", \"time\":\"" + time + "\", \"ip\":\"" + ip
 				+ "\"}";
 	}
-	
 }

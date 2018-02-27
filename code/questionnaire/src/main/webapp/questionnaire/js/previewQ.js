@@ -1,7 +1,6 @@
 var Q = {};
 var QUESID = 0;
 var initrelelist = [];
-
 function getQ(id){
 	QUESID = id;
 	jQuery.ajax({
@@ -26,7 +25,6 @@ function getQ(id){
 		}
 	});
 }
-
 function formQ(data){
 	Q = data;
 	var title = data['title'];
@@ -37,7 +35,7 @@ function formQ(data){
 	
 	//create title & introduction
 	$("#questionnaire").html("<h1 class='text-muted' style='color:black' align='center'><font size='10'>" + title + "</font></h1>" +
-			"<p align='center'>" + introduction + "</head>");
+			"<p align='left'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + introduction + "</head>");
 	//create questions
 	for(var i = 0 ; i < length ; i++){
 		var question = questions[i];
@@ -48,7 +46,6 @@ function formQ(data){
 		else if(type=="Multiple") result[i] = addMultiple(question, i);
 		else if(type=="Slider") result[i] = addSlider(question, i);
 	}
-	//alert(result);
 	var len = initrelelist.length;
 	var bin = document.getElementById("bin");
 	var form = document.getElementById("form");
@@ -61,7 +58,6 @@ function formQ(data){
 		bin.appendChild(ques);
 	}
 }
-
 function addStem(question, i){
 	var form = document.getElementById("form");
 	//create stem
@@ -70,15 +66,25 @@ function addStem(question, i){
 	div.className = "container";
 	form.appendChild(div);
 	if(question['type']=="Multiple"&&question['min']!=undefined&&question['min']!=null&&question['min']!=""){
-		$("#"+i).html("<p2><font size='4'>" + (i+1)  + " "+ question['stem'] + "("+question['min']+"~"+question['max']+"项)</font>");
+		$("#"+i).html("<p2><strong><font size='4'>" + (i+1)  + " "+ question['stem'] + "</strong>("+question['min']+"~"+question['max']+"项)</font>");
 	}
-	else $("#"+i).html("<p2><font size='4'>" + (i+1)  + " "+ question['stem'] + "</font>");
+	else $("#"+i).html("<p2><strong><font size='4'>" + (i+1)  + " "+ question['stem'] + "</font></strong>");
 	if(question['required']==true){
 		$("#"+i).append("<font color='red' size='4'>&nbsp*</font>");
 	}
 	$("#"+i).append("</p2>");
+	if(question['img']){
+		$("#"+i).append("<br><img src='"+decodeURIComponent(question['img'])+"'>")
+	}
+	if(question['video']){
+		$("#"+i).append("<br>");
+		$("#"+i).append(question['video']);
+	}
+	if(question['audio']){
+		$("#"+i).append("<br>");
+		$("#"+i).append(question['audio']);
+	}
 }
-
 function addSubjective(question, i){
 	var div = document.getElementById(i);
 	div.setAttribute("value", 0);
@@ -96,7 +102,6 @@ function addSubjective(question, i){
 	}
 	return;
 }
-
 function addSingle(question, i){
 	var div = document.getElementById(i);
 	var thisrele = [];
@@ -125,22 +130,34 @@ function addSingle(question, i){
 		if(question['options'][j]['hasWords']==true){
 			if(question['required']==false){
 	$("#"+i + "div").append("<p><div class='radio' ><label  style='float:left'><input type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-			"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+			"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+	if(question['options'][j]['img']){
+		$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
+	}
 		$("#"+i + "div").append("<div><input  name='" + i + "_" + j + "words'></div>");
 	}else{
 		$("#"+i + "div").append("<p><div class='radio' ><label  style='float:left'><input required type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-				"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+				"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+		if(question['options'][j]['img']){
+			$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
+		}
 			$("#"+i + "div").append("<div><input  name='" + i + "_" + j + "words'></div>");
 	}
 			}
 		else{
 			if(question['required']==false){
 			$("#"+i + "div").append("<p><div class='radio' ><label><input type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-					"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+					"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+			if(question['options'][j]['img']){
+				$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
+			}
 			}
 			else{
 				$("#"+i + "div").append("<p><div class='radio' ><label><input required type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-						"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+						"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+				if(question['options'][j]['img']){
+					$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
+				}
 			}
 		}
 	$("#"+i + "div").append("</div></p>");
@@ -148,7 +165,6 @@ function addSingle(question, i){
 	div.setAttribute("allrele", thisrele);
 	return;
 }
-
 function addMultiple(question, i){
 	var div = document.getElementById(i);
 	var thisrele = [];
@@ -157,7 +173,7 @@ function addMultiple(question, i){
 	newDiv.id = i + "div";
 	newDiv.className = "container";
 	div.appendChild(newDiv);
-	$("#"+i + "div").append("<strong><div id='" + i + "message' class='error'></div></strong>")
+	$("#"+i + "div").append("<div id='" + i + "message' class='error'></div>")
 	for(var j = 0 ; j < question['options'].length; j++){
 		if(question['options'][j]["relevancy"]==undefined){
 			var rele = "";
@@ -179,26 +195,38 @@ function addMultiple(question, i){
 			if(question['required']==false){
 			$("#"+i + "div").append("<p><label  style='float:left'><input type='checkbox' value=" + j +" name=" + i + 
 					 " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-					"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+					"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+			if(question['options'][j]['img']){
+				$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
+			}
 				$("#"+i + "div").append("<div><input  name='" + i + "_" + j + "words'>");
 			}
 			else{
 				$("#"+i + "div").append("<p><label  style='float:left'><input required type='checkbox' value=" + j +" name=" + i +
 						" rele='"+rele+"' onclick='releEffect("+i+")'>" +
-						"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+						"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+				if(question['options'][j]['img']){
+					$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
+				}
 					$("#"+i + "div").append("<div><input  name='" + i + "_" + j + "words'>");
 			}
-			}
+		}
 				else{
 					if(question['required']==false){
 					$("#"+i + "div").append("<p><label><input type='checkbox' value=" + j +" name=" + i +
 							" rele='"+rele+"' onclick='releEffect("+i+")'>" +
-							"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+							"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+					if(question['options'][j]['img']){
+						$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
+					}
 					}
 					else{
 						$("#"+i + "div").append("<p><label><input required type='checkbox' value=" + j +" name=" + i + 
 								" rele='"+rele+"' onclick='releEffect("+i+")'>" +
-								"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+								"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+						if(question['options'][j]['img']){
+							$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
+						}
 					}
 				}
 			$("#"+i + "div").append("</p>");
@@ -206,7 +234,6 @@ function addMultiple(question, i){
 	div.setAttribute("allrele", thisrele);
 	return;
 }
-
 function addSlider(question, i){
 	var div = document.getElementById(i);
 	div.setAttribute("value", 3);
@@ -245,7 +272,6 @@ function addSlider(question, i){
       });
 	return;
 }
-
 function wordexport(){
 	var content = $("#questionnaire").html();
 	var fc = "";
@@ -338,9 +364,8 @@ function wordexport(){
 	content+=fc;
 	var header = document.getElementById("questionnaire");
 	var filename = header.getElementsByTagName("h1")[0].getElementsByTagName("font")[0].innerHTML;
-	exportDoc(content,filename)
+	exportDocx(content,filename);
 }
-
 function releEffect(i){
 	var ques = document.getElementById(i);
 	var selected = [];
@@ -379,7 +404,6 @@ function releEffect(i){
 			bin.appendChild(tmp);
 		}
 	}
-	
 	for(var j=0;j<notselected.length;j++){
 		if(quess[notselected[j]-1].getAttribute("value")!='5'){
 			var ques = quess[notselected[j]-1];
@@ -391,7 +415,6 @@ function releEffect(i){
 		}
 	}
 }
-
 function donothing(){
 	var btn = document.getElementsByTagName("BUTTON")[0];
 	var div = btn.parentNode;

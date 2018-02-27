@@ -23,7 +23,6 @@ $(function(){
 			}
 		}
 	});
-
 	$("#infoform").validate({
 		messages:{
 			qq:{
@@ -35,7 +34,6 @@ $(function(){
 			}
 		}
 	});
-	
 	$("#passwordform").validate({
 		messages:{
 			oldpassword:{
@@ -50,10 +48,9 @@ $(function(){
 			}
 		}
 	});
-	
 	$("#register").click(function(){
 		var username = $("input[name='username']").val();
-		var password = $("input[name='password']").val();
+		var password = md5($("input[name='password']").val());
 		var email = $("input[name='email']").val();
 		var mobile = $("input[name='mobile']").val();
 		var country = $("input[name='country']").val();
@@ -129,12 +126,9 @@ $(function(){
 			}
 		});
 	});
-	
 	$('#modify').click(function(e){
-		var oldpassword = $("input[name='oldpassword']").val();
-		var newpassword = $("input[name='newpassword']").val();
-		console.log(oldpassword, newpassword)
-		
+		var oldpassword = md5($("input[name='oldpassword']").val());
+		var newpassword = md5($("input[name='newpassword']").val());
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
 		if(!$("#passwordform").validate({
@@ -154,7 +148,6 @@ $(function(){
 		}).form()){
 			return false;
 		}
-		
 		jQuery.ajax({
 			url : 'updatePasswordPro',
 			processData : true,
@@ -165,7 +158,6 @@ $(function(){
 				password : newpassword
 			},
 			success : function(data) {
-				console.log(id);
 				if(data=="false"){
 					bootbox.alert({
 						message : '原密码输入错误',
@@ -183,7 +175,6 @@ $(function(){
 			
 		});
 	});
-
 	$("#save").click(function(e) {
 		var sex = $("#form-sex").val();
 		var mobile = $("input[name='mobile']").val();
@@ -193,8 +184,6 @@ $(function(){
 		var job = $("input[name='job']").val();
 		var qq = $("input[name='qq']").val();
 		var wechat = $("input[name='wechat']").val();
-		console.log(sex, mobile, country, city,  age, job, wechat, qq);
-
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
 		if(!$("#infoform").validate({
@@ -230,7 +219,6 @@ $(function(){
 					qq : qq
 				},
 				success : function(data) {
-					console.log(id);
 					bootbox.alert({
 						message : '修改成功！ ',
 						callback : function() {
@@ -247,7 +235,7 @@ $(function(){
 				dataType : "text",
 				data : {
 					username : username,
-					password : password,
+					password : md5(password),
 					role : role
 				},
 				success : function(data) {
@@ -260,15 +248,12 @@ $(function(){
 				}
 			})
 		}
-
 		$('#modal').modal('hide');
 	});
 	$(".edit").click(function(e) {
 		$('#modalTitle').html("Edit");
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
-		console.log(id);
-
 		$("#form-sex").val(dataset.sex);
 		if(dataset.mobile=="0")$("input[name='mobile']").val();
 		else $("input[name='mobile']").val(dataset.mobile);
@@ -279,25 +264,31 @@ $(function(){
 		$("input[name='job']").val(dataset.job);
 		$("input[name='qq']").val(dataset.qq);
 		$("input[name='wechat']").val(dataset.wechat);
-
 		$("#save").attr("data-id", dataset.id);
 		$('#modal').modal('show');
 	});
-
-	
 	$(".modifypw").click(function(e){
 		$('#modalTitle2').html("修改密码");
 		var dataset = e.currentTarget.dataset;
 		var id = dataset.id;
-		console.log(id);
-		
 		$("input[name='oldpassword']").val("");
 		$("input[name='newpassword']").val("");
-		
 		$("#modify").attr("data-id", dataset.id);
 		$('#modal2').modal('show');
 	});
-
+	$("#loginbtn").click(function(e){
+		var username = $("input[name='username']").val();
+		var password = md5($("input[name='password']").val());
+		jQuery.ajax({
+			url : 'loginPro',
+			processData : true,
+			dataType : "text",
+			data : {
+				username : username,
+				password : md5(password)
+			}
+		})
+	});
 });
 function isPhoneNo(phone) { 
 	var pattern = /^1[34578]\d{9}$/; 
@@ -310,4 +301,7 @@ function changephonechecker(){
 	else{
 		$("#phonechecker").html("");
 	}
+}
+function md5pass(){
+	$("input[name='password']").val(md5($("input[name='password']").val()));
 }

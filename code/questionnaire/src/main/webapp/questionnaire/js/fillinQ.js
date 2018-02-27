@@ -1,7 +1,6 @@
 var Q = {};
 var QUESID = 0;
 var initrelelist = [];
-
 function getQ(id){
 	QUESID = id;
 	jQuery.ajax({
@@ -36,7 +35,6 @@ function getQ(id){
 		}
 	});
 }
-
 function formQ(data){
 	Q = data;
 	var title = data['title'];
@@ -44,10 +42,9 @@ function formQ(data){
 	var questions = data['questions'];
 	var length = questions.length;
 	var result = [];
-	
 	//create title & introduction
 	$("#questionnaire").html("<h1 class='text-muted' style='color:black' align='center'><font size='10'>" + title + "</font></h1>" +
-			"<p align='center'>" + introduction + "</head>");
+			"<p align='eft'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + introduction + "</head>");
 	//create questions
 	for(var i = 0 ; i < length ; i++){
 		var question = questions[i];
@@ -58,8 +55,73 @@ function formQ(data){
 		else if(type=="Multiple") result[i] = addMultiple(question, i);
 		else if(type=="Slider") result[i] = addSlider(question, i);
 	}
-	//alert(result);
+	var content = getCookie("quesid"+QUESID);
+	var sublist = [];
+	if(content!=""){
+		content = JSON.parse(content);
+		var length = document.getElementById("form").childNodes.length;
+		for(var i = 0; i < length; i++){
+			var answer = content[i];
+			var type = document.getElementById(i).getAttribute("value");
+			switch(type){
+			case'0':
+				$("input[name='" + i +"'").val(answer['words']);
+				break;
+			case'1':
+				if(answer['option'] == ""){
+				break;
+				}
+				var optionid = answer['option'];
+				var opt = document.getElementsByName(i)[optionid];
+				opt.checked=true;
+				if(Q['questions'][i]['options'][optionid*1]['hasWords']==true){
+					$("input[name='" + i +"_" + optionid + "words']").val(answer['words']);
+				}
+				var rele = opt.getAttribute("rele").split(",");
+				if(opt.getAttribute("rele")!=""){
+					for(var m=0;m<rele.length;m++){
+					var index = initrelelist.indexOf(rele[m]);
+					if(index!=-1)
+					sublist.push(initrelelist[index]);
+					initrelelist.splice(index,1);
+					}
+				}
+				break;
+			case'2':
+		    	var a = document.getElementsByName(i);
+		    	var opts = answer['option'].split(",");
+		    	var words = answer['words'];
+		    	var count = 0;
+		    	for(var j=0; j<opts.length-1; j++){
+		    		a[opts[j]].checked = true;
+		    		if(Q['questions'][i]['options'][opts[j]*1]['hasWords']==true){
+		    			for(var p=0;p<words.length;p++){
+		    				if(words[p]['optionid']==opts[j]){
+		    					$("input[name='" + i +"_" + opts[j] + "words']").val(words[p]['word']);
+		    				}
+		    			}
+	    			}
+		    		var rele = a[opts[j]].getAttribute("rele").split(",");
+					if(a[opts[j]].getAttribute("rele")!=""){
+						for(var m=0;m<rele.length;m++){
+						var index = initrelelist.indexOf(rele[m]);
+						if(index>=0){
+							sublist.push(initrelelist[index]);
+							initrelelist.splice(index,1);
+						}
+					}
+		    	}
+		    	}
+		    	break;
+			case'3':
+				$("input[name='" + i +"'").val(answer['number']);
+				$( "#"+i+"slider" ).slider("value",answer['number']);
+			}
+			result.push(answer);
+		}
+	}
 	var len = initrelelist.length;
+	var len2 = sublist.length;
 	var bin = document.getElementById("bin");
 	var form = document.getElementById("form");
 	for(j=0;j<len;j++){
@@ -70,8 +132,14 @@ function formQ(data){
 		form.replaceChild(substitute,ques);
 		bin.appendChild(ques);
 	}
+	for(j=0;j<len2;j++){
+		var ques = document.getElementById(sublist[j]-1);
+		var substitute = document.createElement("div");
+		substitute.id = ques.id+"_tmp";
+		substitute.setAttribute("value", "5")
+		bin.appendChild(substitute);
+	}
 }
-
 function addStem(question, i){
 	var form = document.getElementById("form");
 	//create stem
@@ -80,15 +148,25 @@ function addStem(question, i){
 	div.className = "container";
 	form.appendChild(div);
 	if(question['type']=="Multiple"&&question['min']!=undefined&&question['min']!=null&&question['min']!=""){
-		$("#"+i).html("<p2><font size='4'>" + (i+1)  + " "+ question['stem'] + "("+question['min']+"~"+question['max']+"项)</font>");
+		$("#"+i).html("<p2><strong><font size='4'>" + (i+1)  + " "+ question['stem'] + "</strong>("+question['min']+"~"+question['max']+"项)</font>");
 	}
-	else $("#"+i).html("<p2><font size='4'>" + (i+1)  + " "+ question['stem'] + "</font>");
+	else $("#"+i).html("<p2><strong><font size='4'>" + (i+1)  + " "+ question['stem'] + "</font></strong>");
 	if(question['required']==true){
 		$("#"+i).append("<font color='red' size='4'>&nbsp*</font>");
 	}
 	$("#"+i).append("</p2>");
+	if(question['img']){
+		$("#"+i).append("<br><img src='"+decodeURIComponent(question['img'])+"'>")
+	}
+	if(question['video']){
+		$("#"+i).append("<br>");
+		$("#"+i).append(question['video']);
+	}
+	if(question['audio']){
+		$("#"+i).append("<br>");
+		$("#"+i).append(question['audio']);
+	}
 }
-
 function addSubjective(question, i){
 	var div = document.getElementById(i);
 	div.setAttribute("value", 0);
@@ -106,7 +184,6 @@ function addSubjective(question, i){
 	}
 	return;
 }
-
 function addSingle(question, i){
 	var div = document.getElementById(i);
 	var thisrele = [];
@@ -115,7 +192,7 @@ function addSingle(question, i){
 	newDiv.id = i + "div";
 	newDiv.className = "container";
 	div.appendChild(newDiv);
-	$("#"+i + "div").append("<strong><div id='" + i + "message' class='error'></div></strong>")
+	$("#"+i + "div").append("<div id='" + i + "message' class='error'></div>")
 	for(var j = 0 ; j < question['options'].length; j++){
 		if(question['options'][j]["relevancy"]==undefined){
 			var rele = "";
@@ -136,22 +213,34 @@ function addSingle(question, i){
 		if(question['options'][j]['hasWords']==true){
 			if(question['required']==false){
 	$("#"+i + "div").append("<p><div class='radio' ><label  style='float:left'><input type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-			"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
-		$("#"+i + "div").append("<div><input  name='" + i + "_" + j + "words'></div>");
+			"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+	if(question['options'][j]['img']){
+		$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
+	}	
+	$("#"+i + "div").append("<div><input  name='" + i + "_" + j + "words'></div>");
 	}else{
 		$("#"+i + "div").append("<p><div class='radio' ><label  style='float:left'><input required type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-				"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+				"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+		if(question['options'][j]['img']){
+			$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
+		}
 			$("#"+i + "div").append("<div><input  name='" + i + "_" + j + "words'></div>");
 	}
 			}
 		else{
 			if(question['required']==false){
 			$("#"+i + "div").append("<p><div class='radio' ><label><input type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-					"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+					"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+			if(question['options'][j]['img']){
+				$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
+			}
 			}
 			else{
 				$("#"+i + "div").append("<p><div class='radio' ><label><input required type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-						"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+						"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+				if(question['options'][j]['img']){
+					$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
+				}
 			}
 		}
 	$("#"+i + "div").append("</div></p>");
@@ -159,7 +248,6 @@ function addSingle(question, i){
 	div.setAttribute("allrele", thisrele);
 	return;
 }
-
 function addMultiple(question, i){
 	var div = document.getElementById(i);
 	var thisrele = [];
@@ -168,7 +256,7 @@ function addMultiple(question, i){
 	newDiv.id = i + "div";
 	newDiv.className = "container";
 	div.appendChild(newDiv);
-	$("#"+i + "div").append("<strong><div id='" + i + "message' class='error'></div></strong>")
+	$("#"+i + "div").append("<div id='" + i + "message' class='error'></div>")
 	for(var j = 0 ; j < question['options'].length; j++){
 		if(question['options'][j]["relevancy"]==undefined){
 			var rele = "";
@@ -190,13 +278,19 @@ function addMultiple(question, i){
 			if(question['required']==false){
 			$("#"+i + "div").append("<p><label  style='float:left'><input type='checkbox' value=" + j +" name=" + i + 
 					 " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-					"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+					"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+			if(question['options'][j]['img']){
+				$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
+			}
 				$("#"+i + "div").append("<div><input  name='" + i + "_" + j + "words'>");
 			}
 			else{
 				$("#"+i + "div").append("<p><label  style='float:left'><input required type='checkbox' value=" + j +" name=" + i +
 						" rele='"+rele+"' onclick='releEffect("+i+")'>" +
-						"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+						"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+				if(question['options'][j]['img']){
+					$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
+				}
 					$("#"+i + "div").append("<div><input  name='" + i + "_" + j + "words'>");
 			}
 			}
@@ -204,12 +298,18 @@ function addMultiple(question, i){
 					if(question['required']==false){
 					$("#"+i + "div").append("<p><label><input type='checkbox' value=" + j +" name=" + i +
 							" rele='"+rele+"' onclick='releEffect("+i+")'>" +
-							"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+							"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+					if(question['options'][j]['img']){
+						$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
+					}
 					}
 					else{
 						$("#"+i + "div").append("<p><label><input required type='checkbox' value=" + j +" name=" + i + 
 								" rele='"+rele+"' onclick='releEffect("+i+")'>" +
-								"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+								"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+						if(question['options'][j]['img']){
+							$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
+						}
 					}
 				}
 			$("#"+i + "div").append("</p>");
@@ -217,7 +317,6 @@ function addMultiple(question, i){
 	div.setAttribute("allrele", thisrele);
 	return;
 }
-
 function addSlider(question, i){
 	var div = document.getElementById(i);
 	div.setAttribute("value", 3);
@@ -256,7 +355,6 @@ function addSlider(question, i){
       });
 	return;
 }
-
 function submit(){
 	var form = document.getElementById("form");
 	var questions = form.childNodes;
@@ -271,7 +369,6 @@ function submit(){
 		switch(type){
 		case'0':
 			answer['words'] = $("input[name='" + i +"'").val();
-			//alert($("input[name='" + i + "'").val())}
 			break;
 		case'1':
 			var optionid = $("input[name='" + i +"']:checked").val();
@@ -357,6 +454,7 @@ function submit(){
 	var time = t.getFullYear()+"-"+(t.getMonth()+1)+"-"+t.getDate()
 						+" "+t.getHours()+":"+t.getMinutes()+":"+t.getSeconds();     
 	jQuery.ajax({
+		 type: "post",
 		url : 'addAnswer',  //get content
 		processData : true,
 		dataType : "text",
@@ -368,8 +466,15 @@ function submit(){
 		success : function(data) { //把title，id都放在里面
 			if(data=="dupIp"){
 				$("#errors").html("本问卷在本ip地址已提交过，不可重复提交");
+				if(getCookie("quesid"+QUESID)!=""){
+					document.cookie = "quesid"+QUESID+"=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+				}
 			}
-			else{bootbox.alert({
+			else{
+				if(getCookie("quesid"+QUESID)!=""){
+					document.cookie = "quesid"+QUESID+"=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+				}
+				bootbox.alert({
 				message : '提交成功',
 			    callback : function() {
 			    	location.href = 'FrontPage';
@@ -377,10 +482,7 @@ function submit(){
 			});}
 		}
 	});
-
-
 }
-
 function releEffect(i){
 	var ques = document.getElementById(i);
 	var selected = [];
@@ -419,7 +521,6 @@ function releEffect(i){
 			bin.appendChild(tmp);
 		}
 	}
-	
 	for(var j=0;j<notselected.length;j++){
 		if(quess[notselected[j]-1].getAttribute("value")!='5'){
 			var ques = quess[notselected[j]-1];
@@ -431,7 +532,6 @@ function releEffect(i){
 		}
 	}
 }
-
 function donothing(){
 	var btn = document.getElementsByTagName("BUTTON")[0];
 	var div = btn.parentNode;
@@ -439,4 +539,73 @@ function donothing(){
 	var info = document.createElement("P");
 	info.innerHTML = "问卷不存在";
 	div.append(info);
+}
+function getCookie(cname)
+{
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0; i<ca.length; i++) 
+  {
+    var c = ca[i].trim();
+    if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+  }
+  return "";
+}
+function setCookie(cname,cvalue,exdays){
+	var d = new Date();
+	d.setTime(d.getTime()+(exdays*24*60*60*1000));
+	var expires = "expires="+d.toGMTString();
+	document.cookie = cname+"="+cvalue+"; "+expires;
+}
+function tmpsave(){
+	var length = document.getElementById("form").childNodes.length;
+	var key = "quesid" + QUESID;
+	var result=[];
+	if(getCookie(key)!=""){
+		document.cookie = "quesid"+QUESID+"=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+	}
+	for(var i = 0; i < length; i++){
+		var answer = {};
+		var type = document.getElementById(i).getAttribute("value");
+		switch(type){
+		case'0':
+			answer['words'] = $("input[name='" + i +"'").val();
+			break;
+		case'1':
+			var optionid = $("input[name='" + i +"']:checked").val();
+			answer['option'] = optionid;
+			if(optionid == null) {
+				answer['option'] = "";
+				break;
+			}
+			if(Q['questions'][i]['options'][optionid*1]['hasWords']==true){
+				answer['words'] = $("input[name='" + i +"_" + optionid + "words']").val();
+			}
+			break;
+		case'2':
+	    	var a = document.getElementsByName(i);
+	    	answer['option']="";
+	    	answer['words']=[];
+	    	var count = 0;
+	    	for(var j=0; j<a.length; j++){
+	    		if(a[j].checked){
+	    			answer['option'] += j +",";
+	    			if(Q['questions'][i]['options'][j*1]['hasWords']==true){
+	    				var word = {};
+	    				word['optionid'] = j;
+	    				word['word'] = $("input[name='" + i +"_" + j + "words']").val();
+	    				answer['words'].push(word);
+	    			}
+	    			count += 1;
+	    		}
+	    	}
+	    	break;
+		case'3':
+			var num = $("input[name='" + i +"'").val();
+			answer['number'] = num;
+		}
+		result.push(answer);
+	}
+	setCookie(key,JSON.stringify(result),1);
+	bootbox.alert("本地暂存成功，可关闭当前窗口。退出浏览器或一天后数据清除");
 }
