@@ -80,4 +80,9 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 	public List<Questionnaire> getPublicQuestionnaires(){
 		return quesDao.getPublicQuestionnaires();
 	}
+	
+	@Override
+	public List<Questionnaire> getPublicResults(){
+		return quesDao.getPublicResults();
+	}
 }

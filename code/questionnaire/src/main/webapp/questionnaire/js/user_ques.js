@@ -9,6 +9,14 @@ $(function() {
 		else{
 			isPublic = 0;
 		}
+		var showResult = $("#selectf2").val();
+		//alert(showResult); return;
+		if(showResult == "是"){
+			showResult = "public";
+		}
+		else{
+			showResult = "private";
+		}
 		var status = $("#state").html();
 		if(status=="已发布"){
 			status = "pub";
@@ -50,6 +58,7 @@ $(function() {
 			data : {
 					id 	: id,
 					isPublic : isPublic,
+					result : showResult,
 				    status : status,
 				    endTime : endTime,
 				    releaseTime : releaseTime,
