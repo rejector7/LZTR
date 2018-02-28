@@ -227,6 +227,10 @@ public class QuestionnaireAction extends BaseAction{
 		request().setAttribute("MyQuess", Questionnaires);
 		return "My";
 	}
+	public String copy() {
+		quesService.copyQuestionnaire(id);
+		return "copy";
+	}
 	public String propel(){
 		List<Questionnaire> questionnaires = quesService.getPublicQuestionnaires();
 		if(questionnaires.size()>=6){

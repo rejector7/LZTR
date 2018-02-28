@@ -138,7 +138,42 @@ $(function() {
 			+'<p id="copytip"></p>'
 		});
 	});
-	
+	$(".copy").click(function(e) {
+		var dataset = e.currentTarget.dataset;
+		bootbox.confirm({
+			buttons : {
+				confirm : {
+					label : '确认'
+				},
+				cancel : {
+					label : '取消'
+				}
+			},
+			message : '确认复制问卷"' + dataset.title + '"?',
+			callback : function(result) {
+				if (result) {
+					var dataset = e.currentTarget.dataset;
+					var id = dataset.id;
+					jQuery.ajax({
+						url : 'copyQuestionnaire',
+						processData : true,
+						dataType : "text",
+						data : {
+							id : id
+						},
+						success : function(data) {
+							bootbox.alert({
+								message : '复制成功！',
+								callback : function() {
+									location.reload();
+								}
+							});
+						}
+					});
+				}
+			}
+		});
+	});
 });
 function statechanger(){
 	if($("input[name='endtime']").val()!="" && $("input[name='endtime']").val()<new Date().toISOString().split("T")[0]){

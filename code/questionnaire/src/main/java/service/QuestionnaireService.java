@@ -29,6 +29,7 @@ public interface QuestionnaireService {
 	 */
 	void deleteQuestionnaire(QuestionnaireQuestions questions, Questionnaire ques);
 
+	void copyQuestionnaire(int id);
 	/**
 	 * Get content of a questionnaire by its id
 	 * @param id
