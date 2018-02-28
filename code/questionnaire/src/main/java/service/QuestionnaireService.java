@@ -68,5 +68,8 @@ public interface QuestionnaireService {
 	
 	List<Questionnaire> getPublicResults();
 
+	List<Questionnaire> getTemplateQuestionnaires();
+	
+	Questionnaire copyTemplate(int quesid, int userid);
 }
 

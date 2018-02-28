@@ -1,6 +1,22 @@
 var Q = {};
 var QUESID = 0;
 var initrelelist = [];
+$(function() {	
+	$("#copytem").click(function(e){
+		jQuery.ajax({
+			url : 'CopyTemplateQuestionnaire',
+			processData : true,
+			dataType : "json",
+			data : {
+				id:QUESID
+			},
+			success : function(data) {
+				var id = data['quesid'];
+				location.href = 'getInfoQuestionnaire?id='+id
+			}
+		});
+	});
+});
 function getQ(id){
 	QUESID = id;
 	jQuery.ajax({
