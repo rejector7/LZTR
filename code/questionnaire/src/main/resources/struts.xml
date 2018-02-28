@@ -22,6 +22,9 @@
 		<action name="PreviewQuestionnaire">
 			<result>/questionnaire/jsp/user_previewQuestionnaire.jsp</result>
 		</action>
+		<action name="TemplateQuestionnaire">
+			<result>/questionnaire/jsp/user_templateQuestionnaire.jsp</result>
+		</action>
 		<action name="*Questionnaire" class="action.QuestionnaireAction" method="{1}">
 		<result name="update">/questionnaire/jsp/user_myQuestionnaire.jsp</result>
 		<result name="updateStatus">/questionnaire/jsp/admin_ques.jsp</result>
