@@ -117,7 +117,8 @@ User user = (User) session.getAttribute("user");
 										<tr>
 										    <th width="6%">序号</th>
 											<th>题目</th>
-											<th>是否公开</th>
+											<th>是否公开问卷</th>
+											<th>是否公开数据</th>
 											<th>发布时间</th>
 											<th>截止时间</th>
 											<th width="8%">状态</th>
@@ -137,8 +138,23 @@ User user = (User) session.getAttribute("user");
 											<%}else{%>
 											<td>私密</td>
 											<%}%>
+											<%if(ques.getResult().equals("public")){%>
+											<td>公开</td>
+											<%}else{%>
+											<td>私密</td>
+											<%}%>
+											<%if(ques.getReleaseTime() == null) {%>
+											<td>未设置</td>
+											<%}else{ %>
 											<td><%=ques.getReleaseTime()%></td>
+											<%} %>
+											<%if(ques.getEndTime() == null) {%>
+											<td>未设置</td>
+											<%}else{ %>
 											<td><%=ques.getEndTime()%></td>
+											<%} %>
+											
+
 											<%if(ques.getStatus().equals("pub")){%>
 											<td><%="已发布"%></td>
 											<%}else if(ques.getStatus().equals("end")){%>
@@ -164,13 +180,17 @@ User user = (User) session.getAttribute("user");
 													data-endtime="<%=ques.getEndTime()%>"
 													data-status="<%=ques.getStatus()%>"
 													>
-													<i class="fa fa-cog"></i>发布状态&nbsp
+													<i class="fa fa-cog"></i>发布&nbsp
 												</button>
-												<a class="btn btn-default" href="getInfoQuestionnaire?id=<%=ques.getId() %>" role="button"><i class="fa fa-edit"></i>修改内容</a>
+												<button class="btn btn-default copy" type="button" 	data-title="<%=ques.getTitle()%>"	data-id="<%=ques.getId()%>">
+													<i class="fa fa-copy"></i>复制&nbsp
+												</button>
+												<a class="btn btn-default" href="PreviewQuestionnaire?quesid=<%=ques.getId() %>" role="button"><i class="fa fa-eye"></i>预览&nbsp</a>
 												<br>
-												<a class="btn btn-default" href="PreviewQuestionnaire?quesid=<%=ques.getId() %>" role="button"><i class="fa fa-eye"></i>预览</a>
+												<a class="btn btn-default" href="getInfoQuestionnaire?id=<%=ques.getId() %>" role="button"><i class="fa fa-edit"></i>修改内容</a>
+												
 												<a class="btn btn-default" href="getAnswerByQuesid?quesid=<%=ques.getId() %>" role="button"><i class="fa fa-bar-chart"></i>查看数据</a>
-												<button class="btn btn-default link" type="button" value="localhost:8080/questionnaire/FillQuestionnaire?quesid=<%=ques.getId() %>"><i class="fa fa-copy"></i>复制链接</button>
+												<button class="btn btn-default link" type="button" value="localhost:8080/questionnaire/FillQuestionnaire?quesid=<%=ques.getId() %>"><i class="fa fa-chain"></i>问卷链接</button>
 											</td>
 										</tr>
 										<%
@@ -209,8 +229,15 @@ User user = (User) session.getAttribute("user");
 								</div>
 								<p id="titlea"></p>
 								<div class="form-group">
-									<label>是否公开</label>
+									<label>是否公开问卷</label>
 									<select class="form-control" id="selectf1" name = "ispublic">
+										<option selected>是</option>
+										<option>否</option>
+									</select>
+								</div>
+																<div class="form-group">
+									<label>是否公开数据</label>
+									<select class="form-control" id="selectf2" name = "showresult">
 										<option selected>是</option>
 										<option>否</option>
 									</select>

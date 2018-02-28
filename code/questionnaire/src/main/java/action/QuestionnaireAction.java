@@ -22,6 +22,7 @@ public class QuestionnaireAction extends BaseAction{
 	private String condi;
 	private String content;
 	private int allowDup;
+	private String result;
 	public String getContent() {
 		return content;
 	}
@@ -113,13 +114,15 @@ public class QuestionnaireAction extends BaseAction{
 			ques.setTitle(title);
 			quescontent.setContent(content);
 			ques.setAllowDup(allowDup);
+			ques.setResult(result);
 			quesService.updateQuestionnaire(quescontent, ques);
 			response().getWriter().write(Integer.valueOf(id).toString());
 			return null;
 		}
 		if(status==null) status = "unp";
 		int userid = ((User)request().getSession().getAttribute("user")).getId();
-		Questionnaire ques = new Questionnaire(userid,status,title,isPublic,releaseTime,endTime,allowDup);
+		Questionnaire ques = new Questionnaire(userid,status,title,isPublic,result,releaseTime,endTime,allowDup);
+		
 		QuestionnaireQuestions quescontent = new QuestionnaireQuestions(content);
 		int tmpid = quesService.addQuestionnaire(quescontent, ques);
 		response().getWriter().write(Integer.valueOf(tmpid).toString());
@@ -136,6 +139,8 @@ public class QuestionnaireAction extends BaseAction{
 		ques.setReleaseTime(releaseTime);
 		ques.setStatus(status);
 		ques.setAllowDup(allowDup);
+		System.out.println(result + "wefwef");
+		ques.setResult(result);
 		quesService.updateQuestionnaire(ques);
 		response().getWriter().print("success");
 		return null;
@@ -190,6 +195,7 @@ public class QuestionnaireAction extends BaseAction{
 		questot.put("title", ques.getTitle());
 		questot.put("allowdup", ques.getAllowDup());
 		questot.put("status", "pub");
+		questot.put("result", ques.getResult());
 		response().setCharacterEncoding("utf-8");
 		response().setContentType("text/html;charset:utf-8");
 		response().getWriter().print(questot.toString());
@@ -221,6 +227,10 @@ public class QuestionnaireAction extends BaseAction{
 		request().setAttribute("MyQuess", Questionnaires);
 		return "My";
 	}
+	public String copy() {
+		quesService.copyQuestionnaire(id);
+		return "copy";
+	}
 	public String propel(){
 		List<Questionnaire> questionnaires = quesService.getPublicQuestionnaires();
 		if(questionnaires.size()>=6){
@@ -240,6 +250,32 @@ public class QuestionnaireAction extends BaseAction{
 			}
 		}
 		request().setAttribute("quesByTime", questionnaires);
+		
+		List<Questionnaire> results = quesService.getPublicResults();
+		if(results.size()>=6){
+		for(int i=0;i<6;i++){
+			QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(results.get(i).getId());
+			JSONObject questot = new JSONObject(quescontent.getContent());
+			String intro = questot.getString("introduction");
+			request().setAttribute(i + "intro", intro);
+		}
+		}
+		else {
+			for(int i=0;i<results.size();i++){
+				QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(results.get(i).getId());
+				JSONObject questot = new JSONObject(quescontent.getContent());
+				String intro = questot.getString("introduction");
+				request().setAttribute(i + "intro", intro);
+			}
+		}
+		request().setAttribute("resultByTime", results);
+		
 		return SUCCESS;
+	}
+	public String getResult() {
+		return result;
+	}
+	public void setResult(String result) {
+		this.result = result;
 	}
 }

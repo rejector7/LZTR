@@ -40,6 +40,11 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 		questionnairequestionsDao.deleteQuestionnaire(questions);
 		quesDao.deleteQuestionnaire(ques);
 	}
+	
+	@Override
+	public void copyQuestionnaire(int id) {
+		quesDao.copyQuestionnaire(id);
+	}
 	/* (non-Javadoc)
 	 * @see service.impl.QuestionnaireService#getQuestionnaireQuestionsById(int)
 	 */
@@ -80,4 +85,11 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 	public List<Questionnaire> getPublicQuestionnaires(){
 		return quesDao.getPublicQuestionnaires();
 	}
+	
+	@Override
+	public List<Questionnaire> getPublicResults(){
+		return quesDao.getPublicResults();
+	}
+	
+	
 }

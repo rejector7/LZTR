@@ -173,8 +173,91 @@
 	<%} %>
       </ul>
       </div>
+       </div></div>
+
+	<div class="container">
+	<div class="row">&nbsp</div>
+ 	<div class="row" style="float:left"><font size=5><strong>数据统计</strong></font></div> 	
+ 	<!--             <button class="btn btn-default addMultiple"  type="button" align="right" style="float:right;">
+				<i class="fa fa-plus">查看更多</i> 
+		</button>-->    
+ 	<hr>
+ 	<%
+ 	quesListByTime = (ArrayList<Questionnaire>) request.getAttribute("resultByTime");
+    length = quesListByTime.size();
+ 	%>
+<hr style="color:black;border-top:1px solid #C0C0C0" >
+	  <!-- 此处代码需要修改，到时候项目基本完成后，需要修改为动态变化的（显示数据库中填写次数最多的前三个仍然开放的问卷） -->
+      <!-- Example row of columns -->
+      <div class="row">
+      <div class="row col-lg-9">
+      <div class="row">
+      <%if(length>=3){ %>
+      <%for(int i=0;i<3;i++){ %>    
+        <div class="col-lg-4">
+        <div class="thumbnail" style="word-wrap:break-word;height:115px;overflow:hidden">
+       <a href="getAnserByQuesidToStatistic?quesid=<%=quesListByTime.get(i).getId()%>">
+       <h3><span class="badge" align="left" style="float:left;align:left"><%=i+1 %></span><%=quesListByTime.get(i).getTitle() %></h3>
+       </a>
+          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro")%></font></p>
+	</div></div>
+        <%} %>
+        <%}
+      else{ 
+      for(int i=0;i<length;i++){ %>     
+        <div class="col-lg-4">
+        <div class="thumbnail" style="word-wrap:break-word;height:115px;overflow:hidden">
+       <a href="getAnserByQuesidToStatistic?quesid=<%=quesListByTime.get(i).getId()%>">
+       <h3><span class="badge" align="left" style="float:left;align:left"><%=i+1 %></span><%=quesListByTime.get(i).getTitle() %></h3>
+       </a>
+          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro")%></font></p>
+	</div></div>
+        <%}%>
+        <%}%>     
+        </div>
+        <%if(length>=6) {%>
+              <div class="row">       
+      <%for(int i=3;i<6;i++){ %>
+        <div class="col-lg-4">
+        <div class="thumbnail" style="word-wrap:break-word;height:115px;overflow:hidden">
+       <a href="getAnserByQuesidToStatistic?quesid=<%=quesListByTime.get(i).getId()%>">
+       <h3><span class="badge" align="left" style="float:left;align:left"><%=i+1 %></span><%=quesListByTime.get(i).getTitle() %></h3>
+       </a>
+          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro")%></font></p>
+	</div></div>
+        <%} %>
+        </div></div>
+        <%}
+        else if(length>3){ %>
+        <div class="row">
+        <%for(int i=3;i<length;i++){ %>
+        <div class="col-lg-4">
+        <div class="thumbnail" style="word-wrap:break-word;height:115px;overflow:hidden">
+       <a href="getAnserByQuesidToStatistic?quesid=<%=quesListByTime.get(i).getId()%>">
+       <h3><span class="badge" align="left" style="float:left;align:left"><%=i+1 %></span><%=quesListByTime.get(i).getTitle() %></h3>
+       </a>
+          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro")%></font></p>
+	</div></div>
+        <%}%> 
+        </div></div>
+        <%}%>        
+        <%if(length>6){%>
+      <div class="col-lg-3">
+      <ul class="list-group">
+      <%if(length>12)length=12;
+      for (int i = 6 ; i < length; i++){ %>     
+      <li class="list-group-item" >
+      <span class="badge" align="left" style="float:left;align:left"><%=i+1 %></span>
+      <a href="getAnserByQuesidToStatistic?quesid=<%=quesListByTime.get(i).getId()%>"><%=quesListByTime.get(i).getTitle() %>
+      </a></li>
+      <%}%>
+	<%} %>
+      </ul>
+      </div>
        </div>
 </div>
+
+
 <hr style="color:black;border-top:1px solid #C0C0C0">
       <!-- Site footer -->
       <footer class="footer">

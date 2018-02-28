@@ -35,7 +35,7 @@ function formQ(data){
 	
 	//create title & introduction
 	$("#questionnaire").html("<h1 class='text-muted' style='color:black' align='center'><font size='10'>" + title + "</font></h1>" +
-			"<p align='center'>" + introduction + "</head>");
+			"<p align='left'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + introduction + "</head>");
 	//create questions
 	for(var i = 0 ; i < length ; i++){
 		var question = questions[i];
@@ -66,9 +66,9 @@ function addStem(question, i){
 	div.className = "container";
 	form.appendChild(div);
 	if(question['type']=="Multiple"&&question['min']!=undefined&&question['min']!=null&&question['min']!=""){
-		$("#"+i).html("<p2><font size='4'>" + (i+1)  + " "+ question['stem'] + "("+question['min']+"~"+question['max']+"项)</font>");
+		$("#"+i).html("<p2><strong><font size='4'>" + (i+1)  + " "+ question['stem'] + "</strong>("+question['min']+"~"+question['max']+"项)</font>");
 	}
-	else $("#"+i).html("<p2><font size='4'>" + (i+1)  + " "+ question['stem'] + "</font>");
+	else $("#"+i).html("<p2><strong><font size='4'>" + (i+1)  + " "+ question['stem'] + "</font></strong>");
 	if(question['required']==true){
 		$("#"+i).append("<font color='red' size='4'>&nbsp*</font>");
 	}
@@ -130,14 +130,14 @@ function addSingle(question, i){
 		if(question['options'][j]['hasWords']==true){
 			if(question['required']==false){
 	$("#"+i + "div").append("<p><div class='radio' ><label  style='float:left'><input type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-			"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+			"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
 	if(question['options'][j]['img']){
 		$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
 	}
 		$("#"+i + "div").append("<div><input  name='" + i + "_" + j + "words'></div>");
 	}else{
 		$("#"+i + "div").append("<p><div class='radio' ><label  style='float:left'><input required type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-				"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+				"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
 		if(question['options'][j]['img']){
 			$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
 		}
@@ -147,14 +147,14 @@ function addSingle(question, i){
 		else{
 			if(question['required']==false){
 			$("#"+i + "div").append("<p><div class='radio' ><label><input type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-					"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+					"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
 			if(question['options'][j]['img']){
 				$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
 			}
 			}
 			else{
 				$("#"+i + "div").append("<p><div class='radio' ><label><input required type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-						"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+						"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
 				if(question['options'][j]['img']){
 					$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
 				}
@@ -173,7 +173,7 @@ function addMultiple(question, i){
 	newDiv.id = i + "div";
 	newDiv.className = "container";
 	div.appendChild(newDiv);
-	$("#"+i + "div").append("<strong><div id='" + i + "message' class='error'></div></strong>")
+	$("#"+i + "div").append("<div id='" + i + "message' class='error'></div>")
 	for(var j = 0 ; j < question['options'].length; j++){
 		if(question['options'][j]["relevancy"]==undefined){
 			var rele = "";
@@ -195,7 +195,7 @@ function addMultiple(question, i){
 			if(question['required']==false){
 			$("#"+i + "div").append("<p><label  style='float:left'><input type='checkbox' value=" + j +" name=" + i + 
 					 " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-					"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+					"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
 			if(question['options'][j]['img']){
 				$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
 			}
@@ -204,7 +204,7 @@ function addMultiple(question, i){
 			else{
 				$("#"+i + "div").append("<p><label  style='float:left'><input required type='checkbox' value=" + j +" name=" + i +
 						" rele='"+rele+"' onclick='releEffect("+i+")'>" +
-						"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+						"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
 				if(question['options'][j]['img']){
 					$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
 				}
@@ -215,7 +215,7 @@ function addMultiple(question, i){
 					if(question['required']==false){
 					$("#"+i + "div").append("<p><label><input type='checkbox' value=" + j +" name=" + i +
 							" rele='"+rele+"' onclick='releEffect("+i+")'>" +
-							"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+							"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
 					if(question['options'][j]['img']){
 						$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
 					}
@@ -223,7 +223,7 @@ function addMultiple(question, i){
 					else{
 						$("#"+i + "div").append("<p><label><input required type='checkbox' value=" + j +" name=" + i + 
 								" rele='"+rele+"' onclick='releEffect("+i+")'>" +
-								"<font size='4'><strong>" + question['options'][j]['option'] + "</strong></font></label>");
+								"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
 						if(question['options'][j]['img']){
 							$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
 						}

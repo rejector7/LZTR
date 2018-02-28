@@ -26,6 +26,19 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 		getHibernateTemplate().merge(ques);
 	}
 	/* (non-Javadoc)
+	 * @see dao.impl.QuestionnaireDao#updateQuestionnaire(model.Questionnaire)
+	 */
+	@Override
+	public void copyQuestionnaire(int id) {
+		Questionnaire ques = getQuestionnaireById(id);
+		ques.setId(0);
+		ques.setTitle(ques.getTitle() + "_副本");
+		ques.setStatus("unp");
+		ques.setReleaseTime(null);
+		ques.setEndTime(null);
+		addQuestionnaire(ques);
+	}
+	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#getQuestionnaireById(int)
 	 */
 	@Override
@@ -68,6 +81,13 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 		@SuppressWarnings("unchecked")
 		List<Questionnaire> quess  = (List<Questionnaire>) getHibernateTemplate()
 				.find("from Questionnaire as q where q.isPublic=1 and status='pub' order by releaseTime desc");
+		return quess;
+	}
+	@Override
+	public List<Questionnaire> getPublicResults(){
+		@SuppressWarnings("unchecked")
+		List<Questionnaire> quess  = (List<Questionnaire>) getHibernateTemplate()
+				.find("from Questionnaire as q where q.result='public' and status='pub' order by releaseTime desc");
 		return quess;
 	}
 }

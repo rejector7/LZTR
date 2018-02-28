@@ -29,6 +29,7 @@ public interface QuestionnaireService {
 	 */
 	void deleteQuestionnaire(QuestionnaireQuestions questions, Questionnaire ques);
 
+	void copyQuestionnaire(int id);
 	/**
 	 * Get content of a questionnaire by its id
 	 * @param id
@@ -64,6 +65,8 @@ public interface QuestionnaireService {
 	List<Questionnaire> findQuestionnaires(String condi);
 	
 	List<Questionnaire> getPublicQuestionnaires();
+	
+	List<Questionnaire> getPublicResults();
 
 }
 

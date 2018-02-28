@@ -27,6 +27,7 @@
 		<result name="updateStatus">/questionnaire/jsp/admin_ques.jsp</result>
 			<result name="search">/questionnaire/jsp/admin_ques.jsp</result>
 			<result name="delete1">/questionnaire/jsp/user_myQuestionnaire.jsp</result>
+			<result name="copy">/questionnaire/jsp/user_myQuestionnaire.jsp</result>
 			<result name="delete2">/questionnaire/jsp/admin_ques.jsp</result>
 			<result name="all">/questionnaire/jsp/admin_ques.jsp</result>
 			<result name="My">/questionnaire/jsp/user_myQuestionnaire.jsp</result>
@@ -52,7 +53,7 @@
 			<result>/questionnaire/jsp/signup.jsp</result>
 		</action>
 		<action name="loginPro" class="action.LoginAction" method="login">
-			<result name="success" type="chain">FrontPage</result>
+			<result name="success" type="chain">MyQuestionnaire</result>
 			<result name="input">/questionnaire/jsp/login.jsp</result>
 		</action>
 		<action name="logoutPro" class="action.LoginAction" method="logout">

@@ -37,6 +37,12 @@ $(function() {
 		else{
 			var allowDup=0;
 		}
+		if(document.getElementById("resultPublished").checked==true){
+			var resultPublished="public";
+		}
+		else{
+			var resultPublished="private";
+		}
 		var title = $("input[name='title']").val();
 		if(title=="") {alert("标题不可为空");return;}
 		var intro = $("input[name='introduction']").val();
@@ -189,7 +195,8 @@ $(function() {
 								id:QUES_ID,
 								preview:0,
 								content : encodeURI(encodeURI(JSON.stringify(result))),
-								allowDup : allowDup
+								allowDup : allowDup,
+								result : resultPublished
 							},
 							success : function(data) {
 								bootbox.alert({
@@ -214,13 +221,14 @@ $(function() {
 				id:QUES_ID,
 				preview:0,
 				content : encodeURI(encodeURI(JSON.stringify(result))),
-				allowDup : allowDup
+				allowDup : allowDup,
+				result : resultPublished
 			},
 			success : function(data) {
 				bootbox.alert({
 					message : '保存成功',
 				    callback : function() {
-				    	location.href = 'FrontPage';
+				    	//location.href = 'FrontPage';
 					}
 				});
 			}
@@ -253,6 +261,12 @@ $(function() {
 		}
 		else{
 			var allowDup=0;
+		}
+		if(document.getElementById("resultPublished").checked==true){
+			var resultPublished="public";
+		}
+		else{
+			var resultPublished="private";
 		}
 		var title = $("input[name='title']").val();
 		if(title=="") {alert("标题不可为空");return;}
@@ -407,7 +421,8 @@ $(function() {
 								id:QUES_ID,
 								preview:1,
 								content : encodeURI(encodeURI(JSON.stringify(result))),
-								allowDup : allowDup
+								allowDup : allowDup,
+								result : resultPublished
 							},
 							success : function(data) {
 								location.href = 'PreviewQuestionnaire?quesid='+data;
@@ -418,6 +433,7 @@ $(function() {
 					}});
 			return;
 		}
+		alert(resultPublished);
 		jQuery.ajax({
 			 type: "post",
 			url : 'addQuestionnaire',
@@ -428,7 +444,8 @@ $(function() {
 				id:QUES_ID,
 				preview:1,
 				content : encodeURI(encodeURI(JSON.stringify(result))),
-				allowDup : allowDup
+				allowDup : allowDup,
+				result : resultPublished
 			},
 			success : function(data) {
 				location.href = 'PreviewQuestionnaire?quesid='+data;
@@ -452,6 +469,12 @@ $(function() {
 		}
 		else{
 			var allowDup=0;
+		}
+		if(document.getElementById("resultPublished").checked==true){
+			var resultPublished="public";
+		}
+		else{
+			var resultPublished="private";
 		}
 		var title = $("input[name='title']").val();
 		if(title=="") {alert("标题不可为空");return;}
@@ -643,6 +666,7 @@ $(function() {
 							    endTime : endTime,
 							    releaseTime : releaseTime,
 							    allowDup : allowDup,
+							    result : resultPublished,
 							    preview:0
 							},
 							success : function(data) {
@@ -676,6 +700,7 @@ $(function() {
 			    endTime : endTime,
 			    releaseTime : releaseTime,
 			    allowDup : allowDup,
+			    result : resultPublished,
 			    preview:0
 			},
 			success : function(data) {
@@ -791,7 +816,11 @@ function seekQuesByQuesNo(quesid){
     }
 	return quesid;
 }
-function addOption(value){
+function addOption(value, isMultiple = false){
+	if(isMultiple) 	$("input[name='"+value+"max'").val($("input[name='"+value+"max'").val() * 1 + 1 * 1) ;
+	
+
+	
 	var div = document.getElementById(value + "container");
 	var num = div.getAttribute("value");
 	var newdiv = document.createElement("div");
@@ -805,12 +834,15 @@ function addOption(value){
 			"<div class='col-lg-2'><div id='" + value +"_" + num +"button'>" +
 			"</div></div>" +
 			"<div class='col-lg-2'>" +
-			"<label>是否需要填写文本</label>" +
+			"<label>需要填写文本</label>" +
 			"<input type='checkbox' id='" + value + "_" + num + "cf'>" +
 			"</div>" +
 			"<div class='col-lg-12' id='" + value + "_" + num + "optrele'></div>"+
-			"<div class='row container'><div class='col-lg-12'><input type='file' id='" + value + "_" + num + "img' onchange='readLocalFile(\"" + value + "_" + num + "\")' accept='.jpg,.jpeg,.bmp,.png'><img id='" + value + "_" + num + "imgpreview'><button type='button' id='"+ value + "_" + num +"imgcancel' onclick='cancelFile(\""+ value + "_" + num +"\")'>取消</button></div></div>" +
+			"<div class='row' style='height:5px'></div>" +
+			"<div class='row container'><div class='col-lg-4'><input class='btn btn-default'  type='file' id='" + value + "_" + num + "img' onchange='readLocalFile(\"" + value + "_" + num + "\")' accept='.jpg,.jpeg,.bmp,.png'><img id='" + value + "_" + num + "imgpreview'></div>" +
+			"<div class='col-lg-2'><button class='btn btn-default' type='button' id='"+ value + "_" + num +"imgcancel' onclick='cancelFile(\""+ value + "_" + num +"\")'><i class='fa fa-times'>取消</i></button></div></div>" +
 			"</div>");
+
 	div.setAttribute("value",  num * 1 + 1);	
 	//create button to delete an question
 	var button = document.createElement("button");
@@ -849,6 +881,8 @@ function addOption(value){
 	var iappend = document.createElement("i");
 	iappend.className = "fa fa-plus";
 	appendbutton.appendChild(iappend);
+	
+	//document.getElementById(value+"_"+num+"optiondiv").scrollIntoView();
 }
 function getRelesFromOpt(optrele){
 	if(optrele.innerHTML==""){
@@ -1001,6 +1035,7 @@ function deleteQuestion(value){
 	DELETE_NUM_QUESTION += 1;
 }
 function deleteOption(value, num){
+	if($("input[name='"+value+"max'").val()) 	$("input[name='"+value+"max'").val($("input[name='"+value+"max'").val() - 1 * 1) ;
 	var container = document.getElementById(value +"container");
 	var victim = document.getElementById(value +"_" + num+"optiondiv");
 	if($("#"+value+"_"+num+"optrele").html()!=""){
@@ -1429,21 +1464,25 @@ function addBlank() {
 	$("#"+value+"div").html("" +
 			"<div class='form-group container' style='background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
 			"<div class='col-lg-8'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font><font size='3'>" + "  填空题  点击输入框编辑题目" + "</label></div>" +
-			"<div class='col-lg-1' >" +
+			"<div class='col-lg-2' >" +
 			"<label><font size='3'>必答</font></label>" +
-			"<input type='checkbox' id='" + value + "required'>" +
+			"<input type='checkbox' id='" + value + "required' checked='true'>" +
 			"</div>" +
-			"<div class='col-lg-3' id='" + value + "button'></div></div>" +
+			"<div class='col-lg-2' id='" + value + "button'></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
 			"<input class='form-control' name='" + value +"' ></div>" +
 			"<div class='col-lg-2'>" +
 			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</font></label></div>"+
 			"</div>" +
-			"<div class='row container'><div class='col-lg-12'><input type='file' id='"+value+"img' onchange='readLocalFile("+value+")' accept='.jpg,.jpeg,.bmp,.png'><img id='"+value+"imgpreview'><button type='button' id='"+value+"imgcancel' onclick='cancelFile("+value+")'>取消</button></div></div>"+
-			'<div class="row container"><div class="col-lg-4">添加视频路径（通用地址代码）</div><div class="col-lg-10"><input class="form-control" id="'+value+'video"></div></div>'+
-			'<div class="row container"><div class="col-lg-4">添加音频路径（通用地址代码）</div><div class="col-lg-10"><input class="form-control" id="'+value+'audio"></div></div>'+
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
+			"<div class='row' style='height:5px'></div>" +
+			"<div class='row container'><div class='col-lg-4'><input class='btn btn-default' type='file' id='"+value+"img' onchange='readLocalFile("+value+")' accept='.jpg,.jpeg,.bmp,.png'><img id='"+value+"imgpreview'></div>" +
+			"<div class='col-lg-2'><button class='btn btn-default' type='button' id='"+value+"imgcancel' onclick='cancelFile("+value+")'><i class='fa fa-times'>取消</i></button></div></div>"+
+			'<div class="row container"><div class="col-lg-4"><label><font size="3">添加视频路径（通用地址代码）<\label></div><div class="col-lg-12"><input class="form-control" id="'+value+'video"></div></div>'+
+			'<div class="row container"><div class="col-lg-4"><label><font size="3">添加音频路径（通用地址代码）<\label></div><div class="col-lg-12"><input class="form-control" id="'+value+'audio"></div></div>'+
+			"<div class='row' style='height:5px'></div>" +
+			"<div  id='" + value + "container' value='0'>" +
 			"</div></div>");	
 	//create button to delete an question
 	var button = document.createElement("button");
@@ -1457,6 +1496,7 @@ function addBlank() {
 	i.innerText = "删除本题";
 	button.appendChild(i);	
 	body.setAttribute("value", value * 1 + 1);
+	document.getElementById(value+"div").scrollIntoView();
 };
 function addSingle() {
 	var body = document.body;
@@ -1712,27 +1752,30 @@ function addSingle() {
 	div.setAttribute("value", "1");
 	form.appendChild(div);
 	$("#"+value+"div").html("" +
-			"<div class='form-group container' style='background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
+			"<div class='form-group container' style='padding-bottom:5px;background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
 			"<div class='col-lg-8'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font><font size='3'>" + "  单选题  点击输入框编辑题目" + "</label></div>" +
-			"<div class='col-lg-1' >" +
+			"<div class='col-lg-2' >" +
 			"<label><font size='3'>必答</font></label>" +
-			"<input type='checkbox' id='" + value + "required'>" +
+			"<input type='checkbox' id='" + value + "required' checked='true'>" +
 			"</div>" +
-			"<div class='col-lg-3' id='" + value + "button'></div></div>" +
+			"<div class='col-lg-2' id='" + value + "deleteQuesButton'></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
 			"<input class='form-control' name='" + value +"' onchange='changeReleQInQues("+value+")'></div>" +
 			"<div class='col-lg-2'>" +
 			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</font></label></div>"+
 			"</div>" +
-			"<div class='row container'><div class='col-lg-12'><input type='file' id='"+value+"img' onchange='readLocalFile("+value+")' accept='.jpg,.jpeg,.bmp,.png'><img id='"+value+"imgpreview'><button type='button' id='"+value+"imgcancel' onclick='cancelFile("+value+")'>取消</button></div></div>"+
-			'<div class="row container"><div class="col-lg-4">添加视频路径（通用地址代码）</div><div class="col-lg-10"><input class="form-control" id="'+value+'video"></div></div>'+
-			'<div class="row container"><div class="col-lg-4">添加音频路径（通用地址代码）</div><div class="col-lg-10"><input class="form-control" id="'+value+'audio"></div></div>'+
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
-			"<div class='container' id='" + value + "container' value='0'>" +
-			"<label><font size='3'>添加并填写选项</font></label></div>" +
-			"<\label>" +
-			"</div></div>");	
+			"<div class='row' style='height:5px'></div>" +
+			"<div class='row container'><div class='col-lg-4'><input class='btn btn-default' type='file' id='"+value+"img' onchange='readLocalFile("+value+")' accept='.jpg,.jpeg,.bmp,.png'><img id='"+value+"imgpreview'></div>" +
+			"<div class='col-lg-2'><button class='btn btn-default' type='button' id='"+value+"imgcancel' onclick='cancelFile("+value+")'><i class='fa fa-times'>取消</i></button></div></div>"+
+			'<div class="row container"><div class="col-lg-4"><label><font size="3">添加视频路径（通用地址代码）<\label></div><div class="col-lg-12"><input class="form-control" id="'+value+'video"></div></div>'+
+			'<div class="row container"><div class="col-lg-4"><label><font size="3">添加音频路径（通用地址代码）<\label></div><div class="col-lg-12"><input class="form-control" id="'+value+'audio"></div></div>'+
+			"<div class='row' style='height:5px'></div>" +
+			"<div  id='" + value + "container' value='0'>" +
+			"<div class='col-lg-10'><label><font size='3'>添加并填写选项</font></label></div></div><div class='col-lg-2' id='" + value + "button'></div>" +
+			
+	"</div></div>");	
 	//create button to add an option
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
@@ -1750,12 +1793,15 @@ function addSingle() {
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){deleteQuestion(value)};
-	document.getElementById(value + "button").appendChild(button);	
+	document.getElementById(value + "deleteQuesButton").appendChild(button);	
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	i.innerText = "删除本题";
 	button.appendChild(i);	
 	body.setAttribute("value", value * 1 + 1);
+	
+	//$("#"+value+"div").scrollIntoView(true);
+	document.getElementById(value+"div").scrollIntoView();
 };
 function addMultiple() {
 	var body = document.body;
@@ -2011,39 +2057,41 @@ function addMultiple() {
 	div.id = (value+"div");
 	form.appendChild(div);
 	$("#"+value+"div").html("" +
-			"<div class='form-group container' style='background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
+			"<div class='form-group container' style='padding-bottom:5px;background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
 			"<div class='col-lg-3'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font><font size='3'>"+"  多选题  点击输入框编辑题目" + "</font></label></div>" +
 			"<div class='col-lg-1'><label><font size='3'>最大可选</font></label></div>" +
-			"<div class='col-lg-1'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
+			"<div class='col-lg-1'><input class='form-control' type='number' step='1' name='" + value +"max' value=0></div>" +
 			"<div class='col-lg-1'><label><font size='3'>最小可选</font></label></div>" +
-			"<div class='col-lg-1'><input class='form-control' type='number' step='1' name='" + value +"min'></div>" +
+			"<div class='col-lg-1'><input class='form-control' type='number' step='1' name='" + value +"min'  value=1></div>" +
 					"<div class='col-lg-1'></div>" +
-			"<div class='col-lg-1'>" +
+			"<div class='col-lg-2'>" +
 			"<label><font size='3'>必答</font></label>" +
-			"<input type='checkbox' id='" + value + "required'>" +
+			"<input type='checkbox' id='" + value + "required' checked='true'>" +
 			"</div>" +
-			"<div class='col-lg-3'><div id='" + value + "button'></div></div></div>" +
+			"<div class='col-lg-2'><div id='" + value + "button'></div></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
 			"<input class='form-control' name=" + value + " onchange='changeReleQInQues("+value+")'></div>" +
 			"<div class='col-lg-2'>" +
 			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</label></div>"+
 			"</div>" +
-			"<div class='row container'><div class='col-lg-12'><input type='file' id='"+value+"img' onchange='readLocalFile("+value+")' accept='.jpg,.jpeg,.bmp,.png'><img id='"+value+"imgpreview'><button type='button' id='"+value+"imgcancel' onclick='cancelFile("+value+")'>取消</button></div></div>"+
-			'<div class="row container"><div class="col-lg-4">添加视频路径（通用地址代码）</div><div class="col-lg-10"><input class="form-control" id="'+value+'video"></div></div>'+
-			'<div class="row container"><div class="col-lg-4">添加音频路径（通用地址代码）</div><div class="col-lg-10"><input class="form-control" id="'+value+'audio"></div></div>'+
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
-			"<div class='container' id='" + value + "container' value='0'>" +
-			"<label><font size='3'>添加并填写选项</font></label></div>" +
-			"<\label>" +
-			"</div></div></div>");	
+			"<div class='row' style='height:5px'></div>" +
+			"<div class='row container'><div class='col-lg-4'><input class='btn btn-default' type='file' id='"+value+"img' onchange='readLocalFile("+value+")' accept='.jpg,.jpeg,.bmp,.png'><img id='"+value+"imgpreview'></div>" +
+			"<div class='col-lg-2'><button class='btn btn-default' type='button' id='"+value+"imgcancel' onclick='cancelFile("+value+")'><i class='fa fa-times'>取消</i></button></div></div>"+
+			'<div class="row container"><div class="col-lg-4"><label><font size="3">添加视频路径（通用地址代码）<\label></div><div class="col-lg-12"><input class="form-control" id="'+value+'video"></div></div>'+
+			'<div class="row container"><div class="col-lg-4"><label><font size="3">添加音频路径（通用地址代码）<\label></div><div class="col-lg-12"><input class="form-control" id="'+value+'audio"></div></div>'+
+			"<div class='row' style='height:5px'></div>" +
+			"<div  id='" + value + "container' value='0'>" +
+			"<div class='col-lg-10'><label><font size='3'>添加并填写选项</font></label></div></div><div class='col-lg-2' id='" + value + "addChoiceButton'></div>" +
+			"</div></div>");	
 	//create button to add an option
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
-	button.onclick = function(){addOption(value)};
-	document.getElementById(value + "button").appendChild(button);	
+	button.onclick = function(){addOption(value, true)};
+	document.getElementById(value + "addChoiceButton").appendChild(button);	
 	var i = document.createElement("i");
 	i.className = "fa fa-plus";
 	i.innerText = "添加选项";
@@ -2060,6 +2108,7 @@ function addMultiple() {
 	i.className = "fa fa-times";
 	i.innerText = "删除本题";
 	button.appendChild(i);
+	document.getElementById(value+"div").scrollIntoView();
 };
 function addSlider() {
 	var body = document.body;
@@ -2319,52 +2368,63 @@ function addSlider() {
 	div.id = (value+"div");
 	form.appendChild(div);
 	$("#"+value+"div").html("" +
-			"<div class='form-group container' style='background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
+			"<div class='form-group container' style='padding-bottom:5px;background:#fff;border:1px solid #c0c0c0;border-radius:5px'><br><div class='row'>" +
 			"<div class='col-lg-8'><label><font size='5' id='" + value + "divfont'>" + (value-DELETE_NUM_QUESTION) +"</font><font size='3'>" + "  滑块题  点击输入框编辑题目" + "</label></div>" +
-			"<div class='col-lg-1' >" +
+			"<div class='col-lg-2' >" +
 			"<label>必答</label>" +
-			"<input type='checkbox' id='" + value + "required'>" +
+			"<input type='checkbox' id='" + value + "required' checked='true'>" +
 			"</div>" +
-			"<div class='col-lg-2'><div id='" + value + "button'></div></div></div>" +
+			"<div class='col-lg-2'><div id='" + value + "deleteQuesButton'></div></div></div>" +
 			"<div class='row container'>" +
 			"<div class='col-lg-10'>" +
 			"<input class='form-control' name=" + value + "></div>" +
 			"<div class='col-lg-2'>" +
 			"<input type='checkbox' id='" + value +"relevancy' onclick='relevancy("+value+")'><label><font size='3'>添加关联</font></label></div>"+
 			"</div>" +
-			"<div class='row container'><div class='col-lg-12'><input type='file' id='"+value+"img' onchange='readLocalFile("+value+")' accept='.jpg,.jpeg,.bmp,.png'><img id='"+value+"imgpreview'><button type='button' id='"+value+"imgcancel' onclick='cancelFile("+value+")'>取消</button></div></div>"+
-			'<div class="row container"><div class="col-lg-4">添加视频路径（通用地址代码）</div><div class="col-lg-10"><input class="form-control" id="'+value+'video"></div></div>'+
-			'<div class="row container"><div class="col-lg-4">添加音频路径（通用地址代码）</div><div class="col-lg-10"><input class="form-control" id="'+value+'audio"></div></div>'+
 			"<div class='col-lg-12' id='" + value +"showrelevancy'></div>" +
+			"<div class='row' style='height:5px'></div>" +
 			"<div class='container'><div class='row'>" +
 			"<div class='col-lg-1'><label><font size='3'>最大值</font></label></div>" +
 			"<div class='col-lg-3'><input class='form-control' type='number' step='1' name='" + value +"max'></div>" +
 			"<div class='col-lg-2'><label><font size='3'>最大值标签</font></label></div>" +
 			"<div class='col-lg-5'><input class='form-control' type='text' name='" + value +"maxtext'></div></div>" +
+			"<div class='row' style='height:5px'></div>" +
 			"<div class='row'>" +
 			"<div class='col-lg-1'><label><font size='3'>最小值</font></label></div>" +
 			"<div class='col-lg-3'><input class='form-control' type='number' step='1' name='" + value +"min'></div>" +
 			"<div class='col-lg-2'><label><font size='3'>最小值标签</font></label></div>" +
 			"<div class='col-lg-5'><input class='form-control' type='text' name='" + value +"mintext'></div></div>" +
-			"</div><br></div></div>");
+			
+			"</div><div class='row' style='height:5px'></div>" +
+			"<div class='row container'><div class='col-lg-4'><input class='btn btn-default' type='file' id='"+value+"img' onchange='readLocalFile("+value+")' accept='.jpg,.jpeg,.bmp,.png'><img id='"+value+"imgpreview'></div>" +
+			"<div class='col-lg-2'><button class='btn btn-default' type='button' id='"+value+"imgcancel' onclick='cancelFile("+value+")'><i class='fa fa-times'>取消</i></button></div></div>"+
+			'<div class="row container"><div class="col-lg-4"><label><font size="3">添加视频路径（通用地址代码）<\label></div><div class="col-lg-12"><input class="form-control" id="'+value+'video"></div></div>'+
+			'<div class="row container"><div class="col-lg-4"><label><font size="3">添加音频路径（通用地址代码）<\label></div><div class="col-lg-12"><input class="form-control" id="'+value+'audio"></div></div>'+
+			"<div class='row' style='height:5px'></div>" +
+			"<div  id='" + value + "container' value='0'>" +
+			"</div>");
 	//create button to delete an question
 	var button = document.createElement("button");
 	button.className = "btn btn-default";
 	button.type = "button";
 	button.style="floating:left";
 	button.onclick = function(){deleteQuestion(value)};
-	document.getElementById(value + "button").appendChild(button);
+	document.getElementById(value + "deleteQuesButton").appendChild(button);
 	var i = document.createElement("i");
 	i.className = "fa fa-times";
 	i.innerText = "删除本题";
 	button.appendChild(i);
 	body.setAttribute("value", value * 1 + 1);
+	document.getElementById(value+"div").scrollIntoView();
 };
 function modify(result, id){
 	$("input[name='title']").val(result['title']);
 	$("input[name='introduction']").val(result['introduction']);
 	if(result['allowdup']=='0'){
 		document.getElementById("allowDup").checked=false;
+	}
+	if(result['resultPublished']=='private'){
+		document.getElementById("resultPublished").checked=false;
 	}
 	var releqlist = {};
 	var releolist = {};

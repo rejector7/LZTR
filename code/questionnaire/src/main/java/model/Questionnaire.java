@@ -9,13 +9,15 @@ public class Questionnaire{
 	private Date releaseTime;
 	private Date endTime;
 	private int allowDup;
+	private String result;
 	public Questionnaire(){}
-	public Questionnaire(int userid, String status, String title, int isPublic, Date releaseTime, Date endTime, int allowDup){
+	public Questionnaire(int userid, String status, String title, int isPublic, String result,  Date releaseTime, Date endTime, int allowDup){
 		this.userid = userid;
 		this.status = status;
 		this.isPublic = isPublic;
 		this.releaseTime = releaseTime;
 		this.endTime = endTime;
+		this.result = result;
 		this.title = title;
 		this.allowDup = allowDup;
 	}
@@ -70,7 +72,13 @@ public class Questionnaire{
 	@Override
 	public String toString() {
 		return "{\"id\":\"" + id + "\", \"userid\":\"" + userid + "\", \"title\":\"" + title + "\", \"status\":\""
-				+ status + "\", \"isPublic\":\"" + isPublic + "\", \"releaseTime\":\"" + releaseTime
+				+ status  + "\", \"isPublic\":\"" +  isPublic + "\", \"result\":\"" + result+ "\", \"releaseTime\":\"" + releaseTime
 				+ "\", \"endTime\":\"" + endTime + "\"}";
+	}
+	public String getResult() {
+		return result;
+	}
+	public void setResult(String result) {
+		this.result = result;
 	}
 }

@@ -20,6 +20,9 @@
 		<property name="isPublic" type="int">
 			<column name="isPublic" />
 		</property>
+		<property name="result" type="java.lang.String">
+			<column name="result" />
+		</property>
 		<property name="releaseTime" type="java.util.Date">
 			<column name="releaseTime" />
 		</property>
