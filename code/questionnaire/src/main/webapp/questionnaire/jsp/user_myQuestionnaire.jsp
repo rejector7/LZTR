@@ -143,7 +143,11 @@ User user = (User) session.getAttribute("user");
 											<%}else{%>
 											<td>私密</td>
 											<%}%>
+											<%if(ques.getReleaseTime() == null) {%>
+											<td>未设置</td>
+											<%}else{ %>
 											<td><%=ques.getReleaseTime()%></td>
+											<%} %>
 											<%if(ques.getEndTime() == null) {%>
 											<td>未设置</td>
 											<%}else{ %>
@@ -176,13 +180,17 @@ User user = (User) session.getAttribute("user");
 													data-endtime="<%=ques.getEndTime()%>"
 													data-status="<%=ques.getStatus()%>"
 													>
-													<i class="fa fa-cog"></i>发布状态&nbsp
+													<i class="fa fa-cog"></i>发布&nbsp
 												</button>
-												<a class="btn btn-default" href="getInfoQuestionnaire?id=<%=ques.getId() %>" role="button"><i class="fa fa-edit"></i>修改内容</a>
+												<button class="btn btn-default copy" type="button" 	data-title="<%=ques.getTitle()%>"	data-id="<%=ques.getId()%>">
+													<i class="fa fa-copy"></i>复制&nbsp
+												</button>
+												<a class="btn btn-default" href="PreviewQuestionnaire?quesid=<%=ques.getId() %>" role="button"><i class="fa fa-eye"></i>预览&nbsp</a>
 												<br>
-												<a class="btn btn-default" href="PreviewQuestionnaire?quesid=<%=ques.getId() %>" role="button"><i class="fa fa-eye"></i>预览</a>
+												<a class="btn btn-default" href="getInfoQuestionnaire?id=<%=ques.getId() %>" role="button"><i class="fa fa-edit"></i>修改内容</a>
+												
 												<a class="btn btn-default" href="getAnswerByQuesid?quesid=<%=ques.getId() %>" role="button"><i class="fa fa-bar-chart"></i>查看数据</a>
-												<button class="btn btn-default link" type="button" value="localhost:8080/questionnaire/FillQuestionnaire?quesid=<%=ques.getId() %>"><i class="fa fa-copy"></i>复制链接</button>
+												<button class="btn btn-default link" type="button" value="localhost:8080/questionnaire/FillQuestionnaire?quesid=<%=ques.getId() %>"><i class="fa fa-chain"></i>问卷链接</button>
 											</td>
 										</tr>
 										<%

@@ -29,6 +29,7 @@ public interface QuestionnaireService {
 	 */
 	void deleteQuestionnaire(QuestionnaireQuestions questions, Questionnaire ques);
 
+	void copyQuestionnaire(int id);
 	/**
 	 * Get content of a questionnaire by its id
 	 * @param id
@@ -67,5 +68,8 @@ public interface QuestionnaireService {
 	
 	List<Questionnaire> getPublicResults();
 
+	List<Questionnaire> getTemplateQuestionnaires();
+	
+	Questionnaire copyTemplate(int quesid, int userid);
 }
 

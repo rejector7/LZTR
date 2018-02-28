@@ -3,6 +3,8 @@ import java.util.List;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import dao.QuestionnaireDao;
 import model.Questionnaire;
+import model.User;
+import java.util.ArrayList;
 public class QuestionnaireDaoImpl extends HibernateDaoSupport implements QuestionnaireDao{
 	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#addQuestionnaire(model.Questionnaire)
@@ -24,6 +26,19 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 	@Override
 	public void updateQuestionnaire(Questionnaire ques) {
 		getHibernateTemplate().merge(ques);
+	}
+	/* (non-Javadoc)
+	 * @see dao.impl.QuestionnaireDao#updateQuestionnaire(model.Questionnaire)
+	 */
+	@Override
+	public void copyQuestionnaire(int id) {
+		Questionnaire ques = getQuestionnaireById(id);
+		ques.setId(0);
+		ques.setTitle(ques.getTitle() + "_副本");
+		ques.setStatus("unp");
+		ques.setReleaseTime(null);
+		ques.setEndTime(null);
+		addQuestionnaire(ques);
 	}
 	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#getQuestionnaireById(int)
@@ -76,5 +91,20 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 		List<Questionnaire> quess  = (List<Questionnaire>) getHibernateTemplate()
 				.find("from Questionnaire as q where q.result='public' and status='pub' order by releaseTime desc");
 		return quess;
+	}
+	
+	public List<Questionnaire> getTemplateQuestionnaires(){
+		@SuppressWarnings("unchecked")
+		List<User> admins = (List<User>) getHibernateTemplate().find("from User as u where u.role = 'admin'");
+		int len = admins.size();
+		int userid;
+		List<Questionnaire> templates = new ArrayList();
+		for(int i=0;i<len;i++){
+			userid = admins.get(i).getId();
+			List<Questionnaire> quess  = (List<Questionnaire>) getHibernateTemplate()
+					.find("from Questionnaire as q where q.userid=?", userid);
+			templates.addAll(quess);
+		}
+		return templates;
 	}
 }
