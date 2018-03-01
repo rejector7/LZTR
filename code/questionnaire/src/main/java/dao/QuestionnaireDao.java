@@ -41,4 +41,6 @@ public interface QuestionnaireDao {
 	List<Questionnaire> getPublicQuestionnaires();
 
 	List<Questionnaire> getPublicResults();
+	
+	List<Questionnaire> getTemplateQuestionnaires();
 }

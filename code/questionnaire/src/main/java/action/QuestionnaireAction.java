@@ -115,6 +115,12 @@ public class QuestionnaireAction extends BaseAction{
 			quescontent.setContent(content);
 			ques.setAllowDup(allowDup);
 			ques.setResult(result);
+			User user = (User)session().getAttribute("user");
+			if(user.getRole()=="admin"){
+				ques.setStatus("end");
+				ques.setIsPublic(0);
+				ques.setResult("private");
+			}
 			quesService.updateQuestionnaire(quescontent, ques);
 			response().getWriter().write(Integer.valueOf(id).toString());
 			return null;
@@ -122,7 +128,12 @@ public class QuestionnaireAction extends BaseAction{
 		if(status==null) status = "unp";
 		int userid = ((User)request().getSession().getAttribute("user")).getId();
 		Questionnaire ques = new Questionnaire(userid,status,title,isPublic,result,releaseTime,endTime,allowDup);
-		
+		User user = (User)session().getAttribute("user");
+		if(user.getRole()=="admin"){
+			ques.setStatus("end");
+			ques.setIsPublic(0);
+			ques.setResult("private");
+		}
 		QuestionnaireQuestions quescontent = new QuestionnaireQuestions(content);
 		int tmpid = quesService.addQuestionnaire(quescontent, ques);
 		response().getWriter().write(Integer.valueOf(tmpid).toString());
@@ -139,13 +150,22 @@ public class QuestionnaireAction extends BaseAction{
 		ques.setReleaseTime(releaseTime);
 		ques.setStatus(status);
 		ques.setAllowDup(allowDup);
-		System.out.println(result + "wefwef");
 		ques.setResult(result);
+		User user = (User)session().getAttribute("user");
+		if(user.getRole()=="admin"){
+			ques.setStatus("end");
+			ques.setIsPublic(0);
+			ques.setResult("private");
+		}
 		quesService.updateQuestionnaire(ques);
 		response().getWriter().print("success");
 		return null;
 	}
 	public String updateStatus() throws Exception {
+		User user = (User)session().getAttribute("user");
+		if(user.getRole()=="admin"){
+			return "updateStatus";
+		}
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		ques.setStatus(status);
 		quesService.updateQuestionnaire(ques);
@@ -205,6 +225,15 @@ public class QuestionnaireAction extends BaseAction{
 		Questionnaire ques = quesService.getQuestionnaireById(id);
 		request().setAttribute("quesinfo", ques);
 		return "getInfo";
+	}
+	public String CopyTemplate() throws IOException{
+		User user = (User)session().getAttribute("user");
+		Questionnaire ques = quesService.copyTemplate(id,user.getId());
+		request().setAttribute("id", ques.getId());
+		JSONObject q = new JSONObject();
+		q.put("quesid", ques.getId());
+		response().getWriter().print(q);
+		return null;
 	}
 	/**
 	 * Use Service to get basic information of all questionnaires
@@ -269,6 +298,25 @@ public class QuestionnaireAction extends BaseAction{
 			}
 		}
 		request().setAttribute("resultByTime", results);
+		
+		List<Questionnaire> templates = quesService.getTemplateQuestionnaires();
+		if(templates.size()>=6){
+		for(int i=0;i<6;i++){
+			QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(templates.get(i).getId());
+			JSONObject questot = new JSONObject(quescontent.getContent());
+			String intro = questot.getString("introduction");
+			request().setAttribute(i + "intro", intro);
+		}
+		}
+		else {
+			for(int i=0;i<templates.size();i++){
+				QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(templates.get(i).getId());
+				JSONObject questot = new JSONObject(quescontent.getContent());
+				String intro = questot.getString("introduction");
+				request().setAttribute(i + "intro", intro);
+			}
+		}
+		request().setAttribute("templateByTime", templates);
 		
 		return SUCCESS;
 	}
