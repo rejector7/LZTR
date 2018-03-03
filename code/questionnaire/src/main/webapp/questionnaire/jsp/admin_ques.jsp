@@ -74,7 +74,8 @@
 										    <th>问卷ID</th>
 											<th>用户ID</th>
 											<th>标题</th>
-											<th>是否公开</th>
+											<th>是否公开问卷</th>
+											<th>是否公开数据</th>
 											<th  width="10%">发布时间</th>
 											<th width="10%">结束时间</th>
 											<th width="10%">发布状态</th>
@@ -95,8 +96,21 @@
 											<%}else{%>
 											<td>私密</td>
 											<%}%>
+											<%if(ques.getResult().equals("public")){%>
+											<td>公开</td>
+											<%}else{%>
+											<td>私密</td>
+											<%}%>
+											<%if(ques.getReleaseTime() == null) {%>
+											<td>未设置</td>
+											<%}else{ %>
 											<td><%=ques.getReleaseTime()%></td>
+											<%} %>
+											<%if(ques.getEndTime() == null) {%>
+											<td>未设置</td>
+											<%}else{ %>
 											<td><%=ques.getEndTime()%></td>
+											<%} %>
 											<%if(ques.getStatus().equals("pub")){%>
 											<td><%="已发布"%></td>
 											<%}else if(ques.getStatus().equals("end")){%>

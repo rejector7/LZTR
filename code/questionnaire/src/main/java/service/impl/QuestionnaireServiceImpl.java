@@ -43,7 +43,8 @@ public class QuestionnaireServiceImpl implements QuestionnaireService{
 	
 	@Override
 	public void copyQuestionnaire(int id) {
-		quesDao.copyQuestionnaire(id);
+		int ques_id = quesDao.copyQuestionnaire(id);
+		questionnairequestionsDao.copyQuestionnaireContent(id, ques_id);
 	}
 	/* (non-Javadoc)
 	 * @see service.impl.QuestionnaireService#getQuestionnaireQuestionsById(int)
