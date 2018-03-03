@@ -407,11 +407,11 @@ function submit(){
 	    			count += 1;
 	    		}
 	    	}
-	    	if(count < Q['questions'][i]['min'] && count > 0){
+	    	if(count < Q['questions'][i]['min']*1 && count > 0){
 	    		document.getElementById(i + "message").innerText = "请选择不少于 " + Q['questions'][i]['min'] + "个选项";
 	    		ids.push((i*1+1));
 	    	}
-	    	if(count > Q['questions'][i]['max']){
+	    	if(count > Q['questions'][i]['max']*1){
 	    		document.getElementById(i + "message").innerText = "请选择不多于" + Q['questions'][i]['max'] + "个选项";
 	    		ids.push((i*1+1));
 	    	}
