@@ -33,5 +33,6 @@ public interface QuestionnaireQuestionsDao {
 	 * @return
 	 */
 	QuestionnaireQuestions getQuestionnaireById(int id);
-
+	
+	void copyQuestionnaireContent(int content_id, int new_id);
 }

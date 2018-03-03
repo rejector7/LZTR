@@ -23,7 +23,7 @@ public interface QuestionnaireDao {
 	 */
 	void updateQuestionnaire(Questionnaire ques);
 
-	void copyQuestionnaire(int id);
+	int copyQuestionnaire(int id);
 	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#getQuestionnaireById(int)
 	 */

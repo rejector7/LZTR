@@ -199,7 +199,7 @@
        <a href="getAnserByQuesidToStatistic?quesid=<%=quesListByTime.get(i).getId()%>">
        <h3><span class="badge" align="left" style="float:left;align:left"><%=i+1 %></span><%=quesListByTime.get(i).getTitle() %></h3>
        </a>
-          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro")%></font></p>
+          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro1")%></font></p>
 	</div></div>
         <%} %>
         <%}
@@ -210,7 +210,7 @@
        <a href="getAnserByQuesidToStatistic?quesid=<%=quesListByTime.get(i).getId()%>">
        <h3><span class="badge" align="left" style="float:left;align:left"><%=i+1 %></span><%=quesListByTime.get(i).getTitle() %></h3>
        </a>
-          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro")%></font></p>
+          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro1")%></font></p>
 	</div></div>
         <%}%>
         <%}%>     
@@ -223,7 +223,7 @@
        <a href="getAnserByQuesidToStatistic?quesid=<%=quesListByTime.get(i).getId()%>">
        <h3><span class="badge" align="left" style="float:left;align:left"><%=i+1 %></span><%=quesListByTime.get(i).getTitle() %></h3>
        </a>
-          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro")%></font></p>
+          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro1")%></font></p>
 	</div></div>
         <%} %>
         </div></div>
@@ -236,7 +236,7 @@
        <a href="getAnserByQuesidToStatistic?quesid=<%=quesListByTime.get(i).getId()%>">
        <h3><span class="badge" align="left" style="float:left;align:left"><%=i+1 %></span><%=quesListByTime.get(i).getTitle() %></h3>
        </a>
-          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro")%></font></p>
+          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro1")%></font></p>
 	</div></div>
         <%}%> 
         </div></div>
@@ -278,7 +278,7 @@
        <a href="TemplateQuestionnaire?quesid=<%=quesListByTime.get(i).getId()%>">
        <h3><span class="badge" align="left" style="float:left;align:left"><%=i+1 %></span><%=quesListByTime.get(i).getTitle() %></h3>
        </a>
-          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro")%></font></p>
+          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro2")%></font></p>
 	</div></div>
         <%} %>
         <%}
@@ -289,7 +289,7 @@
        <a href="TemplateQuestionnaire?quesid=<%=quesListByTime.get(i).getId()%>">
        <h3><span class="badge" align="left" style="float:left;align:left"><%=i+1 %></span><%=quesListByTime.get(i).getTitle() %></h3>
        </a>
-          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro")%></font></p>
+          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro2")%></font></p>
 	</div></div>
         <%}%>
         <%}%>     
@@ -302,7 +302,7 @@
        <a href="TemplateQuestionnaire?quesid=<%=quesListByTime.get(i).getId()%>">
        <h3><span class="badge" align="left" style="float:left;align:left"><%=i+1 %></span><%=quesListByTime.get(i).getTitle() %></h3>
        </a>
-          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro")%></font></p>
+          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro2")%></font></p>
 	</div></div>
         <%} %>
         </div></div>
@@ -315,7 +315,7 @@
        <a href="TemplateQuestionnaire?quesid=<%=quesListByTime.get(i).getId()%>">
        <h3><span class="badge" align="left" style="float:left;align:left"><%=i+1 %></span><%=quesListByTime.get(i).getTitle() %></h3>
        </a>
-          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro")%></font></p>
+          <p><font color="#cccccc"><%=request.getAttribute(i+ "intro2")%></font></p>
 	</div></div>
         <%}%> 
         </div></div>
