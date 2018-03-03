@@ -122,18 +122,7 @@ User user = (User) session.getAttribute("user");
 						
 				  
 							<div class="dataTable_wrapper">
-				<table>
-        		<tbody>
-        			<tr>
-            			<td>Minimum date:</td>
-            			<td><input type="date" id="min" name="min"></td>
-        			</tr>
-        			<tr>
-            			<td>Maximum date:</td>
-            			<td><input type="date" id="max" name="max"></td>
-        			</tr>
-    			</tbody>
-    			</table>
+				
 								<table class="table table-striped table-bordered table-hover"
 									id="dataTables">
 									<thead>
@@ -185,40 +174,6 @@ User user = (User) session.getAttribute("user");
 	<script src="<%=path%>/questionnaire/js/bootbox.min.js"></script>
 	<script src="<%=path%>/questionnaire/js/result_detail.js"></script>	
 	
-	<script>
-		$.fn.dataTable.ext.search.push(
-		    function( settings, data, dataIndex ) {
-		        var min = $('#min').val();
-		        var max = $('#max').val();
-		        var age = data[1]; 
-		        //alert(min);
-		        //alert(age);
-		 
-		        if ( ( min=="" && max=="" ) ||
-		             ( min=="" && age <= max ) ||
-		             ( min <= age   && max=="" ) ||
-		             ( min <= age   && age <= max ) )
-		        {
-		            return true;
-		        }
-		        return false;
-		    }
-		);
-		
-		$(document).ready(function() {
-			
-		    var table = $('#dataTables').DataTable();
-		     
-		    // Event listener to the two range filtering inputs to redraw on input
-		    $('#min, #max').keyup( function() {
-		        table.draw();
-		    } );
-			
-		    $('#dataTables').DataTable({
-				responsive : true
-			});
-		});
-	</script>
 	    <script>
         $(window).scroll(function () {
             if ($(".navbar").offset().top > 50) {$(".navbar-fixed-top").addClass("top-nav");
