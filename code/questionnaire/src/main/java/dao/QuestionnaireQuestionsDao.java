@@ -35,5 +35,4 @@ public interface QuestionnaireQuestionsDao {
 	QuestionnaireQuestions getQuestionnaireById(int id);
 	
 	void copyQuestionnaireContent(int content_id, int new_id);
-
 }

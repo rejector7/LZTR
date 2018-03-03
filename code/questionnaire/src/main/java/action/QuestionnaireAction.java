@@ -286,7 +286,7 @@ public class QuestionnaireAction extends BaseAction{
 			QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(results.get(i).getId());
 			JSONObject questot = new JSONObject(quescontent.getContent());
 			String intro = questot.getString("introduction");
-			request().setAttribute(i + "intro", intro);
+			request().setAttribute(i + "intro1", intro);
 		}
 		}
 		else {
@@ -294,7 +294,7 @@ public class QuestionnaireAction extends BaseAction{
 				QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(results.get(i).getId());
 				JSONObject questot = new JSONObject(quescontent.getContent());
 				String intro = questot.getString("introduction");
-				request().setAttribute(i + "intro", intro);
+				request().setAttribute(i + "intro1", intro);
 			}
 		}
 		request().setAttribute("resultByTime", results);
@@ -305,7 +305,7 @@ public class QuestionnaireAction extends BaseAction{
 			QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(templates.get(i).getId());
 			JSONObject questot = new JSONObject(quescontent.getContent());
 			String intro = questot.getString("introduction");
-			request().setAttribute(i + "intro", intro);
+			request().setAttribute(i + "intro2", intro);
 		}
 		}
 		else {
