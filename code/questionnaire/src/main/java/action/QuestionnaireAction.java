@@ -311,9 +311,11 @@ public class QuestionnaireAction extends BaseAction{
 		else {
 			for(int i=0;i<templates.size();i++){
 				QuestionnaireQuestions quescontent = quesService.getQuestionnaireQuestionsById(templates.get(i).getId());
+				if(quescontent!=null){
 					JSONObject questot = new JSONObject(quescontent.getContent());
 					String intro = questot.getString("introduction");
-					request().setAttribute(i + "intro2", intro);
+					request().setAttribute(i + "intro", intro);
+				}
 			}
 		}
 		request().setAttribute("templateByTime", templates);

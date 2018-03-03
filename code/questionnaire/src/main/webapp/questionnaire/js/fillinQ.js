@@ -44,7 +44,7 @@ function formQ(data){
 	var result = [];
 	//create title & introduction
 	$("#questionnaire").html("<h1 class='text-muted' style='color:black' align='center'><font size='10'>" + title + "</font></h1>" +
-			"<p align='eft'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + introduction + "</head>");
+			"<p align='left'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + introduction + "</head>");
 	//create questions
 	for(var i = 0 ; i < length ; i++){
 		var question = questions[i];
@@ -213,14 +213,14 @@ function addSingle(question, i){
 		if(question['options'][j]['hasWords']==true){
 			if(question['required']==false){
 	$("#"+i + "div").append("<p><div class='radio' ><label  style='float:left'><input type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-			"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+			"<font size='4' style='font-weight:normal'>" + question['options'][j]['option'] + "</font></label>");
 	if(question['options'][j]['img']){
 		$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
 	}	
 	$("#"+i + "div").append("<div><input  name='" + i + "_" + j + "words'></div>");
 	}else{
 		$("#"+i + "div").append("<p><div class='radio' ><label  style='float:left'><input required type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-				"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+				"<font size='4' style='font-weight:normal'>" + question['options'][j]['option'] + "</font></label>");
 		if(question['options'][j]['img']){
 			$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
 		}
@@ -230,14 +230,14 @@ function addSingle(question, i){
 		else{
 			if(question['required']==false){
 			$("#"+i + "div").append("<p><div class='radio' ><label><input type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-					"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+					"<font size='4' style='font-weight:normal'>" + question['options'][j]['option'] + "</font></label>");
 			if(question['options'][j]['img']){
 				$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
 			}
 			}
 			else{
 				$("#"+i + "div").append("<p><div class='radio' ><label><input required type='radio' value=" + j +" name=" + i + " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-						"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+						"<font size='4' style='font-weight:normal'>" + question['options'][j]['option'] + "</font></label>");
 				if(question['options'][j]['img']){
 					$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
 				}
@@ -278,7 +278,7 @@ function addMultiple(question, i){
 			if(question['required']==false){
 			$("#"+i + "div").append("<p><label  style='float:left'><input type='checkbox' value=" + j +" name=" + i + 
 					 " rele='"+rele+"' onclick='releEffect("+i+")'>" +
-					"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+					"<font size='4' style='font-weight:normal'>" + question['options'][j]['option'] + "</font></label>");
 			if(question['options'][j]['img']){
 				$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
 			}
@@ -287,7 +287,7 @@ function addMultiple(question, i){
 			else{
 				$("#"+i + "div").append("<p><label  style='float:left'><input required type='checkbox' value=" + j +" name=" + i +
 						" rele='"+rele+"' onclick='releEffect("+i+")'>" +
-						"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+						"<font size='4' style='font-weight:normal'>" + question['options'][j]['option'] + "</font></label>");
 				if(question['options'][j]['img']){
 					$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
 				}
@@ -298,7 +298,7 @@ function addMultiple(question, i){
 					if(question['required']==false){
 					$("#"+i + "div").append("<p><label><input type='checkbox' value=" + j +" name=" + i +
 							" rele='"+rele+"' onclick='releEffect("+i+")'>" +
-							"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+							"<font size='4' style='font-weight:normal'>" + question['options'][j]['option'] + "</font></label>");
 					if(question['options'][j]['img']){
 						$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
 					}
@@ -306,7 +306,7 @@ function addMultiple(question, i){
 					else{
 						$("#"+i + "div").append("<p><label><input required type='checkbox' value=" + j +" name=" + i + 
 								" rele='"+rele+"' onclick='releEffect("+i+")'>" +
-								"<font size='4'>" + question['options'][j]['option'] + "</font></label>");
+								"<font size='4' style='font-weight:normal'>" + question['options'][j]['option'] + "</font></label>");
 						if(question['options'][j]['img']){
 							$("#"+i + "div").append("<img src='"+decodeURIComponent(question['options'][j]['img'])+"'>");
 						}
@@ -361,7 +361,7 @@ function submit(){
 	var hidequestions = document.getElementById("bin").childNodes;
 	var length = questions.length;
 	var result=[];
-	var report = "<p>本次提交中，以下题号的问题回答有缺漏或回答格式不正确，请查看修改并重新提交：</p><p>";
+	var report = "<p><font size='4' color='red'><strong>本次提交中，以下题号的问题回答有缺漏或回答格式不正确，请查看修改并重新提交：</strong></font></p><p>";
 	var ids = new Array();
 	for(var i = 0; i < length; i++){
 		var answer = {};
@@ -412,7 +412,7 @@ function submit(){
 	    		ids.push((i*1+1));
 	    	}
 	    	if(count > Q['questions'][i]['max']){
-	    		$(i + "message").innerText = "请选择不多于" + Q['questions'][i]['max'] + "个选项";
+	    		document.getElementById(i + "message").innerText = "请选择不多于" + Q['questions'][i]['max'] + "个选项";
 	    		ids.push((i*1+1));
 	    	}
 	    	break;
@@ -439,13 +439,14 @@ function submit(){
 		}
 	}   
 	if(ids.length>0){
+		report += "<font size='4' color='red'><strong>"
 		var len = document.getElementById("form").childNodes.length;
 		for(var i=1;i<=len;i++){
 			if(ids.indexOf(i)!=-1){
 				report+=i+" ";
 			}
 		}
-		report+="</p>";
+		report+="</strong></font></p>";
 		$("#errors").html(report);
 		return;
 	}
