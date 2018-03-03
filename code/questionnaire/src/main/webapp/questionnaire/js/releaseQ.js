@@ -116,12 +116,15 @@ $(function() {
 				}
 				//get the number of options
 				var num = (document.getElementById(i + "container")).getAttribute("value");
+				num = num*1;
 				if(num == 0 ){alert("第" + (k*1+1) + "题至少需要有一个选项");return;}
 				//get min & max
 				var min = $("input[name='" + i + "min']").val();
 				var max = $("input[name='" + i + "max']").val();
 				if(min==""){min=0;}
 				if(max==""){max=options.length-1;}
+				min=min*1;
+				max=max*1;
 				if(min > max) {alert("第"+ (k*1+1) + "题最小可选不得超过最大");return;}
 				if(min < 0) {alert("第"+ (k*1+1) + "题最小可选必须不小于0");return;}
 				if(max > num) {alert("第"+ (k*1+1) + "题最大选项不可超过总选项数");return;}
@@ -164,6 +167,8 @@ $(function() {
 				if(mintext==""){alert("第" +  (k*1+1) + "题最小值标签为空");return;}
 				var maxtext = $("input[name='" + i + "maxtext']").val();
 				if(maxtext==""){alert("第" +  (k*1+1) + "题最大值标签为空");return;}
+				min=min*1;
+				max=max*1;
 				if(min > max) {alert("第" +  (k*1+1) + "题最小值不得超过最大值");return;}
 				result['questions'][k]['min'] = min;
 				result['questions'][k]['max'] = max;
@@ -341,12 +346,15 @@ $(function() {
 				}
 				//get the number of options
 				var num = (document.getElementById(i + "container")).getAttribute("value");
+				num=num*1;
 				if(num == 0 ){alert("第" + (k*1+1) + "题至少需要有一个选项");return;}
 				//get min & max
 				var min = $("input[name='" + i + "min']").val();
 				var max = $("input[name='" + i + "max']").val();
 				if(min==""){min=0;}
 				if(max==""){max=options.length-1;}
+				min=min*1;
+				max=max*1;
 				if(min > max) {alert("第"+ (k*1+1) + "题最小可选不得超过最大");return;}
 				if(min < 0) {alert("第"+ (k*1+1) + "题最小可选必须不小于0");return;}
 				if(max > num) {alert("第"+ (k*1+1) + "题最大选项不可超过总选项数");return;}
@@ -390,6 +398,8 @@ $(function() {
 				if(mintext==""){alert("第" +  (k*1+1) + "题最小值标签为空");return;}
 				var maxtext = $("input[name='" + i + "maxtext']").val();
 				if(maxtext==""){alert("第" +  (k*1+1) + "题最大值标签为空");return;}
+				min=min*1;
+				max=max*1;
 				if(min > max) {alert("第" +  (k*1+1) + "题最小值不得超过最大值");return;}
 				result['questions'][k]['min'] = min;
 				result['questions'][k]['max'] = max;
@@ -549,12 +559,15 @@ $(function() {
 				}
 				//get the number of options
 				var num = (document.getElementById(i + "container")).getAttribute("value");
+				num=num*1;
 				if(num == 0 ){alert("第" + (k*1+1) + "题至少需要有一个选项");return;}
 				//get min & max
 				var min = $("input[name='" + i + "min']").val();
 				var max = $("input[name='" + i + "max']").val();
 				if(min==""){min=0;}
 				if(max==""){max=options.length-1;}
+				min=min*1;
+				max=max*1;
 				if(min > max) {alert("第"+ (k*1+1) + "题最小可选不得超过最大");return;}
 				if(min < 0) {alert("第"+ (k*1+1) + "题最小可选必须不小于0");return;}
 				if(max > num) {alert("第"+ (k*1+1) + "题最大选项不可超过总选项数");return;}
@@ -598,6 +611,8 @@ $(function() {
 				if(mintext==""){alert("第" +  (k*1+1) + "题最小值标签为空");return;}
 				var maxtext = $("input[name='" + i + "maxtext']").val();
 				if(maxtext==""){alert("第" +  (k*1+1) + "题最大值标签为空");return;}
+				min=min*1;
+				max=max*1;
 				if(min > max) {alert("第" +  (k*1+1) + "题最小值不得超过最大值");return;}
 				result['questions'][k]['min'] = min;
 				result['questions'][k]['max'] = max;
@@ -2433,9 +2448,9 @@ function modify(result, id){
 		if(type=="Subjective"){
 			addBlank();
 			$("input[name="+i+"]").val(result['questions'][i]['stem']);
-			if(result['questions'][i]['required']==true){
+			if(result['questions'][i]['required']==false){
 				var required = document.getElementById(i+"required");
-				required.checked=true;
+				required.checked=false;
 			}
 			$("#"+i+"video").val(result['questions'][i]['video']);
 			$("#"+i+"audio").val(result['questions'][i]['audio']);
@@ -2451,9 +2466,9 @@ function modify(result, id){
 			if(result['questions'][i]['img']){
 				document.getElementById(i+"imgpreview").src = decodeURIComponent(result['questions'][i]['img']);
 			}
-			if(result['questions'][i]['required']==true){
+			if(result['questions'][i]['required']==false){
 				var required = document.getElementById(i+"required");
-				required.checked=true;
+				required.checked=false;
 			}
 			for(var j = 0; j < result['questions'][i]['options'].length; j++){
 				addOption(i);
@@ -2489,9 +2504,9 @@ function modify(result, id){
 			if(result['questions'][i]['img']){
 				document.getElementById(i+"imgpreview").src = decodeURIComponent(result['questions'][i]['img']);
 			}
-			if(result['questions'][i]['required']==true){
+			if(result['questions'][i]['required']==false){
 				var required = document.getElementById(i+"required");
-				required.checked=true;
+				required.checked=false;
 			}
 			$("input[name="+i+"min]").val(result['questions'][i]['min']);
 			$("input[name="+i+"max]").val(result['questions'][i]['max']);
@@ -2529,9 +2544,9 @@ function modify(result, id){
 			if(result['questions'][i]['img']){
 				document.getElementById(i+"imgpreview").src = decodeURIComponent(result['questions'][i]['img']);
 			}
-			if(result['questions'][i]['required']==true){
+			if(result['questions'][i]['required']==false){
 				var required = document.getElementById(i+"required");
-				required.checked=true;
+				required.checked=false;
 			}
 			$("input[name="+i+"min]").val(result['questions'][i]['min']);
 			$("input[name="+i+"mintext]").val(result['questions'][i]['mintext']);
