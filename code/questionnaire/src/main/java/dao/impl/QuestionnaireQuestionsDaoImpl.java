@@ -34,4 +34,13 @@ public class QuestionnaireQuestionsDaoImpl implements QuestionnaireQuestionsDao{
 	      else {
 	    	  return null;}
 	}
+	
+	public void copyQuestionnaireContent(int content_id, int new_id) {
+		QuestionnaireQuestions old_ques = getQuestionnaireById(content_id);
+		QuestionnaireQuestions new_ques = new QuestionnaireQuestions();
+		new_ques.setQuesid(new_id);
+		new_ques.setContent(old_ques.getContent());
+		addQuestionnaire(new_ques);
+		return;
+	}
 }

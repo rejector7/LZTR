@@ -31,14 +31,14 @@ public class QuestionnaireDaoImpl extends HibernateDaoSupport implements Questio
 	 * @see dao.impl.QuestionnaireDao#updateQuestionnaire(model.Questionnaire)
 	 */
 	@Override
-	public void copyQuestionnaire(int id) {
+	public int copyQuestionnaire(int id) {
 		Questionnaire ques = getQuestionnaireById(id);
 		ques.setId(0);
 		ques.setTitle(ques.getTitle() + "_副本");
 		ques.setStatus("unp");
 		ques.setReleaseTime(null);
 		ques.setEndTime(null);
-		addQuestionnaire(ques);
+		return addQuestionnaire(ques);
 	}
 	/* (non-Javadoc)
 	 * @see dao.impl.QuestionnaireDao#getQuestionnaireById(int)

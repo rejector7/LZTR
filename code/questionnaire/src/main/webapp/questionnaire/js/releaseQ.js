@@ -202,7 +202,7 @@ $(function() {
 								bootbox.alert({
 									message : '更新成功',
 								    callback : function() {
-								    	location.href = 'FrontPage';
+								    	//location.href = 'FrontPage';
 									}
 								});
 							}
